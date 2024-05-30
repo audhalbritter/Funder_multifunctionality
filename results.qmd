@@ -1,0 +1,97 @@
+---
+format: html
+title: Plant functional group affect on multifunctionality
+execute:
+  echo: false
+bibliography: bibliography.bib
+csl: journal-of-ecology.csl
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r}
+#| label: set-up
+#| echo: false
+#| message: false
+library(targets)
+library(tarchetypes)
+library(tidyverse)
+library(lubridate)
+library(broom)
+library(gt)
+```
+
+
+# Abstract
+
+Climate change threatens biodiversity in plant and soil communities with consequences for key ecosystem functions and services.
+Predicting how biodiversity loss affects multiple ecosystem functions (i.e. multifunctionality) has gained traction, but the context-dependent nature of these relationships is poorly understood.
+Here we disentangle the direct effects of climate from the indirect effects, mediated through biotic interactions on multifunctionality including ecosystem function of the whole plant-soil food web.
+We use a powerful macroecological experimental approach, by replicating a plant functional group removal experiment across factorial broad-scale temperature and precipitation gradients.
+We use a multifunctionality approach and assess the effect of plant functional group presence on biodiversity (plants, bryophytes, nematodes, microarthropods, fungi and bacteria) as well as ecosystem functions including biomass, decomposition, carbon and nutrient stocks and dynamics.
+The results from this study can uncover context-dependent nature of the effect of biodiversity on ecosystem functioning and the contribution of different plant functional groups to specific functions.
+
+
+# Introduction
+
+- Biodiversity and ecosystem functions and whole ecosystem approach including plants and food web.
+
+- Multifuncitonality approach
+
+- Context dependency
+
+- Plant functional removal experiments
+
+- Here we study the effect of plant functional groups (graminoids, forbs, and bryophytes) on biodiversity and ecosystem functions using a multifunctionality approach.
+
+
+# Methods
+
+- Study sites
+
+- Removal experiment
+
+- Biodiversity and functions measured
+
+- Multifunctionality calculations
+
+- Data analysis
+
+
+# Results
+
+The effect of plant functional group present on diversity.
+
+```{r}
+#| label: fig-biodiversity
+#| echo: false
+#| warning: false
+#| fig-cap: Standardized biodiversity in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different biodiversity responses are shown in different colours and the different trophic levels have different symbols.
+
+tar_read(bd_figure)
+
+```
+
+
+
+```{r}
+#| label: fig-function
+#| echo: false
+#| warning: false
+#| fig-cap: Standardized function in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
+
+tar_read(function_figure)
+
+```
+
+
+```{r}
+#| label: fig-multifunctionality
+#| echo: false
+#| warning: false
+#| fig-cap: Average multifuntionality in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functional groups present are shown in different colours.
+
+tar_read(multifunctionality_figure)
+
+```
