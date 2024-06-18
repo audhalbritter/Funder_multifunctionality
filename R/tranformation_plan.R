@@ -134,6 +134,8 @@ transformation_plan <- list(
   tar_target(
     name = microarthropod_density,
     command = microarthropod |>
+      # remove missing data (1 plot, Fau2FB)
+      filter(!is.na(abundance)) |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = sum(abundance)) |>
       mutate(data_type = "function",
