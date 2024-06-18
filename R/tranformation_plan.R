@@ -1,8 +1,6 @@
 # data curation plan
 transformation_plan <- list(
 
-  #### NEED TO CHECK DECOMPOSITION AND ROOT PRODUCTIVITY PLOTID'S SEEM TO BE WRONG. HAVE NOT HAD FUNCABIZATION FUNCTION.
-
   # metadata
   tar_target(
     name = meta,
@@ -73,7 +71,9 @@ transformation_plan <- list(
   # root productivity and traits
   tar_target(
     name = root_productivity,
-    command = root_productivity_raw |>
+    command = root_productivity_raw %>%
+      ### THIS SHOULD BE DONE IN THE FUNDER GITHUB CLEANING CODE!!!
+      funcabization(dat = ., convert_to = "FunCaB") |>
       mutate(year = year(retrieval_date),
              duration = retrieval_date - burial_date) |>
       select(year, siteID:plotID, treatment, value = root_productivity, duration) |>
@@ -83,7 +83,7 @@ transformation_plan <- list(
              unit = "g m-3 y-1")
   ),
 
-  # community
+  # community (remove?)
   tar_target(
     name = community,
     command = community_raw |>
@@ -93,22 +93,7 @@ transformation_plan <- list(
 
   ),
 
-  # cover
-  tar_target(
-    name = plant_litter,
-    command = community |>
-      select(year:treatment, value = litter) |>
-      distinct() |>
-      # replace NA with 0
-      mutate(value = if_else(is.na(value), 0, value)) |>
-      mutate(data_type = "function",
-             group = "primary producers",
-             response = "litter cover",
-             unit = "%")
-
-  ),
-
-  # cover
+  # cover (remove?)
   tar_target(
     name = plant_richness,
     command = community |>
@@ -120,6 +105,21 @@ transformation_plan <- list(
              group = "primary producers",
              response = if_else(functional_group == "forb", "forb richness", "graminoid richness"),
              unit = "count")
+
+  ),
+
+  # plant litter (remove?)
+  tar_target(
+    name = plant_litter,
+    command = community |>
+      select(year:treatment, value = litter) |>
+      distinct() |>
+      # replace NA with 0
+      mutate(value = if_else(is.na(value), 0, value)) |>
+      mutate(data_type = "function",
+             group = "primary producers",
+             response = "litter cover",
+             unit = "%")
 
   ),
 
@@ -224,42 +224,51 @@ transformation_plan <- list(
   ),
 
   # cflux
+  # prep data
   tar_target(
-    name = gpp,
+    name = cflux,
     command = cflux_raw |>
       filter(year == 2017) |>
       filter(!treatment %in% c("RTC", "XC")) |>
-      # Negative NEE values reflect CO2 uptake in the ecosystem, and positive values reflect CO2 release from the ecosystem to the atmosphere -> needs to be converted to + ecosystem uptake and - is release to atmosphere
-      #mutate(nee = -1*nee) |>
+      mutate(data_type = "function",
+             group = "carbon cycling",
+             unit = "µmol m−2 s−1")
+    # Negative NEE values reflect CO2 uptake in the ecosystem, and positive values reflect CO2 release from the ecosystem to the atmosphere -> needs to be converted to + ecosystem uptake and - is release to atmosphere
+  ),
+
+  # gpp
+  tar_target(
+    name = gpp,
+    command = cflux |>
       mutate(gpp = -1*gpp) |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = mean(gpp),
-                # can also be added
-                #gpp = mean(gpp),
-                #Reco = mean(Reco),
                 .groups = "drop") |>
-      mutate(data_type = "function",
-             group = "carbon cycling",
-             response = "gpp",
-             unit = "µmol m−2 s−1")
+      mutate(response = "gpp")
   ),
 
+  # nee
+  tar_target(
+    name = nee,
+    command = cflux |>
+      # transform data to not have negative values
+      ### IS THIS CORRECT OR SHOULD WE USE SCALE? !!!!
+      mutate(nee = nee + 15) |>
+      group_by(year, siteID, blockID, plotID, treatment) |>
+      summarise(value = mean(nee),
+                .groups = "drop") |>
+      mutate(response = "nee")
+  ),
+
+
+  # reco
   tar_target(
     name = reco,
-    command = cflux_raw |>
-      filter(year == 2017) |>
-      filter(!treatment %in% c("RTC", "XC")) |>
-      # Negative NEE values reflect CO2 uptake in the ecosystem, and positive values reflect CO2 release from the ecosystem to the atmosphere -> needs to be converted to + ecosystem uptake and - is release to atmosphere
+    command = cflux |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = mean(Reco),
-                # can also be added
-                #gpp = mean(gpp),
-                #Reco = mean(Reco),
                 .groups = "drop") |>
-      mutate(data_type = "function",
-             group = "carbon cycling",
-             response = "Reco",
-             unit = "µmol m−2 s−1")
+      mutate(response = "Reco")
   )
 
 )
