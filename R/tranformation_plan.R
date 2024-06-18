@@ -73,6 +73,8 @@ transformation_plan <- list(
     name = root_productivity,
     command = root_productivity_raw %>%
       ### THIS SHOULD BE DONE IN THE FUNDER GITHUB CLEANING CODE!!!
+      # fix typo, should also be fixed in the cleanin code of Funder
+      mutate(treatment = if_else(plotID == "Gud2GB", "GB", treatment)) %>%
       funcabization(dat = ., convert_to = "FunCaB") |>
       mutate(year = year(retrieval_date),
              duration = retrieval_date - burial_date) |>
@@ -218,7 +220,10 @@ transformation_plan <- list(
              response = case_when(elements %in% c("NH4-N", "NO3-N") ~ "nitrogen",
                                   elements == "P" ~ "phosphate"),
              unit = "micro grams/10cm2/35 days") |>
-      select(- elements, -burial_length, -detection_limit, -burial_date, -retrieval_date, -notes)
+      ### CAN WE AVERAGE NO-3 AND NH4+???
+      group_by(siteID, blockID, treatment, plotID, data_type, group, response) |>
+      summarise(value = mean(value))
+      #select(- elements, -burial_length, -detection_limit, -burial_date, -retrieval_date, -notes)
   ),
 
   # make ordination for other available nutrients
