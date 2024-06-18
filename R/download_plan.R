@@ -2,7 +2,7 @@
 download_plan <- list(
 
   # plant data
-  # biomass
+  # biomass 2015 - 2021
   tar_target(
     name = biomass_download2,
     command =  get_file(node = "4c5v2",
@@ -12,6 +12,7 @@ download_plan <- list(
   format = "file"
   ),
 
+  # biomass 2022
   tar_target(
     name = biomass_download,
     command =  get_file(node = "tx9r2",
