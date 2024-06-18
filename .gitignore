@@ -48,8 +48,6 @@ vignettes/*.pdf
 *.pdf
 *.rds
 data/*
-trackdown/*
-Manuscript/google.R
 
 # output files
 *.docx
@@ -59,7 +57,7 @@ Manuscript/google.R
 *.png
 *.ai
 
-# markdown
+# quarto
 *.html
 *.log
 *.md
