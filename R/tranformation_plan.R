@@ -83,7 +83,7 @@ transformation_plan <- list(
              unit = "g m-3 y-1")
   ),
 
-  # community (remove?)
+  # community
   tar_target(
     name = community,
     command = community_raw |>
@@ -205,22 +205,38 @@ transformation_plan <- list(
   ),
 
   # available nutrients
+  # nitrogen and phosphorus
   tar_target(
-    name = available_nutrients,
+    name = available_np,
     command = available_nutrients_raw |>
-      mutate(year = 2021) |>
-      filter(elements %in% c("NH4-N", "NO3-N", "P", "K", "Mg", "Ca")) |>
+      mutate(year = year(retrieval_date)) |>
+      filter(elements %in% c("NH4-N", "NO3-N", "P")) |>
       mutate(data_type = "function",
              group = "nutrient cycling",
-             response = case_when(elements == "NH4-N" ~ "ammonium",
-                                  elements == "NO3-N" ~ "nitrate",
-                                  elements == "P" ~ "phosphate",
-                                  elements == "Mg" ~ "magnesium",
-                                  elements == "K" ~ "potassium",
-                                  elements == "Ca" ~ "calcium"),
+             response = case_when(elements %in% c("NH4-N", "NO3-N") ~ "nitrogen",
+                                  elements == "P" ~ "phosphate"),
              unit = "micro grams/10cm2/35 days") |>
-      filter(response %in% c("nitrate", "ammonium", "phosphate")) |>
       select(- elements, -burial_length, -detection_limit, -burial_date, -retrieval_date, -notes)
+  ),
+
+  # make ordination for other available nutrients
+  tar_target(
+    name = other_available_nutrients,
+    command = make_nutrient_pca(available_nutrients_raw, meta)
+  ),
+
+  # make ordination for other available nutrients
+  tar_target(
+    name = available_nutrients,
+    command = bind_rows(
+      available_np,
+      other_available_nutrients[[1]] |>
+        mutate(data_type = "function",
+               group = "nutrient cycling",
+               response = "micro nutrients",
+               unit = NA) |>
+        select(siteID:year, value = PC1, data_type:unit)
+    )
   ),
 
   # cflux
@@ -241,7 +257,7 @@ transformation_plan <- list(
     name = gpp,
     command = cflux |>
       mutate(gpp = -1*gpp) |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
+      group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(value = mean(gpp),
                 .groups = "drop") |>
       mutate(response = "gpp")
@@ -254,7 +270,7 @@ transformation_plan <- list(
       # transform data to not have negative values
       ### IS THIS CORRECT OR SHOULD WE USE SCALE? !!!!
       mutate(nee = nee + 15) |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
+      group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(value = mean(nee),
                 .groups = "drop") |>
       mutate(response = "nee")
@@ -265,7 +281,7 @@ transformation_plan <- list(
   tar_target(
     name = reco,
     command = cflux |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
+      group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(value = mean(Reco),
                 .groups = "drop") |>
       mutate(response = "Reco")
