@@ -44,30 +44,28 @@ download_plan <- list(
   # mesofauna
   tar_target(
     name = microarthropod_download,
-    command =  get_file(node = "tx9r2",
+    command = get_file(node = "tx9r2",
                         file = "FUNDER_clean_microarthropod_composition_2022.csv",
                         path = "data",
-                        remote_path = "2_Mesofauna/Clean_data"),
+                        remote_path = "2_Micro_and_Mesofauna/Clean_data"),
     format = "file"
   ),
 
   # nematodes
-  # tar_target(
-  #     name = nematode_download,
-  #     command =  get_file(node = "tx9r2",
-  #                         file = "FUNDER_clean_nematode_composition_2022.csv
-  #
-  # ",
-  #                         path = "data",
-  #                         remote_path = "2_Mesofauna/Clean_data"),
-  #     format = "file"
-  #   ),
+  tar_target(
+    name = nematode_download,
+    command = get_file(node = "tx9r2",
+                        file = "FUNDER_clean_nematode_composition_2022.csv",
+                        path = "data",
+                        remote_path = "2_Micro_and_Mesofauna/Clean_data"),
+    format = "file"
+  ),
 
   # carbon and nutrient stocks and dynamics
   # decomposition
   tar_target(
     name = decomposition_download,
-    command =  get_file(node = "tx9r2",
+    command = get_file(node = "tx9r2",
                         file = "FUNDER_clean_plant_litter_decomposition.csv",
                         path = "data",
                         remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"),
@@ -132,13 +130,13 @@ download_plan <- list(
   # mesofauna
   tar_target(
     name = microarthropod_raw,
-    command =  read_csv("data/FUNDER_clean_microarthropod_composition_2022.csv") |>
+    command =  read_csv(microarthropod_download) |>
       select(everything())
   ),
 
   tar_target(
     name = nematode_raw,
-    command =  read_csv("data/FUNDER_clean_nematode_composition_2022.csv") |>
+    command =  read_csv(nematode_download) |>
       select(everything())
   ),
 
