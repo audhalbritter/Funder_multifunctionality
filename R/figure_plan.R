@@ -2,42 +2,21 @@
 
 figure_plan <- list(
 
-  # biodiversity figure
-  tar_target(
-    name = bd_figure,
-    command = big_data |>
-      filter(!is.na(habitat),
-             data_type == "biodiversity") |>
-      mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-      ggplot(aes(x = fg_richness, y = value_std, colour = response,
-                 shape = trophic_level, linetype = trophic_level)) +
-      geom_point() +
-      geom_smooth(method = "lm", mapping = aes(fill = response)) +
-      scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-      scale_colour_manual(values = c("plum3", "limegreen")) +
-      scale_fill_manual(values = c("plum3", "limegreen")) +
-      labs(x = "Number of functional groups present",
-           y ="Standardized biodiversity") +
-      facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
-  ),
-
   # function figure
   tar_target(
     name = function_figure,
     command = big_data |>
-      filter(!is.na(habitat),
-             data_type == "function") |>
+      filter(!is.na(habitat)) |>
       mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
       ggplot(aes(x = fg_richness, y = value_std, colour = response,
-                 shape = trophic_level, linetype = trophic_level)) +
+                 shape = group, linetype = group)) +
       geom_point() +
       geom_smooth(method = "lm", mapping = aes(fill = response), alpha = 0.15) +
       scale_x_continuous(breaks = c(0, 1, 2, 3)) +
       scale_colour_viridis_d(option = "inferno", end = 0.85) +
       scale_fill_viridis_d(option = "inferno", end = 0.85) +
       labs(x = "Number of functional groups present",
-           y ="Absolute standardized function") +
+           y ="Standardized function") +
       guides(fill = "none") +
       facet_grid(habitat ~ precipitation_name) +
       theme_bw()
@@ -115,6 +94,7 @@ figure_plan <- list(
     command = {
 
         function_table <- big_data %>%
+          ungroup() |>
           filter(!is.na(value)) |>
           pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
           select(biomass:Reco)
@@ -131,3 +111,23 @@ figure_plan <- list(
 
 )
 
+
+# biodiversity figure
+# tar_target(
+#   name = bd_figure,
+#   command = big_data |>
+#     filter(!is.na(habitat),
+#            data_type == "biodiversity") |>
+#     mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
+#     ggplot(aes(x = fg_richness, y = value_std, colour = response,
+#                shape = trophic_level, linetype = trophic_level)) +
+#     geom_point() +
+#     geom_smooth(method = "lm", mapping = aes(fill = response)) +
+#     scale_x_continuous(breaks = c(0, 1, 2, 3)) +
+#     scale_colour_manual(values = c("plum3", "limegreen")) +
+#     scale_fill_manual(values = c("plum3", "limegreen")) +
+#     labs(x = "Number of functional groups present",
+#          y ="Standardized biodiversity") +
+#     facet_grid(habitat ~ precipitation_name) +
+#     theme_bw()
+# ),
