@@ -6,4 +6,3 @@ tar_load_everything()
 # targets::tar_make_future(workers = 2) # nolint
 
 
-library(dataDownloader)
