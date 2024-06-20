@@ -1,5 +1,7 @@
 ---
-format: html
+format: 
+  html:
+    self-contained: true
 title: Plant functional group affect on multifunctionality
 execute:
   echo: false
@@ -66,23 +68,32 @@ Further, (ii) the decrease in multifunctionality is context dependent.
 
 \[Describe the removal experiment\] For more details see (Vandvik et al. 2022).
 
-![Study area, site selection, experimental design, and field sampling overview for the FunCaB plant functional group experiment. (a) Location of the study area and the 12 study sites in Vestland county, Western Norway. (b) The Vestland Climate Grid is established across independent broad-scale biogeographic gradients in summer temperature (mean of four warmest months, °C), and annual precipitation (mean annual precipitation, mm). Temperature levels are given as boreal, sub-alpine, and alpine; precipitation levels range from 1 (dry) to 4 (wet). (c) Experimental design, with the timeline (species composition recordings \[dataset v\], seedling recruitment monitoring \[vi\], ecosystem carbon flux monitoring \[vii\], and functional group removals \[i\] indicated, see legend for dataset symbols, for other datasets see text), an overview of the eight factorial removal treatments, and plot layout with subplots used for the community and seedling recording. The removal treatments are described by the functional groups removed from the respective plots, note that in the figure the \'Intact\' plot refers to the no removal controls whereas the \'Gap\' are plots with all functional groups removed. For detailed description of treatments and their abbreviations as used in the datasets, see text.](funcab.png)
+![Study area, site selection, experimental design, and field sampling overview for the FunCaB plant functional group experiment. (a) Location of the study area and the 12 study sites in Vestland county, Western Norway. (b) The Vestland Climate Grid is established across independent broad-scale biogeographic gradients in summer temperature (mean of four warmest months, °C), and annual precipitation (mean annual precipitation, mm). Temperature levels are given as boreal, sub-alpine, and alpine; precipitation levels range from 1 (dry) to 4 (wet). (c) Experimental design, with the timeline (species composition recordings \[dataset v\], seedling recruitment monitoring \[vi\], ecosystem carbon flux monitoring \[vii\], and functional group removals \[i\] indicated, see legend for dataset symbols, for other datasets see text), an overview of the eight factorial removal treatments, and plot layout with subplots used for the community and seedling recording. The removal treatments are described by the functional groups removed from the respective plots, note that in the figure the 'Intact' plot refers to the no removal controls whereas the 'Gap' are plots with all functional groups removed. For detailed description of treatments and their abbreviations as used in the datasets, see text.](funcab.png)
 
 ### Data collection
 
 \[Describe the data collection for each function\]
 
-| Organisms, level                           | Ecosystem functions                                          |
+| Grouping             | Ecosystem function                                  |
 |------------------------------|------------------------------------------|
-| Vascular plants                            | diversity, traits, biomass, GPP                              |
-| Bryophytes                                 | diversity, traits, biomass                                   |
-| Mesofauna (nematodes, mites and collembola) | functional group diversity, biomass                          |
-| Fungi                                      | functional group diversity, biomass                          |
-| bacteria                                   | functional group diversity, biomass                          |
-|                                            |                                                              |
-| Carbon cycling                            | Decomposition, Reco, GPP                                                       |
-| Nutrient cycling                                       | CNP stocks, decomposition, available nutrients               |
-| Climate                                    | Microclimate data (temperature, precipitation, soi moisture) |
+| Primary producers    | Aboveground biomass                                 |
+|                      | Belowground production (maybe biomass, or turnover) |
+|                      | Reproduction (proportion flowering)                 |
+|                      | Resistance to invasion (seedling recruitment)       |
+| Higher trophic level | Mesofauna (nematode density)                        |
+|                      | Mesofauna (mites and collembola density)            |
+|                      | Fungi density/diversity                             |
+|                      | Bacteria density/diversity                          |
+| Carbon cycling       | Decomposition of graminoid litter                   |
+|                      | C stock                                             |
+|                      | Soil organic matter                                 |
+|                      | NPP                                                 |
+|                      | GPP                                                 |
+| Nutrient cycling     | N stock                                             |
+|                      | P stocks                                            |
+|                      | available nitrogen (ammonium and nitrate)           |
+|                      | available phosphate                                 |
+|                      | other available nutrients                           |
 
 ### Multifunctionality approach
 
@@ -99,7 +110,6 @@ Calculations are based on Fanin et al. 2018.
 -   Do functions need to be weighed?
     No weighing needed, because no function is more desired or has higher value.
 
-
 -   Merge all data to one dataset
 
 -   **Standardized all functions** between 0 and 1 to remove differences in measurement scale between the variables.
@@ -110,53 +120,12 @@ Calculations are based on Fanin et al. 2018.
 -   Outlier labeling method?
     (We tackled the outlier issue by removing extreme values following the outlier labelling rule with a tuning parameter^[64](https://www.nature.com/articles/s41559-017-0415-0#ref-CR63 "Maestre, F. T., Castillo‐Monroy, A. P., Bowker, M. A. & Ochoa‐Hueso, R. Species richness effects on ecosystem multifunctionality depend on evenness, composition and spatial pattern. J. Ecol. 100, 317–330 (2012).")^ of *g* = 2.)
 
--   **Average multifunctionality** was then calculated as the mean of standardized values across all individual functions $MF_a = \frac{1}{F}  \sum_{i=1}^{F} g(r_i(f_i))$
+-   **Average multifunctionality** was then calculated as the mean of standardized values across all individual functions $MF_a = \frac{1}{F} \sum_{i=1}^{F} g(r_i(f_i))$
 
 -   Threshold-based approaches is appropriate as long as each cluster is weighted equally in the EF-multifunctionality measure, irrespective of the number of functions within each cluster.
     Prevent the overrepresentation of many similar functions
 
 \
-
-### Normalize data
-```{r}
-
-big_data_raw |>
-  filter(data_type == "function") |>
-  mutate(value_trans = if_else(response %in% c("ammonium", "microarthropod density", "nitrate", "phosphate"), log(value), value)) |>
-  ggplot(aes(x = value)) +
-  geom_histogram() +
-  labs(x = "raw value") +
-  facet_wrap(~ response, scales = "free")
-
-```
-
-
-```{r}
-
-big_data_raw |>
-  filter(data_type == "function") |>
-  mutate(value_trans = if_else(response %in% c("ammonium", "microarthropod density", "nitrate", "phosphate"), log(value), value)) |>
-  ggplot(aes(x = value_trans)) +
-  geom_histogram() +
-  labs(x = "transformed value") +
-  facet_wrap(~ response, scales = "free")
-
-```
-
-
-### Standardize data
-
-```{r}
-
-big_data |>
-  ggplot(aes(x = value_std)) +
-  geom_histogram() +
-  labs(x = "standardized value") +
-  facet_wrap(~ response, scales = "free")
-
-```
-
-
 
 ### Data analysis
 
@@ -168,7 +137,7 @@ lmer(average multifunctionality \~ nr of functional group x temperature x precip
 
 ### Standardized functioning
 
-The effect of plant functional groups, summer T and annual precipitation on standardized functions.
+The effect of plant functional group removal, summer temperature and annual precipitation on single ecosystem functions.
 
 ```{r}
 #| label: fig-function
@@ -180,186 +149,44 @@ tar_read(function_figure)
 
 ```
 
-
 ```{r}
-#| label: model-response
+#| label: tbl-model-response
 #| echo: false
 #| warning: false
+#| tbl-cap: Model output from testing effect of number of functional groups present, summer temperature and annual precipitation on ecosystem functions.
 
-model_response <- big_data |>
-      group_by(response) |>
-      nest() |>
-      mutate(model = map(data, ~lmerTest::lmer(data = ., value_std ~ fg_richness * temperature_degree_std * precipitation_mm_std + (1|siteID))),
-             result = map(model, tidy))
-
-
-model_response_out <- model_response |>
-      unnest(result) |>
-      filter(effect == "fixed") |>
-      select(-data, -model, -group, -effect) |>
-      mutate(term = case_match(term,
-                               "(Intercept)" ~ "Intercept",
-                               "fg_richness" ~ "FG",
-                               "temperature_degree_std" ~ "T",
-                               "precipitation_mm_std" ~ "P",
-                               "fg_richness:temperature_degree_std" ~ "FG:T",
-                               "fg_richness:precipitation_mm_std" ~ "FG:P",
-                               "temperature_degree_std:precipitation_mm_std" ~ "T:P",
-                               "fg_richness:temperature_degree_std:precipitation_mm_std" ~ "FG:T:P"))
-
-model_response_out |> 
- mutate(estimate = round(estimate, 2),
-        std.error = round(std.error, 2),
-        statistic = round(statistic, 2),
-        df = round(df, 2),
-        p.value = round(p.value, 3),
-        p.value = if_else(p.value < 0.001, "<0.001", as.character(p.value))) |> 
-  gt() |> 
-    tab_style(
-      style = list(
-        cell_text(weight = "bold")
-      ),
-      locations = cells_body(
-        columns = c(term, estimate, std.error, statistic, df, p.value),
-        rows = `p.value` <= 0.05
-      )
-    )
+tar_read(model_response_nr_out)
     
 
-
 ```
-
-
-Analysis for the four groups: primary produces, higher tropic level, c and nutrients cylcing.
-
-```{r}
-#| label: model-group
-#| echo: false
-#| warning: false
-#| 
-model_group <- big_data |>
-  rename(level = group) |> 
-      group_by(level) |>
-      nest() |>
-      mutate(model = map(data, ~lmerTest::lmer(data = ., value_std ~ fg_richness * temperature_degree_std * precipitation_mm_std + (1|siteID))),
-             result = map(model, tidy))
-
-
-model_group_out <- model_group |>
-      unnest(result) |>
-      filter(effect == "fixed") |>
-      select(-data, -model, -group, -effect) |>
-      mutate(term = case_match(term,
-                               "(Intercept)" ~ "Intercept",
-                               "fg_richness" ~ "FG",
-                               "temperature_degree_std" ~ "T",
-                               "precipitation_mm_std" ~ "P",
-                               "fg_richness:temperature_degree_std" ~ "FG:T",
-                               "fg_richness:precipitation_mm_std" ~ "FG:P",
-                               "temperature_degree_std:precipitation_mm_std" ~ "T:P",
-                               "fg_richness:temperature_degree_std:precipitation_mm_std" ~ "FG:T:P"))
-
-model_group_out |> 
- mutate(estimate = round(estimate, 2),
-        std.error = round(std.error, 2),
-        statistic = round(statistic, 2),
-        df = round(df, 2),
-        p.value = round(p.value, 3),
-        p.value = if_else(p.value < 0.001, "<0.001", as.character(p.value))) |> 
-  gt() |> 
-    tab_style(
-      style = list(
-        cell_text(weight = "bold")
-      ),
-      locations = cells_body(
-        columns = c(term, estimate, std.error, statistic, df, p.value),
-        rows = `p.value` <= 0.05
-      )
-    )
-
-```
-
-
-
-
 
 
 ### Average multifunctionality
+
+The number of functional groups present and temperature both increased average multifunctionality.
 
 ```{r}
 #| label: fig-multifunctionality
 #| echo: false
 #| warning: false
-#| fig-cap: Average multifuntionality in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats.
+#| fig-cap: Average multifuntionality in response to number of functional groups present and summer temperature (habitat). The colours represent the different habitats. The points are the raw data and the lines represent the predictions from the model (not that the line is a simple lm model for now!).
 
-multifunctionality <- big_data |>
-      # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "decomposition graminoids", "root productivity")) |>
-      group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, temperature_degree_std, precipitation_mm, precipitation_mm_std, precipitation_name, data_type, group, fg_richness, fg_remaining) |>
-      summarise(multifuntionality = mean(value_std, na.rm = TRUE),
-                se = sd(value, na.rm = TRUE)/sqrt(n()))
-
-multifunctionality |>
-      filter(!is.na(habitat),
-             data_type == "function") |>
-      mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-      ggplot(aes(x = fg_richness, y = multifuntionality)) +
-  geom_smooth(method = "lm", alpha = 0.15) +
-      geom_point() +
-      labs(x = "Number of functional groups present",
-           y ="Average multifunctionality") +
-      facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
+tar_read(multifunctionality_figure)
 
 ```
-
 
 ```{r}
-#| label: model-multi
+#| label: tbl-model-multi
 #| echo: false
 #| warning: false
+#| tbl-cap: Model output from testing effect of number of functional groups present, summer temperature and annual precipitation on multifunctionality.
 
-
-model_multi <- multifunctionality |>
-      group_by() |>
-      nest() |>
-      mutate(model = map(data, ~lmerTest::lmer(data = ., multifuntionality ~ fg_richness * temperature_degree_std * precipitation_mm_std + (1|siteID))),
-             result = map(model, tidy))
-
-
-model_multi_out <- model_multi |>
-      unnest(result) |>
-      filter(effect == "fixed") |>
-      select(-data, -model, -group, -effect) |>
-      mutate(term = case_match(term,
-                               "(Intercept)" ~ "Intercept",
-                               "fg_richness" ~ "FG",
-                               "temperature_degree_std" ~ "T",
-                               "precipitation_mm_std" ~ "P",
-                               "fg_richness:temperature_degree_std" ~ "FG:T",
-                               "fg_richness:precipitation_mm_std" ~ "FG:P",
-                               "temperature_degree_std:precipitation_mm_std" ~ "T:P",
-                               "fg_richness:temperature_degree_std:precipitation_mm_std" ~ "FG:T:P"))
-
-model_multi_out |> 
- mutate(estimate = round(estimate, 2),
-        std.error = round(std.error, 2),
-        statistic = round(statistic, 2),
-        df = round(df, 2),
-        p.value = round(p.value, 3),
-        p.value = if_else(p.value < 0.001, "<0.001", as.character(p.value))) |> 
-  gt() |> 
-    tab_style(
-      style = list(
-        cell_text(weight = "bold")
-      ),
-      locations = cells_body(
-        columns = c(term, estimate, std.error, statistic, df, p.value),
-        rows = `p.value` <= 0.05
-      )
-    )
+tar_read(model_multi_nr_out)
 
 ```
+
+The identity of the functional groups removed had an effect on average multifunctionality.
+Multifunctionality was reduced when no plants, only forbs or only bryophytes were present.
 
 
 ```{r}
@@ -368,216 +195,26 @@ model_multi_out |>
 #| warning: false
 #| fig-cap: Average multifuntionality in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functional groups present are shown in different colours.
 
-tar_read(multifunctionality_figure)
+tar_read(multifunctionality_figure2)
 
 ```
 
-
 ```{r}
-#| label: model-multi2
+#| label: tbl-model-multi-trt
 #| echo: false
 #| warning: false
+#| tbl-cap: Model output from testing effect of treatment on multifunctionality.
 
-
-multifunctionality <- big_data |>
-      # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "decomposition graminoids", "root productivity")) |>
-      group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, temperature_degree_std, precipitation_mm, precipitation_mm_std, precipitation_name, data_type, group, fg_richness, fg_remaining) |>
-      summarise(multifuntionality = mean(value_std, na.rm = TRUE),
-                se = sd(value, na.rm = TRUE)/sqrt(n()))
-
-model_multi2 <- multifunctionality |>
-      group_by() |>
-      nest() |>
-      mutate(model = map(data, ~lmerTest::lmer(data = ., multifuntionality ~ treatment + (1|siteID))),
-             result = map(model, tidy))
-
-
-model_multi_out2 <- model_multi2 |>
-      unnest(result) |>
-      filter(effect == "fixed") |>
-      select(-data, -model, -group, -effect)
-
-model_multi_out2 |> 
- mutate(estimate = round(estimate, 2),
-        std.error = round(std.error, 2),
-        statistic = round(statistic, 2),
-        df = round(df, 2),
-        p.value = round(p.value, 3),
-        p.value = if_else(p.value < 0.001, "<0.001", as.character(p.value))) |> 
-  gt() |> 
-    tab_style(
-      style = list(
-        cell_text(weight = "bold")
-      ),
-      locations = cells_body(
-        columns = c(term, estimate, std.error, statistic, df, p.value),
-        rows = `p.value` <= 0.05
-      )
-    )
+tar_read(model_multi_trt_out)
 
 ```
 
-
 ```{r}
-#| label: model-multi3
+#| label: tbl-model-multi-factorial
 #| echo: false
 #| warning: false
+#| tbl-cap: Model output from testing effect of treatment (factorial design), summer temperature and annual precipitation on multifunctionality.
 
-model_multi3 <- multifunctionality |> 
-  mutate(forb = if_else(str_detect(treatment, "F"), 0, 1),
-         gram = if_else(str_detect(treatment, "G"), 0, 1),
-         bryo = if_else(str_detect(treatment, "B"), 0, 1)) |> 
-  filter(treatment != "FGB") |> 
-  group_by() |>
-      nest() |>
-      mutate(model = map(data, ~lmerTest::lmer(data = ., multifuntionality ~ forb * gram * bryo * temperature_degree_std * precipitation_mm_std + (1|siteID))),
-             result = map(model, tidy))
-
-# fit <- lmerTest::lmer(multifuntionality ~ forb * gram * bryo * temperature_degree_std * precipitation_mm_std + (1|siteID), data = model_multi3)
-# summary(fit)
-
-model_multi_out3 <- model_multi3 |>
-      unnest(result) |>
-      filter(effect == "fixed") |>
-      select(-data, -model, -group, -effect)
-
-model_multi_out3 |> 
- mutate(estimate = round(estimate, 2),
-        std.error = round(std.error, 2),
-        statistic = round(statistic, 2),
-        df = round(df, 2),
-        p.value = round(p.value, 3),
-        p.value = if_else(p.value < 0.001, "<0.001", as.character(p.value))) |> 
-  gt() |> 
-    tab_style(
-      style = list(
-        cell_text(weight = "bold")
-      ),
-      locations = cells_body(
-        columns = c(term, estimate, std.error, statistic, df, p.value),
-        rows = `p.value` <= 0.05
-      )
-    )
+tar_read(model_multi_fact_out)
   
 ```
-
-
-### Appendix
-
-
-
-```{r}
-#| label: fig-biodiversity
-#| echo: false
-#| warning: false
-#| fig-cap: Standardized biodiversity in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different biodiversity responses are shown in different colours and the different trophic levels have different symbols.
-
-#tar_read(bd_figure)
-
-```
-
-
-### Primary producers
-
-```{r}
-#| label: fig-primary-producers
-#| echo: false
-#| warning: false
-#| fig-cap: Primary producers
-
-big_data |>
-      filter(!is.na(habitat),
-             group == "primary producers") |>
-      mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-      ggplot(aes(x = fg_richness, y = value_std, colour = response)) +
-      geom_point() +
-      geom_smooth(method = "lm", mapping = aes(fill = response), alpha = 0.15) +
-      scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-      scale_colour_viridis_d(option = "inferno", end = 0.85) +
-      scale_fill_viridis_d(option = "inferno", end = 0.85) +
-      labs(x = "Number of functional groups present",
-           y ="Absolute standardized function") +
-      guides(fill = "none") +
-      facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
-
-```
-
-### Higher trophic level
-
-```{r}
-#| label: fig-higher-trophic-level
-#| echo: false
-#| warning: false
-#| fig-cap: Higher trophic level
-
-big_data |>
-      filter(!is.na(habitat),
-             group == "higher trophic level") |>
-      mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-      ggplot(aes(x = fg_richness, y = value_std, colour = response)) +
-      geom_point() +
-      geom_smooth(method = "lm", mapping = aes(fill = response), alpha = 0.15) +
-      scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-      scale_colour_viridis_d(option = "inferno", end = 0.85) +
-      scale_fill_viridis_d(option = "inferno", end = 0.85) +
-      labs(x = "Number of functional groups present",
-           y ="Absolute standardized function") +
-      guides(fill = "none") +
-      facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
-
-```
-
-
-### Carbon cylcing
-
-```{r}
-#| label: fig-carbon-cycling
-#| echo: false
-#| warning: false
-#| fig-cap: Carbon cycling
-big_data |>
-      filter(!is.na(habitat),
-             group == "carbon cycling") |>
-      mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-      ggplot(aes(x = fg_richness, y = value_std, colour = response)) +
-      geom_point() +
-      geom_smooth(method = "lm", mapping = aes(fill = response), alpha = 0.15) +
-      scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-      scale_colour_viridis_d(option = "inferno", end = 0.85) +
-      scale_fill_viridis_d(option = "inferno", end = 0.85) +
-      labs(x = "Number of functional groups present",
-           y ="Absolute standardized function") +
-      guides(fill = "none") +
-      facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
-
-```
-
-### Nutrient cycling
-
-```{r}
-#| label: fig-nutrients
-#| echo: false
-#| warning: false
-#| fig-cap: Nutrient cycling
-big_data |>
-      filter(!is.na(habitat),
-             group == "nutrient cycling") |>
-      mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-      ggplot(aes(x = fg_richness, y = value_std, colour = response)) +
-      geom_point() +
-      geom_smooth(method = "lm", mapping = aes(fill = response), alpha = 0.15) +
-      scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-      scale_colour_viridis_d(option = "inferno", end = 0.85) +
-      scale_fill_viridis_d(option = "inferno", end = 0.85) +
-      labs(x = "Number of functional groups present",
-           y ="Absolute standardized function") +
-      guides(fill = "none") +
-      facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
-
-```
-
