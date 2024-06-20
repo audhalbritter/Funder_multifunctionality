@@ -200,10 +200,10 @@ transformation_plan <- list(
     name = organic_matter,
     command = loi_raw |>
       mutate(year = 2022) |>
-      filter(variable == "organic_matter") |>
+      #filter(variable == "organic_matter") |>
       mutate(data_type = "function",
              group = "carbon cycling",
-             response = "organic matter",
+             response = if_else(variable == "organic_matter", "organic matter", "inorganic carbon"),
              unit = "%") |>
       select(-variable)
   ),
