@@ -2,7 +2,7 @@
 
 figure_plan <- list(
 
-  # function figure
+  # function figure (spaghetti plot)
   tar_target(
     name = function_figure,
     command = big_data |>
@@ -19,6 +19,25 @@ figure_plan <- list(
            y ="Standardized function") +
       guides(fill = "none") +
       facet_grid(habitat ~ precipitation_name) +
+      theme_bw()
+  ),
+
+  # multifunctionality figure
+  ### For now only showing facet by temp, because precip is not important!!!
+  tar_target(
+    name = multifunctionality_figure,
+    command = multifunctionality |>
+      filter(!is.na(habitat),
+             data_type == "function") |>
+      mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
+      ggplot(aes(x = fg_richness, y = multifuntionality, colour = precipitation_name, fill = precipitation_name)) +
+      geom_jitter(width = 0.1, shape = 1, alpha = 0.7) +
+      geom_smooth(method = "lm", alpha = 0.4) +
+      scale_colour_viridis_d(option = "mako", direction = -1, end = 0.8) +
+      scale_fill_viridis_d(option = "mako", direction = -1, end = 0.8) +
+      labs(x = "Number of functional groups present",
+           y ="Average multifunctionality") +
+      facet_wrap( ~ habitat) +
       theme_bw()
   ),
 
@@ -69,10 +88,9 @@ figure_plan <- list(
 
   ),
 
-
-  # multifunctionality figure
+  # multifunctionality by treatment
   tar_target(
-    name = multifunctionality_figure,
+    name = multifunctionality_figure2,
     command = multifunctionality |>
       filter(!is.na(habitat),
              data_type == "function") |>
@@ -80,54 +98,19 @@ figure_plan <- list(
       ggplot(aes(x = fg_remaining, y = multifuntionality, fill = fg_remaining)) +
       geom_boxplot() +
       scale_fill_manual(values = treatment_patterns) +
-      scale_x_discrete(labels = c(0, "", 1, "", "", 2, "", 3)) +
+      #scale_x_discrete(labels = c(0, "", 1, "", "", 2, "", 3), name = "") +
       #scale_x_discrete(labels = c("A", "B"), breaks = c(1, 3, 6, 8)) +
-      labs(x = "Number of functional groups present",
+      geom_signif(comparisons = list(c("B", "All"),
+                                     c("F", "All"),
+                                     c("None", "All")),
+                  map_signif_level = TRUE,
+                  y_position = c(4.3, 4.6, 4.9)) +
+      labs(x = "Functional groups present",
            y ="Average multifunctionality") +
-      facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
-  ),
-
-  # correlation matrix
-  tar_target(
-    name = correlation_plot,
-    command = {
-
-        function_table <- big_data %>%
-          ungroup() |>
-          filter(!is.na(value)) |>
-          pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-          select(biomass:Reco)
-
-        corr <- round(cor(function_table), 1)
-        p.mat <- cor_pmat(function_table)
-
-        ggcorrplot(corr, hc.order = TRUE, type = "lower",
-                   colors = c("#6D9EC1", "white", "#E46726"),
-                   lab = TRUE)
-
-    }
+      #facet_grid(habitat ~ precipitation_name) +
+      theme_bw() +
+      theme(legend.position = "none")
   )
 
 )
 
-
-# biodiversity figure
-# tar_target(
-#   name = bd_figure,
-#   command = big_data |>
-#     filter(!is.na(habitat),
-#            data_type == "biodiversity") |>
-#     mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-#     ggplot(aes(x = fg_richness, y = value_std, colour = response,
-#                shape = trophic_level, linetype = trophic_level)) +
-#     geom_point() +
-#     geom_smooth(method = "lm", mapping = aes(fill = response)) +
-#     scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-#     scale_colour_manual(values = c("plum3", "limegreen")) +
-#     scale_fill_manual(values = c("plum3", "limegreen")) +
-#     labs(x = "Number of functional groups present",
-#          y ="Standardized biodiversity") +
-#     facet_grid(habitat ~ precipitation_name) +
-#     theme_bw()
-# ),
