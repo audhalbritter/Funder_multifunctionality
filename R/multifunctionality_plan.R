@@ -2,22 +2,29 @@
 
 multifunctionality_plan <- list(
 
-  # merge datasets
+  # merge datasets with different functions
   tar_target(
     name = big_data_raw,
     command = bind_rows(
+      # primary producers
       plant_biomass,
       root_productivity,
-      #plant_richness,
-      #plant_litter,
+
+      # higher trophic levels
       nematode_density,
       microarthropod_density,
+
+      # carbon cycle
       decomposition_forbs,
       decomposition_gram,
       organic_matter,
-      available_nutrients,
       gpp,
-      reco
+      nee,
+      reco,
+
+      # nutrient cycle
+      available_nutrients
+
     ) |>
       # add number of functional groups
       mutate(fg_richness = case_when(treatment == "C" ~ 3,
@@ -28,40 +35,29 @@ multifunctionality_plan <- list(
       left_join(meta, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
-  # transformation: standardize between 0 and 1
+  # transformation: normaliue (log) and standardize between 0 and 1
   tar_target(
     name = big_data,
-    command = {
-
-      big <- big_data_raw |>
+    command = big_data_raw |>
       # normalize data
-      mutate(value_trans = if_else(response %in% c("biomass", "organic matter", "ammonium", "microarthropod density", "nitrate", "phosphate"), log(value), value)) |>
+        ### WARMING WHY???  !!!
+      mutate(value_trans = if_else(response %in% c("biomass", "microarthropod density", "organic matter", "nitrogen", "phosphate"), log(value), value)) |>
       # scale variables between 0 and 1
       group_by(data_type, group, response) |>
-      mutate(value_std = rescale(value_trans),
-             temperature_degree_std = rescale(temperature_degree),
-             precipitation_mm_std = rescale(precipitation_mm))
+      mutate(value_std = scale(value_trans)[, 1]) |>
+      # trasnf
+      mutate(forb = if_else(str_detect(treatment, "F"), 0, 1),
+             gram = if_else(str_detect(treatment, "G"), 0, 1),
+             bryo = if_else(str_detect(treatment, "B"), 0, 1)) |>
+    # make treatment factor and sort
+    mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB", "FGB"))) |>
+      ungroup()
+      #mutate(value_std = rescale(value_trans))
 
-      # temp <- scale(big$temperature_degree) |>
-      #   as.tibble() |>
-      #   rename(temperature_degree_std = V1)
-      #
-      # prec <- scale(big$precipitation_mm) |>
-      #   as.tibble() |>
-      #   rename(precipitation_mm_std = V1)
-      #
-      # big <- big |>
-      #   bind_cols(temp, prec)
-
-
-
-      # get max value for each function
+      # get max value for each function (different approach, remove?)
       ### CHECK IF ALL VALUES ARE POSITIVE -> LARGER VALUES IS MORE FUNCTION
       # mutate(max_value = max(value, na.rm = TRUE), .by = c("data_type", "group", "response")) |>
       # mutate(value_std = abs(value / max_value))
-
-      }
-
 
   ),
 
@@ -70,10 +66,11 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "decomposition graminoids", "root productivity")) |>
-      group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, data_type, group, fg_richness, fg_remaining) |>
+      filter(!response %in% c("decomposition forbs", "Reco")) |>
+      group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, temperature_scaled, precipitation_scaled, data_type, group, fg_richness, fg_remaining, forb, gram, bryo) |>
       summarise(multifuntionality = mean(value_std, na.rm = TRUE),
-                se = sd(value, na.rm = TRUE)/sqrt(n()))
+                se = sd(value_std, na.rm = TRUE)/sqrt(n())) |>
+      ungroup()
 
   )
 )
