@@ -2,6 +2,13 @@
 
 figure_plan <- list(
 
+  # palettes
+  # shape for prec starting with continental - oceanic
+  tar_target(
+    name = prec_shape,
+    command = c(6, 0, 1, 2)
+      ),
+
   # function figure (spaghetti plot)
   tar_target(
     name = function_figure,
@@ -30,11 +37,13 @@ figure_plan <- list(
       filter(!is.na(habitat),
              data_type == "function") |>
       mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-      ggplot(aes(x = fg_richness, y = multifuntionality, colour = precipitation_name, fill = precipitation_name)) +
-      geom_jitter(width = 0.1, shape = 1, alpha = 0.7) +
+      ggplot(aes(x = fg_richness, y = multifuntionality,
+                 colour = precipitation_name, shape = precipitation_name, fill = precipitation_name)) +
+      geom_jitter(width = 0.1, alpha = 0.7) +
       geom_smooth(method = "lm", alpha = 0.4) +
-      scale_colour_viridis_d(option = "mako", direction = -1, end = 0.8) +
-      scale_fill_viridis_d(option = "mako", direction = -1, end = 0.8) +
+      scale_colour_viridis_d(option = "mako", direction = -1, end = 0.7) +
+      scale_shape_manual(values = prec_shape) +
+      scale_fill_viridis_d(option = "mako", direction = -1, end = 0.7) +
       labs(x = "Number of functional groups present",
            y ="Average multifunctionality") +
       facet_wrap( ~ habitat) +
@@ -110,6 +119,19 @@ figure_plan <- list(
       #facet_grid(habitat ~ precipitation_name) +
       theme_bw() +
       theme(legend.position = "none")
+  ),
+
+  ### VARIANCE PARTITIONING ####
+
+  tar_target(
+    name = vp_multifun_figure,
+    command = vp_multifun |>
+      mutate(group = "a") |>
+      ggplot(aes(x = group, y = var_explained, fill = variable)) +
+      geom_col(position="stack") +
+      scale_fill_viridis_d(name = "Variance partitioning") +
+      labs(x = "", y = "Variance explained (%)") +
+      theme_bw()
   )
 
 )
