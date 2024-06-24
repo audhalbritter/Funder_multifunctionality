@@ -22,6 +22,16 @@ download_plan <- list(
     format = "file"
   ),
 
+  # root biomass
+  tar_target(
+    name = root_biomass_download,
+    command =  get_file(node = "tx9r2",
+                        file = "FUNDER_initial_roots_clean_data_2024.csv",
+                        path = "data",
+                        remote_path = "1_Vegetation/Clean_data"),
+    format = "file"
+  ),
+
   # root productivity and traits
   tar_target(
     name = root_productivity_download,
@@ -114,6 +124,12 @@ download_plan <- list(
   tar_target(
     name = biomass_raw,
     command =  read_csv(biomass_download)
+  ),
+
+  # root productivity and traits
+  tar_target(
+    name = root_biomass_raw,
+    command =  read_csv(root_biomass_download)
   ),
 
   # root productivity and traits
