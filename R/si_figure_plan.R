@@ -43,6 +43,32 @@ si_figure_plan <- list(
       theme_bw()
   ),
 
+  # decomposition data
+  tar_target(
+    name = decomposition_data_plot,
+    command = {
+
+      dat <- big_data |>
+        filter(response %in% c("decomposition graminoids", "decomposition forbs"))
+
+      mean <- dat |>
+        group_by(siteID, blockID, plotID, fg_richness, treatment, habitat, precipitation_name) |>
+        summarise(value_std = mean(value_std)) |>
+        mutate(data_type = "function",
+               group = "carbon cycling",
+               response = "decomposition mean")
+
+      bind_rows(dat, mean) |>
+        ggplot(aes(y = value_std, x = fg_richness, colour = response)) +
+        geom_point() +
+        geom_smooth(method = "lm") +
+        labs(y = "Standardized value") +
+        facet_grid(habitat ~ precipitation_name, scales = "free") +
+        theme_bw()
+    }
+
+  ),
+
   # correlation matrix
   tar_target(
     name = correlation_plot,
