@@ -76,6 +76,19 @@ tar_read(root_data_plot)
 ```
 
 
+### decomposition data 
+
+```{r}
+#| label: fig-decomposition-data-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Decomposition data for only graminoids, forbs and their average.
+
+tar_read(decomposition_data_plot)
+
+```
+
+
 ### Plots by group
 
 Analysis by the four groups: primary produces, higher tropic level, c and nutrients cycling.
