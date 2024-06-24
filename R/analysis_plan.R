@@ -72,7 +72,7 @@ analysis_plan <- list(
     name = model_group,
     command = run_models(dat = big_data |>
                            # remove functions where we have many
-                           filter(!response %in% c("decomposition forbs", "Reco")) |>
+                           filter(!response %in% c("decomposition forbs", "Reco", "root productivity", "root turnover")) |>
                            rename(level = group),
                          response_var = value_std,
                          fg_var = fg_richness,
@@ -139,8 +139,7 @@ analysis_plan <- list(
   # run models at multifunctionality level
   tar_target(
     name = model_multifun,
-    command = run_models(dat = multifunctionality |>
-                           mutate(level = "global"),
+    command = run_models(dat = multifunctionality,
                            group = "level",
                             response = multifuntionality,
                             fg_var = fg_richness)
@@ -226,11 +225,31 @@ analysis_plan <- list(
         table_style(., font_size = 11)
 
     }
-  ),
+  )
 
   # check models (turn this off when still playing with models!)
   # tar_quarto(name = model_check,
   #            path = "R/model_checking.qmd")
+
+
+  #### VARIANCE PARTITIONING ####
+
+  # run vp for multifunctionality
+  # tar_target(
+  #   name = vp_multifun,
+  #   command = {
+  #
+  #     fit <- lmer(multifuntionality ~ 1 + fg_richness + temperature_scaled:precipitation_scaled + fg_richness:temperature_scaled:precipitation_scaled + (1|siteID), data = multifunctionality)
+  #
+  #     varpart <- glmm.hp(fit)
+  #
+  #     as_tibble(varpart$hierarchical.partitioning) |>
+  #       mutate(variable = c("Random", "Functional group", "Climate", "Context"),
+  #              variable = factor(variable, levels = c("Context", "Climate", "Functional group", "Random"))) |>
+  #       rename(var_explained = `I.perc(%)`)
+  #
+  #   }
+  # )
 
 )
 

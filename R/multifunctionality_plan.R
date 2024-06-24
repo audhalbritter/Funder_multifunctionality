@@ -8,7 +8,9 @@ multifunctionality_plan <- list(
     command = bind_rows(
       # primary producers
       plant_biomass,
+      root_biomass,
       root_productivity,
+      root_turnover,
 
       # higher trophic levels
       nematode_density,
@@ -40,8 +42,8 @@ multifunctionality_plan <- list(
     name = big_data,
     command = big_data_raw |>
       # normalize data
-        ### WARMING WHY???  !!!
-      mutate(value_trans = if_else(response %in% c("biomass", "microarthropod density", "organic matter", "nitrogen", "phosphate"), log(value), value)) |>
+        ### WARNING WHY???  !!!
+      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "root turnover", "microarthropod density", "organic matter", "nitrogen", "phosphate"), log(value), value)) |>
       # scale variables between 0 and 1
       group_by(data_type, group, response) |>
       mutate(value_std = scale(value_trans)[, 1]) |>
@@ -66,10 +68,12 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "Reco")) |>
+      filter(!response %in% c("decomposition forbs", "Reco", "root productivity", "root turnover")) |>
       group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, temperature_scaled, precipitation_scaled, data_type, group, fg_richness, fg_remaining, forb, gram, bryo) |>
       summarise(multifuntionality = mean(value_std, na.rm = TRUE),
                 se = sd(value_std, na.rm = TRUE)/sqrt(n())) |>
+      # global level (useful for group_by map)
+      mutate(level = "global") |>
       ungroup()
 
   )

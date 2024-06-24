@@ -12,8 +12,8 @@ si_figure_plan <- list(
   tar_target(
     name = normalize_functions_plot,
     command = big_data_raw |>
-      # log transform some functions (carefull this code is duplicated, also in mf plan)
-      mutate(value_trans = if_else(response %in% c("biomass", "organic matter", "microarthropod density", "nitrogen", "phosphate"), log(value), value)) |>
+      # log transform some functions (careful this code is duplicated, also in mf plan)
+      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "root turnover", "organic matter", "microarthropod density", "nitrogen", "phosphate"), log(value), value)) |>
       ggplot(aes(x = value_trans)) +
       geom_histogram() +
       labs(x = "Normalized functions") +
@@ -30,16 +30,29 @@ si_figure_plan <- list(
       facet_wrap(~ response, scales = "free")
   ),
 
+  # root data
+  tar_target(
+    name = root_data_plot,
+    command = big_data |>
+      filter(response %in% c("root biomass", "root productivity", "root turnover")) |>
+      ggplot(aes(y = value_std, x = fg_richness, colour = response)) +
+      geom_point() +
+      geom_smooth(method = "lm") +
+      labs(y = "Standardized value") +
+      facet_grid(habitat ~ precipitation_name, scales = "free") +
+      theme_bw()
+  ),
+
   # correlation matrix
   tar_target(
     name = correlation_plot,
     command = {
 
-      function_table <- big_data %>%
+      function_table <- big_data |>
         ungroup() |>
         select(-year, -value_trans, -value_std, -unit, -duration, -litter_type, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -data_type, -group) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-        select(`root productivity`:`micro nutrients`)
+        select(`biomass`:`micro nutrients`)
 
       corr <- round(cor(function_table), 1)
       p.mat <- cor_pmat(function_table)

@@ -69,6 +69,21 @@ transformation_plan <- list(
   ),
 
   # root productivity and traits
+  # Ram2 GB is missing (5GB)
+  tar_target(
+    name = root_biomass,
+    command = root_biomass_raw %>%
+      ### THIS SHOULD BE DONE IN THE FUNDER GITHUB CLEANING CODE!!!
+      funcabization(dat = ., convert_to = "FunCaB") |>
+      mutate(year = 2023) |>
+      select(year, siteID, blockID, plotID, treatment, value = dry_root_biomass) |>
+      mutate(data_type = "function",
+             group = "primary producers",
+             response = "root biomass",
+             unit = "g m-3")
+  ),
+
+  # root productivity and traits
   tar_target(
     name = root_productivity,
     command = root_productivity_raw %>%
@@ -83,6 +98,23 @@ transformation_plan <- list(
              group = "primary producers",
              response = "root productivity",
              unit = "g m-3 y-1")
+  ),
+
+  # root turnover (production / biomass) from 5 treatments
+  tar_target(
+    name = root_turnover,
+    command = root_productivity |>
+      rename(productivity = value) |>
+      select(-response, -unit, -year, -duration) |>
+      left_join(root_biomass |>
+                  rename(biomass = value) |>
+                  select(-response, -unit, -year)) |>
+      mutate(value = productivity / biomass,
+             response = "root turnover",
+             unit = "y-1") |>
+      filter(!is.na(value)) |>
+      select(-productivity, -biomass)
+
   ),
 
   # community
