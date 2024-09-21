@@ -32,4 +32,25 @@ run_models <- function(dat, response_var, fg_var, group){
 }
 
 
+# make prediction for functional group analysis
+lmer_prediction <- function(dat, fit){
+
+  newdat <- dat %>%
+    select(.response, .functional_group, temperature_scaled, precipitation_scaled)
+
+  newdat$fitted <- predict(fit, newdat, re.form = NA)
+
+  mm <- model.matrix(terms(fit), newdat)
+
+  prediction <- newdat %>%
+    mutate(pvar1 = diag(mm %*% tcrossprod(vcov(fit), mm)),
+           tvar1 = pvar1 + VarCorr(fit)$siteID[1],  ## must be adapted for more complex models
+           cmult = 1.96) %>%
+    mutate(plo = fitted - cmult*sqrt(pvar1),
+           phi = fitted + cmult*sqrt(pvar1),
+           tlo = fitted - cmult*sqrt(tvar1),
+           thi = fitted + cmult*sqrt(tvar1))
+
+  return(prediction)
+}
 
