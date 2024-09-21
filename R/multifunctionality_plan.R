@@ -68,7 +68,7 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "Reco", "root productivity", "root turnover")) |>
+      filter(!response %in% c("decomposition forbs", "nee", "root productivity", "root turnover")) |>
       group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, temperature_scaled, precipitation_scaled, data_type, group, fg_richness, fg_remaining, forb, gram, bryo) |>
       summarise(multifuntionality = mean(value_std, na.rm = TRUE),
                 se = sd(value_std, na.rm = TRUE)/sqrt(n())) |>
