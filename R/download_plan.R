@@ -49,10 +49,10 @@ download_plan <- list(
   tar_target(
     name = community_download,
     command = get_file(
-      node = "4c5v2",
+      node = "tx9r2",
       file = "FUNDER_clean_community_2015-2022.csv",
       path = here::here("data"),
-      remote_path = "3_Plant_composition/Clean_data"
+      remote_path = "1_Vegetation/Clean_data"
     ),
     format = "file"
   ),
