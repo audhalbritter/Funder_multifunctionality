@@ -1,0 +1,1075 @@
+year,sampling_date,siteID,blockID,treatment,plotID,extraction_height,extraction_round,microarthropods,functional_group,abundance,observer,comments
+2022,2022-08-25,Fauske,Fau1,GF,Fau1GF,NA,1,mite,fungivorous,3,V,NA
+2022,2022-08-25,Fauske,Fau1,GF,Fau1GF,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-25,Fauske,Fau1,GF,Fau1GF,NA,1,mite,predaceous,4,V,NA
+2022,2022-08-25,Fauske,Fau1,GF,Fau1GF,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-25,Fauske,Fau1,GF,Fau1GF,NA,1,collembola,fungivorous,2,V,NA
+2022,2022-08-25,Fauske,Fau1,GF,Fau1GF,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau1,FB,Fau1FB,NA,1,mite,fungivorous,0,M,regular bulb
+2022,2022-08-25,Fauske,Fau1,FB,Fau1FB,NA,1,mite,nematophagous,0,M,regular bulb
+2022,2022-08-25,Fauske,Fau1,FB,Fau1FB,NA,1,mite,predaceous,5,M,regular bulb
+2022,2022-08-25,Fauske,Fau1,FB,Fau1FB,NA,1,mite,unknownjuvenile,0,M,regular bulb
+2022,2022-08-25,Fauske,Fau1,FB,Fau1FB,NA,1,collembola,fungivorous,1,M,regular bulb
+2022,2022-08-25,Fauske,Fau1,FB,Fau1FB,NA,1,collembola,predaceous,0,M,regular bulb
+2022,2022-08-25,Fauske,Fau1,GB,Fau1GB,NA,1,mite,fungivorous,11,M,NA
+2022,2022-08-25,Fauske,Fau1,GB,Fau1GB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-25,Fauske,Fau1,GB,Fau1GB,NA,1,mite,predaceous,6,M,NA
+2022,2022-08-25,Fauske,Fau1,GB,Fau1GB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-25,Fauske,Fau1,GB,Fau1GB,NA,1,collembola,fungivorous,0,M,NA
+2022,2022-08-25,Fauske,Fau1,GB,Fau1GB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-25,Fauske,Fau1,FGB,Fau1FGB,NA,1,mite,fungivorous,1,M,NA
+2022,2022-08-25,Fauske,Fau1,FGB,Fau1FGB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-25,Fauske,Fau1,FGB,Fau1FGB,NA,1,mite,predaceous,0,M,NA
+2022,2022-08-25,Fauske,Fau1,FGB,Fau1FGB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-25,Fauske,Fau1,FGB,Fau1FGB,NA,1,collembola,fungivorous,0,M,NA
+2022,2022-08-25,Fauske,Fau1,FGB,Fau1FGB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-25,Fauske,Fau1,C,Fau1C,NA,1,mite,fungivorous,3,V,NA
+2022,2022-08-25,Fauske,Fau1,C,Fau1C,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-25,Fauske,Fau1,C,Fau1C,NA,1,mite,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau1,C,Fau1C,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-25,Fauske,Fau1,C,Fau1C,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-25,Fauske,Fau1,C,Fau1C,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau2,GF,Fau2GF,NA,1,mite,fungivorous,12,M,NA
+2022,2022-08-25,Fauske,Fau2,GF,Fau2GF,NA,1,mite,nematophagous,19,M,NA
+2022,2022-08-25,Fauske,Fau2,GF,Fau2GF,NA,1,mite,predaceous,54,M,NA
+2022,2022-08-25,Fauske,Fau2,GF,Fau2GF,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-25,Fauske,Fau2,GF,Fau2GF,NA,1,collembola,fungivorous,5,M,NA
+2022,2022-08-25,Fauske,Fau2,GF,Fau2GF,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-25,Fauske,Fau2,FB,Fau2FB,high,2,mite,fungivorous,NA,M,Too much soil impossible to see through
+2022,2022-08-25,Fauske,Fau2,FB,Fau2FB,high,2,mite,nematophagous,NA,M,Too much soil impossible to see through
+2022,2022-08-25,Fauske,Fau2,FB,Fau2FB,high,2,mite,predaceous,NA,M,Too much soil impossible to see through
+2022,2022-08-25,Fauske,Fau2,FB,Fau2FB,high,2,mite,unknownjuvenile,NA,M,Too much soil impossible to see through
+2022,2022-08-25,Fauske,Fau2,FB,Fau2FB,high,2,collembola,fungivorous,NA,M,Too much soil impossible to see through
+2022,2022-08-25,Fauske,Fau2,FB,Fau2FB,high,2,collembola,predaceous,NA,M,Too much soil impossible to see through
+2022,2022-08-25,Fauske,Fau2,FGB,Fau2FGB,NA,1,mite,fungivorous,3,V,NA
+2022,2022-08-25,Fauske,Fau2,FGB,Fau2FGB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-25,Fauske,Fau2,FGB,Fau2FGB,NA,1,mite,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau2,FGB,Fau2FGB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-25,Fauske,Fau2,FGB,Fau2FGB,NA,1,collembola,fungivorous,1,V,NA
+2022,2022-08-25,Fauske,Fau2,FGB,Fau2FGB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau2,C,Fau2C,NA,1,mite,fungivorous,7,V,NA
+2022,2022-08-25,Fauske,Fau2,C,Fau2C,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-25,Fauske,Fau2,C,Fau2C,NA,1,mite,predaceous,1,V,NA
+2022,2022-08-25,Fauske,Fau2,C,Fau2C,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-25,Fauske,Fau2,C,Fau2C,NA,1,collembola,fungivorous,5,V,NA
+2022,2022-08-25,Fauske,Fau2,C,Fau2C,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau4,GF,Fau4GF,middle,2,mite,fungivorous,41,V,NA
+2022,2022-08-25,Fauske,Fau4,GF,Fau4GF,middle,2,mite,nematophagous,0,V,NA
+2022,2022-08-25,Fauske,Fau4,GF,Fau4GF,middle,2,mite,predaceous,70,V,NA
+2022,2022-08-25,Fauske,Fau4,GF,Fau4GF,middle,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-25,Fauske,Fau4,GF,Fau4GF,middle,2,collembola,fungivorous,4,V,NA
+2022,2022-08-25,Fauske,Fau4,GF,Fau4GF,middle,2,collembola,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau4,FB,Fau4FB,high,2,mite,fungivorous,40,V,regular bulb
+2022,2022-08-25,Fauske,Fau4,FB,Fau4FB,high,2,mite,nematophagous,0,V,regular bulb
+2022,2022-08-25,Fauske,Fau4,FB,Fau4FB,high,2,mite,predaceous,25,V,regular bulb
+2022,2022-08-25,Fauske,Fau4,FB,Fau4FB,high,2,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-08-25,Fauske,Fau4,FB,Fau4FB,high,2,collembola,fungivorous,0,V,regular bulb
+2022,2022-08-25,Fauske,Fau4,FB,Fau4FB,high,2,collembola,predaceous,0,V,regular bulb
+2022,2022-08-25,Fauske,Fau4,GB,Fau4GB,low,2,mite,fungivorous,68,V,NA
+2022,2022-08-25,Fauske,Fau4,GB,Fau4GB,low,2,mite,nematophagous,1,V,NA
+2022,2022-08-25,Fauske,Fau4,GB,Fau4GB,low,2,mite,predaceous,41,V,NA
+2022,2022-08-25,Fauske,Fau4,GB,Fau4GB,low,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-25,Fauske,Fau4,GB,Fau4GB,low,2,collembola,fungivorous,5,V,NA
+2022,2022-08-25,Fauske,Fau4,GB,Fau4GB,low,2,collembola,predaceous,0,V,NA
+2022,2022-08-25,Fauske,Fau4,FGB,Fau4FGB,low,2,mite,fungivorous,4,M,lot of soil in sample
+2022,2022-08-25,Fauske,Fau4,FGB,Fau4FGB,low,2,mite,nematophagous,0,M,lot of soil in sample
+2022,2022-08-25,Fauske,Fau4,FGB,Fau4FGB,low,2,mite,predaceous,5,M,lot of soil in sample
+2022,2022-08-25,Fauske,Fau4,FGB,Fau4FGB,low,2,mite,unknownjuvenile,0,M,lot of soil in sample
+2022,2022-08-25,Fauske,Fau4,FGB,Fau4FGB,low,2,collembola,fungivorous,2,M,lot of soil in sample
+2022,2022-08-25,Fauske,Fau4,FGB,Fau4FGB,low,2,collembola,predaceous,0,M,lot of soil in sample
+2022,2022-08-25,Fauske,Fau4,C,Fau4C,middle,2,mite,fungivorous,21,V,NA
+2022,2022-08-25,Fauske,Fau4,C,Fau4C,middle,2,mite,nematophagous,0,V,NA
+2022,2022-08-25,Fauske,Fau4,C,Fau4C,middle,2,mite,predaceous,24,V,NA
+2022,2022-08-25,Fauske,Fau4,C,Fau4C,middle,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-25,Fauske,Fau4,C,Fau4C,middle,2,collembola,fungivorous,2,V,NA
+2022,2022-08-25,Fauske,Fau4,C,Fau4C,middle,2,collembola,predaceous,0,V,NA
+2022,2022-08-26,Vikesland,Vik2,GF,Vik2GF,NA,1,mite,fungivorous,150,M,micro-arthropods wraped with filaments
+2022,2022-08-26,Vikesland,Vik2,GF,Vik2GF,NA,1,mite,nematophagous,0,M,micro-arthropods wraped with filaments
+2022,2022-08-26,Vikesland,Vik2,GF,Vik2GF,NA,1,mite,predaceous,7,M,micro-arthropods wraped with filaments
+2022,2022-08-26,Vikesland,Vik2,GF,Vik2GF,NA,1,mite,unknownjuvenile,0,M,micro-arthropods wraped with filaments
+2022,2022-08-26,Vikesland,Vik2,GF,Vik2GF,NA,1,collembola,fungivorous,16,M,micro-arthropods wraped with filaments
+2022,2022-08-26,Vikesland,Vik2,GF,Vik2GF,NA,1,collembola,predaceous,0,M,micro-arthropods wraped with filaments
+2022,2022-08-26,Vikesland,Vik2,FB,Vik2FB,NA,1,mite,fungivorous,151,M,NA
+2022,2022-08-26,Vikesland,Vik2,FB,Vik2FB,NA,1,mite,nematophagous,10,M,NA
+2022,2022-08-26,Vikesland,Vik2,FB,Vik2FB,NA,1,mite,predaceous,11,M,NA
+2022,2022-08-26,Vikesland,Vik2,FB,Vik2FB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-26,Vikesland,Vik2,FB,Vik2FB,NA,1,collembola,fungivorous,2,M,NA
+2022,2022-08-26,Vikesland,Vik2,FB,Vik2FB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-26,Vikesland,Vik2,GB,Vik2GB,NA,1,mite,fungivorous,54,M,NA
+2022,2022-08-26,Vikesland,Vik2,GB,Vik2GB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-26,Vikesland,Vik2,GB,Vik2GB,NA,1,mite,predaceous,11,M,NA
+2022,2022-08-26,Vikesland,Vik2,GB,Vik2GB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-26,Vikesland,Vik2,GB,Vik2GB,NA,1,collembola,fungivorous,6,M,NA
+2022,2022-08-26,Vikesland,Vik2,GB,Vik2GB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-26,Vikesland,Vik2,FGB,Vik2FGB,NA,1,mite,fungivorous,21,M,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,FGB,Vik2FGB,NA,1,mite,nematophagous,0,M,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,FGB,Vik2FGB,NA,1,mite,predaceous,3,M,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,FGB,Vik2FGB,NA,1,mite,unknownjuvenile,0,M,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,FGB,Vik2FGB,NA,1,collembola,fungivorous,5,M,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,FGB,Vik2FGB,NA,1,collembola,predaceous,0,M,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,C,Vik2C,NA,1,mite,fungivorous,296,V,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,C,Vik2C,NA,1,mite,nematophagous,19,V,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,C,Vik2C,NA,1,mite,predaceous,52,V,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,C,Vik2C,NA,1,mite,unknownjuvenile,0,V,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,C,Vik2C,NA,1,collembola,fungivorous,33,V,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik2,C,Vik2C,NA,1,collembola,predaceous,0,V,lot of soil in sample
+2022,2022-08-26,Vikesland,Vik3,GF,Vik3GF,NA,1,mite,fungivorous,4,M,NA
+2022,2022-08-26,Vikesland,Vik3,GF,Vik3GF,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-26,Vikesland,Vik3,GF,Vik3GF,NA,1,mite,predaceous,0,M,NA
+2022,2022-08-26,Vikesland,Vik3,GF,Vik3GF,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-26,Vikesland,Vik3,GF,Vik3GF,NA,1,collembola,fungivorous,2,M,NA
+2022,2022-08-26,Vikesland,Vik3,GF,Vik3GF,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-26,Vikesland,Vik3,FB,Vik3FB,NA,1,mite,fungivorous,3,V,NA
+2022,2022-08-26,Vikesland,Vik3,FB,Vik3FB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,FB,Vik3FB,NA,1,mite,predaceous,1,V,NA
+2022,2022-08-26,Vikesland,Vik3,FB,Vik3FB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,FB,Vik3FB,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,FB,Vik3FB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,GB,Vik3GB,low,2,mite,fungivorous,38,V,NA
+2022,2022-08-26,Vikesland,Vik3,GB,Vik3GB,low,2,mite,nematophagous,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,GB,Vik3GB,low,2,mite,predaceous,11,V,NA
+2022,2022-08-26,Vikesland,Vik3,GB,Vik3GB,low,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,GB,Vik3GB,low,2,collembola,fungivorous,10,V,NA
+2022,2022-08-26,Vikesland,Vik3,GB,Vik3GB,low,2,collembola,predaceous,1,V,NA
+2022,2022-08-26,Vikesland,Vik3,FGB,Vik3FGB,high,2,mite,fungivorous,90,V,NA
+2022,2022-08-26,Vikesland,Vik3,FGB,Vik3FGB,high,2,mite,nematophagous,16,V,NA
+2022,2022-08-26,Vikesland,Vik3,FGB,Vik3FGB,high,2,mite,predaceous,7,V,NA
+2022,2022-08-26,Vikesland,Vik3,FGB,Vik3FGB,high,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,FGB,Vik3FGB,high,2,collembola,fungivorous,13,V,NA
+2022,2022-08-26,Vikesland,Vik3,FGB,Vik3FGB,high,2,collembola,predaceous,2,V,NA
+2022,2022-08-26,Vikesland,Vik3,C,Vik3C,NA,1,mite,fungivorous,1,V,NA
+2022,2022-08-26,Vikesland,Vik3,C,Vik3C,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,C,Vik3C,NA,1,mite,predaceous,3,V,NA
+2022,2022-08-26,Vikesland,Vik3,C,Vik3C,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-26,Vikesland,Vik3,C,Vik3C,NA,1,collembola,fungivorous,1,V,NA
+2022,2022-08-26,Vikesland,Vik3,C,Vik3C,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,GF,Vik4GF,low,2,mite,fungivorous,381,M,NA
+2022,2022-08-26,Vikesland,Vik4,GF,Vik4GF,low,2,mite,nematophagous,54,M,NA
+2022,2022-08-26,Vikesland,Vik4,GF,Vik4GF,low,2,mite,predaceous,112,M,NA
+2022,2022-08-26,Vikesland,Vik4,GF,Vik4GF,low,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-26,Vikesland,Vik4,GF,Vik4GF,low,2,collembola,fungivorous,29,M,NA
+2022,2022-08-26,Vikesland,Vik4,GF,Vik4GF,low,2,collembola,predaceous,0,M,NA
+2022,2022-08-26,Vikesland,Vik4,GB,Vik4GB,middle,2,mite,fungivorous,361,M,NA
+2022,2022-08-26,Vikesland,Vik4,GB,Vik4GB,middle,2,mite,nematophagous,31,M,NA
+2022,2022-08-26,Vikesland,Vik4,GB,Vik4GB,middle,2,mite,predaceous,65,M,NA
+2022,2022-08-26,Vikesland,Vik4,GB,Vik4GB,middle,2,mite,unknownjuvenile,3,M,NA
+2022,2022-08-26,Vikesland,Vik4,GB,Vik4GB,middle,2,collembola,fungivorous,22,M,NA
+2022,2022-08-26,Vikesland,Vik4,GB,Vik4GB,middle,2,collembola,predaceous,2,M,NA
+2022,2022-08-26,Vikesland,Vik4,FB,Vik4FB,NA,1,mite,fungivorous,7,V,NA
+2022,2022-08-26,Vikesland,Vik4,FB,Vik4FB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,FB,Vik4FB,NA,1,mite,predaceous,6,V,NA
+2022,2022-08-26,Vikesland,Vik4,FB,Vik4FB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,FB,Vik4FB,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,FB,Vik4FB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,FGB,Vik4FGB,NA,1,mite,fungivorous,14,M,NA
+2022,2022-08-26,Vikesland,Vik4,FGB,Vik4FGB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-26,Vikesland,Vik4,FGB,Vik4FGB,NA,1,mite,predaceous,8,M,NA
+2022,2022-08-26,Vikesland,Vik4,FGB,Vik4FGB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-26,Vikesland,Vik4,FGB,Vik4FGB,NA,1,collembola,fungivorous,22,M,NA
+2022,2022-08-26,Vikesland,Vik4,FGB,Vik4FGB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-26,Vikesland,Vik4,C,Vik4C,NA,1,mite,fungivorous,10,V,NA
+2022,2022-08-26,Vikesland,Vik4,C,Vik4C,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,C,Vik4C,NA,1,mite,predaceous,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,C,Vik4C,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-26,Vikesland,Vik4,C,Vik4C,NA,1,collembola,fungivorous,3,V,NA
+2022,2022-08-26,Vikesland,Vik4,C,Vik4C,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh1,FB,Arh1FB,low,3,mite,fungivorous,54,M,NA
+2022,2022-08-31,Arhelleren,Arh1,FB,Arh1FB,low,3,mite,nematophagous,0,M,NA
+2022,2022-08-31,Arhelleren,Arh1,FB,Arh1FB,low,3,mite,predaceous,1,M,NA
+2022,2022-08-31,Arhelleren,Arh1,FB,Arh1FB,low,3,mite,unknownjuvenile,0,M,NA
+2022,2022-08-31,Arhelleren,Arh1,FB,Arh1FB,low,3,collembola,fungivorous,17,M,NA
+2022,2022-08-31,Arhelleren,Arh1,FB,Arh1FB,low,3,collembola,predaceous,0,M,NA
+2022,2022-08-31,Arhelleren,Arh1,GB,Arh1GB,high,3,mite,fungivorous,63,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh1,GB,Arh1GB,high,3,mite,nematophagous,0,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh1,GB,Arh1GB,high,3,mite,predaceous,24,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh1,GB,Arh1GB,high,3,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh1,GB,Arh1GB,high,3,collembola,fungivorous,0,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh1,GB,Arh1GB,high,3,collembola,predaceous,0,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh1,FGB,Arh1FGB,middle,3,mite,fungivorous,9,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-1, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,FGB,Arh1FGB,middle,3,mite,nematophagous,0,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-1, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,FGB,Arh1FGB,middle,3,mite,predaceous,6,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-1, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,FGB,Arh1FGB,middle,3,mite,unknownjuvenile,0,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-1, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,FGB,Arh1FGB,middle,3,collembola,fungivorous,0,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-1, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,FGB,Arh1FGB,middle,3,collembola,predaceous,0,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-1, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,GF,Arh1GF,middle,3,mite,fungivorous,31,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-2, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,GF,Arh1GF,middle,3,mite,nematophagous,0,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-2, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,GF,Arh1GF,middle,3,mite,predaceous,9,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-2, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,GF,Arh1GF,middle,3,mite,unknownjuvenile,0,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-2, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,GF,Arh1GF,middle,3,collembola,fungivorous,4,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-2, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,GF,Arh1GF,middle,3,collembola,predaceous,0,M,"2 samples labelled Arh1FGB, this one is Arh1FGB-2, one sample counfounded with Arh1GF"
+2022,2022-08-31,Arhelleren,Arh1,C,Arh1C,middle,3,mite,fungivorous,50,M,NA
+2022,2022-08-31,Arhelleren,Arh1,C,Arh1C,middle,3,mite,nematophagous,4,M,NA
+2022,2022-08-31,Arhelleren,Arh1,C,Arh1C,middle,3,mite,predaceous,13,M,NA
+2022,2022-08-31,Arhelleren,Arh1,C,Arh1C,middle,3,mite,unknownjuvenile,0,M,NA
+2022,2022-08-31,Arhelleren,Arh1,C,Arh1C,middle,3,collembola,fungivorous,7,M,NA
+2022,2022-08-31,Arhelleren,Arh1,C,Arh1C,middle,3,collembola,predaceous,0,M,NA
+2022,2022-08-31,Arhelleren,Arh2,GF,Arh2GF,low,3,mite,fungivorous,7,V,NA
+2022,2022-08-31,Arhelleren,Arh2,GF,Arh2GF,low,3,mite,nematophagous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,GF,Arh2GF,low,3,mite,predaceous,20,V,NA
+2022,2022-08-31,Arhelleren,Arh2,GF,Arh2GF,low,3,mite,unknownjuvenile,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,GF,Arh2GF,low,3,collembola,fungivorous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,GF,Arh2GF,low,3,collembola,predaceous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,FB,Arh2FB,middle,3,mite,fungivorous,20,M,NA
+2022,2022-08-31,Arhelleren,Arh2,FB,Arh2FB,middle,3,mite,nematophagous,2,M,NA
+2022,2022-08-31,Arhelleren,Arh2,FB,Arh2FB,middle,3,mite,predaceous,23,M,NA
+2022,2022-08-31,Arhelleren,Arh2,FB,Arh2FB,middle,3,mite,unknownjuvenile,0,M,NA
+2022,2022-08-31,Arhelleren,Arh2,FB,Arh2FB,middle,3,collembola,fungivorous,3,M,NA
+2022,2022-08-31,Arhelleren,Arh2,FB,Arh2FB,middle,3,collembola,predaceous,0,M,NA
+2022,2022-08-31,Arhelleren,Arh2,GB,Arh2GB,high,3,mite,fungivorous,34,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh2,GB,Arh2GB,high,3,mite,nematophagous,0,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh2,GB,Arh2GB,high,3,mite,predaceous,43,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh2,GB,Arh2GB,high,3,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh2,GB,Arh2GB,high,3,collembola,fungivorous,4,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh2,GB,Arh2GB,high,3,collembola,predaceous,1,V,regular bulb
+2022,2022-08-31,Arhelleren,Arh2,FGB,Arh2FGB,low,3,mite,fungivorous,4,V,NA
+2022,2022-08-31,Arhelleren,Arh2,FGB,Arh2FGB,low,3,mite,nematophagous,1,V,NA
+2022,2022-08-31,Arhelleren,Arh2,FGB,Arh2FGB,low,3,mite,predaceous,2,V,NA
+2022,2022-08-31,Arhelleren,Arh2,FGB,Arh2FGB,low,3,mite,unknownjuvenile,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,FGB,Arh2FGB,low,3,collembola,fungivorous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,FGB,Arh2FGB,low,3,collembola,predaceous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,C,Arh2C,middle,3,mite,fungivorous,58,V,NA
+2022,2022-08-31,Arhelleren,Arh2,C,Arh2C,middle,3,mite,nematophagous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,C,Arh2C,middle,3,mite,predaceous,32,V,NA
+2022,2022-08-31,Arhelleren,Arh2,C,Arh2C,middle,3,mite,unknownjuvenile,0,V,NA
+2022,2022-08-31,Arhelleren,Arh2,C,Arh2C,middle,3,collembola,fungivorous,4,V,NA
+2022,2022-08-31,Arhelleren,Arh2,C,Arh2C,middle,3,collembola,predaceous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,GF,Arh3GF,high,3,mite,fungivorous,10,M,NA
+2022,2022-08-31,Arhelleren,Arh3,GF,Arh3GF,high,3,mite,nematophagous,1,M,NA
+2022,2022-08-31,Arhelleren,Arh3,GF,Arh3GF,high,3,mite,predaceous,4,M,NA
+2022,2022-08-31,Arhelleren,Arh3,GF,Arh3GF,high,3,mite,unknownjuvenile,0,M,NA
+2022,2022-08-31,Arhelleren,Arh3,GF,Arh3GF,high,3,collembola,fungivorous,0,M,NA
+2022,2022-08-31,Arhelleren,Arh3,GF,Arh3GF,high,3,collembola,predaceous,0,M,NA
+2022,2022-08-31,Arhelleren,Arh3,FB,Arh3FB,high,3,mite,fungivorous,68,M,regular bulb
+2022,2022-08-31,Arhelleren,Arh3,FB,Arh3FB,high,3,mite,nematophagous,0,M,regular bulb
+2022,2022-08-31,Arhelleren,Arh3,FB,Arh3FB,high,3,mite,predaceous,20,M,regular bulb
+2022,2022-08-31,Arhelleren,Arh3,FB,Arh3FB,high,3,mite,unknownjuvenile,0,M,regular bulb
+2022,2022-08-31,Arhelleren,Arh3,FB,Arh3FB,high,3,collembola,fungivorous,0,M,regular bulb
+2022,2022-08-31,Arhelleren,Arh3,FB,Arh3FB,high,3,collembola,predaceous,0,M,regular bulb
+2022,2022-08-31,Arhelleren,Arh3,GB,Arh3GB,low,3,mite,fungivorous,14,V,NA
+2022,2022-08-31,Arhelleren,Arh3,GB,Arh3GB,low,3,mite,nematophagous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,GB,Arh3GB,low,3,mite,predaceous,4,V,NA
+2022,2022-08-31,Arhelleren,Arh3,GB,Arh3GB,low,3,mite,unknownjuvenile,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,GB,Arh3GB,low,3,collembola,fungivorous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,GB,Arh3GB,low,3,collembola,predaceous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,FGB,Arh3FGB,high,3,mite,fungivorous,2,V,NA
+2022,2022-08-31,Arhelleren,Arh3,FGB,Arh3FGB,high,3,mite,nematophagous,1,V,NA
+2022,2022-08-31,Arhelleren,Arh3,FGB,Arh3FGB,high,3,mite,predaceous,1,V,NA
+2022,2022-08-31,Arhelleren,Arh3,FGB,Arh3FGB,high,3,mite,unknownjuvenile,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,FGB,Arh3FGB,high,3,collembola,fungivorous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,FGB,Arh3FGB,high,3,collembola,predaceous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,C,Arh3C,middle,3,mite,fungivorous,15,V,NA
+2022,2022-08-31,Arhelleren,Arh3,C,Arh3C,middle,3,mite,nematophagous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,C,Arh3C,middle,3,mite,predaceous,10,V,NA
+2022,2022-08-31,Arhelleren,Arh3,C,Arh3C,middle,3,mite,unknownjuvenile,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,C,Arh3C,middle,3,collembola,fungivorous,0,V,NA
+2022,2022-08-31,Arhelleren,Arh3,C,Arh3C,middle,3,collembola,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GF,Ovs1GF,low,2,mite,fungivorous,1,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GF,Ovs1GF,low,2,mite,nematophagous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GF,Ovs1GF,low,2,mite,predaceous,1,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GF,Ovs1GF,low,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GF,Ovs1GF,low,2,collembola,fungivorous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GF,Ovs1GF,low,2,collembola,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,FB,Ovs1FB,middle,2,mite,fungivorous,13,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,FB,Ovs1FB,middle,2,mite,nematophagous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,FB,Ovs1FB,middle,2,mite,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,FB,Ovs1FB,middle,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,FB,Ovs1FB,middle,2,collembola,fungivorous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,FB,Ovs1FB,middle,2,collembola,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GB,Ovs1GB,low,2,mite,fungivorous,6,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GB,Ovs1GB,low,2,mite,nematophagous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GB,Ovs1GB,low,2,mite,predaceous,2,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GB,Ovs1GB,low,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GB,Ovs1GB,low,2,collembola,fungivorous,3,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,GB,Ovs1GB,low,2,collembola,predaceous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,FGB,Ovs1FGB,low,2,mite,fungivorous,1,M,a lot of sand
+2022,2022-08-28,Ovstedalen,Ovs1,FGB,Ovs1FGB,low,2,mite,nematophagous,0,M,a lot of sand
+2022,2022-08-28,Ovstedalen,Ovs1,FGB,Ovs1FGB,low,2,mite,predaceous,0,M,a lot of sand
+2022,2022-08-28,Ovstedalen,Ovs1,FGB,Ovs1FGB,low,2,mite,unknownjuvenile,0,M,a lot of sand
+2022,2022-08-28,Ovstedalen,Ovs1,FGB,Ovs1FGB,low,2,collembola,fungivorous,1,M,a lot of sand
+2022,2022-08-28,Ovstedalen,Ovs1,FGB,Ovs1FGB,low,2,collembola,predaceous,0,M,a lot of sand
+2022,2022-08-28,Ovstedalen,Ovs1,C,Ovs1C,high,2,mite,fungivorous,5,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,C,Ovs1C,high,2,mite,nematophagous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,C,Ovs1C,high,2,mite,predaceous,2,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,C,Ovs1C,high,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,C,Ovs1C,high,2,collembola,fungivorous,3,M,NA
+2022,2022-08-28,Ovstedalen,Ovs1,C,Ovs1C,high,2,collembola,predaceous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GF,Ovs2GF,high,2,mite,fungivorous,4,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GF,Ovs2GF,high,2,mite,nematophagous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GF,Ovs2GF,high,2,mite,predaceous,5,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GF,Ovs2GF,high,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GF,Ovs2GF,high,2,collembola,fungivorous,1,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GF,Ovs2GF,high,2,collembola,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FB,Ovs2FB,middle,2,mite,fungivorous,3,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FB,Ovs2FB,middle,2,mite,nematophagous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FB,Ovs2FB,middle,2,mite,predaceous,4,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FB,Ovs2FB,middle,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FB,Ovs2FB,middle,2,collembola,fungivorous,2,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FB,Ovs2FB,middle,2,collembola,predaceous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GB,Ovs2GB,low,2,mite,fungivorous,2,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GB,Ovs2GB,low,2,mite,nematophagous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GB,Ovs2GB,low,2,mite,predaceous,6,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GB,Ovs2GB,low,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GB,Ovs2GB,low,2,collembola,fungivorous,1,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,GB,Ovs2GB,low,2,collembola,predaceous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FGB,Ovs2FGB,high,2,mite,fungivorous,5,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FGB,Ovs2FGB,high,2,mite,nematophagous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FGB,Ovs2FGB,high,2,mite,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FGB,Ovs2FGB,high,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FGB,Ovs2FGB,high,2,collembola,fungivorous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,FGB,Ovs2FGB,high,2,collembola,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs2,C,Ovs2C,middle,2,mite,fungivorous,35,V,"lot of sand, difficult to see juveniles"
+2022,2022-08-28,Ovstedalen,Ovs2,C,Ovs2C,middle,2,mite,nematophagous,0,V,"lot of sand, difficult to see juveniles"
+2022,2022-08-28,Ovstedalen,Ovs2,C,Ovs2C,middle,2,mite,predaceous,7,V,"lot of sand, difficult to see juveniles"
+2022,2022-08-28,Ovstedalen,Ovs2,C,Ovs2C,middle,2,mite,unknownjuvenile,0,V,"lot of sand, difficult to see juveniles"
+2022,2022-08-28,Ovstedalen,Ovs2,C,Ovs2C,middle,2,collembola,fungivorous,3,V,"lot of sand, difficult to see juveniles"
+2022,2022-08-28,Ovstedalen,Ovs2,C,Ovs2C,middle,2,collembola,predaceous,0,V,"lot of sand, difficult to see juveniles"
+2022,2022-08-28,Ovstedalen,Ovs3,GF,Ovs3GF,middle,2,mite,fungivorous,81,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GF,Ovs3GF,middle,2,mite,nematophagous,7,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GF,Ovs3GF,middle,2,mite,predaceous,18,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GF,Ovs3GF,middle,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GF,Ovs3GF,middle,2,collembola,fungivorous,59,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GF,Ovs3GF,middle,2,collembola,predaceous,1,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,FB,Ovs3FB,high,2,mite,fungivorous,18,M,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,FB,Ovs3FB,high,2,mite,nematophagous,0,M,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,FB,Ovs3FB,high,2,mite,predaceous,0,M,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,FB,Ovs3FB,high,2,mite,unknownjuvenile,0,M,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,FB,Ovs3FB,high,2,collembola,fungivorous,0,M,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,FB,Ovs3FB,high,2,collembola,predaceous,0,M,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,GB,Ovs3GB,middle,2,mite,fungivorous,5,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GB,Ovs3GB,middle,2,mite,nematophagous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GB,Ovs3GB,middle,2,mite,predaceous,14,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GB,Ovs3GB,middle,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GB,Ovs3GB,middle,2,collembola,fungivorous,2,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,GB,Ovs3GB,middle,2,collembola,predaceous,0,M,NA
+2022,2022-08-28,Ovstedalen,Ovs3,FGB,Ovs3FGB,low,2,mite,fungivorous,7,V,NA
+2022,2022-08-28,Ovstedalen,Ovs3,FGB,Ovs3FGB,low,2,mite,nematophagous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs3,FGB,Ovs3FGB,low,2,mite,predaceous,6,V,NA
+2022,2022-08-28,Ovstedalen,Ovs3,FGB,Ovs3FGB,low,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs3,FGB,Ovs3FGB,low,2,collembola,fungivorous,6,V,NA
+2022,2022-08-28,Ovstedalen,Ovs3,FGB,Ovs3FGB,low,2,collembola,predaceous,0,V,NA
+2022,2022-08-28,Ovstedalen,Ovs3,C,Ovs3C,high,2,mite,fungivorous,68,V,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,C,Ovs3C,high,2,mite,nematophagous,0,V,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,C,Ovs3C,high,2,mite,predaceous,10,V,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,C,Ovs3C,high,2,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,C,Ovs3C,high,2,collembola,fungivorous,1,V,regular bulb
+2022,2022-08-28,Ovstedalen,Ovs3,C,Ovs3C,high,2,collembola,predaceous,0,V,regular bulb
+2022,2022-08-24,Alrust,Alr1,GF,Alr1GF,NA,1,mite,fungivorous,2,M,NA
+2022,2022-08-24,Alrust,Alr1,GF,Alr1GF,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,GF,Alr1GF,NA,1,mite,predaceous,6,M,NA
+2022,2022-08-24,Alrust,Alr1,GF,Alr1GF,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr1,GF,Alr1GF,NA,1,collembola,fungivorous,2,M,NA
+2022,2022-08-24,Alrust,Alr1,GF,Alr1GF,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,FB,Alr1FB,NA,1,mite,fungivorous,1,M,NA
+2022,2022-08-24,Alrust,Alr1,FB,Alr1FB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,FB,Alr1FB,NA,1,mite,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,FB,Alr1FB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr1,FB,Alr1FB,NA,1,collembola,fungivorous,4,M,NA
+2022,2022-08-24,Alrust,Alr1,FB,Alr1FB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,GB,Alr1GB,NA,1,mite,fungivorous,17,V,NA
+2022,2022-08-24,Alrust,Alr1,GB,Alr1GB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-24,Alrust,Alr1,GB,Alr1GB,NA,1,mite,predaceous,5,V,NA
+2022,2022-08-24,Alrust,Alr1,GB,Alr1GB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-24,Alrust,Alr1,GB,Alr1GB,NA,1,collembola,fungivorous,7,V,NA
+2022,2022-08-24,Alrust,Alr1,GB,Alr1GB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-24,Alrust,Alr1,FGB,Alr1FGB,NA,1,mite,fungivorous,8,M,NA
+2022,2022-08-24,Alrust,Alr1,FGB,Alr1FGB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,FGB,Alr1FGB,NA,1,mite,predaceous,31,M,NA
+2022,2022-08-24,Alrust,Alr1,FGB,Alr1FGB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr1,FGB,Alr1FGB,NA,1,collembola,fungivorous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,FGB,Alr1FGB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr1,C,Alr1C,NA,1,mite,fungivorous,135,V,lot of soil in sample
+2022,2022-08-24,Alrust,Alr1,C,Alr1C,NA,1,mite,nematophagous,22,V,lot of soil in sample
+2022,2022-08-24,Alrust,Alr1,C,Alr1C,NA,1,mite,predaceous,62,V,lot of soil in sample
+2022,2022-08-24,Alrust,Alr1,C,Alr1C,NA,1,mite,unknownjuvenile,0,V,lot of soil in sample
+2022,2022-08-24,Alrust,Alr1,C,Alr1C,NA,1,collembola,fungivorous,14,V,lot of soil in sample
+2022,2022-08-24,Alrust,Alr1,C,Alr1C,NA,1,collembola,predaceous,0,V,lot of soil in sample
+2022,2022-08-24,Alrust,Alr2,GF,Alr2GF,NA,1,mite,fungivorous,8,M,NA
+2022,2022-08-24,Alrust,Alr2,GF,Alr2GF,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr2,GF,Alr2GF,NA,1,mite,predaceous,12,M,NA
+2022,2022-08-24,Alrust,Alr2,GF,Alr2GF,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr2,GF,Alr2GF,NA,1,collembola,fungivorous,4,M,NA
+2022,2022-08-24,Alrust,Alr2,GF,Alr2GF,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr2,FB,Alr2FB,NA,1,mite,fungivorous,3,V,NA
+2022,2022-08-24,Alrust,Alr2,FB,Alr2FB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-24,Alrust,Alr2,FB,Alr2FB,NA,1,mite,predaceous,3,V,NA
+2022,2022-08-24,Alrust,Alr2,FB,Alr2FB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-24,Alrust,Alr2,FB,Alr2FB,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-24,Alrust,Alr2,FB,Alr2FB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-24,Alrust,Alr2,GB,Alr2GB,NA,1,mite,fungivorous,0,M,NA
+2022,2022-08-24,Alrust,Alr2,GB,Alr2GB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr2,GB,Alr2GB,NA,1,mite,predaceous,4,M,NA
+2022,2022-08-24,Alrust,Alr2,GB,Alr2GB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr2,GB,Alr2GB,NA,1,collembola,fungivorous,11,M,NA
+2022,2022-08-24,Alrust,Alr2,GB,Alr2GB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr2,FGB,Alr2FGB,NA,1,mite,fungivorous,1,V,NA
+2022,2022-08-24,Alrust,Alr2,FGB,Alr2FGB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-24,Alrust,Alr2,FGB,Alr2FGB,NA,1,mite,predaceous,0,V,NA
+2022,2022-08-24,Alrust,Alr2,FGB,Alr2FGB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-24,Alrust,Alr2,FGB,Alr2FGB,NA,1,collembola,fungivorous,1,V,NA
+2022,2022-08-24,Alrust,Alr2,FGB,Alr2FGB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-24,Alrust,Alr2,C,Alr2C,NA,1,mite,fungivorous,6,M,NA
+2022,2022-08-24,Alrust,Alr2,C,Alr2C,NA,1,mite,nematophagous,1,M,NA
+2022,2022-08-24,Alrust,Alr2,C,Alr2C,NA,1,mite,predaceous,1,M,NA
+2022,2022-08-24,Alrust,Alr2,C,Alr2C,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr2,C,Alr2C,NA,1,collembola,fungivorous,1,M,NA
+2022,2022-08-24,Alrust,Alr2,C,Alr2C,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,GF,Alr3GF,NA,1,mite,fungivorous,4,V,NA
+2022,2022-08-24,Alrust,Alr3,GF,Alr3GF,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-24,Alrust,Alr3,GF,Alr3GF,NA,1,mite,predaceous,3,V,NA
+2022,2022-08-24,Alrust,Alr3,GF,Alr3GF,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-24,Alrust,Alr3,GF,Alr3GF,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-24,Alrust,Alr3,GF,Alr3GF,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-24,Alrust,Alr3,FB,Alr3FB,NA,1,mite,fungivorous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,FB,Alr3FB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,FB,Alr3FB,NA,1,mite,predaceous,2,M,NA
+2022,2022-08-24,Alrust,Alr3,FB,Alr3FB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr3,FB,Alr3FB,NA,1,collembola,fungivorous,1,M,NA
+2022,2022-08-24,Alrust,Alr3,FB,Alr3FB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,GB,Alr3GB,NA,1,mite,fungivorous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,GB,Alr3GB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,GB,Alr3GB,NA,1,mite,predaceous,1,M,NA
+2022,2022-08-24,Alrust,Alr3,GB,Alr3GB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr3,GB,Alr3GB,NA,1,collembola,fungivorous,3,M,NA
+2022,2022-08-24,Alrust,Alr3,GB,Alr3GB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,FGB,Alr3FGB,NA,1,mite,fungivorous,1,V,NA
+2022,2022-08-24,Alrust,Alr3,FGB,Alr3FGB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-24,Alrust,Alr3,FGB,Alr3FGB,NA,1,mite,predaceous,1,V,NA
+2022,2022-08-24,Alrust,Alr3,FGB,Alr3FGB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-24,Alrust,Alr3,FGB,Alr3FGB,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-24,Alrust,Alr3,FGB,Alr3FGB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-24,Alrust,Alr3,C,Alr3C,NA,1,mite,fungivorous,4,M,NA
+2022,2022-08-24,Alrust,Alr3,C,Alr3C,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,C,Alr3C,NA,1,mite,predaceous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,C,Alr3C,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-24,Alrust,Alr3,C,Alr3C,NA,1,collembola,fungivorous,0,M,NA
+2022,2022-08-24,Alrust,Alr3,C,Alr3C,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-23,Hogsete,Hog1,GF,Hog1GF,NA,1,mite,fungivorous,5,M,"Was in 1, but circled for 2"
+2022,2022-08-23,Hogsete,Hog1,GF,Hog1GF,NA,1,mite,nematophagous,0,M,"Was in 1, but circled for 2"
+2022,2022-08-23,Hogsete,Hog1,GF,Hog1GF,NA,1,mite,predaceous,8,M,"Was in 1, but circled for 2"
+2022,2022-08-23,Hogsete,Hog1,GF,Hog1GF,NA,1,mite,unknownjuvenile,0,M,"Was in 1, but circled for 2"
+2022,2022-08-23,Hogsete,Hog1,GF,Hog1GF,NA,1,collembola,fungivorous,2,M,"Was in 1, but circled for 2"
+2022,2022-08-23,Hogsete,Hog1,GF,Hog1GF,NA,1,collembola,predaceous,0,M,"Was in 1, but circled for 2"
+2022,2022-08-23,Hogsete,Hog1,FB,Hog1FB,NA,1,mite,fungivorous,5,V,NA
+2022,2022-08-23,Hogsete,Hog1,FB,Hog1FB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-23,Hogsete,Hog1,FB,Hog1FB,NA,1,mite,predaceous,3,V,NA
+2022,2022-08-23,Hogsete,Hog1,FB,Hog1FB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-23,Hogsete,Hog1,FB,Hog1FB,NA,1,collembola,fungivorous,4,V,NA
+2022,2022-08-23,Hogsete,Hog1,FB,Hog1FB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-23,Hogsete,Hog1,GB,Hog1GB,NA,1,mite,fungivorous,171,V,NA
+2022,2022-08-23,Hogsete,Hog1,GB,Hog1GB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-23,Hogsete,Hog1,GB,Hog1GB,NA,1,mite,predaceous,57,V,NA
+2022,2022-08-23,Hogsete,Hog1,GB,Hog1GB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-23,Hogsete,Hog1,GB,Hog1GB,NA,1,collembola,fungivorous,13,V,NA
+2022,2022-08-23,Hogsete,Hog1,GB,Hog1GB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-23,Hogsete,Hog1,FGB,Hog1FGB,NA,1,mite,fungivorous,26,M,NA
+2022,2022-08-23,Hogsete,Hog1,FGB,Hog1FGB,NA,1,mite,nematophagous,1,M,NA
+2022,2022-08-23,Hogsete,Hog1,FGB,Hog1FGB,NA,1,mite,predaceous,20,M,NA
+2022,2022-08-23,Hogsete,Hog1,FGB,Hog1FGB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-23,Hogsete,Hog1,FGB,Hog1FGB,NA,1,collembola,fungivorous,32,M,NA
+2022,2022-08-23,Hogsete,Hog1,FGB,Hog1FGB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-23,Hogsete,Hog1,C,Hog1C,NA,1,mite,fungivorous,24,M,NA
+2022,2022-08-23,Hogsete,Hog1,C,Hog1C,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-23,Hogsete,Hog1,C,Hog1C,NA,1,mite,predaceous,11,M,NA
+2022,2022-08-23,Hogsete,Hog1,C,Hog1C,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-23,Hogsete,Hog1,C,Hog1C,NA,1,collembola,fungivorous,25,M,NA
+2022,2022-08-23,Hogsete,Hog1,C,Hog1C,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-23,Hogsete,Hog2,GF,Hog2GF,NA,1,mite,fungivorous,33,V,NA
+2022,2022-08-23,Hogsete,Hog2,GF,Hog2GF,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,GF,Hog2GF,NA,1,mite,predaceous,8,V,NA
+2022,2022-08-23,Hogsete,Hog2,GF,Hog2GF,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,GF,Hog2GF,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,GF,Hog2GF,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,FB,Hog2FB,NA,1,mite,fungivorous,11,V,NA
+2022,2022-08-23,Hogsete,Hog2,FB,Hog2FB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,FB,Hog2FB,NA,1,mite,predaceous,17,V,NA
+2022,2022-08-23,Hogsete,Hog2,FB,Hog2FB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,FB,Hog2FB,NA,1,collembola,fungivorous,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,FB,Hog2FB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-23,Hogsete,Hog2,GB,Hog2GB,NA,1,mite,fungivorous,128,M,NA
+2022,2022-08-23,Hogsete,Hog2,GB,Hog2GB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-23,Hogsete,Hog2,GB,Hog2GB,NA,1,mite,predaceous,45,M,NA
+2022,2022-08-23,Hogsete,Hog2,GB,Hog2GB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-23,Hogsete,Hog2,GB,Hog2GB,NA,1,collembola,fungivorous,60,M,NA
+2022,2022-08-23,Hogsete,Hog2,GB,Hog2GB,NA,1,collembola,predaceous,1,M,NA
+2022,2022-08-23,Hogsete,Hog2,FGB,Hog2FGB,NA,1,mite,fungivorous,1,M,NA
+2022,2022-08-23,Hogsete,Hog2,FGB,Hog2FGB,NA,1,mite,nematophagous,0,M,NA
+2022,2022-08-23,Hogsete,Hog2,FGB,Hog2FGB,NA,1,mite,predaceous,3,M,NA
+2022,2022-08-23,Hogsete,Hog2,FGB,Hog2FGB,NA,1,mite,unknownjuvenile,0,M,NA
+2022,2022-08-23,Hogsete,Hog2,FGB,Hog2FGB,NA,1,collembola,fungivorous,0,M,NA
+2022,2022-08-23,Hogsete,Hog2,FGB,Hog2FGB,NA,1,collembola,predaceous,0,M,NA
+2022,2022-08-23,Hogsete,Hog2,C,Hog2C,NA,1,mite,fungivorous,1,V,Huge collembolas
+2022,2022-08-23,Hogsete,Hog2,C,Hog2C,NA,1,mite,nematophagous,0,V,Huge collembolas
+2022,2022-08-23,Hogsete,Hog2,C,Hog2C,NA,1,mite,predaceous,7,V,Huge collembolas
+2022,2022-08-23,Hogsete,Hog2,C,Hog2C,NA,1,mite,unknownjuvenile,0,V,Huge collembolas
+2022,2022-08-23,Hogsete,Hog2,C,Hog2C,NA,1,collembola,fungivorous,11,V,Huge collembolas
+2022,2022-08-23,Hogsete,Hog2,C,Hog2C,NA,1,collembola,predaceous,1,V,Huge collembolas
+2022,2022-08-23,Hogsete,Hog3,GF,Hog3GF,high,2,mite,fungivorous,372,V,regular bulb
+2022,2022-08-23,Hogsete,Hog3,GF,Hog3GF,high,2,mite,nematophagous,27,V,regular bulb
+2022,2022-08-23,Hogsete,Hog3,GF,Hog3GF,high,2,mite,predaceous,93,V,regular bulb
+2022,2022-08-23,Hogsete,Hog3,GF,Hog3GF,high,2,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-08-23,Hogsete,Hog3,GF,Hog3GF,high,2,collembola,fungivorous,95,V,regular bulb
+2022,2022-08-23,Hogsete,Hog3,GF,Hog3GF,high,2,collembola,predaceous,8,V,regular bulb
+2022,2022-08-23,Hogsete,Hog3,FB,Hog3FB,middle,2,mite,fungivorous,246,V,NA
+2022,2022-08-23,Hogsete,Hog3,FB,Hog3FB,middle,2,mite,nematophagous,1,V,NA
+2022,2022-08-23,Hogsete,Hog3,FB,Hog3FB,middle,2,mite,predaceous,31,V,NA
+2022,2022-08-23,Hogsete,Hog3,FB,Hog3FB,middle,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-23,Hogsete,Hog3,FB,Hog3FB,middle,2,collembola,fungivorous,0,V,NA
+2022,2022-08-23,Hogsete,Hog3,FB,Hog3FB,middle,2,collembola,predaceous,0,V,NA
+2022,2022-08-23,Hogsete,Hog3,GB,Hog3GB,NA,1,mite,fungivorous,123,V,NA
+2022,2022-08-23,Hogsete,Hog3,GB,Hog3GB,NA,1,mite,nematophagous,0,V,NA
+2022,2022-08-23,Hogsete,Hog3,GB,Hog3GB,NA,1,mite,predaceous,16,V,NA
+2022,2022-08-23,Hogsete,Hog3,GB,Hog3GB,NA,1,mite,unknownjuvenile,0,V,NA
+2022,2022-08-23,Hogsete,Hog3,GB,Hog3GB,NA,1,collembola,fungivorous,2,V,NA
+2022,2022-08-23,Hogsete,Hog3,GB,Hog3GB,NA,1,collembola,predaceous,0,V,NA
+2022,2022-08-23,Hogsete,Hog3,FGB,Hog3FGB,low,2,mite,fungivorous,0,M,a lot of soil
+2022,2022-08-23,Hogsete,Hog3,FGB,Hog3FGB,low,2,mite,nematophagous,0,M,a lot of soil
+2022,2022-08-23,Hogsete,Hog3,FGB,Hog3FGB,low,2,mite,predaceous,3,M,a lot of soil
+2022,2022-08-23,Hogsete,Hog3,FGB,Hog3FGB,low,2,mite,unknownjuvenile,1,M,a lot of soil
+2022,2022-08-23,Hogsete,Hog3,FGB,Hog3FGB,low,2,collembola,fungivorous,2,M,a lot of soil
+2022,2022-08-23,Hogsete,Hog3,FGB,Hog3FGB,low,2,collembola,predaceous,0,M,a lot of soil
+2022,2022-08-23,Hogsete,Hog3,C,Hog3C,middle,2,mite,fungivorous,515,V,Frieseinae float
+2022,2022-08-23,Hogsete,Hog3,C,Hog3C,middle,2,mite,nematophagous,58,V,Frieseinae float
+2022,2022-08-23,Hogsete,Hog3,C,Hog3C,middle,2,mite,predaceous,143,V,Frieseinae float
+2022,2022-08-23,Hogsete,Hog3,C,Hog3C,middle,2,mite,unknownjuvenile,0,V,Frieseinae float
+2022,2022-08-23,Hogsete,Hog3,C,Hog3C,middle,2,collembola,fungivorous,48,V,Frieseinae float
+2022,2022-08-23,Hogsete,Hog3,C,Hog3C,middle,2,collembola,predaceous,7,V,Frieseinae float
+2022,2022-09-01,Rambera,Ram4,GF,Ram4GF,middle,3,mite,fungivorous,123,V,NA
+2022,2022-09-01,Rambera,Ram4,GF,Ram4GF,middle,3,mite,nematophagous,111,V,NA
+2022,2022-09-01,Rambera,Ram4,GF,Ram4GF,middle,3,mite,predaceous,41,V,NA
+2022,2022-09-01,Rambera,Ram4,GF,Ram4GF,middle,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-01,Rambera,Ram4,GF,Ram4GF,middle,3,collembola,fungivorous,72,V,NA
+2022,2022-09-01,Rambera,Ram4,GF,Ram4GF,middle,3,collembola,predaceous,5,V,NA
+2022,2022-09-01,Rambera,Ram4,FB,Ram4FB,high,3,mite,fungivorous,108,V,regular bulb
+2022,2022-09-01,Rambera,Ram4,FB,Ram4FB,high,3,mite,nematophagous,5,V,regular bulb
+2022,2022-09-01,Rambera,Ram4,FB,Ram4FB,high,3,mite,predaceous,51,V,regular bulb
+2022,2022-09-01,Rambera,Ram4,FB,Ram4FB,high,3,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-09-01,Rambera,Ram4,FB,Ram4FB,high,3,collembola,fungivorous,18,V,regular bulb
+2022,2022-09-01,Rambera,Ram4,FB,Ram4FB,high,3,collembola,predaceous,3,V,regular bulb
+2022,2022-09-01,Rambera,Ram4,GB,Ram4GB,low,3,mite,fungivorous,18,M,NA
+2022,2022-09-01,Rambera,Ram4,GB,Ram4GB,low,3,mite,nematophagous,0,M,NA
+2022,2022-09-01,Rambera,Ram4,GB,Ram4GB,low,3,mite,predaceous,27,M,NA
+2022,2022-09-01,Rambera,Ram4,GB,Ram4GB,low,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-01,Rambera,Ram4,GB,Ram4GB,low,3,collembola,fungivorous,3,M,NA
+2022,2022-09-01,Rambera,Ram4,GB,Ram4GB,low,3,collembola,predaceous,0,M,NA
+2022,2022-09-01,Rambera,Ram4,FGB,Ram4FGB,middle,3,mite,fungivorous,221,V,NA
+2022,2022-09-01,Rambera,Ram4,FGB,Ram4FGB,middle,3,mite,nematophagous,6,V,NA
+2022,2022-09-01,Rambera,Ram4,FGB,Ram4FGB,middle,3,mite,predaceous,68,V,NA
+2022,2022-09-01,Rambera,Ram4,FGB,Ram4FGB,middle,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-01,Rambera,Ram4,FGB,Ram4FGB,middle,3,collembola,fungivorous,50,V,NA
+2022,2022-09-01,Rambera,Ram4,FGB,Ram4FGB,middle,3,collembola,predaceous,5,V,NA
+2022,2022-09-01,Rambera,Ram4,C,Ram4C,middle,3,mite,fungivorous,175,V,NA
+2022,2022-09-01,Rambera,Ram4,C,Ram4C,middle,3,mite,nematophagous,32,V,NA
+2022,2022-09-01,Rambera,Ram4,C,Ram4C,middle,3,mite,predaceous,74,V,NA
+2022,2022-09-01,Rambera,Ram4,C,Ram4C,middle,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-01,Rambera,Ram4,C,Ram4C,middle,3,collembola,fungivorous,60,V,NA
+2022,2022-09-01,Rambera,Ram4,C,Ram4C,middle,3,collembola,predaceous,4,V,NA
+2022,2022-09-01,Rambera,Ram5,GF,Ram5GF,high,3,mite,fungivorous,29,M,NA
+2022,2022-09-01,Rambera,Ram5,GF,Ram5GF,high,3,mite,nematophagous,4,M,NA
+2022,2022-09-01,Rambera,Ram5,GF,Ram5GF,high,3,mite,predaceous,19,M,NA
+2022,2022-09-01,Rambera,Ram5,GF,Ram5GF,high,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-01,Rambera,Ram5,GF,Ram5GF,high,3,collembola,fungivorous,14,M,NA
+2022,2022-09-01,Rambera,Ram5,GF,Ram5GF,high,3,collembola,predaceous,0,M,NA
+2022,2022-09-01,Rambera,Ram5,FB,Ram5FB,high,3,mite,fungivorous,22,V,NA
+2022,2022-09-01,Rambera,Ram5,FB,Ram5FB,high,3,mite,nematophagous,0,V,NA
+2022,2022-09-01,Rambera,Ram5,FB,Ram5FB,high,3,mite,predaceous,12,V,NA
+2022,2022-09-01,Rambera,Ram5,FB,Ram5FB,high,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-01,Rambera,Ram5,FB,Ram5FB,high,3,collembola,fungivorous,0,V,NA
+2022,2022-09-01,Rambera,Ram5,FB,Ram5FB,high,3,collembola,predaceous,0,V,NA
+2022,2022-09-01,Rambera,Ram5,GB,Ram5GB,low,3,mite,fungivorous,66,M,NA
+2022,2022-09-01,Rambera,Ram5,GB,Ram5GB,low,3,mite,nematophagous,50,M,NA
+2022,2022-09-01,Rambera,Ram5,GB,Ram5GB,low,3,mite,predaceous,34,M,NA
+2022,2022-09-01,Rambera,Ram5,GB,Ram5GB,low,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-01,Rambera,Ram5,GB,Ram5GB,low,3,collembola,fungivorous,52,M,NA
+2022,2022-09-01,Rambera,Ram5,GB,Ram5GB,low,3,collembola,predaceous,2,M,NA
+2022,2022-09-01,Rambera,Ram5,FGB,Ram5FGB,low,3,mite,fungivorous,47,M,NA
+2022,2022-09-01,Rambera,Ram5,FGB,Ram5FGB,low,3,mite,nematophagous,17,M,NA
+2022,2022-09-01,Rambera,Ram5,FGB,Ram5FGB,low,3,mite,predaceous,37,M,NA
+2022,2022-09-01,Rambera,Ram5,FGB,Ram5FGB,low,3,mite,unknownjuvenile,2,M,NA
+2022,2022-09-01,Rambera,Ram5,FGB,Ram5FGB,low,3,collembola,fungivorous,65,M,NA
+2022,2022-09-01,Rambera,Ram5,FGB,Ram5FGB,low,3,collembola,predaceous,0,M,NA
+2022,2022-09-01,Rambera,Ram5,C,Ram5C,high,3,mite,fungivorous,35,M,regular bulb.
+2022,2022-09-01,Rambera,Ram5,C,Ram5C,high,3,mite,nematophagous,4,M,regular bulb.
+2022,2022-09-01,Rambera,Ram5,C,Ram5C,high,3,mite,predaceous,15,M,regular bulb.
+2022,2022-09-01,Rambera,Ram5,C,Ram5C,high,3,mite,unknownjuvenile,0,M,regular bulb.
+2022,2022-09-01,Rambera,Ram5,C,Ram5C,high,3,collembola,fungivorous,5,M,regular bulb.
+2022,2022-09-01,Rambera,Ram5,C,Ram5C,high,3,collembola,predaceous,1,M,regular bulb.
+2022,2022-09-01,Rambera,Ram6,GF,Ram6GF,high,3,mite,fungivorous,2,V,regular bulb
+2022,2022-09-01,Rambera,Ram6,GF,Ram6GF,high,3,mite,nematophagous,0,V,regular bulb
+2022,2022-09-01,Rambera,Ram6,GF,Ram6GF,high,3,mite,predaceous,9,V,regular bulb
+2022,2022-09-01,Rambera,Ram6,GF,Ram6GF,high,3,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-09-01,Rambera,Ram6,GF,Ram6GF,high,3,collembola,fungivorous,1,V,regular bulb
+2022,2022-09-01,Rambera,Ram6,GF,Ram6GF,high,3,collembola,predaceous,0,V,regular bulb
+2022,2022-09-01,Rambera,Ram6,FB,Ram6FB,low,3,mite,fungivorous,102,V,NA
+2022,2022-09-01,Rambera,Ram6,FB,Ram6FB,low,3,mite,nematophagous,17,V,NA
+2022,2022-09-01,Rambera,Ram6,FB,Ram6FB,low,3,mite,predaceous,19,V,NA
+2022,2022-09-01,Rambera,Ram6,FB,Ram6FB,low,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-01,Rambera,Ram6,FB,Ram6FB,low,3,collembola,fungivorous,32,V,NA
+2022,2022-09-01,Rambera,Ram6,FB,Ram6FB,low,3,collembola,predaceous,1,V,NA
+2022,2022-09-01,Rambera,Ram6,GB,Ram6GB,low,3,mite,fungivorous,33,M,RAM 2 GB bis?
+2022,2022-09-01,Rambera,Ram6,GB,Ram6GB,low,3,mite,nematophagous,0,M,RAM 2 GB bis?
+2022,2022-09-01,Rambera,Ram6,GB,Ram6GB,low,3,mite,predaceous,7,M,RAM 2 GB bis?
+2022,2022-09-01,Rambera,Ram6,GB,Ram6GB,low,3,mite,unknownjuvenile,0,M,RAM 2 GB bis?
+2022,2022-09-01,Rambera,Ram6,GB,Ram6GB,low,3,collembola,fungivorous,1,M,RAM 2 GB bis?
+2022,2022-09-01,Rambera,Ram6,GB,Ram6GB,low,3,collembola,predaceous,1,M,RAM 2 GB bis?
+2022,2022-09-01,Rambera,Ram6,FGB,Ram6FGB,middle,3,mite,fungivorous,8,M,NA
+2022,2022-09-01,Rambera,Ram6,FGB,Ram6FGB,middle,3,mite,nematophagous,0,M,NA
+2022,2022-09-01,Rambera,Ram6,FGB,Ram6FGB,middle,3,mite,predaceous,7,M,NA
+2022,2022-09-01,Rambera,Ram6,FGB,Ram6FGB,middle,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-01,Rambera,Ram6,FGB,Ram6FGB,middle,3,collembola,fungivorous,0,M,NA
+2022,2022-09-01,Rambera,Ram6,FGB,Ram6FGB,middle,3,collembola,predaceous,0,M,NA
+2022,2022-09-01,Rambera,Ram6,C,Ram6C,middle,3,mite,fungivorous,147,M,NA
+2022,2022-09-01,Rambera,Ram6,C,Ram6C,middle,3,mite,nematophagous,5,M,NA
+2022,2022-09-01,Rambera,Ram6,C,Ram6C,middle,3,mite,predaceous,23,M,NA
+2022,2022-09-01,Rambera,Ram6,C,Ram6C,middle,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-01,Rambera,Ram6,C,Ram6C,middle,3,collembola,fungivorous,15,M,NA
+2022,2022-09-01,Rambera,Ram6,C,Ram6C,middle,3,collembola,predaceous,14,M,NA
+2022,2022-08-30,Veskre,Ves1,GF,Ves1GF,low,2,mite,fungivorous,53,M,NA
+2022,2022-08-30,Veskre,Ves1,GF,Ves1GF,low,2,mite,nematophagous,2,M,NA
+2022,2022-08-30,Veskre,Ves1,GF,Ves1GF,low,2,mite,predaceous,17,M,NA
+2022,2022-08-30,Veskre,Ves1,GF,Ves1GF,low,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-30,Veskre,Ves1,GF,Ves1GF,low,2,collembola,fungivorous,24,M,NA
+2022,2022-08-30,Veskre,Ves1,GF,Ves1GF,low,2,collembola,predaceous,3,M,NA
+2022,2022-08-30,Veskre,Ves1,FB,Ves1FB,low,2,mite,fungivorous,6,M,NA
+2022,2022-08-30,Veskre,Ves1,FB,Ves1FB,low,2,mite,nematophagous,1,M,NA
+2022,2022-08-30,Veskre,Ves1,FB,Ves1FB,low,2,mite,predaceous,6,M,NA
+2022,2022-08-30,Veskre,Ves1,FB,Ves1FB,low,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-30,Veskre,Ves1,FB,Ves1FB,low,2,collembola,fungivorous,3,M,NA
+2022,2022-08-30,Veskre,Ves1,FB,Ves1FB,low,2,collembola,predaceous,0,M,NA
+2022,2022-08-30,Veskre,Ves1,GB,Ves1GB,middle,2,mite,fungivorous,17,V,NA
+2022,2022-08-30,Veskre,Ves1,GB,Ves1GB,middle,2,mite,nematophagous,6,V,NA
+2022,2022-08-30,Veskre,Ves1,GB,Ves1GB,middle,2,mite,predaceous,2,V,NA
+2022,2022-08-30,Veskre,Ves1,GB,Ves1GB,middle,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-30,Veskre,Ves1,GB,Ves1GB,middle,2,collembola,fungivorous,1,V,NA
+2022,2022-08-30,Veskre,Ves1,GB,Ves1GB,middle,2,collembola,predaceous,1,V,NA
+2022,2022-08-30,Veskre,Ves1,FGB,Ves1FGB,high,2,mite,fungivorous,7,V,NA
+2022,2022-08-30,Veskre,Ves1,FGB,Ves1FGB,high,2,mite,nematophagous,0,V,NA
+2022,2022-08-30,Veskre,Ves1,FGB,Ves1FGB,high,2,mite,predaceous,4,V,NA
+2022,2022-08-30,Veskre,Ves1,FGB,Ves1FGB,high,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-30,Veskre,Ves1,FGB,Ves1FGB,high,2,collembola,fungivorous,0,V,NA
+2022,2022-08-30,Veskre,Ves1,FGB,Ves1FGB,high,2,collembola,predaceous,0,V,NA
+2022,2022-08-30,Veskre,Ves1,C,Ves1C,low,2,mite,fungivorous,20,M,NA
+2022,2022-08-30,Veskre,Ves1,C,Ves1C,low,2,mite,nematophagous,0,M,NA
+2022,2022-08-30,Veskre,Ves1,C,Ves1C,low,2,mite,predaceous,13,M,NA
+2022,2022-08-30,Veskre,Ves1,C,Ves1C,low,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-30,Veskre,Ves1,C,Ves1C,low,2,collembola,fungivorous,9,M,NA
+2022,2022-08-30,Veskre,Ves1,C,Ves1C,low,2,collembola,predaceous,1,M,NA
+2022,2022-08-30,Veskre,Ves2,GF,Ves2GF,middle,2,mite,fungivorous,75,V,NA
+2022,2022-08-30,Veskre,Ves2,GF,Ves2GF,middle,2,mite,nematophagous,1,V,NA
+2022,2022-08-30,Veskre,Ves2,GF,Ves2GF,middle,2,mite,predaceous,22,V,NA
+2022,2022-08-30,Veskre,Ves2,GF,Ves2GF,middle,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-30,Veskre,Ves2,GF,Ves2GF,middle,2,collembola,fungivorous,2,V,NA
+2022,2022-08-30,Veskre,Ves2,GF,Ves2GF,middle,2,collembola,predaceous,7,V,NA
+2022,2022-08-30,Veskre,Ves2,FB,Ves2FB,high,2,mite,fungivorous,93,V,regular bulb
+2022,2022-08-30,Veskre,Ves2,FB,Ves2FB,high,2,mite,nematophagous,39,V,regular bulb
+2022,2022-08-30,Veskre,Ves2,FB,Ves2FB,high,2,mite,predaceous,22,V,regular bulb
+2022,2022-08-30,Veskre,Ves2,FB,Ves2FB,high,2,mite,unknownjuvenile,0,V,regular bulb
+2022,2022-08-30,Veskre,Ves2,FB,Ves2FB,high,2,collembola,fungivorous,4,V,regular bulb
+2022,2022-08-30,Veskre,Ves2,FB,Ves2FB,high,2,collembola,predaceous,2,V,regular bulb
+2022,2022-08-30,Veskre,Ves2,GB,Ves2GB,middle,2,mite,fungivorous,51,M,NA
+2022,2022-08-30,Veskre,Ves2,GB,Ves2GB,middle,2,mite,nematophagous,14,M,NA
+2022,2022-08-30,Veskre,Ves2,GB,Ves2GB,middle,2,mite,predaceous,37,M,NA
+2022,2022-08-30,Veskre,Ves2,GB,Ves2GB,middle,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-30,Veskre,Ves2,GB,Ves2GB,middle,2,collembola,fungivorous,17,M,NA
+2022,2022-08-30,Veskre,Ves2,GB,Ves2GB,middle,2,collembola,predaceous,2,M,NA
+2022,2022-08-30,Veskre,Ves2,FGB,Ves2FGB,high,2,mite,fungivorous,21,M,regular bulb
+2022,2022-08-30,Veskre,Ves2,FGB,Ves2FGB,high,2,mite,nematophagous,0,M,regular bulb
+2022,2022-08-30,Veskre,Ves2,FGB,Ves2FGB,high,2,mite,predaceous,9,M,regular bulb
+2022,2022-08-30,Veskre,Ves2,FGB,Ves2FGB,high,2,mite,unknownjuvenile,0,M,regular bulb
+2022,2022-08-30,Veskre,Ves2,FGB,Ves2FGB,high,2,collembola,fungivorous,10,M,regular bulb
+2022,2022-08-30,Veskre,Ves2,FGB,Ves2FGB,high,2,collembola,predaceous,0,M,regular bulb
+2022,2022-08-30,Veskre,Ves2,C,Ves2C,middle,2,mite,fungivorous,117,M,NA
+2022,2022-08-30,Veskre,Ves2,C,Ves2C,middle,2,mite,nematophagous,8,M,NA
+2022,2022-08-30,Veskre,Ves2,C,Ves2C,middle,2,mite,predaceous,49,M,NA
+2022,2022-08-30,Veskre,Ves2,C,Ves2C,middle,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-30,Veskre,Ves2,C,Ves2C,middle,2,collembola,fungivorous,18,M,NA
+2022,2022-08-30,Veskre,Ves2,C,Ves2C,middle,2,collembola,predaceous,1,M,NA
+2022,2022-08-30,Veskre,Ves3,GF,Ves3GF,high,2,mite,fungivorous,47,M,NA
+2022,2022-08-30,Veskre,Ves3,GF,Ves3GF,high,2,mite,nematophagous,0,M,NA
+2022,2022-08-30,Veskre,Ves3,GF,Ves3GF,high,2,mite,predaceous,9,M,NA
+2022,2022-08-30,Veskre,Ves3,GF,Ves3GF,high,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-30,Veskre,Ves3,GF,Ves3GF,high,2,collembola,fungivorous,14,M,NA
+2022,2022-08-30,Veskre,Ves3,GF,Ves3GF,high,2,collembola,predaceous,6,M,NA
+2022,2022-08-30,Veskre,Ves3,FB,Ves3FB,high,2,mite,fungivorous,170,M,NA
+2022,2022-08-30,Veskre,Ves3,FB,Ves3FB,high,2,mite,nematophagous,4,M,NA
+2022,2022-08-30,Veskre,Ves3,FB,Ves3FB,high,2,mite,predaceous,14,M,NA
+2022,2022-08-30,Veskre,Ves3,FB,Ves3FB,high,2,mite,unknownjuvenile,1,M,NA
+2022,2022-08-30,Veskre,Ves3,FB,Ves3FB,high,2,collembola,fungivorous,21,M,NA
+2022,2022-08-30,Veskre,Ves3,FB,Ves3FB,high,2,collembola,predaceous,2,M,NA
+2022,2022-08-30,Veskre,Ves3,GB,Ves3GB,low,2,mite,fungivorous,32,M,NA
+2022,2022-08-30,Veskre,Ves3,GB,Ves3GB,low,2,mite,nematophagous,4,M,NA
+2022,2022-08-30,Veskre,Ves3,GB,Ves3GB,low,2,mite,predaceous,19,M,NA
+2022,2022-08-30,Veskre,Ves3,GB,Ves3GB,low,2,mite,unknownjuvenile,0,M,NA
+2022,2022-08-30,Veskre,Ves3,GB,Ves3GB,low,2,collembola,fungivorous,25,M,NA
+2022,2022-08-30,Veskre,Ves3,GB,Ves3GB,low,2,collembola,predaceous,0,M,NA
+2022,2022-08-30,Veskre,Ves3,FGB,Ves3FGB,middle,2,mite,fungivorous,14,V,NA
+2022,2022-08-30,Veskre,Ves3,FGB,Ves3FGB,middle,2,mite,nematophagous,2,V,NA
+2022,2022-08-30,Veskre,Ves3,FGB,Ves3FGB,middle,2,mite,predaceous,9,V,NA
+2022,2022-08-30,Veskre,Ves3,FGB,Ves3FGB,middle,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-30,Veskre,Ves3,FGB,Ves3FGB,middle,2,collembola,fungivorous,7,V,NA
+2022,2022-08-30,Veskre,Ves3,FGB,Ves3FGB,middle,2,collembola,predaceous,0,V,NA
+2022,2022-08-30,Veskre,Ves3,C,Ves3C,low,2,mite,fungivorous,12,V,NA
+2022,2022-08-30,Veskre,Ves3,C,Ves3C,low,2,mite,nematophagous,0,V,NA
+2022,2022-08-30,Veskre,Ves3,C,Ves3C,low,2,mite,predaceous,24,V,NA
+2022,2022-08-30,Veskre,Ves3,C,Ves3C,low,2,mite,unknownjuvenile,0,V,NA
+2022,2022-08-30,Veskre,Ves3,C,Ves3C,low,2,collembola,fungivorous,26,V,NA
+2022,2022-08-30,Veskre,Ves3,C,Ves3C,low,2,collembola,predaceous,1,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GF,Ulv1GF,middle,4,mite,fungivorous,43,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GF,Ulv1GF,middle,4,mite,nematophagous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GF,Ulv1GF,middle,4,mite,predaceous,3,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GF,Ulv1GF,middle,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GF,Ulv1GF,middle,4,collembola,fungivorous,1,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GF,Ulv1GF,middle,4,collembola,predaceous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FB,Ulv1FB,low,4,mite,fungivorous,4,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FB,Ulv1FB,low,4,mite,nematophagous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FB,Ulv1FB,low,4,mite,predaceous,1,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FB,Ulv1FB,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FB,Ulv1FB,low,4,collembola,fungivorous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FB,Ulv1FB,low,4,collembola,predaceous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GB,Ulv1GB,high,4,mite,fungivorous,43,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GB,Ulv1GB,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GB,Ulv1GB,high,4,mite,predaceous,21,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GB,Ulv1GB,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GB,Ulv1GB,high,4,collembola,fungivorous,7,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,GB,Ulv1GB,high,4,collembola,predaceous,1,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FGB,Ulv1FGB,low,4,mite,fungivorous,325,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FGB,Ulv1FGB,low,4,mite,nematophagous,2,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FGB,Ulv1FGB,low,4,mite,predaceous,8,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FGB,Ulv1FGB,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FGB,Ulv1FGB,low,4,collembola,fungivorous,35,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,FGB,Ulv1FGB,low,4,collembola,predaceous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,C,Ulv1C,low,4,mite,fungivorous,234,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,C,Ulv1C,low,4,mite,nematophagous,3,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,C,Ulv1C,low,4,mite,predaceous,68,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,C,Ulv1C,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,C,Ulv1C,low,4,collembola,fungivorous,15,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv1,C,Ulv1C,low,4,collembola,predaceous,16,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,GF,Ulv2GF,high,4,mite,fungivorous,202,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,GF,Ulv2GF,high,4,mite,nematophagous,8,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,GF,Ulv2GF,high,4,mite,predaceous,43,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,GF,Ulv2GF,high,4,mite,unknownjuvenile,0,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,GF,Ulv2GF,high,4,collembola,fungivorous,35,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,GF,Ulv2GF,high,4,collembola,predaceous,1,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,FB,Ulv2FB,middle,4,mite,fungivorous,274,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,FB,Ulv2FB,middle,4,mite,nematophagous,11,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,FB,Ulv2FB,middle,4,mite,predaceous,93,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,FB,Ulv2FB,middle,4,mite,unknownjuvenile,0,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,FB,Ulv2FB,middle,4,collembola,fungivorous,42,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,FB,Ulv2FB,middle,4,collembola,predaceous,17,M,a lot of oribatida juveniles
+2022,2022-09-07,Ulvehaugen,Ulv2,GB,Ulv2GB,high,4,mite,fungivorous,59,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,GB,Ulv2GB,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,GB,Ulv2GB,high,4,mite,predaceous,17,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,GB,Ulv2GB,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,GB,Ulv2GB,high,4,collembola,fungivorous,1,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,GB,Ulv2GB,high,4,collembola,predaceous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,FGB,Ulv2FGB,low,4,mite,fungivorous,6,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,FGB,Ulv2FGB,low,4,mite,nematophagous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,FGB,Ulv2FGB,low,4,mite,predaceous,4,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,FGB,Ulv2FGB,low,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,FGB,Ulv2FGB,low,4,collembola,fungivorous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,FGB,Ulv2FGB,low,4,collembola,predaceous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,C,Ulv2C,middle,4,mite,fungivorous,28,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,C,Ulv2C,middle,4,mite,nematophagous,2,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,C,Ulv2C,middle,4,mite,predaceous,15,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,C,Ulv2C,middle,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,C,Ulv2C,middle,4,collembola,fungivorous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv2,C,Ulv2C,middle,4,collembola,predaceous,0,V,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,GF,Ulv3GF,high,4,mite,fungivorous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,GF,Ulv3GF,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,GF,Ulv3GF,high,4,mite,predaceous,1,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,GF,Ulv3GF,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,GF,Ulv3GF,high,4,collembola,fungivorous,1,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,GF,Ulv3GF,high,4,collembola,predaceous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,FB,Ulv3FB,high,4,mite,fungivorous,1134,V,"lot of soil and juveniles, difficult"
+2022,2022-09-07,Ulvehaugen,Ulv3,FB,Ulv3FB,high,4,mite,nematophagous,23,V,"lot of soil and juveniles, difficult"
+2022,2022-09-07,Ulvehaugen,Ulv3,FB,Ulv3FB,high,4,mite,predaceous,161,V,"lot of soil and juveniles, difficult"
+2022,2022-09-07,Ulvehaugen,Ulv3,FB,Ulv3FB,high,4,mite,unknownjuvenile,0,V,"lot of soil and juveniles, difficult"
+2022,2022-09-07,Ulvehaugen,Ulv3,FB,Ulv3FB,high,4,collembola,fungivorous,29,V,"lot of soil and juveniles, difficult"
+2022,2022-09-07,Ulvehaugen,Ulv3,FB,Ulv3FB,high,4,collembola,predaceous,13,V,"lot of soil and juveniles, difficult"
+2022,2022-09-07,Ulvehaugen,Ulv3,GB,Ulv3GB,middle,4,mite,fungivorous,347,M,a lot of juveniles
+2022,2022-09-07,Ulvehaugen,Ulv3,GB,Ulv3GB,middle,4,mite,nematophagous,7,M,a lot of juveniles
+2022,2022-09-07,Ulvehaugen,Ulv3,GB,Ulv3GB,middle,4,mite,predaceous,26,M,a lot of juveniles
+2022,2022-09-07,Ulvehaugen,Ulv3,GB,Ulv3GB,middle,4,mite,unknownjuvenile,0,M,a lot of juveniles
+2022,2022-09-07,Ulvehaugen,Ulv3,GB,Ulv3GB,middle,4,collembola,fungivorous,20,M,a lot of juveniles
+2022,2022-09-07,Ulvehaugen,Ulv3,GB,Ulv3GB,middle,4,collembola,predaceous,2,M,a lot of juveniles
+2022,2022-09-07,Ulvehaugen,Ulv3,FGB,Ulv3FGB,low,4,mite,fungivorous,805,V,"Hardly adults, almost all juveniles"
+2022,2022-09-07,Ulvehaugen,Ulv3,FGB,Ulv3FGB,low,4,mite,nematophagous,0,V,"Hardly adults, almost all juveniles"
+2022,2022-09-07,Ulvehaugen,Ulv3,FGB,Ulv3FGB,low,4,mite,predaceous,32,V,"Hardly adults, almost all juveniles"
+2022,2022-09-07,Ulvehaugen,Ulv3,FGB,Ulv3FGB,low,4,mite,unknownjuvenile,0,V,"Hardly adults, almost all juveniles"
+2022,2022-09-07,Ulvehaugen,Ulv3,FGB,Ulv3FGB,low,4,collembola,fungivorous,6,V,"Hardly adults, almost all juveniles"
+2022,2022-09-07,Ulvehaugen,Ulv3,FGB,Ulv3FGB,low,4,collembola,predaceous,0,V,"Hardly adults, almost all juveniles"
+2022,2022-09-07,Ulvehaugen,Ulv3,C,Ulv3C,middle,4,mite,fungivorous,11,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,C,Ulv3C,middle,4,mite,nematophagous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,C,Ulv3C,middle,4,mite,predaceous,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,C,Ulv3C,middle,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,C,Ulv3C,middle,4,collembola,fungivorous,2,M,NA
+2022,2022-09-07,Ulvehaugen,Ulv3,C,Ulv3C,middle,4,collembola,predaceous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav1,GF,Lav1GF,middle,3,mite,fungivorous,4,M,23/9 lamp broke
+2022,2022-09-08,Lavisdalen,Lav1,GF,Lav1GF,middle,3,mite,nematophagous,0,M,23/9 lamp broke
+2022,2022-09-08,Lavisdalen,Lav1,GF,Lav1GF,middle,3,mite,predaceous,12,M,23/9 lamp broke
+2022,2022-09-08,Lavisdalen,Lav1,GF,Lav1GF,middle,3,mite,unknownjuvenile,0,M,23/9 lamp broke
+2022,2022-09-08,Lavisdalen,Lav1,GF,Lav1GF,middle,3,collembola,fungivorous,1,M,23/9 lamp broke
+2022,2022-09-08,Lavisdalen,Lav1,GF,Lav1GF,middle,3,collembola,predaceous,0,M,23/9 lamp broke
+2022,2022-09-08,Lavisdalen,Lav1,FB,Lav1FB,low,3,mite,fungivorous,36,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FB,Lav1FB,low,3,mite,nematophagous,1,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FB,Lav1FB,low,3,mite,predaceous,13,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FB,Lav1FB,low,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FB,Lav1FB,low,3,collembola,fungivorous,4,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FB,Lav1FB,low,3,collembola,predaceous,1,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,GB,Lav1GB,high,3,mite,fungivorous,59,M,NA
+2022,2022-09-08,Lavisdalen,Lav1,GB,Lav1GB,high,3,mite,nematophagous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav1,GB,Lav1GB,high,3,mite,predaceous,34,M,NA
+2022,2022-09-08,Lavisdalen,Lav1,GB,Lav1GB,high,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav1,GB,Lav1GB,high,3,collembola,fungivorous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav1,GB,Lav1GB,high,3,collembola,predaceous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav1,FGB,Lav1FGB,low,3,mite,fungivorous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FGB,Lav1FGB,low,3,mite,nematophagous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FGB,Lav1FGB,low,3,mite,predaceous,6,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FGB,Lav1FGB,low,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FGB,Lav1FGB,low,3,collembola,fungivorous,3,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,FGB,Lav1FGB,low,3,collembola,predaceous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,C,Lav1C,middle,3,mite,fungivorous,19,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,C,Lav1C,middle,3,mite,nematophagous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,C,Lav1C,middle,3,mite,predaceous,2,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,C,Lav1C,middle,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,C,Lav1C,middle,3,collembola,fungivorous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav1,C,Lav1C,middle,3,collembola,predaceous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,GF,Lav2GF,low,3,mite,fungivorous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav2,GF,Lav2GF,low,3,mite,nematophagous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav2,GF,Lav2GF,low,3,mite,predaceous,2,M,NA
+2022,2022-09-08,Lavisdalen,Lav2,GF,Lav2GF,low,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav2,GF,Lav2GF,low,3,collembola,fungivorous,1,M,NA
+2022,2022-09-08,Lavisdalen,Lav2,GF,Lav2GF,low,3,collembola,predaceous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav2,FB,Lav2FB,high,3,mite,fungivorous,56,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav2,FB,Lav2FB,high,3,mite,nematophagous,0,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav2,FB,Lav2FB,high,3,mite,predaceous,13,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav2,FB,Lav2FB,high,3,mite,unknownjuvenile,0,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav2,FB,Lav2FB,high,3,collembola,fungivorous,1,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav2,FB,Lav2FB,high,3,collembola,predaceous,0,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav2,GB,Lav2GB,middle,3,mite,fungivorous,212,V,lot of juveniles- float away so difficult to count
+2022,2022-09-08,Lavisdalen,Lav2,GB,Lav2GB,middle,3,mite,nematophagous,11,V,lot of juveniles- float away so difficult to count
+2022,2022-09-08,Lavisdalen,Lav2,GB,Lav2GB,middle,3,mite,predaceous,92,V,lot of juveniles- float away so difficult to count
+2022,2022-09-08,Lavisdalen,Lav2,GB,Lav2GB,middle,3,mite,unknownjuvenile,0,V,lot of juveniles- float away so difficult to count
+2022,2022-09-08,Lavisdalen,Lav2,GB,Lav2GB,middle,3,collembola,fungivorous,5,V,lot of juveniles- float away so difficult to count
+2022,2022-09-08,Lavisdalen,Lav2,GB,Lav2GB,middle,3,collembola,predaceous,0,V,lot of juveniles- float away so difficult to count
+2022,2022-09-08,Lavisdalen,Lav2,FGB,Lav2FGB,high,3,mite,fungivorous,7,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,FGB,Lav2FGB,high,3,mite,nematophagous,1,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,FGB,Lav2FGB,high,3,mite,predaceous,33,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,FGB,Lav2FGB,high,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,FGB,Lav2FGB,high,3,collembola,fungivorous,1,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,FGB,Lav2FGB,high,3,collembola,predaceous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,C,Lav2C,middle,3,mite,fungivorous,45,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,C,Lav2C,middle,3,mite,nematophagous,1,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,C,Lav2C,middle,3,mite,predaceous,17,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,C,Lav2C,middle,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,C,Lav2C,middle,3,collembola,fungivorous,1,V,NA
+2022,2022-09-08,Lavisdalen,Lav2,C,Lav2C,middle,3,collembola,predaceous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav3,GF,Lav3GF,low,3,mite,fungivorous,45,V,NA
+2022,2022-09-08,Lavisdalen,Lav3,GF,Lav3GF,low,3,mite,nematophagous,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav3,GF,Lav3GF,low,3,mite,predaceous,36,V,NA
+2022,2022-09-08,Lavisdalen,Lav3,GF,Lav3GF,low,3,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Lavisdalen,Lav3,GF,Lav3GF,low,3,collembola,fungivorous,3,V,NA
+2022,2022-09-08,Lavisdalen,Lav3,GF,Lav3GF,low,3,collembola,predaceous,3,V,NA
+2022,2022-09-08,Lavisdalen,Lav3,FB,Lav3FB,middle,3,mite,fungivorous,21,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FB,Lav3FB,middle,3,mite,nematophagous,4,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FB,Lav3FB,middle,3,mite,predaceous,39,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FB,Lav3FB,middle,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FB,Lav3FB,middle,3,collembola,fungivorous,4,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FB,Lav3FB,middle,3,collembola,predaceous,2,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,GB,Lav3GB,low,3,mite,fungivorous,243,V,2 samples
+2022,2022-09-08,Lavisdalen,Lav3,GB,Lav3GB,low,3,mite,nematophagous,6,V,2 samples
+2022,2022-09-08,Lavisdalen,Lav3,GB,Lav3GB,low,3,mite,predaceous,150,V,2 samples
+2022,2022-09-08,Lavisdalen,Lav3,GB,Lav3GB,low,3,mite,unknownjuvenile,0,V,2 samples
+2022,2022-09-08,Lavisdalen,Lav3,GB,Lav3GB,low,3,collembola,fungivorous,63,V,2 samples
+2022,2022-09-08,Lavisdalen,Lav3,GB,Lav3GB,low,3,collembola,predaceous,6,V,2 samples
+2022,2022-09-08,Lavisdalen,Lav3,FGB,Lav3FGB,high,3,mite,fungivorous,4,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FGB,Lav3FGB,high,3,mite,nematophagous,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FGB,Lav3FGB,high,3,mite,predaceous,15,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FGB,Lav3FGB,high,3,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FGB,Lav3FGB,high,3,collembola,fungivorous,1,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,FGB,Lav3FGB,high,3,collembola,predaceous,2,M,NA
+2022,2022-09-08,Lavisdalen,Lav3,C,Lav3C,high,3,mite,fungivorous,6,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav3,C,Lav3C,high,3,mite,nematophagous,0,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav3,C,Lav3C,high,3,mite,predaceous,2,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav3,C,Lav3C,high,3,mite,unknownjuvenile,0,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav3,C,Lav3C,high,3,collembola,fungivorous,0,M,regular bulb
+2022,2022-09-08,Lavisdalen,Lav3,C,Lav3C,high,3,collembola,predaceous,0,M,regular bulb
+2022,2022-09-06,Gudmedalen,Gud5,GF,Gud5GF,NA,4,mite,fungivorous,13,M,"extraction height not recorded, but sample is present"
+2022,2022-09-06,Gudmedalen,Gud5,GF,Gud5GF,NA,4,mite,nematophagous,0,M,"extraction height not recorded, but sample is present"
+2022,2022-09-06,Gudmedalen,Gud5,GF,Gud5GF,NA,4,mite,predaceous,4,M,"extraction height not recorded, but sample is present"
+2022,2022-09-06,Gudmedalen,Gud5,GF,Gud5GF,NA,4,mite,unknownjuvenile,0,M,"extraction height not recorded, but sample is present"
+2022,2022-09-06,Gudmedalen,Gud5,GF,Gud5GF,NA,4,collembola,fungivorous,2,M,"extraction height not recorded, but sample is present"
+2022,2022-09-06,Gudmedalen,Gud5,GF,Gud5GF,NA,4,collembola,predaceous,0,M,"extraction height not recorded, but sample is present"
+2022,2022-09-06,Gudmedalen,Gud5,FB,Gud5FB,low,4,mite,fungivorous,5,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,FB,Gud5FB,low,4,mite,nematophagous,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,FB,Gud5FB,low,4,mite,predaceous,10,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,FB,Gud5FB,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,FB,Gud5FB,low,4,collembola,fungivorous,1,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,FB,Gud5FB,low,4,collembola,predaceous,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,GB,Gud5GB,low,4,mite,fungivorous,11,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,GB,Gud5GB,low,4,mite,nematophagous,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,GB,Gud5GB,low,4,mite,predaceous,5,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,GB,Gud5GB,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,GB,Gud5GB,low,4,collembola,fungivorous,8,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,GB,Gud5GB,low,4,collembola,predaceous,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud5,FGB,Gud5FGB,middle,4,mite,fungivorous,124,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud5,FGB,Gud5FGB,middle,4,mite,nematophagous,2,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud5,FGB,Gud5FGB,middle,4,mite,predaceous,23,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud5,FGB,Gud5FGB,middle,4,mite,unknownjuvenile,7,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud5,FGB,Gud5FGB,middle,4,collembola,fungivorous,78,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud5,FGB,Gud5FGB,middle,4,collembola,predaceous,7,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud5,C,Gud5C,high,4,mite,fungivorous,4,M,NA
+2022,2022-09-06,Gudmedalen,Gud5,C,Gud5C,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud5,C,Gud5C,high,4,mite,predaceous,4,M,NA
+2022,2022-09-06,Gudmedalen,Gud5,C,Gud5C,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud5,C,Gud5C,high,4,collembola,fungivorous,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud5,C,Gud5C,high,4,collembola,predaceous,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud12,GF,Gud12GF,high,4,mite,fungivorous,8,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,GF,Gud12GF,high,4,mite,nematophagous,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,GF,Gud12GF,high,4,mite,predaceous,4,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,GF,Gud12GF,high,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,GF,Gud12GF,high,4,collembola,fungivorous,1,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,GF,Gud12GF,high,4,collembola,predaceous,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,FB,Gud12FB,middle,4,mite,fungivorous,392,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,FB,Gud12FB,middle,4,mite,nematophagous,24,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,FB,Gud12FB,middle,4,mite,predaceous,45,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,FB,Gud12FB,middle,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,FB,Gud12FB,middle,4,collembola,fungivorous,25,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,FB,Gud12FB,middle,4,collembola,predaceous,2,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,GB,Gud12GB,middle,4,mite,fungivorous,180,M,NA
+2022,2022-09-06,Gudmedalen,Gud12,GB,Gud12GB,middle,4,mite,nematophagous,36,M,NA
+2022,2022-09-06,Gudmedalen,Gud12,GB,Gud12GB,middle,4,mite,predaceous,26,M,NA
+2022,2022-09-06,Gudmedalen,Gud12,GB,Gud12GB,middle,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud12,GB,Gud12GB,middle,4,collembola,fungivorous,51,M,NA
+2022,2022-09-06,Gudmedalen,Gud12,GB,Gud12GB,middle,4,collembola,predaceous,4,M,NA
+2022,2022-09-06,Gudmedalen,Gud12,FGB,Gud12FGB,low,4,mite,fungivorous,38,M,a lot of juveniles
+2022,2022-09-06,Gudmedalen,Gud12,FGB,Gud12FGB,low,4,mite,nematophagous,1,M,a lot of juveniles
+2022,2022-09-06,Gudmedalen,Gud12,FGB,Gud12FGB,low,4,mite,predaceous,25,M,a lot of juveniles
+2022,2022-09-06,Gudmedalen,Gud12,FGB,Gud12FGB,low,4,mite,unknownjuvenile,5,M,a lot of juveniles
+2022,2022-09-06,Gudmedalen,Gud12,FGB,Gud12FGB,low,4,collembola,fungivorous,7,M,a lot of juveniles
+2022,2022-09-06,Gudmedalen,Gud12,FGB,Gud12FGB,low,4,collembola,predaceous,0,M,a lot of juveniles
+2022,2022-09-06,Gudmedalen,Gud12,C,Gud12C,low,4,mite,fungivorous,193,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,C,Gud12C,low,4,mite,nematophagous,14,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,C,Gud12C,low,4,mite,predaceous,45,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,C,Gud12C,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,C,Gud12C,low,4,collembola,fungivorous,10,V,NA
+2022,2022-09-06,Gudmedalen,Gud12,C,Gud12C,low,4,collembola,predaceous,2,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,GF,Gud13GF,high,4,mite,fungivorous,2,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,GF,Gud13GF,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,GF,Gud13GF,high,4,mite,predaceous,5,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,GF,Gud13GF,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,GF,Gud13GF,high,4,collembola,fungivorous,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,GF,Gud13GF,high,4,collembola,predaceous,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,FB,Gud13FB,high,4,mite,fungivorous,258,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,FB,Gud13FB,high,4,mite,nematophagous,9,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,FB,Gud13FB,high,4,mite,predaceous,53,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,FB,Gud13FB,high,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,FB,Gud13FB,high,4,collembola,fungivorous,17,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,FB,Gud13FB,high,4,collembola,predaceous,1,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,GB,Gud13GB,middle,4,mite,fungivorous,283,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,GB,Gud13GB,middle,4,mite,nematophagous,5,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,GB,Gud13GB,middle,4,mite,predaceous,32,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,GB,Gud13GB,middle,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,GB,Gud13GB,middle,4,collembola,fungivorous,14,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,GB,Gud13GB,middle,4,collembola,predaceous,0,V,NA
+2022,2022-09-06,Gudmedalen,Gud13,FGB,Gud13FGB,low,4,mite,fungivorous,74,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud13,FGB,Gud13FGB,low,4,mite,nematophagous,5,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud13,FGB,Gud13FGB,low,4,mite,predaceous,45,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud13,FGB,Gud13FGB,low,4,mite,unknownjuvenile,2,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud13,FGB,Gud13FGB,low,4,collembola,fungivorous,98,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud13,FGB,Gud13FGB,low,4,collembola,predaceous,8,M,A lot of mini mites
+2022,2022-09-06,Gudmedalen,Gud13,C,Gud13C,middle,4,mite,fungivorous,124,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,C,Gud13C,middle,4,mite,nematophagous,5,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,C,Gud13C,middle,4,mite,predaceous,49,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,C,Gud13C,middle,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,C,Gud13C,middle,4,collembola,fungivorous,26,M,NA
+2022,2022-09-06,Gudmedalen,Gud13,C,Gud13C,middle,4,collembola,predaceous,6,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,GF,Skj1GF,middle,4,mite,fungivorous,27,M,a lot of small individus
+2022,2022-09-08,Skjelingahaugen,Skj1,GF,Skj1GF,middle,4,mite,nematophagous,0,M,a lot of small individus
+2022,2022-09-08,Skjelingahaugen,Skj1,GF,Skj1GF,middle,4,mite,predaceous,7,M,a lot of small individus
+2022,2022-09-08,Skjelingahaugen,Skj1,GF,Skj1GF,middle,4,mite,unknownjuvenile,0,M,a lot of small individus
+2022,2022-09-08,Skjelingahaugen,Skj1,GF,Skj1GF,middle,4,collembola,fungivorous,2,M,a lot of small individus
+2022,2022-09-08,Skjelingahaugen,Skj1,GF,Skj1GF,middle,4,collembola,predaceous,0,M,a lot of small individus
+2022,2022-09-08,Skjelingahaugen,Skj1,FB,Skj1FB,middle,4,mite,fungivorous,61,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FB,Skj1FB,middle,4,mite,nematophagous,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FB,Skj1FB,middle,4,mite,predaceous,14,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FB,Skj1FB,middle,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FB,Skj1FB,middle,4,collembola,fungivorous,2,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FB,Skj1FB,middle,4,collembola,predaceous,2,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,GB,Skj1GB,low,4,mite,fungivorous,2,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,GB,Skj1GB,low,4,mite,nematophagous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,GB,Skj1GB,low,4,mite,predaceous,2,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,GB,Skj1GB,low,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,GB,Skj1GB,low,4,collembola,fungivorous,1,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,GB,Skj1GB,low,4,collembola,predaceous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FGB,Skj1FGB,low,4,mite,fungivorous,23,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FGB,Skj1FGB,low,4,mite,nematophagous,1,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FGB,Skj1FGB,low,4,mite,predaceous,2,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FGB,Skj1FGB,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FGB,Skj1FGB,low,4,collembola,fungivorous,5,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,FGB,Skj1FGB,low,4,collembola,predaceous,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,C,Skj1C,middle,4,mite,fungivorous,107,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,C,Skj1C,middle,4,mite,nematophagous,1,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,C,Skj1C,middle,4,mite,predaceous,63,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,C,Skj1C,middle,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,C,Skj1C,middle,4,collembola,fungivorous,11,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj1,C,Skj1C,middle,4,collembola,predaceous,1,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GF,Skj2GF,high,4,mite,fungivorous,3,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GF,Skj2GF,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GF,Skj2GF,high,4,mite,predaceous,2,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GF,Skj2GF,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GF,Skj2GF,high,4,collembola,fungivorous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GF,Skj2GF,high,4,collembola,predaceous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FB,Skj2FB,middle,4,mite,fungivorous,92,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FB,Skj2FB,middle,4,mite,nematophagous,15,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FB,Skj2FB,middle,4,mite,predaceous,48,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FB,Skj2FB,middle,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FB,Skj2FB,middle,4,collembola,fungivorous,41,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FB,Skj2FB,middle,4,collembola,predaceous,1,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GB,Skj2GB,high,4,mite,fungivorous,1,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GB,Skj2GB,high,4,mite,nematophagous,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GB,Skj2GB,high,4,mite,predaceous,1,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GB,Skj2GB,high,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GB,Skj2GB,high,4,collembola,fungivorous,1,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,GB,Skj2GB,high,4,collembola,predaceous,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FGB,Skj2FGB,middle,4,mite,fungivorous,2,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FGB,Skj2FGB,middle,4,mite,nematophagous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FGB,Skj2FGB,middle,4,mite,predaceous,2,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FGB,Skj2FGB,middle,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FGB,Skj2FGB,middle,4,collembola,fungivorous,1,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,FGB,Skj2FGB,middle,4,collembola,predaceous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,C,Skj2C,low,4,mite,fungivorous,39,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,C,Skj2C,low,4,mite,nematophagous,1,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,C,Skj2C,low,4,mite,predaceous,20,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,C,Skj2C,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,C,Skj2C,low,4,collembola,fungivorous,7,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj2,C,Skj2C,low,4,collembola,predaceous,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GF,Skj3GF,high,4,mite,fungivorous,14,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GF,Skj3GF,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GF,Skj3GF,high,4,mite,predaceous,12,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GF,Skj3GF,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GF,Skj3GF,high,4,collembola,fungivorous,4,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GF,Skj3GF,high,4,collembola,predaceous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,FB,Skj3FB,low,4,mite,fungivorous,206,M,a lot of juveniles
+2022,2022-09-08,Skjelingahaugen,Skj3,FB,Skj3FB,low,4,mite,nematophagous,24,M,a lot of juveniles
+2022,2022-09-08,Skjelingahaugen,Skj3,FB,Skj3FB,low,4,mite,predaceous,33,M,a lot of juveniles
+2022,2022-09-08,Skjelingahaugen,Skj3,FB,Skj3FB,low,4,mite,unknownjuvenile,0,M,a lot of juveniles
+2022,2022-09-08,Skjelingahaugen,Skj3,FB,Skj3FB,low,4,collembola,fungivorous,30,M,a lot of juveniles
+2022,2022-09-08,Skjelingahaugen,Skj3,FB,Skj3FB,low,4,collembola,predaceous,4,M,a lot of juveniles
+2022,2022-09-08,Skjelingahaugen,Skj3,GB,Skj3GB,high,4,mite,fungivorous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GB,Skj3GB,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GB,Skj3GB,high,4,mite,predaceous,2,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GB,Skj3GB,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GB,Skj3GB,high,4,collembola,fungivorous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,GB,Skj3GB,high,4,collembola,predaceous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,FGB,Skj3FGB,low,4,mite,fungivorous,35,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,FGB,Skj3FGB,low,4,mite,nematophagous,4,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,FGB,Skj3FGB,low,4,mite,predaceous,9,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,FGB,Skj3FGB,low,4,mite,unknownjuvenile,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,FGB,Skj3FGB,low,4,collembola,fungivorous,2,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,FGB,Skj3FGB,low,4,collembola,predaceous,0,V,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,C,Skj3C,high,4,mite,fungivorous,2,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,C,Skj3C,high,4,mite,nematophagous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,C,Skj3C,high,4,mite,predaceous,1,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,C,Skj3C,high,4,mite,unknownjuvenile,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,C,Skj3C,high,4,collembola,fungivorous,0,M,NA
+2022,2022-09-08,Skjelingahaugen,Skj3,C,Skj3C,high,4,collembola,predaceous,0,M,NA

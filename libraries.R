@@ -1,0 +1,17 @@
+# load libraries
+
+library(targets)
+library(tarchetypes)
+library(tidyverse)
+library(dataDownloader)
+library(dataDocumentation)
+library(vegan)
+library(ggvegan)
+library(glue)
+library(grid)
+library(lme4)
+library(lmerTest)
+library(broom.mixed)
+library(ggsignif)
+library(performance)
+library(glmm.hp)
