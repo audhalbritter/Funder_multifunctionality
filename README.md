@@ -27,3 +27,4 @@ Pipeline entry point: `_targets.R`. Run the pipeline with `run.R` or `targets::t
 
 - R project; dependencies managed via **renv** (`renv::restore()`).
 - Key packages: `tidyverse`, `targets`, `dataDownloader`, `dataDocumentation`, `lme4`, `lmerTest`, `vegan`, `patchwork`, `gt`, etc. (see `_targets.R` and `libraries.R`).
+- **GitHub package**: `dataDocumentation` is from GitHub. Install it with `renv::install("audhalbritter/dataDocumentation")` so renv records the source; then `renv::snapshot()` will include it in the lockfile.
