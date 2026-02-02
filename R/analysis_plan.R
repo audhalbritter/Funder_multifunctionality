@@ -146,6 +146,20 @@ analysis_plan <- list(
 
   ),
 
+  # make prediction for functional groups present model
+  tar_target(
+    name = multi_nr_pred,
+    command = model_multifun |>
+      select(data, model) |>
+      mutate(prediction = map2(.x = data, .y = model, .f = ~ safely(lmer_prediction)(.x, .y)$result)) |>
+      # merge data and prediction
+      mutate(output = map2(.x = data, .y = prediction, ~ bind_cols(.x, .y))) |>
+      unnest(output) |>
+      rename(.functional_group = .functional_group...14, temperature_scaled = temperature_scaled...10, precipitation_scaled = precipitation_scaled...11, .response = .response...19) |>
+      select(- ".response...21", ".functional_group...22", "temperature_scaled...23", "precipitation_scaled...24")
+  ),
+
+
   # results for number of functional groups present
   tar_target(
     name = model_multi_nr_out,
@@ -234,21 +248,22 @@ analysis_plan <- list(
 
   #### VARIANCE PARTITIONING ####
 
+  # run vp for responses
+  # tar_target(
+  #   name = vp_response,
+  #   command = make_variance_partioning(dat = big_data,
+  #                                      response_var = fg_richness,
+  #                                      fg_var = value_std,
+  #                                      group = "response")
+  # ),
+
   # run vp for multifunctionality
   # tar_target(
   #   name = vp_multifun,
-  #   command = {
-  #
-  #     fit <- lmer(multifuntionality ~ 1 + fg_richness + temperature_scaled:precipitation_scaled + fg_richness:temperature_scaled:precipitation_scaled + (1|siteID), data = multifunctionality)
-  #
-  #     varpart <- glmm.hp(fit)
-  #
-  #     as_tibble(varpart$hierarchical.partitioning) |>
-  #       mutate(variable = c("Random", "Functional group", "Climate", "Context"),
-  #              variable = factor(variable, levels = c("Context", "Climate", "Functional group", "Random"))) |>
-  #       rename(var_explained = `I.perc(%)`)
-  #
-  #   }
+  #   command = make_variance_partioning(dat = multifunctionality,
+  #                                      response_var = fg_richness,
+  #                                      fg_var = multifuntionality,
+  #                                      group = "level")
   # )
 
 )
