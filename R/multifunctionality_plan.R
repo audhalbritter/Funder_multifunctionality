@@ -9,22 +9,28 @@ multifunctionality_plan <- list(
       # primary producers
       plant_biomass,
       root_biomass,
-      root_productivity,
-      root_turnover,
+      root_traits,
+      plant_richness,
+      bryophyte_richness,
 
       # higher trophic levels
       nematode_density,
+      nematode_fg_density,
       microarthropod_density,
+      microarthropod_fg_density,
+      #TBA fungi and bacteria density
 
       # carbon cycle
       decomposition_forbs,
       decomposition_gram,
-      organic_matter,
+      # carbon and nitrogen stocks
+      cn_stocks |> filter(response != "CN"),
       gpp,
       nee,
       reco,
 
       # nutrient cycle
+      # nitrogen stocks added above
       available_nutrients
 
     ) |>
@@ -42,12 +48,12 @@ multifunctionality_plan <- list(
     name = big_data,
     command = big_data_raw |>
       # normalize data
-        ### WARNING WHY???  !!!
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "root turnover", "microarthropod density", "organic matter", "nitrogen", "phosphate"), log(value), value)) |>
+      # if zeros in data (nematodes and microarthropods), then there will be NAs here
+      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "bacterivores_density", "fungivores_density", "omnivores_density", "herbivores_density", "predators_density", "carbon", "nitrogen", "phosphate", "micro nutrients", "gpp"), log(value), value)) |>
       # scale variables between 0 and 1
       group_by(data_type, group, response) |>
       mutate(value_std = scale(value_trans)[, 1]) |>
-      # trasnf
+      # transform
       mutate(forb = if_else(str_detect(treatment, "F"), 0, 1),
              gram = if_else(str_detect(treatment, "G"), 0, 1),
              bryo = if_else(str_detect(treatment, "B"), 0, 1)) |>
@@ -68,7 +74,7 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "nee", "root productivity", "root turnover")) |>
+      filter(!response %in% c("decomposition forbs", "nee")) |>
       group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, temperature_scaled, precipitation_scaled, data_type, group, fg_richness, fg_remaining, forb, gram, bryo) |>
       summarise(multifuntionality = mean(value_std, na.rm = TRUE),
                 se = sd(value_std, na.rm = TRUE)/sqrt(n())) |>
