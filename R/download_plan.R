@@ -144,13 +144,13 @@ download_plan <- list(
   # import data
   # biomass
   tar_target(
-    name = biomass_raw2,
+    name = biomass_raw,
     command = read_csv(biomass_download)
   ),
 
   # 2022 biomass
   tar_target(
-    name = biomass_raw,
+    name = biomass_22_raw,
     command = read_csv(biomass_22_download)
   ),
 

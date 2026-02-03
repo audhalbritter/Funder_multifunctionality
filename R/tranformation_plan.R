@@ -38,8 +38,8 @@ transformation_plan <- list(
   # prep biomass
   # 2015 - 2021 (maybe remove)
   tar_target(
-    name = biomass2,
-    command = biomass_raw2 |>
+    name = biomass,
+    command = biomass_raw |>
       # remove extra plots in 2016, select last year
       filter(treatment != "XC",
              year == 2021) |>
@@ -57,7 +57,7 @@ transformation_plan <- list(
   # 2022
   tar_target(
     name = plant_biomass,
-    command = biomass_raw |>
+    command = biomass_22_raw |>
       # sum biomass from different rounds and functional group (add removed_fg to group_by to keep them)
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = sum(biomass), .groups = "drop") |>
@@ -75,46 +75,28 @@ transformation_plan <- list(
     command = root_biomass_raw %>%
       ### THIS SHOULD BE DONE IN THE FUNDER GITHUB CLEANING CODE!!!
       funcabization(dat = ., convert_to = "FunCaB") |>
-      mutate(year = 2023) |>
-      select(year, siteID, blockID, plotID, treatment, value = dry_root_biomass) |>
+      mutate(year = 2021) |>
+      select(year, siteID, blockID, plotID, treatment, value = root_biomass) |>
       mutate(data_type = "function",
              group = "primary producers",
              response = "root biomass",
              unit = "g m-3")
   ),
 
-  # root productivity and traits
+  # root traits
   tar_target(
-    name = root_productivity,
-    command = root_productivity_raw %>%
+    name = root_traits,
+    command = root_traits_raw %>%
       ### THIS SHOULD BE DONE IN THE FUNDER GITHUB CLEANING CODE!!!
       # fix typo, should also be fixed in the cleanin code of Funder
-      mutate(treatment = if_else(plotID == "Gud2GB", "GB", treatment)) %>%
-      funcabization(dat = ., convert_to = "FunCaB") |>
-      mutate(year = year(retrieval_date),
-             duration = retrieval_date - burial_date) |>
-      select(year, siteID:plotID, treatment, value = root_productivity, duration) |>
+      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
+      mutate(year = year(retrieval_date)) |>
+      pivot_longer(cols = c(specific_root_length_m_per_g, root_tissue_density_g_per_m3, root_dry_matter_content), names_to = "root trait", values_to = "value") |>
+      select(year, siteID:plotID, treatment, "root trait", value, duration) |>
       mutate(data_type = "function",
              group = "primary producers",
-             response = "root productivity",
-             unit = "g m-3 y-1")
-  ),
-
-  # root turnover (production / biomass) from 5 treatments
-  tar_target(
-    name = root_turnover,
-    command = root_productivity |>
-      rename(productivity = value) |>
-      select(-response, -unit, -year, -duration) |>
-      left_join(root_biomass |>
-                  rename(biomass = value) |>
-                  select(-response, -unit, -year)) |>
-      mutate(value = productivity / biomass,
-             response = "root turnover",
-             unit = "y-1") |>
-      filter(!is.na(value)) |>
-      select(-productivity, -biomass)
-
+             response = "root traits",
+             unit = "g m-3")
   ),
 
   # community
@@ -123,11 +105,11 @@ transformation_plan <- list(
     command = community_raw |>
       # remove extra plots in 2016, select last year
       filter(treatment != "XC",
-             year == 2019)
+             year == 2022)
 
   ),
 
-  # cover (remove?)
+  # richness
   tar_target(
     name = plant_richness,
     command = community |>
@@ -142,21 +124,19 @@ transformation_plan <- list(
 
   ),
 
-  # plant litter (remove?)
+  # bryophyte richness
   tar_target(
-    name = plant_litter,
-    command = community |>
-      select(year:treatment, value = litter) |>
-      distinct() |>
-      # replace NA with 0
-      mutate(value = if_else(is.na(value), 0, value)) |>
-      mutate(data_type = "function",
+    name = bryophyte_richness,
+    command = bryophyte_raw |>
+      mutate(year = 2022) |>
+      group_by(year, siteID, blockID, plotID, treatment) |>
+      summarise(value = n()) |>
+      mutate(data_type = "biodiversity",
              group = "primary producers",
-             response = "litter cover",
-             unit = "%")
+             response = "bryophyte richness",
+             unit = "count")
 
   ),
-
 
   # prep microarthropod
   tar_target(
@@ -180,22 +160,18 @@ transformation_plan <- list(
 
   # prep nematodes
   tar_target(
-    name = nematode,
+    name = nematode_density,
     command = nematode_raw |>
       mutate(year = 2022) |>
-      select(year, siteID:comment)
-  ),
-
-
-  tar_target(
-    name = nematode_density,
-    command = nematode |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = sum(abundance_per_g*100)) |>
-      mutate(data_type = "function",
+      pivot_longer(cols = c(bacterivores_per_100g_dry_soil, fungivores_per_100g_dry_soil,
+                             Omnivores_per_100g_dry_soil, Herbivores_per_100g_dry_soil,
+                             Predators_per_100g_dry_soil), names_to = "functional_group",
+                             values_to = "value") |>
+      mutate(functional_group = str_remove(functional_group, "_per_100g_dry_soil"),
+             data_type = "function",
              group = "higher trophic level",
              response = "nematode density",
-             unit = "count per g soil")
+             unit = "count per 100g soil")
   ),
 
   # carbon and nutrient stocks and fluxes
@@ -227,17 +203,15 @@ transformation_plan <- list(
       mutate(response = "decomposition graminoids")
   ),
 
-  # loi
+  # cn stocks
   tar_target(
-    name = organic_matter,
-    command = loi_raw |>
-      mutate(year = 2022) |>
-      #filter(variable == "organic_matter") |>
-      mutate(data_type = "function",
+    name = cn_stocks,
+    command = cn_raw |> 
+    select(year:plotID, response = variable, value) |>
+      mutate(response = if_else(response == "C", "carbon", "nitrogen"),
+             data_type = "function",
              group = "carbon cycling",
-             response = if_else(variable == "organic_matter", "organic matter", "inorganic carbon"),
-             unit = "%") |>
-      select(-variable)
+             unit = "%")
   ),
 
   # available nutrients
@@ -246,16 +220,12 @@ transformation_plan <- list(
     name = available_np,
     command = available_nutrients_raw |>
       mutate(year = year(retrieval_date)) |>
-      filter(elements %in% c("NH4-N", "NO3-N", "P")) |>
+      filter(elements == "P") |>
       mutate(data_type = "function",
              group = "nutrient cycling",
-             response = case_when(elements %in% c("NH4-N", "NO3-N") ~ "nitrogen",
-                                  elements == "P" ~ "phosphate"),
+             response = "phosphate",
              unit = "micro grams/10cm2/35 days") |>
-      ### CAN WE AVERAGE NO-3 AND NH4+???
-      group_by(siteID, blockID, treatment, plotID, data_type, group, response) |>
-      summarise(value = mean(value))
-      #select(- elements, -burial_length, -detection_limit, -burial_date, -retrieval_date, -notes)
+      select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
   ),
 
   # make ordination for other available nutrients
