@@ -72,10 +72,10 @@ transformation_plan <- list(
   # Ram2 GB is missing (5GB)
   tar_target(
     name = root_biomass,
-    command = root_biomass_raw |>
+    command = root_biomass_raw |> 
       mutate(year = 2021) |>
       select(year, siteID, blockID, plotID, treatment, value = root_biomass) |>
-      filter(!is.na(value)) |>
+      tidylog::filter(!is.na(value)) |>
       mutate(data_type = "function",
              group = "primary producers",
              response = "root biomass",
@@ -167,7 +167,7 @@ transformation_plan <- list(
       filter(value != 0) |>
       mutate(data_type = "function",
              group = "higher trophic level",
-             response = "microarthropod density",
+             response = paste0("micro_", functional_group, "_density"),
              unit = "count")
   ),
 
@@ -201,7 +201,7 @@ transformation_plan <- list(
   tar_target(
     name = nematode_fg_density,
     command = nematode |> 
-      mutate(response = paste0(functional_group, "_density")) |>
+      mutate(response = paste0("nema_", functional_group, "_density")) |>
       select(-functional_group)
       
   ),
