@@ -127,7 +127,8 @@ transformation_plan <- list(
   # bryophyte richness
   tar_target(
     name = bryophyte_richness,
-    command = bryophyte_raw |>
+    command = bryophyte_raw %>%
+      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
       mutate(year = 2022) |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = n()) |>
@@ -177,7 +178,8 @@ transformation_plan <- list(
     name = nematode,
     command = nematode_raw |> 
       mutate(year = 2022,
-             blockID = paste0(str_sub(siteID, 1, 3), blockID)) |>
+             blockID = paste0(str_sub(siteID, 1, 3), blockID)) %>%
+      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
       pivot_longer(cols = c(bacterivores_per_100g_dry_soil, fungivores_per_100g_dry_soil,
                              Omnivores_per_100g_dry_soil, Herbivores_per_100g_dry_soil,
                              Predators_per_100g_dry_soil), names_to = "functional_group",
@@ -215,7 +217,7 @@ transformation_plan <- list(
       mutate(relative_weight_loss = if_else(relative_weight_loss < 0 & relative_weight_loss > -0.04, 0, relative_weight_loss)) |>
       tidylog::filter(!is.na(relative_weight_loss)) |>
       tidylog::filter(relative_weight_loss >= 0) |>
-      select(siteID:plotID, litter_type, value = relative_weight_loss) |>
+      select(siteID:treatment, litter_type, value = relative_weight_loss) |>
       mutate(year = 2022,
              data_type = "function",
              group = "carbon cycling",
@@ -225,15 +227,19 @@ transformation_plan <- list(
   tar_target(
     name = decomposition_forbs,
     command = decomposition |>
-      filter(litter_type == "forbs") |>
-      mutate(response = "decomposition forbs")
+      filter(litter_type == "forb") |>
+      mutate(response = "decomposition forbs") |>
+      tidylog::filter(value != 0) |>
+      select(-litter_type)
   ),
 
   tar_target(
     name = decomposition_gram,
     command = decomposition |>
-      filter(litter_type == "graminoids") |>
-      mutate(response = "decomposition graminoids")
+      filter(litter_type == "graminoid") |>
+      mutate(response = "decomposition graminoids") |>
+      tidylog::filter(value != 0) |>
+      select(-litter_type)
   ),
 
   # cn stocks
