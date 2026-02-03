@@ -28,6 +28,18 @@ library(broom.mixed)
 
 ```
 
+### Raw data
+```{r}
+#| label: fig-raw-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Histograms for all functions before any transformation.
+
+tar_read(raw_functions_plot)
+
+```
+
+
 ### Normalize data
 
 ```{r}
@@ -57,6 +69,8 @@ tar_read(standardize_functions_plot)
 #| echo: false
 #| warning: false
 #| fig-cap: Correlation between all functions (untranformed data).
+#| fig-width: 12
+#| fig-height: 12
 
 tar_read(correlation_plot)
 
