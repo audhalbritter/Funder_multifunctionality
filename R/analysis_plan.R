@@ -70,9 +70,13 @@ analysis_plan <- list(
   # run all models
   tar_target(
     name = model_group,
-    command = run_models(dat = big_data |>
+    command = run_models(dat = big_data |> 
                            # remove functions where we have many
-                           filter(!response %in% c("decomposition forbs", "Reco", "root productivity", "root turnover")) |>
+                           filter(!response %in% c("specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content",
+                           "nema_bacterivores_density", "nema_omnivores_density", "nema_herbivores_density",
+                           "nema_predators_density", "nema_fungivores_density", "micro_fungivorous_density",
+                           "micro_nematophagous_density", "micro_predaceous_density",
+                            "decomposition forbs", "Reco")) |>
                            rename(level = group),
                          response_var = value_std,
                          fg_var = fg_richness,
@@ -136,14 +140,15 @@ analysis_plan <- list(
 
   #### MULTIFUNCTIONALITY ANALYSIS ####
 
-  # run models at multifunctionality level
+  # run models at multifunctionality level (drop rows with NA in model variables)
   tar_target(
     name = model_multifun,
-    command = run_models(dat = multifunctionality,
-                           group = "level",
-                            response = multifuntionality,
-                            fg_var = fg_richness)
-
+    command = multifunctionality %>%
+      filter(complete.cases(pick(fg_richness, temperature_scaled, precipitation_scaled, multifuntionality))) %>%
+      run_models(dat = .,
+                 group = "level",
+                 response = multifuntionality,
+                 fg_var = fg_richness)
   ),
 
   # make prediction for functional groups present model
@@ -158,7 +163,8 @@ analysis_plan <- list(
           n <- nrow(.x)
           bind_cols(.x, tibble(fitted = rep(NA_real_, n), plo = NA_real_, phi = NA_real_, tlo = NA_real_, thi = NA_real_))
         } else {
-          bind_cols(.x, .y)
+          # bind only prediction columns to avoid duplicating .response, .functional_group, etc.
+          bind_cols(.x, .y %>% select(fitted, plo, phi, tlo, thi))
         }
       })) |>
       unnest(output)

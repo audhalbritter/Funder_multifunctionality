@@ -33,25 +33,25 @@ run_models <- function(dat, response_var, fg_var, group){
 
 
 # make prediction for functional group analysis
-# works with lme4/lmerTest merMod objects; returns NULL on error
+# expects dat with no NA in .response, .functional_group, temperature_scaled, precipitation_scaled
 lmer_prediction <- function(dat, fit) {
   if (is.null(fit)) return(NULL)
 
   result <- tryCatch({
-    # include siteID so formula(fit) can be evaluated (model has (1|siteID))
     newdat <- dat %>%
-      select(.response, .functional_group, temperature_scaled, precipitation_scaled, any_of("siteID"))
+      select(.response, .functional_group, temperature_scaled, precipitation_scaled)
 
     newdat$fitted <- predict(fit, newdat, re.form = NA)
 
-    # model matrix for new data (formula evaluation needs siteID in data)
-    mm <- model.matrix(formula(fit), data = newdat)
+    # fixed-effects model matrix only (full formula includes (1|siteID))
+    form_fixed <- ~ .functional_group * temperature_scaled * precipitation_scaled
+    mm <- model.matrix(form_fixed, data = newdat)
+    mm <- mm[, names(lme4::fixef(fit)), drop = FALSE]
 
-    # random-effect variance (first grouping factor, e.g. siteID)
     vc <- as.data.frame(VarCorr(fit))
     sigma2_re <- vc$vcov[1]
 
-    prediction <- newdat %>%
+    newdat %>%
       mutate(pvar1 = diag(mm %*% tcrossprod(vcov(fit), mm)),
              tvar1 = pvar1 + sigma2_re,
              cmult = 1.96) %>%
@@ -59,8 +59,6 @@ lmer_prediction <- function(dat, fit) {
              phi = fitted + cmult * sqrt(pvar1),
              tlo = fitted - cmult * sqrt(tvar1),
              thi = fitted + cmult * sqrt(tvar1))
-
-    prediction
   }, error = function(e) {
     warning("lmer_prediction failed: ", conditionMessage(e))
     NULL
