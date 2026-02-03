@@ -8,12 +8,22 @@ si_figure_plan <- list(
     command = plot_pca(other_available_nutrients)
   ),
 
+  # Raw data
+  tar_target(
+    name = raw_functions_plot,
+    command = big_data_raw |>
+      ggplot(aes(x = value)) +
+      geom_histogram() +
+      labs(x = "Raw functions") +
+      facet_wrap(~ response, scales = "free")
+  ),
+
   # Normalize functions
   tar_target(
     name = normalize_functions_plot,
     command = big_data_raw |>
       # log transform some functions (careful this code is duplicated, also in mf plan)
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "root turnover", "organic matter", "microarthropod density", "nitrogen", "phosphate"), log(value), value)) |>
+      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "bacterivores_density", "fungivores_density", "omnivores_density", "herbivores_density", "predators_density", "carbon", "nitrogen", "phosphate", "micro nutrients", "gpp"), log(value), value)) |>
       ggplot(aes(x = value_trans)) +
       geom_histogram() +
       labs(x = "Normalized functions") +
@@ -75,15 +85,15 @@ si_figure_plan <- list(
     command = {
 
       function_table <- big_data |>
-        ungroup() |>
-        select(-year, -value_trans, -value_std, -unit, -duration, -litter_type, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -data_type, -group) |>
+        select(-year, -value_trans, -value_std, -unit, -litter_type, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
         select(`biomass`:`micro nutrients`)
 
-      corr <- round(cor(function_table), 1)
-      p.mat <- cor_pmat(function_table)
+      # pairwise.complete.obs avoids NA in cor matrix (root_biomass, root_traits have a few NAs)
+      corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
+      p.mat <- ggcorrplot::cor_pmat(function_table)
 
-      ggcorrplot(corr, hc.order = TRUE, type = "lower",
+      ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                  colors = c("#6D9EC1", "white", "#E46726"),
                  lab = TRUE)
 
