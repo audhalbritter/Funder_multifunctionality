@@ -246,8 +246,8 @@ transformation_plan <- list(
                                   response == "N" ~ "nitrogen",
                                   response == "CN" ~ "CN",
                                   TRUE ~ response),
-             group = case_when(response %in% c("C", "CN") ~ "carbon cycling",
-                               response == "N" ~ "nutrient cycling",
+             group = case_when(response %in% c("carbon", "CN") ~ "carbon cycling",
+                               response == "nitrogen" ~ "nutrient cycling",
                                TRUE ~ NA_character_),
              unit = "%")
   ),
