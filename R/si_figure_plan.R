@@ -95,7 +95,11 @@ si_figure_plan <- list(
 
       ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                  colors = c("#6D9EC1", "white", "#E46726"),
-                 lab = TRUE)
+                 lab = TRUE,
+                 lab_size = 2.5,
+                 tl.cex = 8,
+                 tl.srt = 45) +
+        theme(axis.text = element_text(size = 7))
 
     }
   ),
