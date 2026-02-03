@@ -39,17 +39,27 @@ figure_plan <- list(
   ### For now only showing facet by temp, because precip is not important!!!
   tar_target(
     name = multifunctionality_figure,
-    command = multi_nr_pred |>
-      ggplot(aes(x = .functional_group, y = .response,
-                 colour = habitat, shape = habitat, fill = habitat)) +
-      geom_jitter(width = 0.2, alpha = 0.5) +
-      geom_line(aes(y = fitted, colour = habitat), size = 1.2) +
-      scale_colour_manual(values = temp_colour) +
-      scale_shape_manual(values = c(2, 1, 6)) +
-      labs(x = "Number of functional groups present",
-           y ="Average multifunctionality") +
-      theme_bw() +
-      theme(text = element_text(size = 15))
+    command = {
+      # one point per (.functional_group, habitat) so geom_line draws one straight line per habitat
+      pred_line <- multi_nr_pred |>
+        group_by(.functional_group, habitat) |>
+        summarise(fitted = mean(fitted, na.rm = TRUE), .groups = "drop")
+
+      multi_nr_pred |>
+        ggplot(aes(x = .functional_group, y = .response,
+                   colour = habitat, shape = habitat, fill = habitat)) +
+        geom_jitter(width = 0.2, alpha = 0.5) +
+        geom_line(data = pred_line,
+                  aes(y = fitted, group = habitat),
+                  linewidth = 1.2,
+                  inherit.aes = TRUE) +
+        scale_colour_manual(values = temp_colour) +
+        scale_shape_manual(values = c(2, 1, 6)) +
+        labs(x = "Number of functional groups present",
+             y = "Average multifunctionality") +
+        theme_bw() +
+        theme(text = element_text(size = 15))
+    }
 
 
       # multifunctionality |>
