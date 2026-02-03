@@ -164,7 +164,8 @@ transformation_plan <- list(
       group_by(year, siteID, blockID, plotID, treatment, functional_group) |>
       tidylog::summarise(value = sum(abundance)) |>
       # is it correct to remove 0 values?
-      filter(value != 0) |>
+      filter(value != 0,
+            functional_group != "unknownjuvenile") |> 
       mutate(data_type = "function",
              group = "higher trophic level",
              response = paste0("micro_", functional_group, "_density"),
