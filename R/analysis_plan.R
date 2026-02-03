@@ -154,9 +154,7 @@ analysis_plan <- list(
       mutate(prediction = map2(.x = data, .y = model, .f = ~ safely(lmer_prediction)(.x, .y)$result)) |>
       # merge data and prediction
       mutate(output = map2(.x = data, .y = prediction, ~ bind_cols(.x, .y))) |>
-      unnest(output) |>
-      rename(.functional_group = .functional_group...14, temperature_scaled = temperature_scaled...10, precipitation_scaled = precipitation_scaled...11, .response = .response...19) |>
-      select(- ".response...21", ".functional_group...22", "temperature_scaled...23", "precipitation_scaled...24")
+      unnest(output)
   ),
 
 
@@ -267,12 +265,3 @@ analysis_plan <- list(
   # )
 
 )
-
-
-
-
-
-
-
-
-
