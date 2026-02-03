@@ -99,7 +99,7 @@ download_plan <- list(
     name = decomposition_download,
     command = get_file(
       node = "tx9r2",
-      file = "FUNDER_clean_plant_litter_decomposition.csv",
+      file = "FUNDER_clean_litter_decomposition.csv",
       path = here::here("data"),
       remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"
     ),

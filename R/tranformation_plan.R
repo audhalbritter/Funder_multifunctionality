@@ -211,11 +211,11 @@ transformation_plan <- list(
   # decomposition
   tar_target(
     name = decomposition,
-    command = decomposition_raw |>
-      mutate(rel_weight_loss2 = if_else(rel_weight_loss < 0 & rel_weight_loss > -0.04, 0, rel_weight_loss)) |>
-      tidylog::filter(!is.na(rel_weight_loss)) |>
-      tidylog::filter(rel_weight_loss >= 0) |>
-      select(siteID:plotID, litter_type, value = rel_weight_loss) |>
+    command = decomposition_raw |> 
+      mutate(relative_weight_loss = if_else(relative_weight_loss < 0 & relative_weight_loss > -0.04, 0, relative_weight_loss)) |>
+      tidylog::filter(!is.na(relative_weight_loss)) |>
+      tidylog::filter(relative_weight_loss >= 0) |>
+      select(siteID:plotID, litter_type, value = relative_weight_loss) |>
       mutate(year = 2022,
              data_type = "function",
              group = "carbon cycling",
