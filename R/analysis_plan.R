@@ -152,8 +152,15 @@ analysis_plan <- list(
     command = model_multifun |>
       select(data, model) |>
       mutate(prediction = map2(.x = data, .y = model, .f = ~ safely(lmer_prediction)(.x, .y)$result)) |>
-      # merge data and prediction
-      mutate(output = map2(.x = data, .y = prediction, ~ bind_cols(.x, .y))) |>
+      # merge data and prediction; when prediction is NULL, add NA columns so fitted exists
+      mutate(output = map2(.x = data, .y = prediction, .f = ~ {
+        if (is.null(.y)) {
+          n <- nrow(.x)
+          bind_cols(.x, tibble(fitted = rep(NA_real_, n), plo = NA_real_, phi = NA_real_, tlo = NA_real_, thi = NA_real_))
+        } else {
+          bind_cols(.x, .y)
+        }
+      })) |>
       unnest(output)
   ),
 
