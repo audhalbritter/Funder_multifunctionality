@@ -72,11 +72,10 @@ transformation_plan <- list(
   # Ram2 GB is missing (5GB)
   tar_target(
     name = root_biomass,
-    command = root_biomass_raw %>%
-      ### THIS SHOULD BE DONE IN THE FUNDER GITHUB CLEANING CODE!!!
-      funcabization(dat = ., convert_to = "FunCaB") |>
+    command = root_biomass_raw |>
       mutate(year = 2021) |>
       select(year, siteID, blockID, plotID, treatment, value = root_biomass) |>
+      filter(!is.na(value)) |>
       mutate(data_type = "function",
              group = "primary producers",
              response = "root biomass",
@@ -92,10 +91,10 @@ transformation_plan <- list(
       dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
       mutate(year = year(retrieval_date)) |>
       pivot_longer(cols = c(specific_root_length_m_per_g, root_tissue_density_g_per_m3, root_dry_matter_content), names_to = "root trait", values_to = "value") |>
-      select(year, siteID:plotID, treatment, "root trait", value, duration) |>
+      select(year, siteID:plotID, treatment, response = "root trait", value) |>
+      filter(!is.na(value)) |>
       mutate(data_type = "function",
              group = "primary producers",
-             response = "root traits",
              unit = "g m-3")
   ),
 
@@ -120,7 +119,8 @@ transformation_plan <- list(
       mutate(data_type = "biodiversity",
              group = "primary producers",
              response = if_else(functional_group == "forb", "forb richness", "graminoid richness"),
-             unit = "count")
+             unit = "count") |>
+             select(-functional_group)
 
   ),
 
@@ -141,15 +141,15 @@ transformation_plan <- list(
   # prep microarthropod
   tar_target(
     name = microarthropod,
-    command = microarthropod_raw |>
-      select(year, siteID, blockID, plotID, treatment, functional_group, microarthropods, abundance)
+    command = microarthropod_raw |> 
+      select(year, siteID, blockID, plotID, treatment, functional_group, microarthropods, abundance) |>       
+      # remove missing data (1 plot, Fau2FB)
+      filter(!is.na(abundance))
     ),
 
   tar_target(
     name = microarthropod_density,
     command = microarthropod |>
-      # remove missing data (1 plot, Fau2FB)
-      filter(!is.na(abundance)) |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = sum(abundance)) |>
       mutate(data_type = "function",
@@ -158,20 +158,52 @@ transformation_plan <- list(
              unit = "count")
   ),
 
+    tar_target(
+    name = microarthropod_fg_density,
+    command = microarthropod |>
+      group_by(year, siteID, blockID, plotID, treatment, functional_group) |>
+      tidylog::summarise(value = sum(abundance)) |>
+      # is it correct to remove 0 values?
+      filter(value != 0) |>
+      mutate(data_type = "function",
+             group = "higher trophic level",
+             response = "microarthropod density",
+             unit = "count")
+  ),
+
   # prep nematodes
   tar_target(
-    name = nematode_density,
-    command = nematode_raw |>
-      mutate(year = 2022) |>
+    name = nematode,
+    command = nematode_raw |> 
+      mutate(year = 2022,
+             blockID = paste0(str_sub(siteID, 1, 3), blockID)) |>
       pivot_longer(cols = c(bacterivores_per_100g_dry_soil, fungivores_per_100g_dry_soil,
                              Omnivores_per_100g_dry_soil, Herbivores_per_100g_dry_soil,
                              Predators_per_100g_dry_soil), names_to = "functional_group",
                              values_to = "value") |>
-      mutate(functional_group = str_remove(functional_group, "_per_100g_dry_soil"),
+                             filter(value != 0) |>
+      mutate(functional_group = tolower(str_remove(functional_group, "_per_100g_dry_soil")),
              data_type = "function",
              group = "higher trophic level",
              response = "nematode density",
-             unit = "count per 100g soil")
+             unit = "count per 100g soil") |>
+             select(-temperature_level, -precipitation_level, -abundance_per_g)
+  ),
+
+  tar_target(
+    name = nematode_density,
+    command = nematode |>
+      group_by(year, siteID, blockID, plotID, treatment, data_type, group, response, unit) |>
+      summarise(value = sum(value))
+      
+  ),
+
+  tar_target(
+    name = nematode_fg_density,
+    command = nematode |> 
+      mutate(response = paste0(functional_group, "_density")) |>
+      select(-functional_group)
+      
   ),
 
   # carbon and nutrient stocks and fluxes
@@ -208,9 +240,14 @@ transformation_plan <- list(
     name = cn_stocks,
     command = cn_raw |> 
     select(year:plotID, response = variable, value) |>
-      mutate(response = if_else(response == "C", "carbon", "nitrogen"),
-             data_type = "function",
-             group = "carbon cycling",
+      mutate(data_type = "function",
+              response = case_when(response == "C" ~ "carbon",
+                                  response == "N" ~ "nitrogen",
+                                  response == "CN" ~ "CN",
+                                  TRUE ~ response),
+             group = case_when(response %in% c("C", "CN") ~ "carbon cycling",
+                               response == "N" ~ "nutrient cycling",
+                               TRUE ~ NA_character_),
              unit = "%")
   ),
 
