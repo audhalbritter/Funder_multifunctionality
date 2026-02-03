@@ -85,7 +85,7 @@ si_figure_plan <- list(
     command = {
 
       function_table <- big_data |>
-        select(-year, -value_trans, -value_std, -unit, -litter_type, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
+        select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
         select(`biomass`:`micro nutrients`)
 
