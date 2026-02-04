@@ -46,10 +46,10 @@ multifunctionality_plan <- list(
   # transformation: normaliue (log) and standardize between 0 and 1
   tar_target(
     name = big_data,
-    command = big_data_raw |>
+    command = big_data_raw |> 
       # normalize data
       # if zeros in data (nematodes and microarthropods), then there will be NAs here
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "bacterivores_density", "fungivores_density", "omnivores_density", "herbivores_density", "predators_density", "carbon", "nitrogen", "phosphate", "gpp"), log(value), value)) |>
+      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "micro_fungivorous_density", "micro_nematophagous_density", "micro_predaceous_density"), log(value), value)) |> 
       # scale variables between 0 and 1
       group_by(data_type, group, response) |>
       mutate(value_std = scale(value_trans)[, 1]) |>
