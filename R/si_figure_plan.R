@@ -22,8 +22,20 @@ si_figure_plan <- list(
   tar_target(
     name = normalize_functions_plot,
     command = big_data_raw |> 
+      # shift values to make all positive (for responses with negative values)
+      group_by(response) |>
+      mutate(value = case_when(
+        response %in% c("micro nutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
+        TRUE ~ value
+      )) |>
+      ungroup() |>
       # log transform some functions (careful this code is duplicated, also in mf plan)
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density"), log(value), value)) |>
+      mutate(value_trans = case_when(
+        # log for responses with only positive values
+        response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "micro nutrients", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density") ~ log(value),
+        # no transformation for others
+        TRUE ~ value
+      )) |>
       ggplot(aes(x = value_trans)) +
       geom_histogram() +
       labs(x = "Normalized functions") +
@@ -38,19 +50,6 @@ si_figure_plan <- list(
       geom_histogram() +
       labs(x = "Standardized value") +
       facet_wrap(~ response, scales = "free")
-  ),
-
-  # root data
-  tar_target(
-    name = root_data_plot,
-    command = big_data |>
-      filter(response %in% c("root biomass", "root productivity", "root turnover")) |>
-      ggplot(aes(y = value_std, x = fg_richness, colour = response)) +
-      geom_point() +
-      geom_smooth(method = "lm") +
-      labs(y = "Standardized value") +
-      facet_grid(habitat ~ precipitation_name, scales = "free") +
-      theme_bw()
   ),
 
   # decomposition data
