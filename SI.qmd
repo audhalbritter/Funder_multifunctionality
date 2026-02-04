@@ -77,19 +77,6 @@ tar_read(correlation_plot)
 ```
 
 
-### root data 
-
-```{r}
-#| label: fig-root-data-plot
-#| echo: false
-#| warning: false
-#| fig-cap: Different root data plotted in the same figure.
-
-tar_read(root_data_plot)
-
-```
-
-
 ### decomposition data 
 
 ```{r}
