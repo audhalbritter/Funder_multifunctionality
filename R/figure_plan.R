@@ -18,8 +18,8 @@ figure_plan <- list(
   # function figure (spaghetti plot)
   tar_target(
     name = function_figure,
-    command = big_data |>
-      filter(!is.na(habitat)) |>
+    command = big_data |> 
+      filter(!response %in% c("nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density", "specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
       mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
       ggplot(aes(x = fg_richness, y = value_std, colour = response,
                  shape = group, linetype = group)) +
@@ -32,7 +32,9 @@ figure_plan <- list(
            y ="Standardized function") +
       guides(fill = "none") +
       facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
+      theme_bw() +
+      theme(legend.position = "bottom",
+            legend.box = "vertical")
   ),
 
   # multifunctionality figure
