@@ -23,7 +23,7 @@ si_figure_plan <- list(
     name = normalize_functions_plot,
     command = big_data_raw |> 
       # log transform some functions (careful this code is duplicated, also in mf plan)
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "micro_fungivorous_density", "micro_nematophagous_density", "micro_predaceous_density"), log(value), value)) |>
+      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density"), log(value), value)) |>
       ggplot(aes(x = value_trans)) +
       geom_histogram() +
       labs(x = "Normalized functions") +

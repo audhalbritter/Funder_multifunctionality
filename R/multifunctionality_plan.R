@@ -49,7 +49,7 @@ multifunctionality_plan <- list(
     command = big_data_raw |> 
       # normalize data
       # if zeros in data (nematodes and microarthropods), then there will be NAs here
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "micro_fungivorous_density", "micro_nematophagous_density", "micro_predaceous_density"), log(value), value)) |> 
+      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density"), log(value), value)) |> 
       # scale variables between 0 and 1
       group_by(data_type, group, response) |>
       mutate(value_std = scale(value_trans)[, 1]) |>
@@ -74,7 +74,7 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "nee")) |>
+      filter(!response %in% c("decomposition forbs", "nee", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density")) |>
       group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, temperature_scaled, precipitation_scaled, data_type, group, fg_richness, fg_remaining, forb, gram, bryo) |>
       summarise(multifuntionality = mean(value_std, na.rm = TRUE),
                 se = sd(value_std, na.rm = TRUE)/sqrt(n())) |>

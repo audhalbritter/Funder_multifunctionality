@@ -114,13 +114,12 @@ transformation_plan <- list(
     command = community |>
       # remove where species are NA, treatments with only bryophytes etc. Is only needed if intersted in moss hieght, litter cover etc.
       filter(!is.na(species)) |>
-      group_by(year, siteID, blockID, plotID, treatment, functional_group) |>
+      group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = n()) |>
       mutate(data_type = "biodiversity",
              group = "primary producers",
-             response = if_else(functional_group == "forb", "forb richness", "graminoid richness"),
-             unit = "count") |>
-             select(-functional_group)
+             response = "vascular plant richness",
+             unit = "count")
 
   ),
 
@@ -162,14 +161,15 @@ transformation_plan <- list(
     tar_target(
     name = microarthropod_fg_density,
     command = microarthropod |>
+      mutate(functional_group = paste0(microarthropods, "_", functional_group)) |>
       group_by(year, siteID, blockID, plotID, treatment, functional_group) |>
-      tidylog::summarise(value = sum(abundance)) |>
+      tidylog::summarise(value = sum(abundance)) |> 
       # is it correct to remove 0 values?
       filter(value != 0,
-            functional_group != "unknownjuvenile") |> 
+            functional_group != "mite_unknownjuvenile") |> 
       mutate(data_type = "function",
              group = "higher trophic level",
-             response = paste0("micro_", functional_group, "_density"),
+             response = paste0(functional_group, "_density"),
              unit = "count")
   ),
 
