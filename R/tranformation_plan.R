@@ -213,7 +213,8 @@ transformation_plan <- list(
   # decomposition
   tar_target(
     name = decomposition,
-    command = decomposition_raw |> 
+    command = decomposition_raw %>%
+      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
       mutate(relative_weight_loss = if_else(relative_weight_loss < 0 & relative_weight_loss > -0.04, 0, relative_weight_loss)) |>
       tidylog::filter(!is.na(relative_weight_loss)) |>
       tidylog::filter(relative_weight_loss >= 0) |>
