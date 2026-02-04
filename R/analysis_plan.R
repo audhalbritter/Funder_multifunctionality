@@ -38,6 +38,33 @@ analysis_plan <- list(
     }
   ),
 
+  # # results factorial analysis
+  # tar_target(
+  #   name = model_response_factorial_out,
+  #   command = {
+
+  #     out <- model_response |>
+  #       unnest(result_factorial) |>
+  #       filter(effect == "fixed") |>
+  #       select(-data, -model, -model_factorial, -model_treatment, -result, -result_treatment, -group, -effect, -anova, -anova_tidy) %>% 
+  #       fancy_stats(.)
+
+  #     round_numbers_tidy(out) |>
+  #       gt() |>
+  #       tab_style(
+  #         style = list(
+  #           cell_text(weight = "bold")
+  #         ),
+  #         locations = cells_body(
+  #           columns = c(term, estimate, std.error, statistic, df, p.value),
+  #           rows = `p.value` <= 0.05
+  #         )
+  #       ) %>%
+  #       table_style(., font_size = 11)
+
+  #   }
+  # ),
+
   # results treatment only model
   tar_target(
     name = model_response_trt_out,
