@@ -9,10 +9,16 @@ figure_plan <- list(
     command = c(6, 0, 1, 2)
       ),
 
-  # shape for prec starting with continental - oceanic
+  # colour for temperature (boreal to alpine)
   tar_target(
     name = temp_colour,
     command = c("#EF9A9AFF", "#E53935FF", "#B71C1CFF")
+  ),
+  
+  # linetype for precipitation (continental to oceanic)
+  tar_target(
+    name = prec_linetype,
+    command = c("solid", "dashed", "dotted", "dotdash")
   ),
 
   # function figure (spaghetti plot)
