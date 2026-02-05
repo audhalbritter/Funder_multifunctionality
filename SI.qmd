@@ -178,19 +178,60 @@ group_plots <- split(plot_info, plot_info$group) |>
       theme(legend.position = "bottom")
   })
 
+# Compute dynamic figure heights per group (based on number of plots)
+group_fig_info <- plot_info |>
+  count(group, name = "n_plots") |>
+  mutate(
+    n_rows = ceiling(n_plots / 2),
+    fig_height = 2 + 2.5 * n_rows
+  )
+
+group_fig_heights <- group_fig_info$fig_height
+names(group_fig_heights) <- group_fig_info$group
+
 ```
 
 ```{r}
-#| label: fig-all-responses
+#| label: fig-all-responses-primary-producers
 #| echo: false
 #| warning: false
 #| fig-width: 9
-#| fig-height: 6
+#| fig-height: !expr group_fig_heights["primary producers"]
 
-# Display one plot per group (each faceted by response)
-for (grp in names(group_plots)) {
-  print(group_plots[[grp]])
-}
+group_plots[["primary producers"]]
+
+```
+
+```{r}
+#| label: fig-all-responses-higher-trophic
+#| echo: false
+#| warning: false
+#| fig-width: 9
+#| fig-height: !expr group_fig_heights["higher trophic level"]
+
+group_plots[["higher trophic level"]]
+
+```
+
+```{r}
+#| label: fig-all-responses-carbon-cycling
+#| echo: false
+#| warning: false
+#| fig-width: 9
+#| fig-height: !expr group_fig_heights["carbon cycling"]
+
+group_plots[["carbon cycling"]]
+
+```
+
+```{r}
+#| label: fig-all-responses-nutrient-cycling
+#| echo: false
+#| warning: false
+#| fig-width: 9
+#| fig-height: !expr group_fig_heights["nutrient cycling"]
+
+group_plots[["nutrient cycling"]]
 
 ```
 
