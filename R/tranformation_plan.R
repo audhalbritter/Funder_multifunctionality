@@ -108,17 +108,18 @@ transformation_plan <- list(
 
   ),
 
-  # richness
+  # plant richness (vascular and bryophytes)
   tar_target(
     name = plant_richness,
     command = community |>
       # remove where species are NA, treatments with only bryophytes etc. Is only needed if intersted in moss hieght, litter cover etc.
       filter(!is.na(species)) |>
+      bind_rows(bryophyte_richness) |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = n()) |>
       mutate(data_type = "biodiversity",
              group = "primary producers",
-             response = "vascular plant richness",
+             response = "plant richness",
              unit = "count")
 
   ),
@@ -128,13 +129,13 @@ transformation_plan <- list(
     name = bryophyte_richness,
     command = bryophyte_raw %>%
       dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
-      mutate(year = 2022) |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = n()) |>
-      mutate(data_type = "biodiversity",
-             group = "primary producers",
-             response = "bryophyte richness",
-             unit = "count")
+      mutate(year = 2022)
+      # group_by(year, siteID, blockID, plotID, treatment) |>
+      # summarise(value = n()) |>
+      # mutate(data_type = "biodiversity",
+      #        group = "primary producers",
+      #        response = "plant richness",
+      #        unit = "count")
 
   ),
 
