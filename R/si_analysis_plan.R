@@ -25,16 +25,28 @@ si_analysis_plan <- list(
         fancy_stats(.)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
+        # significant: p <= 0.05 (bold, default colour)
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        # marginal: 0.05 < p <= 0.07 (bold, grey)
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -63,16 +75,26 @@ si_analysis_plan <- list(
         fancy_stats(.)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -102,16 +124,26 @@ si_analysis_plan <- list(
         fancy_stats(.)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
