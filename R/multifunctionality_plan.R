@@ -9,14 +9,13 @@ multifunctionality_plan <- list(
       # primary producers
       plant_biomass,
       root_biomass,
-      root_traits,
+      #root_traits,
       plant_richness,
 
       # higher trophic levels
       nematode_density,
-      nematode_fg_density,
       microarthropod_density,
-      microarthropod_fg_density,
+      mesofauna_richness,
       #TBA fungi and bacteria density
 
       # carbon cycle
@@ -57,7 +56,7 @@ multifunctionality_plan <- list(
       # if zeros in data (nematodes and microarthropods), then there will be NAs here
       tidylog::mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "micro nutrients", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density") ~ log(value),
+        response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "mesofauna richness", "carbon", "nitrogen", "phosphate", "gpp", "micro nutrients") ~ log(value),
         # no transformation for others
         TRUE ~ value
       )) |>
@@ -85,13 +84,22 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "reco", "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density", "specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
-      group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, temperature_scaled, precipitation_scaled, data_type, group, fg_richness, fg_remaining, forb, gram, bryo) |>
-      summarise(multifuntionality = mean(value_std, na.rm = TRUE),
-                se = sd(value_std, na.rm = TRUE)/sqrt(n())) |>
+      filter(!response %in% c("decomposition forbs", "reco")) |>
+      group_by(
+        year, siteID, blockID, plotID, treatment, habitat,
+        temperature_degree, precipitation_mm, precipitation_name,
+        temperature_scaled, precipitation_scaled,
+        fg_richness, fg_remaining, forb, gram, bryo,
+      ) |>
+      summarise(
+        multifuntionality = mean(value_std, na.rm = TRUE),
+        se = sd(value_std, na.rm = TRUE) / sqrt(n()),
+        data_type = dplyr::first(data_type),
+        group     = dplyr::first(group),
+        .groups = "drop"
+      ) |>
       # global level (useful for group_by map)
-      mutate(level = "global") |>
-      ungroup()
+      mutate(level = "global")
 
   )
 )

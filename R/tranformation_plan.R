@@ -159,21 +159,6 @@ transformation_plan <- list(
              unit = "count")
   ),
 
-    tar_target(
-    name = microarthropod_fg_density,
-    command = microarthropod |>
-      mutate(functional_group = paste0(microarthropods, "_", functional_group)) |>
-      group_by(year, siteID, blockID, plotID, treatment, functional_group) |>
-      tidylog::summarise(value = sum(abundance)) |> 
-      # is it correct to remove 0 values?
-      filter(value != 0,
-            functional_group != "mite_unknownjuvenile") |> 
-      mutate(data_type = "function",
-             group = "higher trophic level",
-             response = paste0(functional_group, "_density"),
-             unit = "count")
-  ),
-
   # prep nematodes
   tar_target(
     name = nematode,
@@ -186,28 +171,55 @@ transformation_plan <- list(
                              Predators_per_100g_dry_soil), names_to = "functional_group",
                              values_to = "value") |>
                              filter(value != 0) |>
-      mutate(functional_group = tolower(str_remove(functional_group, "_per_100g_dry_soil")),
-             data_type = "function",
-             group = "higher trophic level",
-             response = "nematode density",
-             unit = "count per 100g soil") |>
+      mutate(functional_group = tolower(str_remove(functional_group, "_per_100g_dry_soil"))) |>
              select(-temperature_level, -precipitation_level, -abundance_per_g)
   ),
 
   tar_target(
     name = nematode_density,
     command = nematode |>
-      group_by(year, siteID, blockID, plotID, treatment, data_type, group, response, unit) |>
-      summarise(value = sum(value))
+      group_by(year, siteID, blockID, plotID, treatment) |>
+      summarise(value = sum(value)) |>
+      mutate(data_type = "function",
+             group = "higher trophic level",
+             response = "nematode density",
+             unit = "count per 100g soil")
       
   ),
 
+  # Mesofauna richness
   tar_target(
-    name = nematode_fg_density,
-    command = nematode |> 
-      mutate(response = paste0("nema_", functional_group, "_density")) |>
-      select(-functional_group)
+    name = mesofauna_richness,
+    command = bind_rows(nematode |> 
+    mutate(organism = "nematode"), 
+          microarthropod |> 
+          filter(functional_group != "mite_unknownjuvenile") |>
+          rename(organism = microarthropods)) |>
+          group_by(year, siteID, blockID, plotID, treatment, functional_group, organism) |>
+          summarise(value = n()) |>
+          group_by(year, siteID, blockID, plotID, treatment) |>
+          summarise(value = n()) |>
+          mutate(data_type = "function",
+             group = "higher trophic level",
+             response = "mesofauna richness",
+             unit = "count")
       
+      
+  ),
+
+      tar_target(
+    name = microarthropod_fg_density,
+    command = microarthropod |>
+      mutate(functional_group = paste0(microarthropods, "_", functional_group)) |>
+      group_by(year, siteID, blockID, plotID, treatment, functional_group) |>
+      tidylog::summarise(value = sum(abundance)) |> 
+      # is it correct to remove 0 values?
+      filter(value != 0,
+            functional_group != "mite_unknownjuvenile") |> 
+      mutate(data_type = "function",
+             group = "higher trophic level",
+             response = paste0(functional_group, "_density"),
+             unit = "count")
   ),
 
   # carbon and nutrient stocks and fluxes
