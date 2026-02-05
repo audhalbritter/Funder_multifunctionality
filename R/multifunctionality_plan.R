@@ -11,7 +11,6 @@ multifunctionality_plan <- list(
       root_biomass,
       root_traits,
       plant_richness,
-      bryophyte_richness,
 
       # higher trophic levels
       nematode_density,
