@@ -19,6 +19,7 @@ editor:
 library(targets)
 library(tarchetypes)
 library(tidyverse)
+library(patchwork)
 library(lubridate)
 library(broom)
 library(gt)
@@ -117,7 +118,7 @@ exclude_responses <- c("collembola_fungivorous_density", "mite_fungivorous_densi
 # Get responses with significant effects and their groups
 significant_responses_df <- model_results |>
   filter(!response %in% exclude_responses) |>
-  filter(p.value < 0.05) |>
+  filter(p.value <= 0.05) |>
   group_by(response) |>
   summarise(
     has_fg = any(term == ".functional_group"),
@@ -152,8 +153,14 @@ cat("Responses with significant effects:", length(significant_responses), "\n")
 all_plots_list <- significant_responses |>
   set_names() |>
   map(function(resp) {
-    make_response_plot(resp, big_data, model_results, 
-                      temp_colour, prec_linetype, prec_shape)
+    make_response_plot(
+      resp,
+      big_data,
+      model_results,
+      temp_colour,
+      prec_linetype,
+      prec_shape
+    )
   }) |>
   compact()  # Remove NULL values
 
@@ -162,19 +169,39 @@ plot_info <- significant_responses_df |>
   filter(response %in% names(all_plots_list)) |>
   select(response, group)
 
+# Create one combined plot per group using patchwork
+group_plots <- split(plot_info, plot_info$group) |>
+  map(function(df) {
+    resp_names <- df$response
+    plots <- all_plots_list[resp_names]
+    wrap_plots(plots, ncol = 2, guides = "collect") &
+      theme(legend.position = "bottom")
+  })
+
 ```
 
 ```{r}
 #| label: fig-all-responses
 #| echo: false
 #| warning: false
-#| fig-width: 10
+#| fig-width: 9
 #| fig-height: 6
 
-# Display all plots in order (sorted by group)
-for (resp in names(all_plots_list)) {
-  print(all_plots_list[[resp]])
+# Display one plot per group (each faceted by response)
+for (grp in names(group_plots)) {
+  print(group_plots[[grp]])
 }
+
+```
+
+```{r}
+#| label: tbl-model-response
+#| echo: false
+#| warning: false
+#| tbl-cap: Model output from testing effect of number of functional groups present, summer temperature and annual precipitation on ecosystem functions.
+
+tar_read(model_response_nr_out)
+    
 
 ```
 
