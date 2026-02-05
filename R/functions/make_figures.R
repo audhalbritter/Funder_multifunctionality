@@ -21,3 +21,102 @@ make_group_figure <- function(big_data, group){
     theme_bw()
 
 }
+
+
+# Function to check which terms are significant
+get_significant_terms <- function(response_name, model_data, alpha = 0.05) {
+  sig_terms <- model_data |>
+    filter(response == response_name, p.value < alpha) |>
+    pull(term)
+  
+  list(
+    fg = ".functional_group" %in% sig_terms,
+    temp = any(c("temperature_scaled", ".functional_group:temperature_scaled") %in% sig_terms),
+    precip = any(c("precipitation_scaled", ".functional_group:precipitation_scaled") %in% sig_terms),
+    fg_temp_interaction = ".functional_group:temperature_scaled" %in% sig_terms,
+    fg_precip_interaction = ".functional_group:precipitation_scaled" %in% sig_terms
+  )
+}
+
+# Function to create plot based on significant terms
+make_response_plot <- function(response_name, data, model_data, temp_col, prec_lt, prec_sh) {
+  
+  sig <- get_significant_terms(response_name, model_data)
+  
+  # If nothing significant, return NULL
+  if (!sig$fg && !sig$temp && !sig$precip) {
+    return(NULL)
+  }
+  
+  # Filter data for this response
+  plot_data <- data |> filter(response == response_name)
+  
+  # Base plot
+  p <- ggplot(plot_data, aes(x = fg_richness, y = value_std))
+  
+  # Determine aesthetics based on significance - prioritize interactions
+  if (sig$fg_temp_interaction || (sig$temp && !sig$precip)) {
+    # FG:T interaction OR T only: use habitat (categorical temperature) for lines
+    p <- p + 
+      geom_point(aes(colour = habitat), alpha = 0.5) +
+      geom_smooth(aes(colour = habitat), method = "lm", se = TRUE, linewidth = 0.8) +
+      scale_colour_manual(values = temp_col, name = "Habitat")
+    
+  } else if (sig$fg_precip_interaction || (sig$precip && !sig$temp)) {
+    # FG:P interaction OR P only: linetype and shape for P
+    p <- p + 
+      geom_point(aes(shape = precipitation_name), alpha = 0.5) +
+      geom_smooth(aes(linetype = precipitation_name), method = "lm", se = TRUE, linewidth = 0.8) +
+      scale_linetype_manual(values = prec_lt, name = "Precipitation") +
+      scale_shape_manual(values = prec_sh, name = "Precipitation")
+    
+  } else if (sig$temp && sig$precip) {
+    # Both T and P (no interactions): use habitat for color, linetype for P
+    p <- p + 
+      geom_point(aes(colour = habitat, shape = precipitation_name), alpha = 0.5) +
+      geom_smooth(aes(colour = habitat, linetype = precipitation_name), 
+                  method = "lm", se = FALSE, linewidth = 0.8) +
+      scale_colour_manual(values = temp_col, name = "Habitat") +
+      scale_linetype_manual(values = prec_lt, name = "Precipitation") +
+      scale_shape_manual(values = prec_sh, name = "Precipitation")
+    
+  } else {
+    # Only FG: simple plot
+    p <- p + 
+      geom_point(alpha = 0.5) +
+      geom_smooth(method = "lm", se = TRUE, linewidth = 0.8, colour = "black")
+  }
+  
+  # Build significance labels
+  sig_terms_this_response <- model_data |> 
+    filter(response == response_name, p.value < 0.05) |> 
+    pull(term)
+  
+  sig_labels <- c()
+  if (sig$fg) sig_labels <- c(sig_labels, "FR")
+  if (sig$fg_temp_interaction) {
+    sig_labels <- c(sig_labels, "FR x T")
+  } else if ("temperature_scaled" %in% sig_terms_this_response) {
+    sig_labels <- c(sig_labels, "T")
+  }
+  if (sig$fg_precip_interaction) {
+    sig_labels <- c(sig_labels, "FR x P")
+  } else if ("precipitation_scaled" %in% sig_terms_this_response) {
+    sig_labels <- c(sig_labels, "P")
+  }
+  
+  sig_text <- paste(sig_labels, collapse = "\n")
+  
+  # Add common elements
+  p <- p +
+    scale_x_continuous(breaks = c(0, 1, 2, 3)) +
+    labs(x = "Number of functional groups present",
+         y = "Standardized function value",
+         title = response_name) +
+    annotate("text", x = -Inf, y = Inf, label = sig_text, 
+             hjust = -0.1, vjust = 1.1, size = 3.5, fontface = "bold") +
+    theme_bw() +
+    theme(legend.position = "bottom")
+  
+  return(p)
+}

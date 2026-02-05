@@ -28,6 +28,8 @@ library(broom.mixed)
 
 ```
 
+## Data transformation
+
 ### Raw data
 ```{r}
 #| label: fig-raw-plot
@@ -53,6 +55,7 @@ tar_read(normalize_functions_plot)
 ```
 
 
+### Standardize data
 ```{r}
 #| label: fig-std-plot
 #| echo: false
@@ -77,15 +80,101 @@ tar_read(correlation_plot)
 ```
 
 
-### decomposition data 
+## Single function analyses
+
+Each ecosystem function was analyzed separately using linear mixed-effects models with functional group richness, temperature, and precipitation as predictors.
 
 ```{r}
-#| label: fig-decomposition-data-plot
 #| echo: false
 #| warning: false
-#| fig-cap: Decomposition data for only graminoids, forbs and their average.
 
-tar_read(decomposition_data_plot)
+# Source functions
+source(here::here("R/functions/make_figures.R"))
+
+# Load targets
+tar_load(c(big_data, model_response, temp_colour, prec_linetype, prec_shape))
+
+# Prepare model results
+model_results <- model_response |>
+  unnest(result) |>
+  filter(effect == "fixed") |>
+    select(-data, -model, -model_factorial, -model_treatment, -result_factorial, -result_treatment, -group, -effect, -anova, -anova_tidy)
+
+```
+
+```{r}
+#| label: check-significant-responses
+#| echo: false
+#| warning: false
+
+# Exclude certain responses
+exclude_responses <- c("collembola_fungivorous_density", "mite_fungivorous_density", 
+                      "mite_nematophagous_density", "mite_predaceous_density", 
+                      "collembola_predaceous_density", "specific_root_length_m_per_g", 
+                      "root_tissue_density_g_per_m3", "root_dry_matter_content",
+                      "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density")
+
+# Get responses with significant effects and their groups
+significant_responses_df <- model_results |>
+  filter(!response %in% exclude_responses) |>
+  filter(p.value < 0.05) |>
+  group_by(response) |>
+  summarise(
+    has_fg = any(term == ".functional_group"),
+    has_temp = any(term %in% c("temperature_scaled", ".functional_group:temperature_scaled")),
+    has_precip = any(term %in% c("precipitation_scaled", ".functional_group:precipitation_scaled")),
+    has_fg_temp_interaction = any(term == ".functional_group:temperature_scaled"),
+    has_fg_precip_interaction = any(term == ".functional_group:precipitation_scaled"),
+    .groups = "drop"
+  ) |>
+  filter(has_fg | has_temp | has_precip) |>
+  left_join(
+    big_data |> distinct(response, group),
+    by = "response"
+  ) |>
+  mutate(group = factor(group, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
+  arrange(group, response)
+
+# Extract just the response names in order
+significant_responses <- significant_responses_df$response
+
+cat("Responses with significant effects:", length(significant_responses), "\n")
+
+```
+
+
+```{r}
+#| label: create-all-plots
+#| echo: false
+#| warning: false
+
+# Pre-create all plots using purrr (preserves group order)
+all_plots_list <- significant_responses |>
+  set_names() |>
+  map(function(resp) {
+    make_response_plot(resp, big_data, model_results, 
+                      temp_colour, prec_linetype, prec_shape)
+  }) |>
+  compact()  # Remove NULL values
+
+# Add group information for organizing plots
+plot_info <- significant_responses_df |>
+  filter(response %in% names(all_plots_list)) |>
+  select(response, group)
+
+```
+
+```{r}
+#| label: fig-all-responses
+#| echo: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 6
+
+# Display all plots in order (sorted by group)
+for (resp in names(all_plots_list)) {
+  print(all_plots_list[[resp]])
+}
 
 ```
 
