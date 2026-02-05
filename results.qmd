@@ -141,6 +141,19 @@ We ran three models using a different approach for functional group:
 
 2) Functional group presence (factorial analysis): forbs, graminoids, bryophytes presence
 
+```{r}
+#| label: factorial-approach
+#| echo: true
+#| eval: false
+
+big_data |> 
+distinct(treatment, forb, gram, bryo) |>
+mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB", "FGB"))) |>
+arrange(treatment) |>
+gt()
+
+```
+
 2) Functional identity: forbs, graminoids, bryophytes (model complex/costly, can only be run without T and P)
 
 
