@@ -120,3 +120,76 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
   
   return(p)
 }
+
+
+# Factorial multifunctionality plot (forb/gram/bryo presence vs predicted multifunctionality)
+# climate_var: "temp" (habitat) or "prec" (precipitation)
+make_factorial_multifun_plot <- function(model_multifun, temp_colour, prec_colour, climate_var = c("temp", "prec")) {
+  climate_var <- match.arg(climate_var)
+
+  fact_dat <- model_multifun |>
+    unnest(data) |>
+    filter(treatment != "FGB") |>
+    select(-model, -model_factorial, -model_treatment, -result, -result_factorial, -result_treatment, -anova, -anova_tidy)
+
+  fact_fit <- model_multifun$model_factorial[[1]]
+  fact_dat$pred <- predict(fact_fit, newdata = fact_dat, re.form = NA)
+
+  fg_long <- fact_dat |>
+    pivot_longer(
+      cols = c(forb, gram, bryo),
+      names_to = "fg",
+      values_to = "present"
+    ) |>
+    mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm")))
+
+  if (climate_var == "temp") {
+    fg_means <- fg_long |>
+      group_by(habitat, fg, present) |>
+      summarise(mean_pred = mean(pred), .groups = "drop")
+
+    ggplot(fg_long, aes(x = factor(present), y = pred)) +
+      geom_line(
+        data = fg_means,
+        aes(x = factor(present), y = mean_pred, colour = habitat, group = interaction(habitat, fg)),
+        linewidth = 1
+      ) +
+      geom_point(
+        aes(colour = habitat),
+        position = position_jitter(width = 0.1, height = 0),
+        alpha = 0.6
+      ) +
+      scale_colour_manual(values = temp_colour, name = "Habitat") +
+      facet_wrap(~ fg) +
+      labs(
+        x = "Presence (0 = absent, 1 = present)",
+        y = "Predicted multifunctionality",
+        colour = "Habitat"
+      ) +
+      theme_bw()
+  } else {
+    fg_means_prec <- fg_long |>
+      group_by(precipitation_name, fg, present) |>
+      summarise(mean_pred = mean(pred), .groups = "drop")
+
+    ggplot(fg_long, aes(x = factor(present), y = pred)) +
+      geom_line(
+        data = fg_means_prec,
+        aes(x = factor(present), y = mean_pred, colour = precipitation_name, group = interaction(precipitation_name, fg)),
+        linewidth = 1
+      ) +
+      geom_point(
+        aes(colour = precipitation_name),
+        position = position_jitter(width = 0.1, height = 0),
+        alpha = 0.6
+      ) +
+      scale_colour_manual(values = prec_colour, name = "Precipitation") +
+      facet_wrap(~ fg) +
+      labs(
+        x = "Presence (0 = absent, 1 = present)",
+        y = "Predicted multifunctionality",
+        colour = "Precipitation"
+      ) +
+      theme_bw()
+  }
+}

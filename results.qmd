@@ -74,22 +74,23 @@ Further, (ii) the decrease in multifunctionality is context dependent.
 
 Overview of ecosystem functions measured across sites and treatments, grouped by functional category.
 
-| Grouping             | Ecosystem function                       | Site | Treatment | Positive values mean higher     |
+| Grouping             | Ecosystem function                       | Site | Treatment | Positive values => higher     |
 |----------------------|------------------------------------------|------|-----------|---------------------------------------------|
-| Primary producers    | Aboveground biomass                      | All  | All       | productivity                                |
-|                      | Belowground biomass                      | All  | All       | productivity / nutrient uptake              |
-|                      | Plant richness                  | All  | All       | biodiversity                                |
-| Higher trophic level | Mesofauna (nematode density)             | All  | only single treatment       | productivity?                               |
-|                      | Mesofauna (mites and collembola density) | All  | only single treatment       | productivity?                               |
-|                      | Fungi density/diversity                  |      |           |                                             |
-|                      | Bacteria density/diversity               |      |           |                                             |
-| Carbon cycling       | Decomposition of graminoid litter        | All  | All       | decomposition                               |
-|                      | C stock                                  | All  | All       | carbon storage                              |
-|                      | NPP                                      | 9  | All       | productivity                                |
-|                      | GPP                                      | 9  | All       | productivity                                |
-| Nutrient cycling     | N stock                                  | All  | All       | nutrient storage                            |
-|                      | Available phosphate                      | All  | only single treatment       | nutrient availability                       |
-|                      | Available micronutrients                 | All  | only single treatment       | nutrient availability                       |
+| Primary producers    | Aboveground biomass      | All  | All       | productivity    |
+|                      | Belowground biomass      | All  | All       | productivity / nutrient uptake |
+|                      | Plant richness (vascular & non-vascular) | All  | All       | biodiversity   |
+| Higher trophic level | Nematode density         | All  | only single treatment   | productivity? |
+|                      | Mites/collembola density | All  | only single treatment  | productivity?|
+|                      | Fungi density            | All  | All       | productivity?           |
+|                      | Bacteria density         | All  | All       | productivity?   |
+|                      | Meso/microfauna diversity | All     | All   | biodiversity |
+| Carbon cycling       | Decomposition of graminoid litter | All     | All       | decomposition  |
+|                      | C stock                  | All  | All       | carbon storage  |
+|                      | NPP                      | 9    | All       | productivity   |
+|                      | GPP                      | 9    | All       | productivity   |
+| Nutrient cycling     | N stock                  | All  | All       | nutrient storage  |
+|                      | Available phosphate      | All  | only single treatment  | nutrient availability |
+|                      | Available micronutrients | All  | only single treatment  | nutrient availability  |
 
 ### Multifunctionality approach
 
@@ -143,14 +144,20 @@ We ran three models using a different approach for functional group:
 
 ```{r}
 #| label: factorial-approach
-#| echo: true
-#| eval: false
+#| echo: false
+#| eval: true
 
 big_data |> 
 distinct(treatment, forb, gram, bryo) |>
 mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB", "FGB"))) |>
 arrange(treatment) |>
-gt()
+gt() |>
+tab_style(
+    style = list(
+      cell_text(weight = "bold")
+    ),
+    locations = cells_column_labels(everything())
+  )
 
 ```
 
@@ -231,6 +238,30 @@ tar_read(multifunctionality_figure2)
 #| tbl-cap: Model output from testing effect of treatment on multifunctionality.
 
 tar_read(model_multi_trt_out)
+
+```
+
+### Factorial approach: presence of forbs, graminoids and bryophytes
+
+Predicted multifunctionality from the factorial model (forb × gram × bryo × temperature × precipitation) for each functional group's presence (0 = absent, 1 = present), stratified by habitat (summer temperature) or precipitation.
+
+```{r}
+#| label: fig-factorial-multifun-temp
+#| echo: false
+#| warning: false
+#| fig-cap: Predicted multifunctionality in response to presence of forbs, graminoids or bryophytes, by habitat (summer temperature). Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+
+tar_read(factorial_multifun_temp_figure)
+
+```
+
+```{r}
+#| label: fig-factorial-multifun-prec
+#| echo: false
+#| warning: false
+#| fig-cap: Predicted multifunctionality in response to presence of forbs, graminoids or bryophytes, by precipitation. Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+
+tar_read(factorial_multifun_prec_figure)
 
 ```
 

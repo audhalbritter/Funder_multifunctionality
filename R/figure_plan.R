@@ -14,6 +14,12 @@ figure_plan <- list(
     name = temp_colour,
     command = c("#EF9A9AFF", "#E53935FF", "#B71C1CFF")
   ),
+
+  # colour for precipitation (700 to 2800 mm, continental to oceanic)
+  tar_target(
+    name = prec_colour,
+    command = c("#C6DBEF", "#6BAED6", "#2171B5", "#084594")
+  ),
   
   # linetype for precipitation (continental to oceanic)
   tar_target(
@@ -68,7 +74,29 @@ figure_plan <- list(
         theme_bw() +
         theme(text = element_text(size = 15))
     }
+  ),
 
+  # factorial multifunctionality plot by habitat (temperature)
+  tar_target(
+    name = factorial_multifun_temp_figure,
+    command = make_factorial_multifun_plot(
+      model_multifun,
+      temp_colour,
+      prec_colour,
+      climate_var = "temp"
+    )
+  ),
+
+  # factorial multifunctionality plot by precipitation
+  tar_target(
+    name = factorial_multifun_prec_figure,
+    command = make_factorial_multifun_plot(
+      model_multifun,
+      temp_colour,
+      prec_colour,
+      climate_var = "prec"
+    )
+  ),
 
       # multifunctionality |>
       # filter(!is.na(habitat),
@@ -85,7 +113,6 @@ figure_plan <- list(
       #      y ="Average multifunctionality") +
       # facet_wrap( ~ habitat) +
       # theme_bw()
-  ),
 
 
   #multifunctionality figure
