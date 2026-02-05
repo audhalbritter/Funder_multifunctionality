@@ -86,7 +86,9 @@ si_figure_plan <- list(
       function_table <- big_data |>
         select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-        select(`biomass`:`micro nutrients`)
+        select(`biomass`:`micro nutrients`) |>
+        # remove trait and mesofauna variables
+        select(-c("nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density", "specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content"))
 
       # pairwise.complete.obs avoids NA in cor matrix (root_biomass, root_traits have a few NAs)
       corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
@@ -95,10 +97,10 @@ si_figure_plan <- list(
       ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                  colors = c("#6D9EC1", "white", "#E46726"),
                  lab = TRUE,
-                 lab_size = 2.5,
-                 tl.cex = 8,
+                 lab_size = 8,
+                 tl.cex = 14,
                  tl.srt = 45) +
-        theme(axis.text = element_text(size = 7))
+        theme(axis.text = element_text(size = 8))
 
     }
   ),
@@ -107,12 +109,16 @@ si_figure_plan <- list(
   # group figures
   tar_target(
     name = pp_plot,
-    command = make_group_figure(big_data, group = "primary producers")
+    command = make_group_figure(big_data |>
+    filter(!response %in% c("specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content")), 
+    group = "primary producers")
   ),
 
   tar_target(
     name = htl_plot,
-    command = make_group_figure(big_data, group = "higher trophic level")
+    command = make_group_figure(big_data |>
+    filter(!response %in% c("nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density")),
+    group = "higher trophic level")
   ),
 
   tar_target(
