@@ -165,8 +165,7 @@ figure_plan <- list(
   tar_target(
     name = multifunctionality_figure2,
     command = multifunctionality |>
-      filter(!is.na(habitat),
-             data_type == "function") |>
+      filter(!is.na(habitat)) |>
       mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
       ggplot(aes(x = fg_remaining, y = multifuntionality, fill = fg_remaining)) +
       geom_boxplot() +
