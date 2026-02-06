@@ -187,26 +187,6 @@ transformation_plan <- list(
       
   ),
 
-  # Mesofauna richness
-  tar_target(
-    name = mesofauna_richness,
-    command = bind_rows(nematode |> 
-    mutate(organism = "nematode"), 
-          microarthropod |> 
-          filter(functional_group != "mite_unknownjuvenile") |>
-          rename(organism = microarthropods)) |>
-          group_by(year, siteID, blockID, plotID, treatment, functional_group, organism) |>
-          summarise(value = n()) |>
-          group_by(year, siteID, blockID, plotID, treatment) |>
-          summarise(value = n()) |>
-          mutate(data_type = "function",
-             group = "higher trophic level",
-             response = "mesofauna richness",
-             unit = "count")
-      
-      
-  ),
-
       tar_target(
     name = microarthropod_fg_density,
     command = microarthropod |>

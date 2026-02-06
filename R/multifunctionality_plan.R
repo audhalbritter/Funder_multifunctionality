@@ -15,7 +15,6 @@ multifunctionality_plan <- list(
       # higher trophic levels
       nematode_density,
       microarthropod_density,
-      mesofauna_richness,
       #TBA fungi and bacteria density
 
       # carbon cycle
@@ -56,7 +55,7 @@ multifunctionality_plan <- list(
       # if zeros in data (nematodes and microarthropods), then there will be NAs here
       tidylog::mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "mesofauna richness", "carbon", "nitrogen", "phosphate", "gpp", "micro nutrients") ~ log(value),
+        response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphate", "gpp", "micro nutrients") ~ log(value),
         # no transformation for others
         TRUE ~ value
       )) |>
@@ -84,20 +83,20 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "reco")) |>
+      filter(!response %in% c("decomposition forbs", "reco")) |> 
       group_by(
-        year, siteID, blockID, plotID, treatment, habitat,
+        siteID, blockID, plotID, treatment, habitat,
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
-        fg_richness, fg_remaining, forb, gram, bryo,
+        fg_richness, fg_remaining, forb, gram, bryo
       ) |>
       summarise(
         multifuntionality = mean(value_std, na.rm = TRUE),
         se = sd(value_std, na.rm = TRUE) / sqrt(n()),
-        data_type = dplyr::first(data_type),
-        group     = dplyr::first(group),
+        #data_type = dplyr::first(data_type),
+        #group     = dplyr::first(group),
         .groups = "drop"
-      ) |>
+      ) |> 
       # global level (useful for group_by map)
       mutate(level = "global")
 
