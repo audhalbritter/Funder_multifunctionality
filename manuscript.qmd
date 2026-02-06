@@ -1,0 +1,70 @@
+---
+format: 
+  html:
+    self-contained: true
+title: Plant functional group affect on multifunctionality
+author:
+  - name: A.H. Halbritter
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+    corresponding: true
+    email: aud.halbritter@uib.no
+  - name: I.H.J. Althuizen
+    affiliation:
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+      - NORCE, Norwegian Research Centre AS, Bjerknes Centre for Climate Research, Bergen, Norway
+  - name: M. Demeaux
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+  - name: P.G. Farsund
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+  - name: S. Geange
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+  - name: F. Jaroszynska
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+      - University of Aix-Marseille, Marseille, France
+  - name: K.M. Jörgensen
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+      - Department of Soil and Environment, Swedish University of Agricultural Sciences, Uppsala, Sweden
+  - name: P. Kardol
+    affiliation: Department of Forest Mycology and Plant Pathology, Swedish University of Agricultural Science, Uppsala, Sweden
+  - name: H. Kauserud
+    affiliation: Section for Genetics and Evolutionary Biology, Department of Biosciences, University of Oslo, Norway
+  - name: R.J. Telford
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+  - name: E. Thoen
+    affiliation: Section for Genetics and Evolutionary Biology, Department of Biosciences, University of Oslo, Norway
+  - name: D.A. Wardle
+    affiliation: Department of Ecology and Environmental Science, Umeå University, Umeå, Sweden
+  - name: L. Øverås
+    affiliation: Department of Biological Sciences, University of Bergen, Bergen, Norway
+  - name: V. Vandvik
+    affiliation:
+      - Department of Biological Sciences, University of Bergen, Bergen, Norway
+      - Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+    corresponding: true
+    email: vigdis.vandvik@uib.no
+execute:
+  echo: false
+bibliography: bibliography.bib
+csl: journal-of-ecology.csl
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+{{< include intro_method.qmd >}}
+
+{{< include results.qmd >}}
