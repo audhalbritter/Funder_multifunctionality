@@ -87,6 +87,17 @@ figure_plan <- list(
     )
   ),
 
+  # factorial multifunctionality plot: colours for precipitation, facets by temperature
+  tar_target(
+    name = factorial_multifun_combined_figure,
+    command = make_factorial_multifun_plot(
+      model_multifun,
+      temp_colour,
+      prec_colour,
+      climate_var = "combined"
+    )
+  ),
+
   # factorial multifunctionality plot by precipitation
   tar_target(
     name = factorial_multifun_prec_figure,
@@ -172,11 +183,11 @@ figure_plan <- list(
       scale_fill_manual(values = treatment_patterns) +
       #scale_x_discrete(labels = c(0, "", 1, "", "", 2, "", 3), name = "") +
       #scale_x_discrete(labels = c("A", "B"), breaks = c(1, 3, 6, 8)) +
-      geom_signif(comparisons = list(c("B", "All"),
-                                     c("F", "All"),
-                                     c("None", "All")),
-                  map_signif_level = TRUE,
-                  y_position = c(4.3, 4.6, 4.9)) +
+      # geom_signif(comparisons = list(c("B", "All"),
+      #                                c("F", "All"),
+      #                                c("None", "All")),
+      #             map_signif_level = TRUE,
+      #             y_position = c(4.3, 4.6, 4.9)) +
       labs(x = "Functional groups present",
            y ="Average multifunctionality") +
       #facet_grid(habitat ~ precipitation_name) +

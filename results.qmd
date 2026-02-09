@@ -10,9 +10,20 @@ library(gt)
 
 # Results
 
-### Standardized functioning
+### Main results (so far)
+
+- Ecosystem functions are affected by functional groups, summer temperature and annual precipitation. So, we expect average multifunctionality also to be affected by these factors.
+
+- Average multifunctionality increased with the number of functional groups present (Figure 2). This effect is stronger for warmer sites when fewer functional groups are present and vice versa for colder sites when more functional groups are present (a bit unclear how this works...).
+
+- The identity of functional groups present also affected average multifunctionality (Figure 3). Multifunctionality decreased when one or two groups were removed, and was lowest under bare soil. The presence of forbs and/or graminoid increase multifuntionality more than bryophytes.
+
+- Factorial analysis: the presence of forbs, graminoids and bryophytes increase average multifunctionality (AMF). AMF is higher in warm and dry sites. (There are some interactions 3-way, 4-way which are difficult to interpret...)
+
+### Standardized functioning (spaghetti plot)
 
 The effect of plant functional group removal, summer temperature and annual precipitation on single ecosystem functions.
+This is a very chaotic plot, mostly serves as giving a visual overview and will most likely not be included in the manuscript.
 
 ```{r}
 #| label: fig-function
@@ -35,7 +46,7 @@ The number of functional groups present and temperature both increased average m
 #| label: fig-multifunctionality
 #| echo: false
 #| warning: false
-#| fig-cap: Average multifuntionality in response to number of functional groups present and summer temperature (habitat). The colours represent the different habitats. The points are the raw data and the lines represent the predictions from the model (not that the line is a simple lm model for now!).
+#| fig-cap: Average multifuntionality in response to number of functional groups present and summer temperature (habitat). The colours represent the different habitats. The points are the raw data and the lines represent the predictions from the model.
 
 tar_read(multifunctionality_figure)
 
@@ -58,7 +69,7 @@ Multifunctionality was reduced when no plants, only forbs or only bryophytes wer
 ```{r}
 #| label: fig-multifunctionality2
 #| echo: false
-#| warning: false
+#| fig-height: 4
 #| fig-cap: Average multifuntionality in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functional groups present are shown in different colours.
 
 tar_read(multifunctionality_figure2)
@@ -82,8 +93,8 @@ Predicted multifunctionality from the factorial model (forb × gram × bryo × t
 ```{r}
 #| label: fig-factorial-multifun-temp
 #| echo: false
-#| warning: false
-#| fig-cap: Predicted multifunctionality in response to presence of forbs, graminoids or bryophytes, by habitat (summer temperature). Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+#| fig-height: 3
+#| fig-cap: Average multifunctionality in response to presence of forbs, graminoids or bryophytes, by habitat (summer temperature). Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
 
 tar_read(factorial_multifun_temp_figure)
 
@@ -92,10 +103,20 @@ tar_read(factorial_multifun_temp_figure)
 ```{r}
 #| label: fig-factorial-multifun-prec
 #| echo: false
-#| warning: false
-#| fig-cap: Predicted multifunctionality in response to presence of forbs, graminoids or bryophytes, by precipitation. Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+#| fig-height: 3
+#| fig-cap: Average multifunctionality in response to presence of forbs, graminoids or bryophytes, by precipitation. Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
 
 tar_read(factorial_multifun_prec_figure)
+
+```
+
+```{r}
+#| label: fig-factorial-multifun-combined
+#| echo: false
+#| fig-height: 6
+#| fig-cap: Average multifunctionality in response to presence of forbs, graminoids or bryophytes, by habitat (summer temperature) and precipitation. Colours show precipitation level; panels show habitat. Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+
+tar_read(factorial_multifun_combined_figure)
 
 ```
 

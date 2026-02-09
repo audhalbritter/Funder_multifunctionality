@@ -123,8 +123,8 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
 
 
 # Factorial multifunctionality plot (forb/gram/bryo presence vs predicted multifunctionality)
-# climate_var: "temp" (habitat) or "prec" (precipitation)
-make_factorial_multifun_plot <- function(model_multifun, temp_colour, prec_colour, climate_var = c("temp", "prec")) {
+# climate_var: "temp" (habitat), "prec" (precipitation), or "combined" (prec colours, temp facets)
+make_factorial_multifun_plot <- function(model_multifun, temp_colour, prec_colour, climate_var = c("temp", "prec", "combined")) {
   climate_var <- match.arg(climate_var)
 
   fact_dat <- model_multifun |>
@@ -163,11 +163,11 @@ make_factorial_multifun_plot <- function(model_multifun, temp_colour, prec_colou
       facet_wrap(~ fg) +
       labs(
         x = "Presence (0 = absent, 1 = present)",
-        y = "Predicted multifunctionality",
+        y = "Average multifunctionality",
         colour = "Habitat"
       ) +
       theme_bw()
-  } else {
+  } else if (climate_var == "prec") {
     fg_means_prec <- fg_long |>
       group_by(precipitation_name, fg, present) |>
       summarise(mean_pred = mean(pred), .groups = "drop")
@@ -187,7 +187,32 @@ make_factorial_multifun_plot <- function(model_multifun, temp_colour, prec_colou
       facet_wrap(~ fg) +
       labs(
         x = "Presence (0 = absent, 1 = present)",
-        y = "Predicted multifunctionality",
+        y = "Average multifunctionality",
+        colour = "Precipitation"
+      ) +
+      theme_bw()
+  } else {
+    # combined: colours for precipitation, facet by temperature (habitat) and fg
+    fg_means_combined <- fg_long |>
+      group_by(habitat, precipitation_name, fg, present) |>
+      summarise(mean_pred = mean(pred), .groups = "drop")
+
+    ggplot(fg_long, aes(x = factor(present), y = pred)) +
+      geom_line(
+        data = fg_means_combined,
+        aes(x = factor(present), y = mean_pred, colour = precipitation_name, group = interaction(precipitation_name, fg)),
+        linewidth = 1
+      ) +
+      geom_point(
+        aes(colour = precipitation_name),
+        position = position_jitter(width = 0.1, height = 0),
+        alpha = 0.6
+      ) +
+      scale_colour_manual(values = prec_colour, name = "Precipitation") +
+      facet_grid(habitat ~ fg) +
+      labs(
+        x = "Presence (0 = absent, 1 = present)",
+        y = "Average multifunctionality",
         colour = "Precipitation"
       ) +
       theme_bw()
