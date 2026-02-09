@@ -1,3 +1,8 @@
+---
+editor: visual
+bibliography: bibliography.bib
+---
+
 ```{r}
 #| label: set-up-intro
 #| echo: false
@@ -18,73 +23,84 @@ Preliminary results show that biodiversity loss reduced multifunctionality, but 
 
 # Introduction
 
-\[Ecosystems provide multiple functions and services, underpinned by biodiversity.\] Species provide important functions including biomass production, decomposition, nutrient turnover, and carbon storage (REF). However, species differ in what functions they provide and to what degrees they contribute to the functions (Hector and Bagchi 2007). Together, the species occurring in an ecosystem provide multiple ecosystem functions (hereafter multifunctionality). To understand how biodiversity affects ecosystem functioning has occupied ecologists for decades (Tilman et al. 2001)(REFs). The general understanding is that biodiversity is important for maintaining multifunctionality (Hector and Bagchi 2007; Zavaleta et al. 2010) (REFs) and for ecosystem resilience and adaptability to climate change (Yachi and Loreau 1999).
+\[*Ecosystems provide multiple functions and services, underpinned by biodiversity*\] Species provide important functions including biomass production, decomposition, nutrient turnover, and carbon storage [@ipbes2019intergovernmental]. However, species differ in what functions they provide and to what degrees they contribute to the functions [@hector2007biodiversity]. Together, the species occurring in an ecosystem provide multiple ecosystem functions (hereafter *multifunctionality*). To understand how biodiversity affects ecosystem functioning has occupied ecologists for decades [@tilman2001diversity; @byrnes2014investigating; @manning2018redefining]. The general understanding is that biodiversity is important for maintaining multifunctionality [@hector2007biodiversity; @zavaleta2010sustaining; @isbell2011high] and for ecosystem resilience and adaptability to climate change [@yachi1999biodiversity].
 
-\[We know little about how multifunctionality varies across different climate, biogeographic regions, environmental gradients, and ecosystem types.\] Biodiversity manipulation experiments show that biodiversity indirectly plays an important role for multifunctionality (Hector and Bagchi 2007).
+\[*Might work as a transition here*\] Few studies have looked at how global change drivers affect multifuncitonality, explicit testing of the biotic and abiotic mechanisms through which global change drivers impact EMF [@giling2019niche].
 
-Multifunctionality can be directly affected by global change including climate, land-use, pollution etc. or indirectly via biodiversity. Evidence from global change experiments show that multifunctionality is directly affected by climate (REFs), nutrients (REF), land-use (REFs). changes along environmental gradients (Wang et al. 2024; Ding and Eldridge 2021; Fanin et al. 2018), ecosystem types, land-use (Allart et al. 2024). How multifunctionality changes with context has been studied in several ways: along gradients where environmental conditions change or using global change experiments and simulating climate, nutrients etc. summaries what kind of studies there are. While some studies show that multifunctionality varies with environmental context, others do not show any difference Most studies focus on aboveground multifunctionality While these studies have improved our understanding of multifunctionality, for climate, we know little about how multifunctionality changes with climate in natural ecosystems.
+\[*Context dependency:* *how multifunctionality varies across different climate, biogeographic regions, environmental gradients, and ecosystem types*\] Multifunctionality can be directly affected by global change including climate, land-use, pollution etc. or indirectly via biodiversity. Evidence from global change experiments show that multifunctionality is directly affected by climate [@berdugo2017plant; @robroek2017diverse], pollution (REFs), and land-use [@allart2024species; @peco2017effects], but can also vary along environmental gradients [@wang2024plant; @ding2021climate; @fanin2018consistent; @berdugo2017plant], and ecosystem types (REFs). While some studies show that multifunctionality varies with environmental context [@fanin2018consistent; ...], others do not show any difference (REFs). In addition, the majority of these studies focus on aboveground multifunctionality [REFs, but see @peco2017effects]. While these studies have improved our understanding of multifunctionality, for climate, we know little about how multifunctionality changes with climate in natural ecosystems.
 
-Interactions between functional groups vary along gradients (stress gradient hypothesis, etc.). Graminoids facilitate forbs in cold climates but have competitive effects in warmer and more productive sites (Olsen et al. 2016) We don't know how this relates to multifunctionality. What is the role for the different functional groups Bryophytes modify soil microclimate in alpine grasslands . expand…Climate & bryophytes (Slate et al. 2024) Also: Lett et al (2022) Link plant functional groups to climate change: Diaz & Cabido (2009) and Fry et al. (2013), Asplund et al. 2022 .
+\[*Interactions among functional groups vary along gradients*\] The role of functional groups and their interactions for understanding how biodiversity affects mutlifuntionality is yet unclear. Plant functional groups play different roles in the ecosystems. Bryophytes modify and regulate soil microclimate, sequestere carbon and contribute to nitrogen cycling in cold environments [@jaroszynska2023bryophytes; @lett2021can; @eldridge2023global]. \[*Expand on forbs and graminoids ...*\]. Interactions between functional groups vary along environmental gradients (i.e. Stress gradient hypothesis [@bertness1994positive]). For example, graminoids facilitate forbs in cold climates but have competitive effects in warmer and more productive sites [@olsen2016facilitation]. However, we know however little about how this relates to multifunctionality. \[*Something on that we know plant functional groups affect ecosystem functions, and they change along climate gradients (Diaz & Cabido (2009)(fast-slow traits along water stress gradient) and Fry et al. (2013)(precipitation), Asplund et al. 2022 (cascading effects on soil MF)). This suggests that ecosystem functions will change with changing climate*\]. Bryophytes have the capacity to buffer ecosystems to climate change, however the threshold for this due to changing temperature and precipitation regimes is unknown [@slate2024impact].
 
-Main functional groups, we know about plant-plant interactions in this system, but we don't know how this translates to multifunctionality. Here, we make use of a unique study system, the Vestland Climate Grid (VCG), with twelve mountain grasslands selected to represent a 'climate grid' across independent gradients of temperature and precipitation (Refs). Within each grassland we are conducting several long-term global change experiments enabling us to assess how climate warming and increased precipitation will affect plants, biodiversity, and ecosystem functioning, and to what extent these effects are direct physiological responses to climate change or are mediated through changes in biotic interactions (refs). Further, the replication of the experiments across the twelve VCG sites allows us to assess whether responses are global or context-dependent across different temperature and/or precipitation regimes.
+<!-- Difference in multifunctionality between non-vascular and vascular plants @cui2026multifunctionality. -->
 
-The aim of this study was to assess how climate change and the presence of three functional groups and combinations of these affects multifunctionality. Specifically, we test how loss of functional groups affect ecosystem functions across a climate grid. We use a macroecological experimental approach, by replicating a plant functional group removal experiment (i.e. removal of graminoids, forbs and bryophytes and their combinations) across factorial broad-scale temperature and precipitation gradients. We recorded taxonomic and functional biodiversity across different organismal groups (plants, bryophytes, microbes, mesofauna), and ecosystem functions (carbon and nutrient stocks and fluxes). We hypothesize that (i) loss of functional groups decrease ecosystem functions. Do we have specific hypotheses for graminoids, forbs and bryophytes? Further, (ii) the decrease in multifunctionality is context dependent.
+*\[Main functional groups, we know about plant-plant interactions in this system, but we don’t know how this translates to multifunctionality\]* Here, we make use of a unique study system, the Vestland Climate Grid (VCG), with twelve mountain grasslands selected to represent a ‘climate grid’ across independent gradients of temperature and precipitation [@klanderud2015importance; @vandvik2020biotic]. Within each grassland we are conducting several long-term global change experiments enabling us to assess how climate warming and increased precipitation will affect plants, biodiversity, and ecosystem functioning, and to what extent these effects are direct physiological responses to climate change or are mediated through changes in biotic interactions [@vandvik2020biotic; @olsen2016facilitation; @topper2018devil]. Further, the replication of the experiments across the twelve VCG sites allows us to assess whether responses are global or context-dependent across different temperature and/or precipitation regimes. We found productivity and growth responses [@klanderud2015importance; @skarpaas2016biomass], shifts in vital rates and demography [@guittar2020quantifying; @topper2018devil; @vandvik2016seed], changes in species interactions [@meineri2020functional; @klanderud2017biotic; @klanderud2021vital] and ecosystem functions [@althuizen2018long; @jaroszynska2023bryophytes] and many of these responses were context dependent [e.g. @olsen2016facilitation; @vandvik2022role; @delnevo2018plastic].
+
+The aim of this study was to assess how climate change and the presence of three functional groups and combinations of these affects multifunctionality. We use a macroecological experimental approach, by replicating a plant functional group removal experiment (i.e. removal of graminoids, forbs and bryophytes and their combinations) across factorial broad-scale temperature and precipitation gradients [@vandvik2022role]. We recorded taxonomic and functional biodiversity across different organismal groups (plants, bryophytes, microbes, mesofauna), and ecosystem functions (carbon and nutrient stocks and fluxes). We hypothesize that (i) loss of functional groups decrease ecosystem functions. \[*Losing graminoids and/or forbs affects multifunctionality more than losing bryophytes?*\] Further, (ii) the decrease in multifunctionality is context dependent. \[*Higher multifunctionality at warmer and drier sites?*\].
 
 # Methods
 
 ### Site description and experimental design
 
-\[Describe site selection and climate grid, annual precipitation and summer temperature\]
+In 2015, a functional group removal experiment was established at 12 sites arranged in a climate grid spanning three temperature levels (6.5, 8.5, and 10.5 °C summer temperature) and four precipitation levels (700, 1500, 2100 and 2800 mm annual precipitation) [@vandvik2022role]. The experimental sites were selected based on gridded climate data (... details). All other factors, such as bedrock, slope, aspect, vegetation type, grazing regime and history were kept as similar as possible.
 
-\[Describe the removal experiment\] For more details see (Vandvik et al. 2022).
+At each site, four experimental blocks with eight 25 x 25 cm plots were established. In a fully factorial removal experiment, the aboveground biomass of forbs, graminoids and bryophytes was removed using scissors. The removals experiment was maintained for seven years, where biomass was removed annually at peak growing season. In the first three years, except 2015 due to late snowmelt, the biomass was removed twice (early and peak season) to prevent regrowth. For more details see [@vandvik2022role].
 
-![Study area, site selection, experimental design, and field sampling overview for the FunCaB plant functional group experiment. (a) Location of the study area and the 12 study sites in Vestland county, Western Norway. (b) The Vestland Climate Grid is established across independent broad-scale biogeographic gradients in summer temperature (mean of four warmest months, °C), and annual precipitation (mean annual precipitation, mm). Temperature levels are given as boreal, sub-alpine, and alpine; precipitation levels range from 1 (dry) to 4 (wet). (c) Experimental design, with the timeline (species composition recordings \[dataset v\], seedling recruitment monitoring \[vi\], ecosystem carbon flux monitoring \[vii\], and functional group removals \[i\] indicated, see legend for dataset symbols, for other datasets see text), an overview of the eight factorial removal treatments, and plot layout with subplots used for the community and seedling recording. The removal treatments are described by the functional groups removed from the respective plots, note that in the figure the 'Intact' plot refers to the no removal controls whereas the 'Gap' are plots with all functional groups removed. For detailed description of treatments and their abbreviations as used in the datasets, see text.](funcab.png)
+The functional groups are delineated and abbreviated in the various datasets as follows: G = graminoids (including grasses, sedges and rushes), F = forbs (including herbaceous forbs, pteridophytes, dwarf-shrubs, and small individuals of trees and shrubs), B = Bryophytes (including mosses, liverworts, and hornworts). The experimental treatments are coded by functional group removed so that FGB = bare-ground gaps with all plants removed, FB = only graminoids remaining, GB = only forbs remaining, GF = only bryophytes remaining, B = graminoids and forbs remaining, F = bryophytes and graminoids remaining, G = bryophytes and forbs remaining, and C = intact vegetation controls with no vegetation removed.
+
+![Study area, site selection, experimental design, and field sampling overview for the FunCaB plant functional group experiment. (a) Location of the study area and the 12 study sites in Vestland county, Western Norway. (b) The Vestland Climate Grid is established across independent broad-scale biogeographic gradients in summer temperature (mean of four warmest months, °C), and annual precipitation (mean annual precipitation, mm). Temperature levels are given as boreal, sub-alpine, and alpine; precipitation levels range from 1 (dry) to 4 (wet). (c) Experimental design, with the timeline (species composition recordings \[dataset v\], seedling recruitment monitoring \[vi\], ecosystem carbon flux monitoring \[vii\], and functional group removals \[i\] indicated, see legend for dataset symbols, for other datasets see text), an overview of the eight factorial removal treatments, and plot layout with subplots used for the community and seedling recording. The removal treatments are described by the functional groups removed from the respective plots, note that in the figure the 'Intact' plot refers to the no removal controls whereas the 'Gap' are plots with all functional groups removed. For detailed description of treatments and their abbreviations as used in the datasets, see text.](figures/funcab.png)
 
 ### Data collection
+
+In 2022, the removal experiment was terminated and data on the vegetation, soil food-web and ecosystem functioning was collected, except for data on proportion flowering, seedling recruitment ecosystem CO2 fluxes, and available nutrients that was collected earlier (see below). The majority of datasets were collected at all 12 sites and eight treatments, except for the ecosystem carbon flux measurements that were collected at fewer sites and mesofauna, available nutrients, and XXX within fewer treatments (for details see below). Since the plots are relatively small (25 x 25 cm), the sampling of the various data followed a strict protocol to avoid edge effects.
+
+Aboveground biomass was harvested in all plots in 2022, sorted by functional group (forbs, graminoids and bryophytes) and litter (i.e. dead non attached plant material), dried at 60°C for 48 h and weighed. Annual root biomass in all plots was estimated from soil cores with 3 cm diameter that were extracted, washed, dried at 60°C for 48 h and weighed. Root productivity was estimated in all plots using root ingrowth cores installed for one year in the place where the root biomass was collected. The processing of the roots was the same as for root biomass. The vascular plant community composition was surveyed between 2015 and 2018, where fertility (production of buds, flower or seeds) of forbs and graminoids was recorded in each plot and in 2018 and 2019, seedling recruitment was recorded in each plot. We calculated the average proportion of fertility across all year as a measure for reproduction and the maximum seedling recruitment as a measure for resistance to invasion. In 2017, ecosystem CO2 fluxes (Net Ecosystem Exchange \[NEE\] and Ecosystem Respiration \[Reco\]) were measured in each plot at nine of the sites, excluding the three sites at the second wettest precipitation level (2100 mm annual precipitation; see Figure 1). NEE and Reco were measured using a closed loop chamber attached to an infrared gas analyzer (Li-840; Manufacturer reports accuracy within 1.5% of the reading value; LI-COR Biosciences, Lincoln, NE, USA). NEE was measured using the clear chamber, while for Reco fluxes were measured under dark conditions by covering the chamber with a dark tarp to block the sunlight. Decomposition was measured by calculating the weight loss of site specific forb and graminoid litter or necromass between autumn 2021 and 2022. Several soil samples were taken in each plot at the end of the growing season in 2022 to measure nematode and microarthropod density, microbes, total soil carbon, nitrogen and phosphorus, soil organic and inorganic carbon. PRS probes were installed for 6 weeks in 2021 to measure available nutrients. Divided nutrients into nitrogen, phosphate and PCA with others, used first and second axis. For more details on these measurements see Vandvik et al. [(2022)](https://paperpile.com/c/l4FVcN/5MlZ/?noauthor=1) and Funder data paper. 
+
+### Ecosystem functions
+
+We use 16 ecosystem functions and properties as proxies for functions, providing fundamental supporting, provisioning, and regulating ecosystem services (REFs). Individual functions together make ecosystem functioning. There are 4 functions each related to primary producers, higher trophic level soil organisms, carbon and nutrient cycling. The specific functions are (i) aboveground biomass, (ii) belowground biomass, (iii) reproduction (proportion fertility), (iv) resistance to invasion (recruitment), (v) nematode density, (vi) microarthropod density, (vii) fungi density, (viii) bacteria density), (ix) GPP, (x) NEE, (xi) total carbon stocks, (xii) soil organic matter, (xiii) total nitrogen stocks, (xiv) phosphorus, (xv) available nitrogen, (xvi) available micronutrients.
 
 Overview of ecosystem functions measured across sites and treatments, grouped by functional category.
 
 | Grouping | Ecosystem function | Site | Treatment | Positive values =\> higher |
-|---------------|---------------|---------------|---------------|---------------|
+|-------------|---------------|-----------|------------|---------------|
 | Primary producers | Aboveground biomass | All | All | productivity |
 |  | Belowground biomass | All | All | productivity / nutrient uptake |
 |  | Plant richness (vascular & non-vascular) | All | All | biodiversity |
 | Higher trophic level | Nematode density | All | only single treatment | productivity? |
 |  | Mites/collembola density | All | only single treatment | productivity? |
-|  | Fungi density | All | All | productivity? |
-|  | Bacteria density | All | All | productivity? |
-|  | Meso/microfauna diversity | All | All | biodiversity |
+|  | Fungi density | not included yet |  |  |
+|  | Bacteria density | not included yet |  |  |
 | Carbon cycling | Decomposition of graminoid litter | All | All | decomposition |
 |  | C stock | All | All | carbon storage |
 |  | NPP | 9 | All | productivity |
 |  | GPP | 9 | All | productivity |
 | Nutrient cycling | N stock | All | All | nutrient storage |
-|  | Available phosphate | All | only single treatment | nutrient availability |
-|  | Available micronutrients | All | only single treatment | nutrient availability |
+|  | Available phosphate | All | only single treatment | nutrient cycling |
+|  | Available micro nutrients | All | only single treatment | nutrient cycling |
 
 ### Multifunctionality approach
 
 Calculations are based on Fanin et al. 2018.
 
--   **Data transfromation**
+-   **Data transformation**
 
     -   For all functions, more positive values should be higher functioning. E.g. higher GPP =\> more productive plants; Higher decomposition of litter =\> higher decomposition rate
 
-    -   All functions should have positive values. Used transformation (shift by minimun + constant) for those datasets that have negative values. Only mirconutrients have negative values.
+    -   All functions should have positive values. Used transformation (shift by minimum + constant) for those datasets that have negative values (micro-nutrients).
 
-    -   Log transfrom some of the variables to make them more normally distributed.
+    -   Log transform some of the variables to make them more normally distributed (see appendix).
 
 -   Do functions need to be **weighed**? No weighing needed, because no function is more desired or has higher value.
 
--   **Standardized all functions** between 0 and 1 to remove differences in measurement scale between the variables. Standardize each of the functions to a common scale by dividing by the maximum observed level of functioning. Do we want to use this approach or another one? $f(x) = \frac{x_i}{max(x)}$
+-   **Standardized all functions** between 0 and 1 to remove differences in measurement scale between the variables. Standardize each of the functions to a common scale by dividing by the maximum observed level of functioning.
+
+    $f(x) = \frac{x_i}{max(x)}$
 
 -   Outlier labeling method? (We tackled the outlier issue by removing extreme values following the outlier labelling rule with a tuning parameter^[64](https://www.nature.com/articles/s41559-017-0415-0#ref-CR63 "Maestre, F. T., Castillo‐Monroy, A. P., Bowker, M. A. & Ochoa‐Hueso, R. Species richness effects on ecosystem multifunctionality depend on evenness, composition and spatial pattern. J. Ecol. 100, 317–330 (2012).")^ of *g* = 2.)
 
 -   **Average multifunctionality** was then calculated as the mean of standardized values across all individual functions $MF_a = \frac{1}{F} \sum_{i=1}^{F} g(r_i(f_i))$
 
 -   Threshold-based approaches is appropriate as long as each cluster is weighted equally in the EF-multifunctionality measure, irrespective of the number of functions within each cluster. Prevent the overrepresentation of many similar functions
-
-\
 
 ### Data analysis
 
@@ -100,11 +116,13 @@ lmer(average multifunctionality ~ functional group x temperature x precipitation
 
 ```
 
-We ran three models using a different approach for functional group:
+We ran three models using a different metrics for functional group:
 
 1)  Functional richness: number of functional groups present (0-3)
 
-2)  Functional group presence (factorial analysis): forbs, graminoids, bryophytes presence
+2)  Functional identity: F, G, B, FB, GF,... (model complex/costly, can only be as treatment model, excluding T and P)
+
+3)  Functional group presence (factorial analysis): (forbs x graminoids x bryophytes)
 
 ```{r}
 #| label: factorial-approach
@@ -126,13 +144,11 @@ tab_style(
 
 ```
 
-2)  Functional identity: forbs, graminoids, bryophytes (model complex/costly, can only be run without T and P)
-
-We ran these analysis for three groups of the data:
+We ran these analysis separately at three different levels:
 
 1)  Each functional group separately
 
-2)  Groups including *primary producers*, *higher trophic levels*, *carbon cycling* and *nutrient cycling*
+2)  Each groups, including *primary producers*, *higher trophic levels*, *carbon cycling* and *nutrient cycling*
 
 3)  Average multifunctionality
 
