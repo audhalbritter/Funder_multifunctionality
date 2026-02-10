@@ -75,8 +75,8 @@ Overview of ecosystem functions measured across sites and treatments, grouped by
 |  | C stock | All | All | carbon storage |
 |  | NPP | 9 | All | productivity |
 |  | GPP | 9 | All | productivity |
-| Nutrient cycling | N stock | All | All | nutrient storage |
-|  | Available phosphate | All | only single treatment | nutrient cycling |
+| Nutrient cycling | N stock | All | All | nutrient stocks |
+|  | Phosphorous | All | All | nutrient stocks |
 |  | Available micro nutrients | All | only single treatment | nutrient cycling |
 
 ### Multifunctionality approach

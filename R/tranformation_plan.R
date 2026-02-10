@@ -256,19 +256,31 @@ transformation_plan <- list(
              unit = "%")
   ),
 
+  # macronutrients
+  tar_target(
+    name = macronutrients,
+    command = macronutrients_raw |>
+      filter(name == "phosphorous") |>
+      select(year, siteID, blockID, plotID, treatment, name, value, unit) |>
+      mutate(data_type = "function",
+             response = "phosphorous",
+             group = "nutrient cycling") |>
+            select(-name)
+  ),
+
   # available nutrients
   # nitrogen and phosphorus
-  tar_target(
-    name = available_np,
-    command = available_nutrients_raw |>
-      mutate(year = year(retrieval_date)) |>
-      filter(elements == "P") |>
-      mutate(data_type = "function",
-             group = "nutrient cycling",
-             response = "phosphate",
-             unit = "micro grams/10cm2/35 days") |>
-      select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
-  ),
+  # tar_target(
+  #   name = available_np,
+  #   command = available_nutrients_raw |>
+  #     mutate(year = year(retrieval_date)) |>
+  #     filter(elements == "P") |>
+  #     mutate(data_type = "function",
+  #            group = "nutrient cycling",
+  #            response = "phosphate",
+  #            unit = "micro grams/10cm2/35 days") |>
+  #     select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
+  # ),
 
   # make ordination for other available nutrients
   tar_target(
@@ -279,15 +291,12 @@ transformation_plan <- list(
   # make ordination for other available nutrients
   tar_target(
     name = available_nutrients,
-    command = bind_rows(
-      available_np,
-      other_available_nutrients[[1]] |>
+    command = other_available_nutrients[[1]] |>
         mutate(data_type = "function",
                group = "nutrient cycling",
                response = "micro nutrients",
                unit = NA) |>
         select(siteID:year, value = PC1, data_type:unit)
-    )
   ),
 
   # cflux
