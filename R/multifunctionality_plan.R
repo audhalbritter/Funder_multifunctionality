@@ -15,6 +15,7 @@ multifunctionality_plan <- list(
       # higher trophic levels
       nematode_density,
       microarthropod_density,
+      nematode_ecosytem_condition,
       #TBA fungi and bacteria density
 
       # carbon cycle

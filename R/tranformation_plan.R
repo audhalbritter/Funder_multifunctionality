@@ -162,17 +162,12 @@ transformation_plan <- list(
   # prep nematodes
   tar_target(
     name = nematode,
-    command = nematode_raw |> 
-      mutate(year = 2022,
-             blockID = paste0(str_sub(siteID, 1, 3), blockID)) %>%
-      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
-      pivot_longer(cols = c(bacterivores_per_100g_dry_soil, fungivores_per_100g_dry_soil,
-                             Omnivores_per_100g_dry_soil, Herbivores_per_100g_dry_soil,
-                             Predators_per_100g_dry_soil), names_to = "functional_group",
-                             values_to = "value") |>
-                             filter(value != 0) |>
-      mutate(functional_group = tolower(str_remove(functional_group, "_per_100g_dry_soil"))) |>
-             select(-temperature_level, -precipitation_level, -abundance_per_g)
+    command = nematode_raw |>
+    select(year:treatment, family, functional_group, value = total_nematodes_per_g_dry_soil, abundance) |>
+    filter(value != 0)
+    #filter(!family %in% c("unknown", "unknown_bacterial_feeder", "unknown_plant_feeder")) |>
+  
+
   ),
 
   tar_target(
@@ -187,20 +182,29 @@ transformation_plan <- list(
       
   ),
 
-      tar_target(
-    name = microarthropod_fg_density,
-    command = microarthropod |>
-      mutate(functional_group = paste0(microarthropods, "_", functional_group)) |>
-      group_by(year, siteID, blockID, plotID, treatment, functional_group) |>
-      tidylog::summarise(value = sum(abundance)) |> 
-      # is it correct to remove 0 values?
-      filter(value != 0,
-            functional_group != "mite_unknownjuvenile") |> 
+  tar_target(
+    name = nematode_ecosytem_condition,
+    command = nematode |>
+      filter(!family %in% c("unknown", "unknown_bacterial_feeder", "unknown_plant_feeder")) |>
+      # Tripylidae does not join because it is filtered out
+      # Aphelenchidae is in the family table but not in the data
+      tidylog::left_join(nematode_cp |>
+      mutate(Family = tolower(Family)) |>
+      rename(family = Family), 
+      by = "family")|>
+      # remove observations with no cp_group (26% removed)
+      tidylog::filter(!is.na(cp_group)) |>
+      group_by(year, siteID, blockID, plotID, treatment) |>
+      summarise(
+        value = weighted.mean(as.numeric(cp_group), abundance),
+        .groups = "drop"
+      ) |>
       mutate(data_type = "function",
              group = "higher trophic level",
-             response = paste0(functional_group, "_density"),
-             unit = "count")
+             response = "nematode ecosystem condition",
+             unit = "unitless")
   ),
+
 
   # carbon and nutrient stocks and fluxes
   # decomposition

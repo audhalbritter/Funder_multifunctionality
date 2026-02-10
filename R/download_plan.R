@@ -86,7 +86,7 @@ download_plan <- list(
     name = nematode_download,
     command = get_file(
       node = "tx9r2",
-      file = "FUNDER_clean_nematode_composition_2023.csv",
+      file = "FUNDER_clean_nematode_communities_2022.csv",
       path = here::here("data"),
       remote_path = "2_Micro_and_Mesofauna/Clean_data"
     ),
@@ -112,6 +112,17 @@ download_plan <- list(
     command = get_file(
       node = "tx9r2",
       file = "FUNDER_clean_soil_CN_2022.csv",
+      path = here::here("data"),
+      remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"
+    ),
+    format = "file"
+  ),
+
+  tar_target(
+    name = macronutrients_download,
+    command = get_file(
+      node = "tx9r2",
+      file = "FUNDER_clean_macronutrients_and_ph_2022.csv",
       path = here::here("data"),
       remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"
     ),
@@ -189,6 +200,11 @@ download_plan <- list(
     command = read_csv(nematode_download) |>
       select(everything())
   ),
+  tar_target(
+    name = nematode_cp,
+    command = read_csv("data/FUNDER_nematode_feeding_group_nemaplex_2022.csv")
+  ),
+
 
   # carbon and nutrient stocks and dynamics
   # loi
@@ -202,6 +218,13 @@ download_plan <- list(
     name = cn_raw,
     command = read_csv(cn_download)
   ),
+
+  # macronutrients and ph
+  tar_target(
+    name = macronutrients_raw,
+    command = read_csv(macronutrients_download)
+  ),
+
   # available nutrients
   tar_target(
     name = available_nutrients_raw,
