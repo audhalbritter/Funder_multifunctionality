@@ -46,11 +46,13 @@ transformation_plan <- list(
       # sum biomass from different rounds
       group_by(year, siteID, blockID, plotID, treatment, removed_fg) |>
       summarise(value = sum(biomass)) |>
+      # convert to g per m2
+      mutate(value = value * 10000 / 625) |>
       ungroup() |>
       mutate(data_type = "function",
              group = "primary producers",
              response = "biomass",
-             unit = "g") |>
+             unit = "g m-2") |>
       select(year:removed_fg, data_type, group, response, value, unit)
   ),
 
@@ -61,10 +63,12 @@ transformation_plan <- list(
       # sum biomass from different rounds and functional group (add removed_fg to group_by to keep them)
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = sum(biomass), .groups = "drop") |>
+      # convert to g per m2
+      mutate(value = value * 10000 / 625) |>
       mutate(data_type = "function",
              group = "primary producers",
              response = "biomass",
-             unit = "g") |>
+             unit = "g m-2") |>
       select(year:treatment, data_type, group, response, value, unit)
   ),
 
@@ -76,10 +80,14 @@ transformation_plan <- list(
       mutate(year = 2021) |>
       select(year, siteID, blockID, plotID, treatment, value = root_biomass) |>
       tidylog::filter(!is.na(value)) |>
+      # convert to g per 625 cm2
+      mutate(ric_radius = 3 / 2, # ric is 3 cm in diameter
+             ric_area = pi * ric_radius^2,
+             value = value * 10000 / ric_area) |>
       mutate(data_type = "function",
              group = "primary producers",
              response = "root biomass",
-             unit = "g m-3")
+             unit = "g m-2")
   ),
 
   # root traits
@@ -95,7 +103,10 @@ transformation_plan <- list(
       filter(!is.na(value)) |>
       mutate(data_type = "function",
              group = "primary producers",
-             unit = "g m-3")
+             unit = case_when(response == "specific_root_length_m_per_g" ~ "m per g",
+                              response == "root_tissue_density_g_per_m3" ~ "g per m3",
+                              response == "root_dry_matter_content" ~ "unitless",
+                              TRUE ~ NA_character_))
   ),
 
   # community
@@ -120,7 +131,7 @@ transformation_plan <- list(
       mutate(data_type = "biodiversity",
              group = "primary producers",
              response = "plant richness",
-             unit = "count")
+             unit = "count per 625 cm2")
 
   ),
 
@@ -140,6 +151,7 @@ transformation_plan <- list(
   ),
 
   # prep microarthropod
+  ### NEEDS RECALCULATION FOR DENSITY PER G SOIL!!!
   tar_target(
     name = microarthropod,
     command = microarthropod_raw |> 
@@ -163,7 +175,7 @@ transformation_plan <- list(
   tar_target(
     name = nematode,
     command = nematode_raw |>
-    select(year:treatment, family, functional_group, value = total_nematodes_per_g_dry_soil, abundance) |>
+    select(year:treatment, family, functional_group, value = total_nematodes_per_g_dry_soil, family_abundance_per_g_dry_soil) |>
     filter(value != 0)
     #filter(!family %in% c("unknown", "unknown_bacterial_feeder", "unknown_plant_feeder")) |>
   
@@ -178,7 +190,7 @@ transformation_plan <- list(
       mutate(data_type = "function",
              group = "higher trophic level",
              response = "nematode density",
-             unit = "count per 100g soil")
+             unit = "count g-1")
       
   ),
 
@@ -196,7 +208,7 @@ transformation_plan <- list(
       tidylog::filter(!is.na(cp_group)) |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(
-        value = weighted.mean(as.numeric(cp_group), abundance),
+        value = weighted.mean(as.numeric(cp_group), family_abundance_per_g_dry_soil),
         .groups = "drop"
       ) |>
       mutate(data_type = "function",
@@ -253,7 +265,7 @@ transformation_plan <- list(
              group = case_when(response %in% c("carbon", "CN") ~ "carbon cycling",
                                response == "nitrogen" ~ "nutrient cycling",
                                TRUE ~ NA_character_),
-             unit = "%")
+             unit = "g g-1")
   ),
 
   # macronutrients
@@ -270,17 +282,19 @@ transformation_plan <- list(
 
   # available nutrients
   # nitrogen and phosphorus
-  # tar_target(
-  #   name = available_np,
-  #   command = available_nutrients_raw |>
-  #     mutate(year = year(retrieval_date)) |>
-  #     filter(elements == "P") |>
-  #     mutate(data_type = "function",
-  #            group = "nutrient cycling",
-  #            response = "phosphate",
-  #            unit = "micro grams/10cm2/35 days") |>
-  #     select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
-  # ),
+  tar_target(
+    name = available_np,
+    command = available_nutrients_raw |>
+      mutate(year = year(retrieval_date)) |>
+      # convert to µg per m2 per 35 days
+      mutate(value = value * 10000 / 10) |>
+      filter(elements == "P") |>
+      mutate(data_type = "function",
+             group = "nutrient cycling",
+             response = "phosphate",
+             unit = "µg m-2 35 days") |>
+      select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
+  ),
 
   # make ordination for other available nutrients
   tar_target(
@@ -291,12 +305,15 @@ transformation_plan <- list(
   # make ordination for other available nutrients
   tar_target(
     name = available_nutrients,
-    command = other_available_nutrients[[1]] |>
+    command = bind_rows(
+      available_np,
+    other_available_nutrients[[1]] |>
         mutate(data_type = "function",
                group = "nutrient cycling",
                response = "micro nutrients",
                unit = NA) |>
         select(siteID:year, value = PC1, data_type:unit)
+    )
   ),
 
   # cflux
@@ -316,7 +333,7 @@ transformation_plan <- list(
   tar_target(
     name = gpp,
     command = cflux |>
-      mutate(gpp = -1*gpp) |>
+      mutate(gpp = -1 * gpp) |>
       group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(value = mean(gpp),
                 .groups = "drop") |>

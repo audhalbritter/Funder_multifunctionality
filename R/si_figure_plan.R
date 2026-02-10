@@ -32,7 +32,7 @@ si_figure_plan <- list(
       # log transform some functions (careful this code is duplicated, also in mf plan)
       mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("biomass", "root biomass", "plant richness", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphorous", "micro nutrients", "gpp") ~ log(value),
+        response %in% c("biomass", "root biomass", "plant richness", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphorous", "phosphate","micro nutrients", "gpp") ~ log(value),
         # no transformation for others
         TRUE ~ value
       )) |>
