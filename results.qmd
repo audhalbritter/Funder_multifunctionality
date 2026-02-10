@@ -14,7 +14,7 @@ library(gt)
 
 - Ecosystem functions are affected by functional groups, summer temperature and annual precipitation. So, we expect average multifunctionality also to be affected by these factors.
 
-- Average multifunctionality increased with the number of functional groups present (Figure 2). This effect is stronger for warmer sites when fewer functional groups are present and vice versa for colder sites when more functional groups are present (a bit unclear how this works...). -> Note that there was an effect of temperature before I added the phosphrous data. Now there is only an effect of functional group richness.
+- Average multifunctionality increased with the number of functional groups present (Figure 2). This effect is stronger for warmer sites when fewer functional groups are present and vice versa for colder sites when more functional groups are present (a bit unclear how this works...). -> Note that previously there was a temperature x FG effect before.
 
 - The identity of functional groups present also affected average multifunctionality (Figure 3). Multifunctionality decreased when one or two groups were removed, and was lowest under bare soil. The presence of forbs and/or graminoid increase multifuntionality more than bryophytes.
 
@@ -39,6 +39,26 @@ tar_read(function_figure)
 
 
 ### Average multifunctionality
+
+```{r}
+#| label: vars-multifunctionality
+#| echo: false
+#| warning: false
+#| message: false
+
+# Extract variable list from data used in model_multifun (multifunctionality comes from big_data)
+tar_load(big_data)
+big_data |>
+      filter(!response %in% c("decomposition forbs", "reco")) |>
+      mutate(group = factor(group, levels = c("primary producers", "higher trophic levels", "carbon cycling", "nutrient cycling"))) |>
+      distinct(group, response, unit) |>
+      arrange(group, response) |>
+      gt() |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels()
+      )
+```
 
 The number of functional groups present and temperature both increased average multifunctionality.
 
