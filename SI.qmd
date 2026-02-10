@@ -170,24 +170,28 @@ plot_info <- significant_responses_df |>
   select(response, group)
 
 # Create one combined plot per group using patchwork
+# Filter out NULL/NA plots; bypass wrap_plots for single-plot groups (avoids grid layout errors)
 group_plots <- split(plot_info, plot_info$group) |>
   map(function(df) {
-    resp_names <- df$response
-    plots <- all_plots_list[resp_names]
+    resp_names <- as.character(df$response)
+    plots <- compact(all_plots_list[resp_names])
+    if (length(plots) == 0) return(NULL)
+    if (length(plots) == 1) return(plots[[1]] + theme(legend.position = "bottom"))
     wrap_plots(plots, ncol = 2, guides = "collect") &
       theme(legend.position = "bottom")
   })
 
 # Compute dynamic figure heights per group (based on number of plots)
+# Cap at 24 inches to avoid "invalid height" from graphics device limits
+
 group_fig_info <- plot_info |>
   count(group, name = "n_plots") |>
   mutate(
     n_rows = ceiling(n_plots / 2),
-    fig_height = 2 + 2.5 * n_rows
+    fig_height = pmin(2 + 2.5 * n_rows, 24)
   )
 
-group_fig_heights <- group_fig_info$fig_height
-names(group_fig_heights) <- group_fig_info$group
+group_fig_heights <- set_names(group_fig_info$fig_height, as.character(group_fig_info$group))
 
 ```
 
@@ -196,9 +200,9 @@ names(group_fig_heights) <- group_fig_info$group
 #| echo: false
 #| warning: false
 #| fig-width: 9
-#| fig-height: !expr group_fig_heights["primary producers"]
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["primary producers"], 10))
 
-group_plots[["primary producers"]]
+if (!is.null(group_plots[["primary producers"]])) group_plots[["primary producers"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
 
 ```
 
@@ -207,9 +211,9 @@ group_plots[["primary producers"]]
 #| echo: false
 #| warning: false
 #| fig-width: 9
-#| fig-height: !expr group_fig_heights["higher trophic level"]
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["higher trophic level"], 10))
 
-group_plots[["higher trophic level"]]
+if (!is.null(group_plots[["higher trophic level"]])) group_plots[["higher trophic level"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
 
 ```
 
@@ -218,9 +222,9 @@ group_plots[["higher trophic level"]]
 #| echo: false
 #| warning: false
 #| fig-width: 9
-#| fig-height: !expr group_fig_heights["carbon cycling"]
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["carbon cycling"], 10))
 
-group_plots[["carbon cycling"]]
+if (!is.null(group_plots[["carbon cycling"]])) group_plots[["carbon cycling"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
 
 ```
 
@@ -229,9 +233,9 @@ group_plots[["carbon cycling"]]
 #| echo: false
 #| warning: false
 #| fig-width: 9
-#| fig-height: !expr group_fig_heights["nutrient cycling"]
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["nutrient cycling"], 10))
 
-group_plots[["nutrient cycling"]]
+if (!is.null(group_plots[["nutrient cycling"]])) group_plots[["nutrient cycling"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
 
 ```
 
