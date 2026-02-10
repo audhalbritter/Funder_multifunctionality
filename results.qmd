@@ -14,11 +14,11 @@ library(gt)
 
 - Ecosystem functions are affected by functional groups, summer temperature and annual precipitation. So, we expect average multifunctionality also to be affected by these factors.
 
-- Average multifunctionality increased with the number of functional groups present (Figure 2). This effect is stronger for warmer sites when fewer functional groups are present and vice versa for colder sites when more functional groups are present (a bit unclear how this works...).
+- Average multifunctionality increased with the number of functional groups present (Figure 2). This effect is stronger for warmer sites when fewer functional groups are present and vice versa for colder sites when more functional groups are present (a bit unclear how this works...). -> Note that there was an effect of temperature before I added the phosphrous data. Now there is only an effect of functional group richness.
 
 - The identity of functional groups present also affected average multifunctionality (Figure 3). Multifunctionality decreased when one or two groups were removed, and was lowest under bare soil. The presence of forbs and/or graminoid increase multifuntionality more than bryophytes.
 
-- Factorial analysis: the presence of forbs, graminoids and bryophytes increase average multifunctionality (AMF). AMF is higher in warm and dry sites. (There are some interactions 3-way, 4-way which are difficult to interpret...)
+- Factorial analysis: the presence of forbs, graminoids and bryophytes increase average multifunctionality (AMF). AMF is higher in warm and dry sites. (There are some 3-way interactions which are difficult to interpret...)
 
 ### Standardized functioning (spaghetti plot)
 
