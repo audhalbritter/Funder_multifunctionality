@@ -65,7 +65,7 @@ transformation_plan <- list(
         data_type = "function",
         group = "primary producers",
         response = "biomass",
-        unit = "g m-2"
+        unit = "g m\u207B\u00B2"
       ) |>
       select(year:removed_fg, data_type, group, response, value, unit)
   ),
@@ -82,8 +82,8 @@ transformation_plan <- list(
       mutate(
         data_type = "function",
         group = "primary producers",
-        response = "biomass",
-        unit = "g m-2"
+        response = "aboveground biomass",
+        unit = "g m\u207B\u00B2"
       ) |>
       select(year:treatment, data_type, group, response, value, unit)
   ),
@@ -106,7 +106,7 @@ transformation_plan <- list(
         data_type = "function",
         group = "primary producers",
         response = "root biomass",
-        unit = "g m-2"
+        unit = "g m\u207B\u00B2"
       )
   ),
 
@@ -125,8 +125,8 @@ transformation_plan <- list(
         data_type = "function",
         group = "primary producers",
         unit = case_when(
-          response == "specific_root_length_m_per_g" ~ "m per g",
-          response == "root_tissue_density_g_per_m3" ~ "g per m3",
+          response == "specific_root_length_m_per_g" ~ "m g\u207B\u00B9",
+          response == "root_tissue_density_g_per_m3" ~ "g m\u207B\u00B3",
           response == "root_dry_matter_content" ~ "unitless",
           TRUE ~ NA_character_
         )
@@ -156,8 +156,8 @@ transformation_plan <- list(
       mutate(
         data_type = "biodiversity",
         group = "primary producers",
-        response = "plant richness",
-        unit = "count per 625 cm2"
+        response = "vascular plant richness",
+        unit = "count per 625 cm\u00B2"
       )
   ),
 
@@ -214,7 +214,7 @@ transformation_plan <- list(
         data_type = "function",
         group = "higher trophic level",
         response = "nematode density",
-        unit = "count g-1"
+        unit = "count g\u207B\u00B9"
       )
   ),
   tar_target(
@@ -287,17 +287,17 @@ transformation_plan <- list(
       mutate(
         data_type = "function",
         response = case_when(
-          response == "C" ~ "carbon",
-          response == "N" ~ "nitrogen",
+          response == "C" ~ "carbon stock",
+          response == "N" ~ "nitrogen stock",
           response == "CN" ~ "CN",
           TRUE ~ response
         ),
         group = case_when(
-          response %in% c("carbon", "CN") ~ "carbon cycling",
-          response == "nitrogen" ~ "nutrient cycling",
+          response %in% c("carbon stock", "CN") ~ "carbon cycling",
+          response == "nitrogen stock" ~ "nutrient cycling",
           TRUE ~ NA_character_
         ),
-        unit = "g g-1"
+        unit = "g g\u207B\u00B9"
       )
   ),
 
@@ -311,9 +311,9 @@ transformation_plan <- list(
       select(year, siteID, blockID, plotID, treatment, value) |>
       mutate(
         data_type = "function",
-        response = "phosphorus",
+        response = "phosphorus stock",
         group = "nutrient cycling",
-        unit = "g g-1"
+        unit = "g g\u207B\u00B9"
       )
   ),
 
@@ -330,7 +330,7 @@ transformation_plan <- list(
         data_type = "function",
         group = "nutrient cycling",
         response = "available phosphate",
-        unit = "\u00B5g m-2 35 days"
+        unit = "\u00B5g m\u207B\u00B2 35 days"
       ) |>
       select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
   ),
@@ -419,7 +419,7 @@ transformation_plan <- list(
         value = mean(gpp),
         .groups = "drop"
       ) |>
-      mutate(response = "gpp")
+      mutate(response = "gross primary productivity")
   ),
 
   # nee
@@ -434,7 +434,7 @@ transformation_plan <- list(
         value = mean(nee),
         .groups = "drop"
       ) |>
-      mutate(response = "nee")
+      mutate(response = "net ecosystem exchange")
   ),
 
 
@@ -447,6 +447,6 @@ transformation_plan <- list(
         value = mean(Reco),
         .groups = "drop"
       ) |>
-      mutate(response = "Reco")
+      mutate(response = "ecosystem respiration")
   )
 )
