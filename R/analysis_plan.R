@@ -119,15 +119,8 @@ analysis_plan <- list(
   # run all models
   tar_target(
     name = model_group,
-    command = run_models(dat = big_data |> 
-                           # remove functions where we have many
-                           filter(!response %in% c("specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content",
-                           "nema_bacterivores_density", "nema_omnivores_density", "nema_herbivores_density",
-                           "nema_predators_density", "nema_fungivores_density", "micro_fungivorous_density",
-                           "micro_nematophagous_density", "micro_predaceous_density",
-                            "decomposition forbs", "Reco")) |>
-                           rename(level = group),
-                         response_var = value_std,
+    command = run_models(dat = multifunctionality_group,
+                         response_var = multifuntionality,
                          fg_var = fg_richness,
                          group = "level")
   ),
@@ -141,7 +134,9 @@ analysis_plan <- list(
         unnest(result) |>
         filter(effect == "fixed") |>
         select(-data, -model, -model_factorial, -model_treatment, -result_factorial, -result_treatment, -group, -effect, -anova, -anova_tidy) %>%
-        fancy_stats(.)
+        fancy_stats(.) |>
+        mutate(level = factor(level, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
+        arrange(level, term)
 
       round_numbers_tidy(out) |>
         gt() %>%
@@ -178,7 +173,9 @@ analysis_plan <- list(
         unnest(result_treatment) |>
         filter(effect == "fixed") |>
         select(-data, -model, -model_factorial, -model_treatment, -result, -result_factorial, -group, -effect, -anova, -anova_tidy) %>%
-        fancy_stats(.)
+        fancy_stats(.) |>
+        mutate(level = factor(level, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
+        arrange(level, term)
 
       round_numbers_tidy(out) |>
         gt() %>%
