@@ -201,7 +201,7 @@ transformation_plan <- list(
   tar_target(
     name = nematode,
     command = nematode_raw |>
-      select(year:treatment, family, functional_group, value = total_nematodes_per_g_dry_soil, family_abundance_per_g_dry_soil) |>
+      select(year:treatment, family, functional_group, value = total_nematode_abundance_per_g_dry_soil, per_family_abundance_per_g_dry_soil) |>
       filter(value != 0)
     # filter(!family %in% c("unknown", "unknown_bacterial_feeder", "unknown_plant_feeder")) |>
   ),
@@ -233,7 +233,7 @@ transformation_plan <- list(
       tidylog::filter(!is.na(cp_group)) |>
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(
-        value = weighted.mean(as.numeric(cp_group), family_abundance_per_g_dry_soil),
+        value = weighted.mean(as.numeric(cp_group), per_family_abundance_per_g_dry_soil),
         .groups = "drop"
       ) |>
       mutate(
@@ -323,7 +323,7 @@ transformation_plan <- list(
     name = available_np,
     command = available_nutrients_raw |>
       mutate(year = year(retrieval_date)) |>
-      # convert to µg per m2 per 35 days
+      # convert to <U+00B5>g per m2 per 35 days
       mutate(value = value * 10000 / 10) |>
       filter(elements == "P") |>
       mutate(
@@ -344,8 +344,7 @@ transformation_plan <- list(
       meta
     )
   ),
-
-    tar_target(
+  tar_target(
     name = macronutrients_pca,
     command = make_nutrient_pca(
       available_nutrients_raw |>
@@ -353,8 +352,7 @@ transformation_plan <- list(
       meta
     )
   ),
-
-      tar_target(
+  tar_target(
     name = micronutrients_pca,
     command = make_nutrient_pca(
       available_nutrients_raw |>
@@ -369,13 +367,14 @@ transformation_plan <- list(
     command = bind_rows(
       macronutrients = macronutrients_pca[[1]],
       micronutrients = micronutrients_pca[[1]],
-      .id = "response") |>
-        mutate(
-          data_type = "function",
-          group = "nutrient cycling",
-          unit = "PCA axis 1"
-        ) |>
-        select(siteID:year, response,value = PC1, data_type:unit)
+      .id = "response"
+    ) |>
+      mutate(
+        data_type = "function",
+        group = "nutrient cycling",
+        unit = "PCA axis 1"
+      ) |>
+      select(siteID:year, response, value = PC1, data_type:unit)
   ),
 
   # # make ordination for other available nutrients
