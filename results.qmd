@@ -40,6 +40,8 @@ tar_read(function_figure)
 
 ### Average multifunctionality
 
+These are the variables included in the multifunctionality analysis.
+
 ```{r}
 #| label: vars-multifunctionality
 #| echo: false
@@ -49,8 +51,8 @@ tar_read(function_figure)
 # Extract variable list from data used in model_multifun (multifunctionality comes from big_data)
 tar_load(big_data)
 big_data |>
-      filter(!response %in% c("decomposition forbs", "reco")) |>
-      mutate(group = factor(group, levels = c("primary producers", "higher trophic levels", "carbon cycling", "nutrient cycling"))) |>
+      filter(!response %in% c("decomposition forbs", "reco")) |> 
+      mutate(group = factor(group, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
       distinct(group, response, unit) |>
       arrange(group, response) |>
       gt() |>

@@ -66,18 +66,22 @@ Overview of ecosystem functions measured across sites and treatments, grouped by
 | Primary producers | Aboveground biomass | All | All | productivity |
 |  | Belowground biomass | All | All | productivity / nutrient uptake |
 |  | Plant richness (vascular & non-vascular) | All | All | biodiversity |
+|  | Root traits (SRL, RTD, RDMC) | not included yet |  | functional diversity |
 | Higher trophic level | Nematode density | All | only single treatment | productivity? |
 |  | Mites/collembola density | All | only single treatment | productivity? |
 |  | Ecosystem condition index (nematode) | All | All | scale from 1 -5 (‘colonizer‘ = resource availability - ‘persister’ = stability) |
 |  | Fungi density | not included yet |  |  |
 |  | Bacteria density | not included yet |  |  |
 | Carbon cycling | Decomposition of graminoid litter | All | All | decomposition |
-|  | C stock | All | All | carbon storage |
+|  | Decomposition of forb litter | not included |  | decomposition |
+|  | Carbon stock | All | All | carbon storage |
 |  | NPP | 9 | All | productivity |
 |  | GPP | 9 | All | productivity |
-| Nutrient cycling | N stock | All | All | nutrient stocks |
-|  | Phosphorous | All | All | nutrient stocks |
-|  | Available micro nutrients | All | only single treatment | nutrient cycling |
+|  | Reco | not included |  |  |
+| Nutrient cycling | Nitrogen stock | All | All | nutrient stocks |
+|  | Phosphorus stock | All | All | nutrient stocks |
+|  | Available macro nutrients (N, P, K, Ca, Mg, S) | not included |  | nutrient cycling |
+|  | Available micro nutrients (Fe, Mn, Zn, B, Cu, Al, Pb) | All | only single treatment | nutrient cycling |
 
 ### Multifunctionality approach
 

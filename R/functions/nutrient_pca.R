@@ -7,8 +7,6 @@ make_nutrient_pca <- function(available_nutrients_raw, meta){
   # prep data
   nutrients <- available_nutrients_raw |>
     mutate(year = year(retrieval_date)) |>
-    # remove important elements
-    filter(!elements %in% c("NH4-N", "NO3-N", "P")) |>
     select(-burial_length, -detection_limit, -burial_date, -retrieval_date, -notes) |>
     left_join(meta, by = c("siteID", "blockID", "treatment", "plotID"))
 
@@ -40,11 +38,13 @@ plot_pca <- function(other_available_nutrients){
 
   e_B <- eigenvals(other_available_nutrients[[3]])/sum(eigenvals(other_available_nutrients[[3]]))
 
-  scree <- eigenvals(other_available_nutrients[[3]]) |>
+  evals <- eigenvals(other_available_nutrients[[3]])
+  n_pcs <- length(evals)
+  scree <- evals |>
     as_tibble() |>
     rename(eigenvalue = x) |>
-    mutate(PC = paste0("PC", 1:11),
-           PC = factor(PC, levels = c("PC1", "PC2", "PC3", "PC4", "PC5", "PC6", "PC7", "PC8", "PC9", "PC10", "PC11"))) |>
+    mutate(PC = paste0("PC", seq_len(n_pcs)),
+           PC = factor(PC, levels = paste0("PC", seq_len(n_pcs)))) |>
     ggplot(aes(y = eigenvalue, x = PC)) +
     geom_col() +
     labs(tag = "a)") +

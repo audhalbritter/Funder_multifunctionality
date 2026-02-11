@@ -25,14 +25,14 @@ si_figure_plan <- list(
       # shift values to make all positive (for responses with negative values)
       group_by(response) |>
       mutate(value = case_when(
-        response %in% c("micro nutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
+        response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
         TRUE ~ value
       )) |>
       ungroup() |>
       # log transform some functions (careful this code is duplicated, also in mf plan)
       mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("biomass", "root biomass", "plant richness", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphorous", "phosphate","micro nutrients", "gpp") ~ log(value),
+        response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphorous", "micronutrients", "gpp") ~ log(value),
         # no transformation for others
         TRUE ~ value
       )) |>
@@ -86,7 +86,7 @@ si_figure_plan <- list(
       function_table <- big_data |>
         select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-        select(`biomass`:`micro nutrients`)
+        select(`biomass`:`micronutrients`)
 
       # pairwise.complete.obs avoids NA in cor matrix (root_biomass, root_traits have a few NAs)
       corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
