@@ -251,7 +251,7 @@ tar_read(model_response_nr_out)
 ```
 
 
-### Plots by group (probably wrong analysis...)
+### Plots by group
 
 Analysis by the four groups: primary produces, higher tropic level, c and nutrients cycling.
 
@@ -272,7 +272,7 @@ tar_read(model_group_nr_out)
 #| warning: false
 #| fig-cap: Standardized functions related to primary producers in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 
-tar_read(pp_plot)
+tar_read(primary_producers_plot)
 
 ```
 
@@ -283,7 +283,7 @@ tar_read(pp_plot)
 #| warning: false
 #| fig-cap: Standardized functions related to higher trophic levels in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 
-tar_read(htl_plot)
+tar_read(higher_trophic_level_plot)
 
 ```
 
@@ -294,7 +294,7 @@ tar_read(htl_plot)
 #| warning: false
 #| fig-cap: Standardized functions related to carbon cycling in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 #| 
-tar_read(cc_plot)
+tar_read(carbon_cycling_plot)
 
 ```
 
@@ -305,7 +305,7 @@ tar_read(cc_plot)
 #| warning: false
 #| fig-cap: Standardized functions related to nutrient cycling in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 
-tar_read(nc_plot)
+tar_read(nutrient_cycling_plot)
 
 ```
 
