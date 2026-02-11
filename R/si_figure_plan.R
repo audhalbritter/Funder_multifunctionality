@@ -32,7 +32,7 @@ si_figure_plan <- list(
       # log transform some functions (careful this code is duplicated, also in mf plan)
       mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("biomass", "root biomass", "microarthropod density", "nematode density", "carbon", "nitrogen", "phosphorous", "micronutrients", "gpp") ~ log(value),
+        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity") ~ log(value),
         # no transformation for others
         TRUE ~ value
       )) |>
@@ -86,7 +86,7 @@ si_figure_plan <- list(
       function_table <- big_data |>
         select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-        select(`biomass`:`micronutrients`)
+        select(`aboveground biomass`:`micronutrients`)
 
       # pairwise.complete.obs avoids NA in cor matrix (root_biomass, root_traits have a few NAs)
       corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
@@ -104,29 +104,29 @@ si_figure_plan <- list(
   ),
 
 
-  # group figures
+  # group figures: one plot per group (multifunctionality vs fg_richness), raw + prediction, significance
   tar_target(
-    name = pp_plot,
-    command = make_group_figure(big_data, 
-    group = "primary producers")
+    name = primary_producers_plot,
+    command = make_group_figure(multifunctionality_group, group = "primary producers",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   ),
 
   tar_target(
-    name = htl_plot,
-    command = make_group_figure(big_data,
-    group = "higher trophic level")
+    name = higher_trophic_level_plot,
+    command = make_group_figure(multifunctionality_group, group = "higher trophic level",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   ),
 
   tar_target(
-    name = cc_plot,
-    command = make_group_figure(big_data |>
-                                  filter(!response %in% c("decomposition forbs", "Reco")),
-                                group = "carbon cycling")
+    name = carbon_cycling_plot,
+    command = make_group_figure(multifunctionality_group, group = "carbon cycling",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   ),
 
   tar_target(
-    name = nc_plot,
-    command = make_group_figure(big_data, group = "nutrient cycling")
+    name = nutrient_cycling_plot,
+    command = make_group_figure(multifunctionality_group, group = "nutrient cycling",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   )
 
 

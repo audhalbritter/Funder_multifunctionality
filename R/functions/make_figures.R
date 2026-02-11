@@ -1,33 +1,98 @@
 ### make figures
 
 
-# make_group_figure
-make_group_figure <- function(big_data, group){
+# make_group_figure: one plot per group (4 total), raw multifunctionality + prediction lines,
+# significance letters in upper right; FG-only = simple plot, FG:T = colour by habitat
+make_group_figure <- function(multifunctionality_group, group, model_group, temp_col, prec_lt, prec_sh) {
+  model_data <- model_group |>
+    unnest(result) |>
+    filter(effect == "fixed") |>
+    filter(level == {{group}}) |>
+    select(-data, -model, -model_factorial, -model_treatment, -result_factorial, -result_treatment, -group, -effect, -anova, -anova_tidy)
 
-  big_data |>
-    filter(group == {{group}}) |>
-    mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
-    ggplot(aes(x = fg_richness, y = value_std, colour = response)) +
-    geom_point() +
-    geom_smooth(method = "lm", mapping = aes(fill = response), alpha = 0.15) +
+  plot_data <- multifunctionality_group |> filter(group == {{group}})
+
+  sig <- get_significant_terms_group(model_data)
+
+  # If nothing significant, return NULL
+  if (!sig$fg && !sig$temp && !sig$precip) {
+    return(NULL)
+  }
+
+  p <- ggplot(plot_data, aes(x = fg_richness, y = multifuntionality))
+
+  if (sig$fg_temp_interaction || (sig$temp && !sig$precip)) {
+    p <- p +
+      geom_point(aes(colour = habitat), alpha = 0.5) +
+      geom_smooth(aes(colour = habitat), method = "lm", se = TRUE, linewidth = 0.8) +
+      scale_colour_manual(values = temp_col, name = "Habitat")
+  } else if (sig$fg_precip_interaction || (sig$precip && !sig$temp)) {
+    p <- p +
+      geom_point(aes(shape = precipitation_name), alpha = 0.5) +
+      geom_smooth(aes(linetype = precipitation_name), method = "lm", se = TRUE, linewidth = 0.8) +
+      scale_linetype_manual(values = prec_lt, name = "Precipitation") +
+      scale_shape_manual(values = prec_sh, name = "Precipitation")
+  } else if (sig$temp && sig$precip) {
+    p <- p +
+      geom_point(aes(colour = habitat, shape = precipitation_name), alpha = 0.5) +
+      geom_smooth(aes(colour = habitat, linetype = precipitation_name),
+                  method = "lm", se = FALSE, linewidth = 0.8) +
+      scale_colour_manual(values = temp_col, name = "Habitat") +
+      scale_linetype_manual(values = prec_lt, name = "Precipitation") +
+      scale_shape_manual(values = prec_sh, name = "Precipitation")
+  } else {
+    p <- p +
+      geom_point(alpha = 0.5) +
+      geom_smooth(method = "lm", se = TRUE, linewidth = 0.8, colour = "black")
+  }
+
+  sig_terms_this <- model_data |> filter(p.value < 0.05) |> pull(term)
+  sig_labels <- c()
+  if (sig$fg) sig_labels <- c(sig_labels, "FG")
+  if (sig$fg_temp_interaction) {
+    sig_labels <- c(sig_labels, "FG x T")
+  } else if ("temperature_scaled" %in% sig_terms_this) {
+    sig_labels <- c(sig_labels, "T")
+  }
+  if (sig$fg_precip_interaction) {
+    sig_labels <- c(sig_labels, "FG x P")
+  } else if ("precipitation_scaled" %in% sig_terms_this) {
+    sig_labels <- c(sig_labels, "P")
+  }
+  sig_text <- paste(sig_labels, collapse = "\n")
+
+  p +
     scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-    scale_colour_viridis_d(option = "inferno", end = 0.85) +
-    scale_fill_viridis_d(option = "inferno", end = 0.85) +
     labs(x = "Number of functional groups present",
-         y ="Standardized function",
+         y = "Average multifunctionality",
          title = {{group}}) +
-    guides(fill = "none") +
-    facet_grid(habitat ~ precipitation_name) +
-    theme_bw()
+    annotate("text", x = Inf, y = Inf, label = sig_text,
+             hjust = 1.1, vjust = 1.1, size = 3.5, fontface = "bold") +
+    theme_bw() +
+    theme(legend.position = "bottom")
+}
 
+# get_significant_terms for group-level model (no response column)
+get_significant_terms_group <- function(model_data, alpha = 0.05) {
+  sig_terms <- model_data |> filter(p.value < alpha) |> pull(term)
+  list(
+    fg = ".functional_group" %in% sig_terms,
+    temp = any(c("temperature_scaled", ".functional_group:temperature_scaled") %in% sig_terms),
+    precip = any(c("precipitation_scaled", ".functional_group:precipitation_scaled") %in% sig_terms),
+    fg_temp_interaction = ".functional_group:temperature_scaled" %in% sig_terms,
+    fg_precip_interaction = ".functional_group:precipitation_scaled" %in% sig_terms
+  )
 }
 
 
 # Function to check which terms are significant
+# model_data may have "response" (from model_response) or no response col (from model_group)
 get_significant_terms <- function(response_name, model_data, alpha = 0.05) {
-  sig_terms <- model_data |>
-    filter(response == response_name, p.value < alpha) |>
-    pull(term)
+  if ("response" %in% names(model_data)) {
+    sig_terms <- model_data |> filter(response == response_name, p.value < alpha) |> pull(term)
+  } else {
+    sig_terms <- model_data |> filter(p.value < alpha) |> pull(term)
+  }
   
   list(
     fg = ".functional_group" %in% sig_terms,
@@ -88,19 +153,21 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
   }
   
   # Build significance labels
-  sig_terms_this_response <- model_data |> 
-    filter(response == response_name, p.value < 0.05) |> 
-    pull(term)
+  if ("response" %in% names(model_data)) {
+    sig_terms_this_response <- model_data |> filter(response == response_name, p.value < 0.05) |> pull(term)
+  } else {
+    sig_terms_this_response <- model_data |> filter(p.value < 0.05) |> pull(term)
+  }
   
   sig_labels <- c()
-  if (sig$fg) sig_labels <- c(sig_labels, "FR")
+  if (sig$fg) sig_labels <- c(sig_labels, "FG")
   if (sig$fg_temp_interaction) {
-    sig_labels <- c(sig_labels, "FR x T")
+    sig_labels <- c(sig_labels, "FG x T")
   } else if ("temperature_scaled" %in% sig_terms_this_response) {
     sig_labels <- c(sig_labels, "T")
   }
   if (sig$fg_precip_interaction) {
-    sig_labels <- c(sig_labels, "FR x P")
+    sig_labels <- c(sig_labels, "FG x P")
   } else if ("precipitation_scaled" %in% sig_terms_this_response) {
     sig_labels <- c(sig_labels, "P")
   }
@@ -113,8 +180,8 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
     labs(x = "Number of functional groups present",
          y = "Standardized function value",
          title = response_name) +
-    annotate("text", x = -Inf, y = Inf, label = sig_text, 
-             hjust = -0.1, vjust = 1.1, size = 3.5, fontface = "bold") +
+    annotate("text", x = Inf, y = Inf, label = sig_text, 
+             hjust = 1.1, vjust = 1.1, size = 3.5, fontface = "bold") +
     theme_bw() +
     theme(legend.position = "bottom")
   
