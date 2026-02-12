@@ -33,8 +33,8 @@ run_multifun_variance_partitioning <- function(model_multifun) {
       sum(hp_table$Individual, na.rm = TRUE)
     ),
     `I.perc(%)` = c(
-      sum(hp_table[["I.perc(%)"]][hp_table$term %in% fg_terms], na.rm = TRUE),
-      sum(hp_table[["I.perc(%)"]][hp_table$term %in% climate_terms], na.rm = TRUE),
+      sum(hp_table[["Percentage"]][hp_table$term %in% fg_terms], na.rm = TRUE),
+      sum(hp_table[["Percentage"]][hp_table$term %in% climate_terms], na.rm = TRUE),
       100
     )
   )
