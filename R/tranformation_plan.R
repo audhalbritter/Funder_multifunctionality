@@ -107,7 +107,8 @@ transformation_plan <- list(
         group = "primary producers",
         response = "root biomass",
         unit = "g m\u207B\u00B2"
-      )
+      ) |>
+      select(-ric_radius, -ric_area)
   ),
 
   # root traits
@@ -176,24 +177,41 @@ transformation_plan <- list(
   ),
 
   # prep microarthropod
-  ### NEEDS RECALCULATION FOR DENSITY PER G SOIL!!!
   tar_target(
     name = microarthropod,
     command = microarthropod_raw |>
-      select(year, siteID, blockID, plotID, treatment, functional_group, microarthropods, abundance) |>
+      mutate(
+        siteID = case_when(
+          siteID == "Gud" ~ "Gudmedalen",
+          siteID == "Lav" ~ "Lavisdalen",
+          siteID == "Ram" ~ "Rambera",
+          siteID == "Ulv" ~ "Ulvehaugen",
+          siteID == "Skj" ~ "Skjelingahaugen",
+          siteID == "Alr" ~ "Alrust",
+          siteID == "Arh" ~ "Arhelleren",
+          siteID == "Fau" ~ "Fauske",
+          siteID == "Hog" ~ "Hogsete",
+          siteID == "Ovs" ~ "Ovstedalen",
+          siteID == "Vik" ~ "Vikesland",
+          siteID == "Ves" ~ "Veskre",
+          TRUE ~ siteID
+        )
+      ) |>
+      select(year, siteID, blockID, plotID, treatment, functional_group, abundance, sample_weight_g) |>
       # remove missing data (1 plot, Fau2FB)
-      filter(!is.na(abundance))
+      filter(!is.na(abundance)) |>
+      mutate(abundance_per_g_dry_soil = abundance / sample_weight_g)
   ),
   tar_target(
     name = microarthropod_density,
     command = microarthropod |>
       group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = sum(abundance)) |>
+      summarise(value = sum(abundance_per_g_dry_soil)) |>
       mutate(
         data_type = "function",
         group = "higher trophic level",
         response = "microarthropod density",
-        unit = "count"
+        unit = "count g\u207B\u00B9"
       )
   ),
 
@@ -241,6 +259,19 @@ transformation_plan <- list(
         group = "higher trophic level",
         response = "nematode ecosystem condition",
         unit = "unitless"
+      )
+  ),
+
+  # microbial density
+  tar_target(
+    name = microbial_density,
+    command = microbial_raw |>
+    select(year, siteID, blockID, plotID, treatment, abundance) |>
+    mutate(
+        data_type = "function",
+        group = "higher trophic level",
+        response = "microbial density",
+        unit = "count g\u207B\u00B9?"
       )
   ),
 

@@ -70,8 +70,7 @@ Overview of ecosystem functions measured across sites and treatments, grouped by
 | Higher trophic level | Nematode density | All | only single treatment | productivity? |
 |  | Mites/collembola density | All | only single treatment | productivity? |
 |  | Ecosystem condition index (nematode) | All | All | scale from 1 -5 (‘colonizer‘ = resource availability - ‘persister’ = stability) |
-|  | Fungi density | not included yet |  |  |
-|  | Bacteria density | not included yet |  |  |
+|  | Microbial density (only fungi so far) | All | All | productivity? |
 | Carbon cycling | Decomposition of graminoid litter | All | All | decomposition |
 |  | Decomposition of forb litter | not included |  | decomposition |
 |  | Carbon stock | All | All | carbon storage |
