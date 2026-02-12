@@ -6,11 +6,18 @@ run_models <- function(dat, response_var, fg_var, group){
   dat |>
     rename(.response = {{response_var}},
            .functional_group = {{fg_var}}) |>
-    group_by(across(all_of({{group}})))|>
+    group_by(across(all_of({{group}}))) |>
     nest() |>
     mutate(
-      # nr of functional groups analysis
-      model = map(data, ~lmerTest::lmer(data = ., .response ~ .functional_group * temperature_scaled * precipitation_scaled + (1|siteID))),
+      # formula with colons (not *) so glmm.hp works on the same model
+      model = map(data, ~ lmerTest::lmer(
+        data = .,
+        formula = .response ~ .functional_group + temperature_scaled + precipitation_scaled +
+          .functional_group:temperature_scaled + .functional_group:precipitation_scaled +
+          temperature_scaled:precipitation_scaled +
+          .functional_group:temperature_scaled:precipitation_scaled +
+          (1 | siteID)
+      )),
 
       # factorial analysis
       model_factorial = map(data,
@@ -43,8 +50,11 @@ lmer_prediction <- function(dat, fit) {
 
     newdat$fitted <- predict(fit, newdat, re.form = NA)
 
-    # fixed-effects model matrix only (full formula includes (1|siteID))
-    form_fixed <- ~ .functional_group * temperature_scaled * precipitation_scaled
+    # fixed-effects model matrix (matches run_models formula)
+    form_fixed <- ~ .functional_group + temperature_scaled + precipitation_scaled +
+      .functional_group:temperature_scaled + .functional_group:precipitation_scaled +
+      temperature_scaled:precipitation_scaled +
+      .functional_group:temperature_scaled:precipitation_scaled
     mm <- model.matrix(form_fixed, data = newdat)
     mm <- mm[, names(lme4::fixef(fit)), drop = FALSE]
 

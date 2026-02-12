@@ -210,11 +210,17 @@ analysis_plan <- list(
   tar_target(
     name = model_multifun,
     command = multifunctionality %>%
-      filter(complete.cases(pick(fg_richness, temperature_scaled, precipitation_scaled, multifuntionality))) %>%
       run_models(dat = .,
                  group = "level",
                  response = multifuntionality,
                  fg_var = fg_richness)
+  ),
+
+  # variance partitioning: FG vs Climate (T + P) using glmm.hp
+  # Uses model from model_multifun (same formula as run_models, colon notation)
+  tar_target(
+    name = multifun_variance_partitioning,
+    command = run_multifun_variance_partitioning(model_multifun)
   ),
 
   # make prediction for functional groups present model

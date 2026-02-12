@@ -84,9 +84,24 @@ tar_read(model_multi_nr_out)
 
 ```
 
+```{r}
+#| label: tbl-var-part
+#| echo: false
+#| tbl-cap: Variance partitioning of multifunctionality into functional groups and climate.
+
+tar_load(multifun_variance_partitioning)
+
+multifun_variance_partitioning$summary_fg_vs_climate |>
+      gt::gt() |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels()
+      )
+
+```
+
 The identity of the functional groups removed had an effect on average multifunctionality.
 Multifunctionality was reduced when no plants, only forbs or only bryophytes were present.
-
 
 ```{r}
 #| label: fig-multifunctionality2
