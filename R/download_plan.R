@@ -74,7 +74,7 @@ download_plan <- list(
     name = microarthropod_download,
     command = get_file(
       node = "tx9r2",
-      file = "FUNDER_clean_microarthropod_composition_2022.csv",
+      file = "FUNDER_clean_microarthropods_2022.csv",
       path = here::here("data"),
       remote_path = "2_Micro_and_Mesofauna/Clean_data"
     ),
@@ -89,6 +89,18 @@ download_plan <- list(
       file = "FUNDER_clean_nematode_communities_2022.csv",
       path = here::here("data"),
       remote_path = "2_Micro_and_Mesofauna/Clean_data"
+    ),
+    format = "file"
+  ),
+
+  # microbial density
+  tar_target(
+    name = microbial_download,
+    command = get_file(
+      node = "tx9r2",
+      file = "FUNDER_fungal_abundance_2022.csv",
+      path = here::here("data"),
+      remote_path = "3_Fungi_microbes/Clean_data"
     ),
     format = "file"
   ),
@@ -192,17 +204,19 @@ download_plan <- list(
   # mesofauna
   tar_target(
     name = microarthropod_raw,
-    command = read_csv(microarthropod_download) |>
-      select(everything())
+    command = read_csv(microarthropod_download)
   ),
   tar_target(
     name = nematode_raw,
-    command = read_csv(nematode_download) |>
-      select(everything())
+    command = read_csv(nematode_download)
   ),
   tar_target(
     name = nematode_cp,
     command = read_csv("data/FUNDER_nematode_feeding_group_nemaplex_2022.csv")
+  ),
+  tar_target(
+    name = microbial_raw,
+    command = read_csv(microbial_download)
   ),
 
 
