@@ -1,5 +1,4 @@
 # Multifunctionality plan
-
 multifunctionality_plan <- list(
 
   # merge datasets with different functions
@@ -16,7 +15,7 @@ multifunctionality_plan <- list(
       nematode_density,
       microarthropod_density,
       nematode_ecosytem_condition,
-      #TBA fungi and bacteria density
+      microbial_density,
 
       # carbon cycle
       decomposition_forbs,
@@ -50,6 +49,7 @@ multifunctionality_plan <- list(
       group_by(response) |>
       mutate(value = case_when(
         response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
+        response == "microbial density" ~ asinh(value),
         TRUE ~ value
       )) |> 
       ungroup() |> 

@@ -26,6 +26,7 @@ si_figure_plan <- list(
       group_by(response) |>
       mutate(value = case_when(
         response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
+        response == "microbial density" ~ asinh(value),
         TRUE ~ value
       )) |>
       ungroup() |>

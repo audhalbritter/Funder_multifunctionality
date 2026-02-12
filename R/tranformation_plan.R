@@ -266,7 +266,7 @@ transformation_plan <- list(
   tar_target(
     name = microbial_density,
     command = microbial_raw |>
-    select(year, siteID, blockID, plotID, treatment, abundance) |>
+    select(year, siteID, blockID, plotID, treatment, value = abundance) |>
     mutate(
         data_type = "function",
         group = "higher trophic level",
