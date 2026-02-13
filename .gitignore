@@ -1,23 +1,55 @@
 # R
 .Rproj.user
 .Rhistory
+.Rapp.history
 .RData
 .Ruserdata
 .Rdata
+*-Ex.R
+/*.tar.gz
+/*.Rcheck/
+.Rproj.user/
+vignettes/*.html
+vignettes/*.pdf
 .httr-oauth
 
-# OS
-.DS_Store
+# knitr and R markdown
+*_cache/
+/cache/
+*.utf8.md
+*.knit.md
 
-# Quarto
-.quarto
-*.html
-*_files/
+# R Environment
+.Renviron
 
 # Targets pipeline
 _targets/
 
-# Generated outputs
+# Data files
+*.csv
+*.xlsx
+*.bib
+*.pdf
+*.rds
 data/
+
+# Output files
+*.docx
+*.jpeg
+*.jpg
+*.png
+*.ai
 figures/
 output/
+
+# Quarto
+.quarto
+*.html
+*.log
+*.md
+*.lua
+*.tex
+*_files/
+
+# OS
+.DS_Store

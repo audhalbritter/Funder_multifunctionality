@@ -1,0 +1,149 @@
+---
+format: 
+  html:
+    self-contained: true
+title: SI Plant functional group affect on multifunctionality
+execute:
+  echo: false
+bibliography: bibliography.bib
+csl: journal-of-ecology.csl
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r}
+#| label: set-up
+#| echo: false
+#| message: false
+library(targets)
+library(tarchetypes)
+library(tidyverse)
+library(lubridate)
+library(broom)
+library(gt)
+library(lme4)
+library(lmerTest)
+library(broom.mixed)
+
+```
+
+### Normalize data
+
+```{r}
+#| label: fig-normalized-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Histograms for all functions after log tranformation.
+
+tar_read(normalize_functions_plot)
+
+```
+
+
+```{r}
+#| label: fig-std-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Histograms for all functions after standardization to mean 0 and sd.
+
+tar_read(standardize_functions_plot)
+
+```
+
+
+```{r}
+#| label: fig-correlation-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Correlation between all functions (untranformed data).
+
+tar_read(correlation_plot)
+
+```
+
+
+### root data 
+
+```{r}
+#| label: fig-root-data-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Different root data plotted in the same figure.
+
+tar_read(root_data_plot)
+
+```
+
+
+### decomposition data 
+
+```{r}
+#| label: fig-decomposition-data-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Decomposition data for only graminoids, forbs and their average.
+
+tar_read(decomposition_data_plot)
+
+```
+
+
+### Plots by group
+
+Analysis by the four groups: primary produces, higher tropic level, c and nutrients cycling.
+
+```{r}
+#| label: tbl-model-group
+#| echo: false
+#| warning: false
+#| tbl-cap: Model output from testing number of functional groups present, summer temperature and annual precipitation on functions realted to primary producers, higher trophic levels, carbon and nutrient cycling.
+
+tar_read(model_group_nr_out)
+
+```
+
+
+```{r}
+#| label: fig-primary-producers
+#| echo: false
+#| warning: false
+#| fig-cap: Standardized functions related to primary producers in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
+
+tar_read(pp_plot)
+
+```
+
+
+```{r}
+#| label: fig-higher-trophic-level
+#| echo: false
+#| warning: false
+#| fig-cap: Standardized functions related to higher trophic levels in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
+
+tar_read(htl_plot)
+
+```
+
+
+```{r}
+#| label: fig-carbon-cycling
+#| echo: false
+#| warning: false
+#| fig-cap: Standardized functions related to carbon cycling in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
+#| 
+tar_read(cc_plot)
+
+```
+
+
+```{r}
+#| label: fig-nutrients
+#| echo: false
+#| warning: false
+#| fig-cap: Standardized functions related to nutrient cycling in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
+
+tar_read(nc_plot)
+
+```
+

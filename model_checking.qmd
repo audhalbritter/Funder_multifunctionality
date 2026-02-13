@@ -1,0 +1,56 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+## Checking model assumptions
+
+```{r}
+#| label: set-up
+#| echo: false
+#| warning: false
+
+library(targets)
+library(tarchetypes)
+library(tidyverse)
+library(performance)
+
+```
+
+## Multifunctionality
+
+```{r}
+#| label: multifun-nr-check
+#| echo: false
+#| results: asis
+
+tar_load(model_multifun)
+
+model_multifun |> 
+  mutate(check = map(model, check_model)) |> 
+  select(check) |> 
+  pwalk(.f = function(check, ...){
+  cat(paste("##", "multifun nr fg"))
+  print(check)
+  cat("\n")
+})
+  
+```
+
+```{r}
+#| label: multifun-trt-check
+#| echo: false
+#| results: asis
+
+model_multifun |> 
+  #mutate(check = map(model_treatment, check_model)) |> 
+  mutate(check = map(model_treatment, plot.DHARMa)) |> 
+  select(check) |> 
+  pwalk(.f = function(check, ...){
+  cat(paste("##", "multifun treatment"))
+  print(check)
+  cat("\n")
+})
+  
+```

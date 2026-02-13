@@ -1,0 +1,1262 @@
+year,siteID,blockID,plotID,treatment,removed_fg,biomass,no_treatment,comments
+2022,Alrust,Alr1,Alr1GF,GF,B,0.85,leftover,No lichen in the plot
+2022,Alrust,Alr1,Alr1GF,GF,F,0.61,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1GF,GF,G,1.73,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2GF,GF,B,0.013,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2GF,GF,F,0.083,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2GF,GF,G,0.56,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3GF,GF,B,2.32,leftover,NA
+2022,Alrust,Alr3,Alr3GF,GF,F,1.29,NA,NA
+2022,Alrust,Alr3,Alr3GF,GF,G,0.27,NA,NA
+2022,Alrust,Alr3,Alr3GF,GF,L,0.36,leftover,NA
+2022,Alrust,Alr5,Alr5GF,GF,B,0.4,leftover,NA
+2022,Alrust,Alr5,Alr5GF,GF,F,0.014,NA,NA
+2022,Alrust,Alr5,Alr5GF,GF,G,0.09,NA,NA
+2022,Alrust,Alr5,Alr5GF,GF,L,0.117,leftover,NA
+2022,Alrust,Alr1,Alr1FB,FB,B,0.26,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1FB,FB,F,0.72,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1FB,FB,G,13.81,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2FB,FB,B,0.47,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2FB,FB,F,0.39,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2FB,FB,G,19,leftover,No lichen in the plot
+2022,Alrust,Alr3,Alr3FB,FB,B,0.033,NA,NA
+2022,Alrust,Alr3,Alr3FB,FB,F,0.65,NA,NA
+2022,Alrust,Alr3,Alr3FB,FB,G,3.92,leftover,NA
+2022,Alrust,Alr3,Alr3FB,FB,L,0.14,leftover,NA
+2022,Alrust,Alr5,Alr5FB,FB,B,0.002,NA,No lichen in the plot
+2022,Alrust,Alr5,Alr5FB,FB,F,0.28,NA,No lichen in the plot
+2022,Alrust,Alr5,Alr5FB,FB,G,2.82,leftover,No lichen in the plot
+2022,Alrust,Alr1,Alr1GB,GB,B,0.93,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1GB,GB,F,4.74,leftover,No lichen in the plot
+2022,Alrust,Alr1,Alr1GB,GB,G,2.76,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2GB,GB,B,0.009,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2GB,GB,F,5.51,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2GB,GB,G,0.97,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3GB,GB,B,0.1,NA,NA
+2022,Alrust,Alr3,Alr3GB,GB,F,12.14,leftover,NA
+2022,Alrust,Alr3,Alr3GB,GB,G,0.42,NA,NA
+2022,Alrust,Alr3,Alr3GB,GB,L,0.08,leftover,NA
+2022,Alrust,Alr5,Alr5GB,GB,B,0.39,NA,No lichen in the plot
+2022,Alrust,Alr5,Alr5GB,GB,F,6.39,leftover,No lichen in the plot
+2022,Alrust,Alr5,Alr5GB,GB,G,0.32,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1C,C,B,0.44,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1C,C,F,4.24,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1C,C,G,28.87,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2C,C,B,0.32,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2C,C,F,6.34,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2C,C,G,20.5,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3C,C,B,1.19,NA,NA
+2022,Alrust,Alr3,Alr3C,C,F,9.93,NA,NA
+2022,Alrust,Alr3,Alr3C,C,G,4.67,NA,NA
+2022,Alrust,Alr3,Alr3C,C,L,0.21,leftover,NA
+2022,Alrust,Alr5,Alr5C,C,B,0.082,NA,No lichen in the plot
+2022,Alrust,Alr5,Alr5C,C,F,8.89,NA,No lichen in the plot
+2022,Alrust,Alr5,Alr5C,C,G,3.26,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1G,G,B,1.03,leftover,NA
+2022,Alrust,Alr1,Alr1G,G,F,4.96,leftover,NA
+2022,Alrust,Alr1,Alr1G,G,G,2.13,NA,NA
+2022,Alrust,Alr1,Alr1G,G,L,0.14,leftover,NA
+2022,Alrust,Alr2,Alr2G,G,B,3.17,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2G,G,F,6.48,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2G,G,G,1.32,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3G,G,B,0.079,leftover,No lichen in the plot
+2022,Alrust,Alr3,Alr3G,G,F,6.73,leftover,No lichen in the plot
+2022,Alrust,Alr3,Alr3G,G,G,0.26,NA,No lichen in the plot
+2022,Alrust,Alr5,Alr5G,G,B,0.81,leftover,NA
+2022,Alrust,Alr5,Alr5G,G,F,6.52,leftover,NA
+2022,Alrust,Alr5,Alr5G,G,G,0.74,NA,NA
+2022,Alrust,Alr5,Alr5G,G,L,0.1,leftover,NA
+2022,Alrust,Alr1,Alr1F,F,B,0.95,leftover,No lichen in the plot
+2022,Alrust,Alr1,Alr1F,F,F,0.36,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1F,F,G,9.3,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2F,F,B,1.14,leftover,NA
+2022,Alrust,Alr2,Alr2F,F,F,0.38,NA,NA
+2022,Alrust,Alr2,Alr2F,F,G,15.35,leftover,NA
+2022,Alrust,Alr2,Alr2F,F,L,0.051,leftover,NA
+2022,Alrust,Alr3,Alr3F,F,B,1.21,leftover,NA
+2022,Alrust,Alr3,Alr3F,F,F,0.21,NA,NA
+2022,Alrust,Alr3,Alr3F,F,G,1.4,leftover,NA
+2022,Alrust,Alr3,Alr3F,F,L,0.13,leftover,NA
+2022,Alrust,Alr5,Alr5F,F,B,0.86,leftover,NA
+2022,Alrust,Alr5,Alr5F,F,F,0.33,NA,NA
+2022,Alrust,Alr5,Alr5F,F,G,1.9,leftover,NA
+2022,Alrust,Alr5,Alr5F,F,L,0.53,leftover,NA
+2022,Alrust,Alr1,Alr1B,B,B,1.39,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1B,B,F,5.55,leftover,No lichen in the plot
+2022,Alrust,Alr1,Alr1B,B,G,10.87,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2B,B,B,0.4,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2B,B,F,4.24,leftover,No lichen in the plot
+2022,Alrust,Alr2,Alr2B,B,G,16.5,leftover,No lichen in the plot
+2022,Alrust,Alr3,Alr3B,B,B,0.0155,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3B,B,F,7.59,leftover,No lichen in the plot
+2022,Alrust,Alr3,Alr3B,B,G,2.62,leftover,No lichen in the plot
+2022,Alrust,Alr5,Alr5B,B,B,0.22,NA,NA
+2022,Alrust,Alr5,Alr5B,B,F,3.62,leftover,NA
+2022,Alrust,Alr5,Alr5B,B,G,4.64,leftover,NA
+2022,Alrust,Alr5,Alr5B,B,L,0.12,leftover,NA
+2022,Alrust,Alr1,Alr1FGB,FGB,B,0.3,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1FGB,FGB,F,0.65,NA,No lichen in the plot
+2022,Alrust,Alr1,Alr1FGB,FGB,G,0.13,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2FGB,FGB,B,0.22,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2FGB,FGB,F,0.67,NA,No lichen in the plot
+2022,Alrust,Alr2,Alr2FGB,FGB,G,1.02,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3FGB,FGB,B,0.02,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3FGB,FGB,F,0.25,NA,No lichen in the plot
+2022,Alrust,Alr3,Alr3FGB,FGB,G,0.06,NA,No lichen in the plot
+2022,Alrust,Alr5,Alr5FGB,FGB,B,0.08,NA,NA
+2022,Alrust,Alr5,Alr5FGB,FGB,F,0.12,NA,NA
+2022,Alrust,Alr5,Alr5FGB,FGB,G,0.08,NA,NA
+2022,Alrust,Alr5,Alr5FGB,FGB,L,0.022,leftover,NA
+2022,Vikesland,Vik2,Vik2GF,GF,B,16.04,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2GF,GF,F,0.97,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2GF,GF,G,5.26,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3GF,GF,B,18.88,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3GF,GF,F,2.01,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3GF,GF,G,1.45,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4GF,GF,B,18.94,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4GF,GF,F,1.15,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4GF,GF,G,2.04,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5GF,GF,B,18.93,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5GF,GF,F,1.05,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5GF,GF,G,3.08,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2FB,FB,B,0.91,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2FB,FB,F,1.12,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2FB,FB,G,15.9,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3FB,FB,B,1.95,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3FB,FB,F,2.27,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3FB,FB,G,15.01,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4FB,FB,B,1,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4FB,FB,F,1.08,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4FB,FB,G,19.29,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5FB,FB,B,0.2,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5FB,FB,F,0.9,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5FB,FB,G,17.21,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2GB,GB,B,1.14,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2GB,GB,F,4.54,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2GB,GB,G,4.3,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3GB,GB,B,1.15,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3GB,GB,F,6.26,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3GB,GB,G,2.38,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4GB,GB,B,0.72,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4GB,GB,F,11.45,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4GB,GB,G,2,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5GB,GB,B,1.32,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5GB,GB,F,7.78,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5GB,GB,G,3.97,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2C,C,B,12.31,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2C,C,F,6.6,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2C,C,G,14.29,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3C,C,B,11.09,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3C,C,F,8.7,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3C,C,G,5.59,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4C,C,B,11.67,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4C,C,F,6.58,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4C,C,G,5.72,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5C,C,B,9.62,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5C,C,F,3.68,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5C,C,G,9.72,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2G,G,B,5.39,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2G,G,F,3.29,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2G,G,G,1.09,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3G,G,B,20.35,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3G,G,F,8.85,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3G,G,G,1.34,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4G,G,B,13.93,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4G,G,F,7.15,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4G,G,G,3.5,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5G,G,B,20.83,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5G,G,F,7.1,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5G,G,G,1.68,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2F,F,B,12.08,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2F,F,F,0.07,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2F,F,G,11.7,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3F,F,B,14.99,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3F,F,F,0.49,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3F,F,G,3.85,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4F,F,B,18.76,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4F,F,F,1.17,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4F,F,G,5.53,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5F,F,B,20.05,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5F,F,F,0.29,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5F,F,G,5.4,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2B,B,B,1.85,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2B,B,F,3.63,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2B,B,G,21.69,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3B,B,B,1.61,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3B,B,F,6.52,leftover,No lichen in the plot
+2022,Vikesland,Vik3,Vik3B,B,G,18.69,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4B,B,B,0.86,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4B,B,F,9.84,leftover,No lichen in the plot
+2022,Vikesland,Vik4,Vik4B,B,G,7.58,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5B,B,B,1.26,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5B,B,F,3.51,leftover,No lichen in the plot
+2022,Vikesland,Vik5,Vik5B,B,G,12.3,leftover,No lichen in the plot
+2022,Vikesland,Vik2,Vik2FGB,FGB,B,2.13,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2FGB,FGB,F,0.63,NA,No lichen in the plot
+2022,Vikesland,Vik2,Vik2FGB,FGB,G,5.93,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3FGB,FGB,B,0.36,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3FGB,FGB,F,1.04,NA,No lichen in the plot
+2022,Vikesland,Vik3,Vik3FGB,FGB,G,1.38,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4FGB,FGB,B,0.47,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4FGB,FGB,F,1.01,NA,No lichen in the plot
+2022,Vikesland,Vik4,Vik4FGB,FGB,G,0.96,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5FGB,FGB,B,1.1,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5FGB,FGB,F,1.07,NA,No lichen in the plot
+2022,Vikesland,Vik5,Vik5FGB,FGB,G,2.43,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1GF,GF,B,3.26,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1GF,GF,F,0.28,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1GF,GF,G,1.31,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2GF,GF,B,13.55,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2GF,GF,F,1.06,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2GF,GF,G,2.28,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3GF,GF,B,11.85,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3GF,GF,F,0.82,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3GF,GF,G,2.48,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4GF,GF,B,9.58,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4GF,GF,F,0.22,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4GF,GF,G,1.24,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1FB,FB,B,0.26,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1FB,FB,F,0.54,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1FB,FB,G,9.26,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2FB,FB,B,0.46,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2FB,FB,F,1.94,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2FB,FB,G,12.4,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3FB,FB,B,0.29,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3FB,FB,F,0.44,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3FB,FB,G,10.58,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4FB,FB,B,0.23,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4FB,FB,F,0.04,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4FB,FB,G,18.04,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1GB,GB,B,0.76,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1GB,GB,F,5.68,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1GB,GB,G,1.94,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2GB,GB,B,0.6,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2GB,GB,F,12.09,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2GB,GB,G,3.11,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3GB,GB,B,0.89,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3GB,GB,F,12.85,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3GB,GB,G,2.62,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4GB,GB,B,0.37,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4GB,GB,F,2.92,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4GB,GB,G,1.82,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1C,C,B,11.37,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1C,C,F,10.44,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1C,C,G,9.38,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2C,C,B,22.5,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2C,C,F,2.14,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2C,C,G,5.67,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3C,C,B,6.18,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3C,C,F,8.35,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3C,C,G,8.98,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4C,C,B,3.6,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4C,C,F,3.47,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4C,C,G,14.3,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1G,G,B,8.2,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1G,G,F,11.64,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1G,G,G,2.77,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2G,G,B,6.73,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2G,G,F,10.69,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2G,G,G,1.88,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3G,G,B,15.64,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3G,G,F,12.8,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3G,G,G,1.33,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4G,G,B,5.28,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4G,G,F,0.44,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4G,G,G,2.06,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1F,F,B,16.07,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1F,F,F,0.78,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1F,F,G,5.46,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2F,F,B,2.66,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2F,F,F,2.78,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2F,F,G,9.6,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3F,F,B,8.82,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3F,F,F,0.89,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3F,F,G,13.63,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4F,F,B,7.8,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4F,F,F,0.38,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4F,F,G,11.72,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1B,B,B,2.19,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1B,B,F,15.8,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1B,B,G,11.27,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2B,B,B,0.43,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2B,B,F,12.31,leftover,No lichen in the plot
+2022,Hogsete,Hog2,Hog2B,B,G,8.37,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3B,B,B,0.22,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3B,B,F,3.88,leftover,No lichen in the plot
+2022,Hogsete,Hog3,Hog3B,B,G,16.31,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4B,B,B,0.6,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4B,B,F,8.01,leftover,No lichen in the plot
+2022,Hogsete,Hog4,Hog4B,B,G,18.57,leftover,No lichen in the plot
+2022,Hogsete,Hog1,Hog1FGB,FGB,B,0.48,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1FGB,FGB,F,0.5,NA,No lichen in the plot
+2022,Hogsete,Hog1,Hog1FGB,FGB,G,0.98,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2FGB,FGB,B,0.73,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2FGB,FGB,F,3.11,NA,No lichen in the plot
+2022,Hogsete,Hog2,Hog2FGB,FGB,G,2.26,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3FGB,FGB,B,0.027,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3FGB,FGB,F,0.2,NA,No lichen in the plot
+2022,Hogsete,Hog3,Hog3FGB,FGB,G,0.54,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4FGB,FGB,B,0.017,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4FGB,FGB,F,0.03,NA,No lichen in the plot
+2022,Hogsete,Hog4,Hog4FGB,FGB,G,1.01,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1GF,GF,B,12.54,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1GF,GF,F,1.34,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1GF,GF,G,1.42,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2GF,GF,B,2.72,leftover,NA
+2022,Fauske,Fau2,Fau2GF,GF,F,1.64,NA,NA
+2022,Fauske,Fau2,Fau2GF,GF,G,1.11,NA,NA
+2022,Fauske,Fau2,Fau2GF,GF,L,0.58,leftover,NA
+2022,Fauske,Fau4,Fau4GF,GF,B,6.59,leftover,NA
+2022,Fauske,Fau4,Fau4GF,GF,F,1.07,NA,NA
+2022,Fauske,Fau4,Fau4GF,GF,G,1.47,NA,NA
+2022,Fauske,Fau4,Fau4GF,GF,L,0.142,leftover,NA
+2022,Fauske,Fau5,Fau5GF,GF,B,3.17,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5GF,GF,F,1.01,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5GF,GF,G,1.72,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1FB,FB,B,0.71,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1FB,FB,F,1.2,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1FB,FB,G,4.19,leftover,No lichen in the plot
+2022,Fauske,Fau2,Fau2FB,FB,B,2.32,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2FB,FB,F,6.08,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2FB,FB,G,11.38,leftover,No lichen in the plot
+2022,Fauske,Fau4,Fau4FB,FB,B,1.04,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4FB,FB,F,0.72,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4FB,FB,G,10.55,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5FB,FB,B,0.51,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5FB,FB,F,2.01,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5FB,FB,G,11.82,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1GB,GB,B,0.2,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1GB,GB,F,15.71,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1GB,GB,G,1.55,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4GB,GB,B,0.34,NA,NA
+2022,Fauske,Fau4,Fau4GB,GB,F,11.35,leftover,NA
+2022,Fauske,Fau4,Fau4GB,GB,G,0.72,NA,NA
+2022,Fauske,Fau4,Fau4GB,GB,L,0.06,leftover,NA
+2022,Fauske,Fau5,Fau5GB,GB,B,2.11,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5GB,GB,F,14.09,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5GB,GB,G,2.45,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1C,C,B,9.68,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1C,C,F,11.51,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1C,C,G,9.11,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2C,C,B,0.95,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2C,C,F,17.4,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2C,C,G,13.67,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4C,C,B,3.75,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4C,C,F,12.43,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4C,C,G,9.8,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5C,C,B,8.58,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5C,C,F,13.27,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5C,C,G,10.35,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1G,G,B,9.56,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1G,G,F,18.51,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1G,G,G,2.94,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2G,G,B,2.01,leftover,NA
+2022,Fauske,Fau2,Fau2G,G,F,16.8,leftover,NA
+2022,Fauske,Fau2,Fau2G,G,G,1.8,NA,NA
+2022,Fauske,Fau2,Fau2G,G,L,0.82,leftover,NA
+2022,Fauske,Fau4,Fau4G,G,B,0.45,leftover,No lichen in the plot
+2022,Fauske,Fau4,Fau4G,G,F,13.42,leftover,No lichen in the plot
+2022,Fauske,Fau4,Fau4G,G,G,0.6,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5G,G,B,4.56,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5G,G,F,14.3,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5G,G,G,1.87,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1F,F,B,10.64,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1F,F,F,1.58,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1F,F,G,6.92,leftover,No lichen in the plot
+2022,Fauske,Fau2,Fau2F,F,B,11.4,leftover,No lichen in the plot
+2022,Fauske,Fau2,Fau2F,F,F,2.25,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2F,F,G,8.98,leftover,No lichen in the plot
+2022,Fauske,Fau4,Fau4F,F,B,8.26,leftover,No lichen in the plot
+2022,Fauske,Fau4,Fau4F,F,F,0.97,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4F,F,G,3.77,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5F,F,B,12.9,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5F,F,F,1.94,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5F,F,G,9.1,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1B,B,B,0.43,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1B,B,F,14.3,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1B,B,G,6.61,leftover,No lichen in the plot
+2022,Fauske,Fau2,Fau2B,B,B,0.67,NA,NA
+2022,Fauske,Fau2,Fau2B,B,F,8.78,leftover,NA
+2022,Fauske,Fau2,Fau2B,B,G,7.5,leftover,NA
+2022,Fauske,Fau2,Fau2B,B,L,0.47,leftover,NA
+2022,Fauske,Fau4,Fau4B,B,B,0.35,NA,NA
+2022,Fauske,Fau4,Fau4B,B,F,7.45,leftover,NA
+2022,Fauske,Fau4,Fau4B,B,G,6.52,leftover,NA
+2022,Fauske,Fau4,Fau4B,B,L,0.029,leftover,NA
+2022,Fauske,Fau5,Fau5B,B,B,0.65,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5B,B,F,8.63,leftover,No lichen in the plot
+2022,Fauske,Fau5,Fau5B,B,G,9.68,leftover,No lichen in the plot
+2022,Fauske,Fau1,Fau1FGB,FGB,B,0.06,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1FGB,FGB,F,0.48,NA,No lichen in the plot
+2022,Fauske,Fau1,Fau1FGB,FGB,G,0.43,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2FGB,FGB,B,0.89,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2FGB,FGB,F,2.11,NA,No lichen in the plot
+2022,Fauske,Fau2,Fau2FGB,FGB,G,3.23,NA,No lichen in the plot
+2022,Fauske,Fau4,Fau4FGB,FGB,B,0.19,NA,NA
+2022,Fauske,Fau4,Fau4FGB,FGB,F,1.71,NA,NA
+2022,Fauske,Fau4,Fau4FGB,FGB,G,0.68,NA,NA
+2022,Fauske,Fau4,Fau4FGB,FGB,L,0.087,leftover,NA
+2022,Fauske,Fau5,Fau5FGB,FGB,B,0.07,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5FGB,FGB,F,1,NA,No lichen in the plot
+2022,Fauske,Fau5,Fau5FGB,FGB,G,1.24,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1GF,GF,B,42.61,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1GF,GF,F,1.6,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1GF,GF,G,0.52,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2GF,GF,B,13.14,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2GF,GF,F,1.51,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2GF,GF,G,1.01,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3GF,GF,B,9.77,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3GF,GF,F,2.12,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3GF,GF,G,2.89,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4GF,GF,B,12.33,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4GF,GF,F,1.31,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4GF,GF,G,0.81,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1FB,FB,B,4.51,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1FB,FB,F,2.71,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1FB,FB,G,10.62,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2FB,FB,B,0.42,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2FB,FB,F,2.3,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2FB,FB,G,3.59,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3FB,FB,B,1.27,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3FB,FB,F,1.39,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3FB,FB,G,18.3,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4FB,FB,B,0.46,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4FB,FB,F,2.24,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4FB,FB,G,12.76,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1GB,GB,B,4.21,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1GB,GB,F,17.21,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1GB,GB,G,0.93,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2GB,GB,B,0.68,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2GB,GB,F,12.71,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2GB,GB,G,1.01,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3GB,GB,B,1.89,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3GB,GB,F,9.22,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3GB,GB,G,3.58,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4GB,GB,B,1.23,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4GB,GB,F,10.06,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4GB,GB,G,3.04,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1C,C,B,7.16,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1C,C,F,8.75,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1C,C,G,6.53,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2C,C,B,9.1,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2C,C,F,10.39,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2C,C,G,6.82,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3C,C,B,11.08,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3C,C,F,6.2,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3C,C,G,8.19,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4C,C,B,10.14,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4C,C,F,5.06,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4C,C,G,8.85,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1G,G,B,28.08,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1G,G,F,9.09,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1G,G,G,0.97,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2G,G,B,3.18,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2G,G,F,13.77,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2G,G,G,0.98,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3G,G,B,33.55,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3G,G,F,4.31,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3G,G,G,3.67,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4G,G,B,9.37,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4G,G,F,5.71,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4G,G,G,1.28,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1F,F,B,25.71,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1F,F,F,1.19,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1F,F,G,9.52,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2F,F,B,8.87,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2F,F,F,4.16,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2F,F,G,2.38,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3F,F,B,22.86,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3F,F,F,1.77,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3F,F,G,14.04,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4F,F,B,8.55,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4F,F,F,1.19,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4F,F,G,11.15,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1B,B,B,3.69,NA,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1B,B,F,7.67,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1B,B,G,7.53,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2B,B,B,1.27,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2B,B,F,15.01,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2B,B,G,3.84,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3B,B,B,3.86,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3B,B,F,5.51,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3B,B,G,19.2,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4B,B,B,0.43,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4B,B,F,6.81,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4B,B,G,5.95,leftover,No lichen in the plot
+2022,Ovstedalen,Ovs1,Ovs1FGB,FGB,B,1.87,NA,NA
+2022,Ovstedalen,Ovs1,Ovs1FGB,FGB,F,1.98,NA,NA
+2022,Ovstedalen,Ovs1,Ovs1FGB,FGB,G,1.7,NA,NA
+2022,Ovstedalen,Ovs1,Ovs1FGB,FGB,L,0.18,leftover,NA
+2022,Ovstedalen,Ovs2,Ovs2FGB,FGB,B,0.86,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2FGB,FGB,F,2.42,NA,No lichen in the plot
+2022,Ovstedalen,Ovs2,Ovs2FGB,FGB,G,0.86,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3FGB,FGB,B,1.49,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3FGB,FGB,F,2.48,NA,No lichen in the plot
+2022,Ovstedalen,Ovs3,Ovs3FGB,FGB,G,5.49,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4FGB,FGB,B,0.36,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4FGB,FGB,F,0.79,NA,No lichen in the plot
+2022,Ovstedalen,Ovs4,Ovs4FGB,FGB,G,1.83,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1GF,GF,B,16.1,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1GF,GF,F,2.53,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1GF,GF,G,1.28,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2GF,GF,B,24.87,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2GF,GF,F,1.53,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2GF,GF,G,0.88,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3GF,GF,B,7.59,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3GF,GF,F,2,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3GF,GF,G,1.72,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4GF,GF,B,11.87,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4GF,GF,F,0.7,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4GF,GF,G,3.2,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1FB,FB,B,0.65,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1FB,FB,F,0.62,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1FB,FB,G,9.51,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2FB,FB,B,0.81,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2FB,FB,F,0.71,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2FB,FB,G,17.52,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3FB,FB,B,2.36,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3FB,FB,F,3.23,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3FB,FB,G,6.52,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4FB,FB,B,3.49,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4FB,FB,F,1.07,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4FB,FB,G,8.44,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1GB,GB,B,3.23,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1GB,GB,F,9.33,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1GB,GB,G,1.21,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2GB,GB,B,1.09,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2GB,GB,F,8.64,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2GB,GB,G,2.99,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3GB,GB,B,1.04,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3GB,GB,F,6.6,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3GB,GB,G,2.71,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4GB,GB,B,3.97,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4GB,GB,F,7.18,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4GB,GB,G,2.25,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1C,C,B,5.22,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1C,C,F,13.77,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1C,C,G,11.18,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2C,C,B,15.17,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2C,C,F,6.17,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2C,C,G,6.75,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3C,C,B,4.54,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3C,C,F,4.9,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3C,C,G,14.86,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4C,C,B,11.67,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4C,C,F,7.71,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4C,C,G,13.98,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1G,G,B,22.32,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1G,G,F,9.72,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1G,G,G,1.38,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2G,G,B,13.73,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2G,G,F,6.49,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2G,G,G,2.11,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3G,G,B,20.62,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3G,G,F,15.99,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3G,G,G,2.9,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4G,G,B,18.09,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4G,G,F,7.44,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4G,G,G,5.59,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1F,F,B,11.33,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1F,F,F,1.63,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1F,F,G,11.49,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2F,F,B,18.52,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2F,F,F,3.03,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2F,F,G,11.26,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3F,F,B,18.09,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3F,F,F,2.46,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3F,F,G,15.38,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4F,F,B,20.3,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4F,F,F,2,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4F,F,G,15.5,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1B,B,B,0.77,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1B,B,F,5.13,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1B,B,G,6.04,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2B,B,B,1.39,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2B,B,F,13.74,leftover,No lichen in the plot
+2022,Veskre,Ves2,Ves2B,B,G,7.71,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3B,B,B,2.07,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3B,B,F,7.92,leftover,No lichen in the plot
+2022,Veskre,Ves3,Ves3B,B,G,15.2,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4B,B,B,1.68,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4B,B,F,6.9,leftover,No lichen in the plot
+2022,Veskre,Ves4,Ves4B,B,G,8.65,leftover,No lichen in the plot
+2022,Veskre,Ves1,Ves1FGB,FGB,B,0.34,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1FGB,FGB,F,0.71,NA,No lichen in the plot
+2022,Veskre,Ves1,Ves1FGB,FGB,G,0.39,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2FGB,FGB,B,0.22,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2FGB,FGB,F,0.98,NA,No lichen in the plot
+2022,Veskre,Ves2,Ves2FGB,FGB,G,0.63,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3FGB,FGB,B,1.08,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3FGB,FGB,F,1.15,NA,No lichen in the plot
+2022,Veskre,Ves3,Ves3FGB,FGB,G,1.99,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4FGB,FGB,B,0.32,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4FGB,FGB,F,0.15,NA,No lichen in the plot
+2022,Veskre,Ves4,Ves4FGB,FGB,G,0.56,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1GF,GF,B,6.32,leftover,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1GF,GF,F,0.45,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1GF,GF,G,0.81,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2GF,GF,B,4.14,leftover,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2GF,GF,F,0.63,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2GF,GF,G,0.67,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3GF,GF,B,11,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3GF,GF,F,0.1,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3GF,GF,G,0.53,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4GF,GF,B,11.81,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4GF,GF,F,0.73,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4GF,GF,G,2.2,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1FB,FB,B,0.3,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1FB,FB,F,0.56,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1FB,FB,G,5.09,leftover,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2FB,FB,B,0.62,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2FB,FB,F,0.23,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2FB,FB,G,10.07,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3FB,FB,B,1.14,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3FB,FB,F,1.03,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3FB,FB,G,5,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4FB,FB,B,1.73,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4FB,FB,F,1.73,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4FB,FB,G,3.34,leftover,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1GB,GB,B,0.27,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1GB,GB,F,5.45,leftover,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1GB,GB,G,0.62,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2GB,GB,B,0.33,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2GB,GB,F,1.08,leftover,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2GB,GB,G,0.74,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3GB,GB,B,1.64,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3GB,GB,F,4.5,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3GB,GB,G,0.82,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4GB,GB,B,2.33,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4GB,GB,F,5.39,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4GB,GB,G,1.53,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1C,C,B,10.66,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1C,C,F,8.16,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1C,C,G,5.99,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2C,C,B,4.64,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2C,C,F,2.89,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2C,C,G,12.1,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3C,C,B,15.17,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3C,C,F,6.43,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3C,C,G,5.54,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4C,C,B,9.39,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4C,C,F,5.92,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4C,C,G,9.58,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1G,G,B,11.37,leftover,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1G,G,F,6.65,leftover,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1G,G,G,0.96,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2G,G,B,9.99,leftover,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2G,G,F,7.68,leftover,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2G,G,G,0.41,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3G,G,B,10.98,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3G,G,F,5.52,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3G,G,G,1.47,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4G,G,B,23.65,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4G,G,F,3.46,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4G,G,G,1.68,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1F,F,B,10.6,leftover,NA
+2022,Arhelleren,Arh1,Arh1F,F,F,0.16,NA,NA
+2022,Arhelleren,Arh1,Arh1F,F,G,4.22,leftover,NA
+2022,Arhelleren,Arh1,Arh1F,F,L,0.19,leftover,NA
+2022,Arhelleren,Arh2,Arh2F,F,B,12.32,leftover,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2F,F,F,0.73,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2F,F,G,5.07,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3F,F,B,18.67,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3F,F,F,0.56,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3F,F,G,5.09,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4F,F,B,7,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4F,F,F,1.73,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4F,F,G,5.16,leftover,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1B,B,B,0.63,NA,NA
+2022,Arhelleren,Arh1,Arh1B,B,F,3.21,leftover,NA
+2022,Arhelleren,Arh1,Arh1B,B,G,7.59,leftover,NA
+2022,Arhelleren,Arh1,Arh1B,B,L,0.57,leftover,NA
+2022,Arhelleren,Arh2,Arh2B,B,B,0.23,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2B,B,F,6.55,leftover,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2B,B,G,5.67,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3B,B,B,0.39,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3B,B,F,3.87,leftover,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3B,B,G,4.88,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4B,B,B,2.04,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4B,B,F,4.41,leftover,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4B,B,G,7.42,leftover,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1FGB,FGB,B,0.26,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1FGB,FGB,F,0.21,NA,No lichen in the plot
+2022,Arhelleren,Arh1,Arh1FGB,FGB,G,0.15,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2FGB,FGB,B,0.19,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2FGB,FGB,F,0.31,NA,No lichen in the plot
+2022,Arhelleren,Arh2,Arh2FGB,FGB,G,0.36,NA,No lichen in the plot
+2022,Arhelleren,Arh3,Arh3FGB,FGB,B,0.38,NA,NA
+2022,Arhelleren,Arh3,Arh3FGB,FGB,F,0.69,NA,NA
+2022,Arhelleren,Arh3,Arh3FGB,FGB,G,0.25,NA,NA
+2022,Arhelleren,Arh3,Arh3FGB,FGB,L,0.04,leftover,NA
+2022,Arhelleren,Arh4,Arh4FGB,FGB,B,1.86,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4FGB,FGB,F,0.51,NA,No lichen in the plot
+2022,Arhelleren,Arh4,Arh4FGB,FGB,G,0.88,NA,No lichen in the plot
+2022,Rambera,Ram4,Ram4GF,GF,B,27.38,leftover,No lichen in the plot
+2022,Rambera,Ram4,Ram4GF,GF,F,0.99,NA,No lichen in the plot
+2022,Rambera,Ram4,Ram4GF,GF,G,1.7,NA,No lichen in the plot
+2022,Rambera,Ram5,Ram5GF,GF,B,27.85,leftover,No lichen in the plot
+2022,Rambera,Ram5,Ram5GF,GF,F,0.86,NA,No lichen in the plot
+2022,Rambera,Ram5,Ram5GF,GF,G,1.22,NA,No lichen in the plot
+2022,Rambera,Ram6,Ram6GF,GF,B,15.79,leftover,NA
+2022,Rambera,Ram6,Ram6GF,GF,F,2.81,NA,NA
+2022,Rambera,Ram6,Ram6GF,GF,G,1.81,NA,NA
+2022,Rambera,Ram6,Ram6GF,GF,L,0.46,leftover,NA
+2022,Rambera,Ram8,Ram8GF,GF,B,27.02,leftover,No lichen in the plot
+2022,Rambera,Ram8,Ram8GF,GF,F,0.42,NA,No lichen in the plot
+2022,Rambera,Ram8,Ram8GF,GF,G,3.71,NA,No lichen in the plot
+2022,Rambera,Ram4,Ram4FB,FB,B,2.25,NA,NA
+2022,Rambera,Ram4,Ram4FB,FB,F,1.08,NA,NA
+2022,Rambera,Ram4,Ram4FB,FB,G,14.98,leftover,NA
+2022,Rambera,Ram4,Ram4FB,FB,L,0.63,leftover,NA
+2022,Rambera,Ram5,Ram5FB,FB,B,1.19,NA,No lichen in the plot
+2022,Rambera,Ram5,Ram5FB,FB,F,0.34,NA,No lichen in the plot
+2022,Rambera,Ram5,Ram5FB,FB,G,6.1,leftover,No lichen in the plot
+2022,Rambera,Ram6,Ram6FB,FB,B,0.55,NA,NA
+2022,Rambera,Ram6,Ram6FB,FB,F,0.69,NA,NA
+2022,Rambera,Ram6,Ram6FB,FB,G,7.02,leftover,NA
+2022,Rambera,Ram6,Ram6FB,FB,L,0.1,leftover,NA
+2022,Rambera,Ram8,Ram8FB,FB,B,1.35,NA,NA
+2022,Rambera,Ram8,Ram8FB,FB,F,0.82,NA,NA
+2022,Rambera,Ram8,Ram8FB,FB,G,9.44,leftover,NA
+2022,Rambera,Ram8,Ram8FB,FB,L,0.34,leftover,NA
+2022,Rambera,Ram4,Ram4GB,GB,B,1.28,NA,NA
+2022,Rambera,Ram4,Ram4GB,GB,F,1.43,leftover,NA
+2022,Rambera,Ram4,Ram4GB,GB,G,0.9,NA,NA
+2022,Rambera,Ram4,Ram4GB,GB,L,2.23,leftover,NA
+2022,Rambera,Ram5,Ram5GB,GB,B,3.44,NA,NA
+2022,Rambera,Ram5,Ram5GB,GB,F,5,leftover,NA
+2022,Rambera,Ram5,Ram5GB,GB,G,3.1,NA,NA
+2022,Rambera,Ram5,Ram5GB,GB,L,0.3,leftover,NA
+2022,Rambera,Ram6,Ram6GB,GB,B,1.39,NA,NA
+2022,Rambera,Ram6,Ram6GB,GB,F,4.77,leftover,NA
+2022,Rambera,Ram6,Ram6GB,GB,G,0.96,NA,NA
+2022,Rambera,Ram6,Ram6GB,GB,L,4.96,leftover,NA
+2022,Rambera,Ram8,Ram8GB,GB,B,1,NA,No lichen in the plot
+2022,Rambera,Ram8,Ram8GB,GB,F,2.83,leftover,No lichen in the plot
+2022,Rambera,Ram8,Ram8GB,GB,G,1.58,NA,No lichen in the plot
+2022,Rambera,Ram4,Ram4C,C,B,19.72,NA,NA
+2022,Rambera,Ram4,Ram4C,C,F,3.63,NA,NA
+2022,Rambera,Ram4,Ram4C,C,G,5.5,NA,NA
+2022,Rambera,Ram4,Ram4C,C,L,0.15,leftover,NA
+2022,Rambera,Ram5,Ram5C,C,B,22.88,NA,NA
+2022,Rambera,Ram5,Ram5C,C,F,9.32,NA,NA
+2022,Rambera,Ram5,Ram5C,C,G,7.12,NA,NA
+2022,Rambera,Ram5,Ram5C,C,L,0.008,leftover,NA
+2022,Rambera,Ram6,Ram6C,C,B,8.65,NA,No lichen in the plot
+2022,Rambera,Ram6,Ram6C,C,F,1.03,NA,No lichen in the plot
+2022,Rambera,Ram6,Ram6C,C,G,26.47,NA,No lichen in the plot
+2022,Rambera,Ram8,Ram8C,C,B,10.73,NA,NA
+2022,Rambera,Ram8,Ram8C,C,F,1.19,NA,NA
+2022,Rambera,Ram8,Ram8C,C,G,4.05,NA,NA
+2022,Rambera,Ram8,Ram8C,C,L,3.25,leftover,NA
+2022,Rambera,Ram4,Ram4G,G,B,27.46,leftover,NA
+2022,Rambera,Ram4,Ram4G,G,F,3.33,leftover,NA
+2022,Rambera,Ram4,Ram4G,G,G,2.73,NA,NA
+2022,Rambera,Ram4,Ram4G,G,L,1.39,leftover,NA
+2022,Rambera,Ram5,Ram5G,G,B,14.83,leftover,No lichen in the plot
+2022,Rambera,Ram5,Ram5G,G,F,1.97,leftover,No lichen in the plot
+2022,Rambera,Ram5,Ram5G,G,G,2.43,NA,No lichen in the plot
+2022,Rambera,Ram6,Ram6G,G,B,31.72,leftover,No lichen in the plot
+2022,Rambera,Ram6,Ram6G,G,F,6.8,leftover,No lichen in the plot
+2022,Rambera,Ram6,Ram6G,G,G,2.04,NA,No lichen in the plot
+2022,Rambera,Ram8,Ram8G,G,B,19.37,leftover,NA
+2022,Rambera,Ram8,Ram8G,G,F,3.38,leftover,NA
+2022,Rambera,Ram8,Ram8G,G,G,2.28,NA,NA
+2022,Rambera,Ram8,Ram8G,G,L,0.46,leftover,NA
+2022,Rambera,Ram4,Ram4F,F,B,18.59,leftover,NA
+2022,Rambera,Ram4,Ram4F,F,F,0.56,NA,NA
+2022,Rambera,Ram4,Ram4F,F,G,8.57,leftover,NA
+2022,Rambera,Ram4,Ram4F,F,L,2.78,leftover,NA
+2022,Rambera,Ram5,Ram5F,F,B,12.68,leftover,No lichen in the plot
+2022,Rambera,Ram5,Ram5F,F,F,0.029,NA,No lichen in the plot
+2022,Rambera,Ram5,Ram5F,F,G,11.65,leftover,No lichen in the plot
+2022,Rambera,Ram6,Ram6F,F,B,14.55,leftover,NA
+2022,Rambera,Ram6,Ram6F,F,F,1.07,NA,NA
+2022,Rambera,Ram6,Ram6F,F,G,13.22,leftover,NA
+2022,Rambera,Ram6,Ram6F,F,L,0.02,leftover,NA
+2022,Rambera,Ram8,Ram8F,F,B,16.55,leftover,No lichen in the plot
+2022,Rambera,Ram8,Ram8F,F,F,0.62,NA,No lichen in the plot
+2022,Rambera,Ram8,Ram8F,F,G,13.63,leftover,No lichen in the plot
+2022,Rambera,Ram4,Ram4B,B,B,4.4,NA,NA
+2022,Rambera,Ram4,Ram4B,B,F,2.09,leftover,NA
+2022,Rambera,Ram4,Ram4B,B,G,16.7,leftover,NA
+2022,Rambera,Ram4,Ram4B,B,L,0.55,leftover,NA
+2022,Rambera,Ram5,Ram5B,B,B,2.03,NA,No lichen in the plot
+2022,Rambera,Ram5,Ram5B,B,F,3.77,leftover,No lichen in the plot
+2022,Rambera,Ram5,Ram5B,B,G,8.97,leftover,No lichen in the plot
+2022,Rambera,Ram6,Ram6B,B,B,1.55,NA,No lichen in the plot
+2022,Rambera,Ram6,Ram6B,B,F,3.06,leftover,No lichen in the plot
+2022,Rambera,Ram6,Ram6B,B,G,15.81,leftover,No lichen in the plot
+2022,Rambera,Ram8,Ram8B,B,B,2.05,NA,NA
+2022,Rambera,Ram8,Ram8B,B,F,1.3,leftover,NA
+2022,Rambera,Ram8,Ram8B,B,G,9.36,leftover,NA
+2022,Rambera,Ram8,Ram8B,B,L,2.02,leftover,NA
+2022,Rambera,Ram4,Ram4FGB,FGB,B,2.49,NA,NA
+2022,Rambera,Ram4,Ram4FGB,FGB,F,0.29,NA,NA
+2022,Rambera,Ram4,Ram4FGB,FGB,G,0.86,NA,NA
+2022,Rambera,Ram4,Ram4FGB,FGB,L,2.29,leftover,NA
+2022,Rambera,Ram5,Ram5FGB,FGB,B,2.54,NA,NA
+2022,Rambera,Ram5,Ram5FGB,FGB,F,0.62,NA,NA
+2022,Rambera,Ram5,Ram5FGB,FGB,G,1.19,NA,NA
+2022,Rambera,Ram5,Ram5FGB,FGB,L,0.39,leftover,NA
+2022,Rambera,Ram6,Ram6FGB,FGB,B,0.46,NA,NA
+2022,Rambera,Ram6,Ram6FGB,FGB,F,0.2,NA,NA
+2022,Rambera,Ram6,Ram6FGB,FGB,G,0.75,NA,NA
+2022,Rambera,Ram6,Ram6FGB,FGB,L,0.13,leftover,NA
+2022,Rambera,Ram8,Ram8FGB,FGB,B,3.09,NA,NA
+2022,Rambera,Ram8,Ram8FGB,FGB,F,0.44,NA,NA
+2022,Rambera,Ram8,Ram8FGB,FGB,G,2.17,NA,NA
+2022,Rambera,Ram8,Ram8FGB,FGB,L,0.66,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1GF,GF,B,3.48,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1GF,GF,F,2.4,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1GF,GF,G,2.66,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1GF,GF,L,0.12,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2GF,GF,B,12.19,leftover,No lichen in the plot
+2022,Ulvehaugen,Ulv2,Ulv2GF,GF,F,0.3,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv2,Ulv2GF,GF,G,0.46,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3GF,GF,B,0.049,leftover,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3GF,GF,F,0.11,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3GF,GF,G,0.25,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4GF,GF,B,0.032,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4GF,GF,F,0.64,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4GF,GF,G,0.17,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4GF,GF,L,0.014,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1FB,FB,B,0.84,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1FB,FB,F,1.27,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1FB,FB,G,14.11,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1FB,FB,L,0.17,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2FB,FB,B,1.53,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2FB,FB,F,0.7,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2FB,FB,G,15.3,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2FB,FB,L,0.53,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3FB,FB,B,0.08,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3FB,FB,F,0.35,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3FB,FB,G,8.66,leftover,No lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4FB,FB,B,0.056,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4FB,FB,F,0.39,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4FB,FB,G,2.58,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4FB,FB,L,0.085,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1GB,GB,B,1.71,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1GB,GB,F,15.77,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1GB,GB,G,0.52,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1GB,GB,L,0.35,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2GB,GB,B,0.17,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2GB,GB,F,3.43,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2GB,GB,G,1.3,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2GB,GB,L,0.067,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3GB,GB,B,0.007,NA,NA
+2022,Ulvehaugen,Ulv3,Ulv3GB,GB,F,6.49,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3GB,GB,G,0.74,NA,NA
+2022,Ulvehaugen,Ulv3,Ulv3GB,GB,L,0.077,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4GB,GB,B,0.04,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4GB,GB,F,8.26,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4GB,GB,G,0.24,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4GB,GB,L,0.067,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1C,C,B,6.21,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1C,C,F,7.13,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1C,C,G,12.48,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1C,C,L,0.17,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2C,C,B,3.93,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv2,Ulv2C,C,F,3.78,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv2,Ulv2C,C,G,9.72,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3C,C,B,0.055,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3C,C,F,2.49,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3C,C,G,12.41,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4C,C,B,0.009,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4C,C,F,6.34,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4C,C,G,3.83,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv1,Ulv1G,G,B,8.19,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1G,G,F,3.93,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1G,G,G,3.15,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1G,G,L,0.025,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2G,G,B,1.73,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2G,G,F,9.91,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2G,G,G,1.93,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2G,G,L,0.038,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3G,G,B,0.29,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3G,G,F,10.58,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3G,G,G,0.6,NA,NA
+2022,Ulvehaugen,Ulv3,Ulv3G,G,L,0.47,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4G,G,B,1.04,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4G,G,F,15.08,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4G,G,G,0.85,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4G,G,L,0.014,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1F,F,B,37.44,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1F,F,F,2.44,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1F,F,G,7.41,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1F,F,L,2.54,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2F,F,B,0.83,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2F,F,F,0.64,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2F,F,G,4.5,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2F,F,L,0.89,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3F,F,B,5.71,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3F,F,F,0.64,NA,NA
+2022,Ulvehaugen,Ulv3,Ulv3F,F,G,16.44,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3F,F,L,0.51,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4F,F,B,0.53,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4F,F,F,0.65,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4F,F,G,2.87,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4F,F,L,0.48,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2B,B,B,1.75,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2B,B,F,4.44,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2B,B,G,21.07,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2B,B,L,0.44,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3B,B,B,0.14,NA,NA
+2022,Ulvehaugen,Ulv3,Ulv3B,B,F,8.25,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3B,B,G,5.79,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3B,B,L,0.13,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4B,B,B,0.28,NA,NA
+2022,Ulvehaugen,Ulv4,Ulv4B,B,F,5.15,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4B,B,G,5.4,leftover,NA
+2022,Ulvehaugen,Ulv4,Ulv4B,B,L,0.32,leftover,NA
+2022,Ulvehaugen,Ulv1,Ulv1FGB,FGB,B,0.94,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1FGB,FGB,F,1.41,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1FGB,FGB,G,2.24,NA,NA
+2022,Ulvehaugen,Ulv1,Ulv1FGB,FGB,L,0.072,leftover,NA
+2022,Ulvehaugen,Ulv2,Ulv2FGB,FGB,B,0.62,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2FGB,FGB,F,0.95,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2FGB,FGB,G,0.72,NA,NA
+2022,Ulvehaugen,Ulv2,Ulv2FGB,FGB,L,0.026,leftover,NA
+2022,Ulvehaugen,Ulv3,Ulv3FGB,FGB,F,0.23,NA,No bryophytes or lichen in the plot
+2022,Ulvehaugen,Ulv3,Ulv3FGB,FGB,G,0.13,NA,No bryophytes or lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4FGB,FGB,B,0.022,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4FGB,FGB,F,0.23,NA,No lichen in the plot
+2022,Ulvehaugen,Ulv4,Ulv4FGB,FGB,G,0.052,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1GF,GF,B,12.34,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1GF,GF,F,0.12,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1GF,GF,G,0.61,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2GF,GF,B,13.29,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2GF,GF,F,0.44,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2GF,GF,G,0.42,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3GF,GF,B,12.84,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3GF,GF,F,0.38,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3GF,GF,G,1.44,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4GF,GF,B,11.6,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4GF,GF,F,1.5,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4GF,GF,G,2.07,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1FB,FB,B,0.77,NA,NA
+2022,Skjelingahaugen,Skj1,Skj1FB,FB,F,0.67,NA,NA
+2022,Skjelingahaugen,Skj1,Skj1FB,FB,G,18.97,leftover,NA
+2022,Skjelingahaugen,Skj1,Skj1FB,FB,L,0.02,leftover,NA
+2022,Skjelingahaugen,Skj2,Skj2FB,FB,B,3.31,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2FB,FB,F,2.41,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2FB,FB,G,17.51,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3FB,FB,B,1.76,NA,NA
+2022,Skjelingahaugen,Skj3,Skj3FB,FB,F,0.9,NA,NA
+2022,Skjelingahaugen,Skj3,Skj3FB,FB,G,18.89,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3FB,FB,L,0.03,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4FB,FB,B,2.18,NA,NA
+2022,Skjelingahaugen,Skj4,Skj4FB,FB,F,1.42,NA,NA
+2022,Skjelingahaugen,Skj4,Skj4FB,FB,G,13.45,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4FB,FB,L,0.01,leftover,NA
+2022,Skjelingahaugen,Skj1,Skj1GB,GB,B,0.54,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1GB,GB,F,5.43,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1GB,GB,G,1.49,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2GB,GB,B,1.35,NA,NA
+2022,Skjelingahaugen,Skj2,Skj2GB,GB,F,4.93,leftover,NA
+2022,Skjelingahaugen,Skj2,Skj2GB,GB,G,2.75,NA,NA
+2022,Skjelingahaugen,Skj2,Skj2GB,GB,L,0.13,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3GB,GB,B,1.66,NA,NA
+2022,Skjelingahaugen,Skj3,Skj3GB,GB,F,2.22,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3GB,GB,G,1.39,NA,NA
+2022,Skjelingahaugen,Skj3,Skj3GB,GB,L,0.25,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4GB,GB,B,0.88,NA,NA
+2022,Skjelingahaugen,Skj4,Skj4GB,GB,F,4.58,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4GB,GB,G,1.58,NA,NA
+2022,Skjelingahaugen,Skj4,Skj4GB,GB,L,0.17,leftover,NA
+2022,Skjelingahaugen,Skj1,Skj1C,C,B,7.17,NA,NA
+2022,Skjelingahaugen,Skj1,Skj1C,C,F,10.88,NA,NA
+2022,Skjelingahaugen,Skj1,Skj1C,C,G,3.28,NA,NA
+2022,Skjelingahaugen,Skj1,Skj1C,C,L,0.2,leftover,NA
+2022,Skjelingahaugen,Skj2,Skj2C,C,B,22.49,NA,NA
+2022,Skjelingahaugen,Skj2,Skj2C,C,F,3.68,NA,NA
+2022,Skjelingahaugen,Skj2,Skj2C,C,G,4.21,NA,NA
+2022,Skjelingahaugen,Skj2,Skj2C,C,L,0.29,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3C,C,B,12.04,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3C,C,F,6.95,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3C,C,G,7.36,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1G,G,B,4.88,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1G,G,F,0.77,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1G,G,G,0.36,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2G,G,B,19.99,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2G,G,F,4.97,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2G,G,G,2.34,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3G,G,B,50.26,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3G,G,F,2.71,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3G,G,G,1.42,NA,NA
+2022,Skjelingahaugen,Skj3,Skj3G,G,L,0.36,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4G,G,B,59.63,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4G,G,F,3.53,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4G,G,G,3.21,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1F,F,B,8.38,leftover,NA
+2022,Skjelingahaugen,Skj1,Skj1F,F,F,0.36,NA,NA
+2022,Skjelingahaugen,Skj1,Skj1F,F,G,13.88,leftover,NA
+2022,Skjelingahaugen,Skj1,Skj1F,F,L,0.08,leftover,NA
+2022,Skjelingahaugen,Skj2,Skj2F,F,B,11.12,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2F,F,F,1.72,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2F,F,G,20.02,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3F,F,B,20.61,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3F,F,F,0.13,NA,NA
+2022,Skjelingahaugen,Skj3,Skj3F,F,G,15.98,leftover,NA
+2022,Skjelingahaugen,Skj3,Skj3F,F,L,0.01,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4F,F,B,33.53,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4F,F,F,0.66,NA,NA
+2022,Skjelingahaugen,Skj4,Skj4F,F,G,10.11,leftover,NA
+2022,Skjelingahaugen,Skj4,Skj4F,F,L,0.05,leftover,NA
+2022,Skjelingahaugen,Skj1,Skj1B,B,B,0.64,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1B,B,F,3.08,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1B,B,G,15.98,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2B,B,B,0.66,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2B,B,F,7.5,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2B,B,G,22.13,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3B,B,B,1.38,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3B,B,F,4.53,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3B,B,G,14.15,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4B,B,B,6.36,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4B,B,F,6.82,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4B,B,G,7.95,leftover,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1FGB,FGB,B,0.18,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1FGB,FGB,F,0.48,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj1,Skj1FGB,FGB,G,0.77,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2FGB,FGB,B,0.48,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2FGB,FGB,F,0.26,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj2,Skj2FGB,FGB,G,0.42,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3FGB,FGB,B,0.3,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3FGB,FGB,F,0.83,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj3,Skj3FGB,FGB,G,1.41,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4FGB,FGB,B,0.28,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4FGB,FGB,F,0.29,NA,No lichen in the plot
+2022,Skjelingahaugen,Skj4,Skj4FGB,FGB,G,0.78,NA,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5GF,GF,B,7.87,leftover,NA
+2022,Gudmedalen,Gud5,Gud5GF,GF,F,0.78,NA,NA
+2022,Gudmedalen,Gud5,Gud5GF,GF,G,1.25,NA,NA
+2022,Gudmedalen,Gud5,Gud5GF,GF,L,0.18,leftover,NA
+2022,Gudmedalen,Gud12,Gud12GF,GF,B,0.04,leftover,NA
+2022,Gudmedalen,Gud12,Gud12GF,GF,F,0.27,NA,NA
+2022,Gudmedalen,Gud12,Gud12GF,GF,G,0.56,NA,NA
+2022,Gudmedalen,Gud12,Gud12GF,GF,L,0.02,leftover,NA
+2022,Gudmedalen,Gud13,Gud13GF,GF,B,5.24,leftover,NA
+2022,Gudmedalen,Gud13,Gud13GF,GF,F,1.01,NA,NA
+2022,Gudmedalen,Gud13,Gud13GF,GF,G,1.75,NA,NA
+2022,Gudmedalen,Gud13,Gud13GF,GF,L,0.16,leftover,NA
+2022,Gudmedalen,Gud15,Gud15GF,GF,B,0.14,leftover,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15GF,GF,F,0.71,NA,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15GF,GF,G,0.46,NA,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5FB,FB,B,1.5,NA,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5FB,FB,F,1.05,NA,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5FB,FB,G,13.35,leftover,No lichen in the plot
+2022,Gudmedalen,Gud12,Gud12FB,FB,B,1.27,NA,NA
+2022,Gudmedalen,Gud12,Gud12FB,FB,F,5.16,NA,NA
+2022,Gudmedalen,Gud12,Gud12FB,FB,G,24.66,leftover,NA
+2022,Gudmedalen,Gud12,Gud12FB,FB,L,0.85,leftover,NA
+2022,Gudmedalen,Gud13,Gud13FB,FB,B,0.32,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13FB,FB,F,0.85,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13FB,FB,G,13.86,leftover,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15FB,FB,B,0.19,NA,NA
+2022,Gudmedalen,Gud15,Gud15FB,FB,F,0.94,NA,NA
+2022,Gudmedalen,Gud15,Gud15FB,FB,G,10.52,leftover,NA
+2022,Gudmedalen,Gud15,Gud15FB,FB,L,0.11,leftover,NA
+2022,Gudmedalen,Gud5,Gud5GB,GB,B,0.1,NA,NA
+2022,Gudmedalen,Gud5,Gud5GB,GB,F,4.05,leftover,NA
+2022,Gudmedalen,Gud5,Gud5GB,GB,G,0.35,NA,NA
+2022,Gudmedalen,Gud5,Gud5GB,GB,L,0.46,leftover,NA
+2022,Gudmedalen,Gud12,Gud12GB,GB,B,0.55,NA,No lichen in the plot
+2022,Gudmedalen,Gud12,Gud12GB,GB,F,6.61,leftover,No lichen in the plot
+2022,Gudmedalen,Gud12,Gud12GB,GB,G,0.99,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13GB,GB,B,2.93,NA,NA
+2022,Gudmedalen,Gud13,Gud13GB,GB,F,25.5,leftover,NA
+2022,Gudmedalen,Gud13,Gud13GB,GB,G,3.56,NA,NA
+2022,Gudmedalen,Gud13,Gud13GB,GB,L,2.78,leftover,NA
+2022,Gudmedalen,Gud15,Gud15GB,GB,B,0.1,NA,NA
+2022,Gudmedalen,Gud15,Gud15GB,GB,F,4.8,leftover,NA
+2022,Gudmedalen,Gud15,Gud15GB,GB,G,0.29,NA,NA
+2022,Gudmedalen,Gud15,Gud15GB,GB,L,0.049,leftover,NA
+2022,Gudmedalen,Gud5,Gud5C,C,B,2.14,NA,NA
+2022,Gudmedalen,Gud5,Gud5C,C,F,2.92,NA,NA
+2022,Gudmedalen,Gud5,Gud5C,C,G,3.56,NA,NA
+2022,Gudmedalen,Gud5,Gud5C,C,L,0.016,leftover,NA
+2022,Gudmedalen,Gud12,Gud12C,C,B,1.59,NA,NA
+2022,Gudmedalen,Gud12,Gud12C,C,F,12.32,NA,NA
+2022,Gudmedalen,Gud12,Gud12C,C,G,6.56,NA,NA
+2022,Gudmedalen,Gud12,Gud12C,C,L,0.071,leftover,NA
+2022,Gudmedalen,Gud13,Gud13C,C,B,4.57,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13C,C,F,6.28,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13C,C,G,43.19,NA,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15C,C,B,3.23,NA,NA
+2022,Gudmedalen,Gud15,Gud15C,C,F,5.36,NA,NA
+2022,Gudmedalen,Gud15,Gud15C,C,G,3.46,NA,NA
+2022,Gudmedalen,Gud15,Gud15C,C,L,1.31,leftover,NA
+2022,Gudmedalen,Gud5,Gud5G,G,B,11,leftover,NA
+2022,Gudmedalen,Gud5,Gud5G,G,F,6.79,leftover,NA
+2022,Gudmedalen,Gud5,Gud5G,G,G,2.04,NA,NA
+2022,Gudmedalen,Gud5,Gud5G,G,L,0.02,leftover,NA
+2022,Gudmedalen,Gud12,Gud12G,G,B,0.77,leftover,NA
+2022,Gudmedalen,Gud12,Gud12G,G,F,15.42,leftover,NA
+2022,Gudmedalen,Gud12,Gud12G,G,G,0.75,NA,NA
+2022,Gudmedalen,Gud12,Gud12G,G,L,0.19,leftover,NA
+2022,Gudmedalen,Gud13,Gud13G,G,B,1.44,leftover,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13G,G,F,4.75,leftover,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13G,G,G,2.06,NA,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15G,G,B,16.22,leftover,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15G,G,F,4.33,leftover,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15G,G,G,0.12,NA,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5F,F,B,6.87,leftover,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5F,F,F,0.39,NA,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5F,F,G,18.16,leftover,No lichen in the plot
+2022,Gudmedalen,Gud12,Gud12F,F,B,2.73,leftover,NA
+2022,Gudmedalen,Gud12,Gud12F,F,F,2.12,NA,NA
+2022,Gudmedalen,Gud12,Gud12F,F,G,14.98,leftover,NA
+2022,Gudmedalen,Gud12,Gud12F,F,L,0.25,leftover,NA
+2022,Gudmedalen,Gud13,Gud13F,F,B,62.48,leftover,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13F,F,F,0.49,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13F,F,G,19.56,leftover,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15F,F,B,0.92,leftover,NA
+2022,Gudmedalen,Gud15,Gud15F,F,F,1.49,NA,NA
+2022,Gudmedalen,Gud15,Gud15F,F,G,12.8,leftover,NA
+2022,Gudmedalen,Gud15,Gud15F,F,L,0.05,leftover,NA
+2022,Gudmedalen,Gud5,Gud5B,B,B,1.1,NA,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5B,B,F,4.43,leftover,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5B,B,G,16.82,leftover,No lichen in the plot
+2022,Gudmedalen,Gud12,Gud12B,B,B,0.34,NA,No lichen in the plot
+2022,Gudmedalen,Gud12,Gud12B,B,F,6.78,leftover,No lichen in the plot
+2022,Gudmedalen,Gud12,Gud12B,B,G,6.71,leftover,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13B,B,B,0.36,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13B,B,F,6.85,leftover,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13B,B,G,11.31,leftover,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15B,B,B,0.067,NA,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15B,B,F,4.38,leftover,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15B,B,G,7.59,leftover,No lichen in the plot
+2022,Gudmedalen,Gud5,Gud5FGB,FGB,B,0.29,NA,NA
+2022,Gudmedalen,Gud5,Gud5FGB,FGB,F,0.38,NA,NA
+2022,Gudmedalen,Gud5,Gud5FGB,FGB,G,0.82,NA,NA
+2022,Gudmedalen,Gud5,Gud5FGB,FGB,L,0.06,leftover,NA
+2022,Gudmedalen,Gud12,Gud12FGB,FGB,F,0.16,NA,No bryophytes or lichen in the plot
+2022,Gudmedalen,Gud12,Gud12FGB,FGB,G,0.11,NA,No bryophytes or lichen in the plot
+2022,Gudmedalen,Gud13,Gud13FGB,FGB,B,0.1,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13FGB,FGB,F,0.22,NA,No lichen in the plot
+2022,Gudmedalen,Gud13,Gud13FGB,FGB,G,0.19,NA,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15FGB,FGB,B,0.16,NA,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15FGB,FGB,F,0.46,NA,No lichen in the plot
+2022,Gudmedalen,Gud15,Gud15FGB,FGB,G,0.19,NA,No lichen in the plot
+2022,Lavisdalen,Lav1,Lav1GF,GF,B,27.23,leftover,NA
+2022,Lavisdalen,Lav1,Lav1GF,GF,F,2.84,NA,NA
+2022,Lavisdalen,Lav1,Lav1GF,GF,G,0.84,NA,NA
+2022,Lavisdalen,Lav1,Lav1GF,GF,L,1.35,leftover,NA
+2022,Lavisdalen,Lav2,Lav2GF,GF,B,54.01,leftover,NA
+2022,Lavisdalen,Lav2,Lav2GF,GF,F,2.03,NA,NA
+2022,Lavisdalen,Lav2,Lav2GF,GF,G,1.28,NA,NA
+2022,Lavisdalen,Lav2,Lav2GF,GF,L,1.49,leftover,NA
+2022,Lavisdalen,Lav3,Lav3GF,GF,B,17.49,leftover,NA
+2022,Lavisdalen,Lav3,Lav3GF,GF,F,3.1,NA,NA
+2022,Lavisdalen,Lav3,Lav3GF,GF,G,0.72,NA,NA
+2022,Lavisdalen,Lav3,Lav3GF,GF,L,0.15,leftover,NA
+2022,Lavisdalen,Lav4,Lav4GF,GF,B,21.95,leftover,NA
+2022,Lavisdalen,Lav4,Lav4GF,GF,F,3.27,NA,NA
+2022,Lavisdalen,Lav4,Lav4GF,GF,G,1.71,NA,NA
+2022,Lavisdalen,Lav4,Lav4GF,GF,L,0.12,leftover,NA
+2022,Lavisdalen,Lav1,Lav1FB,FB,B,1.49,NA,NA
+2022,Lavisdalen,Lav1,Lav1FB,FB,F,1.4,NA,NA
+2022,Lavisdalen,Lav1,Lav1FB,FB,G,7.9,leftover,NA
+2022,Lavisdalen,Lav1,Lav1FB,FB,L,0.16,leftover,NA
+2022,Lavisdalen,Lav2,Lav2FB,FB,B,1.06,NA,NA
+2022,Lavisdalen,Lav2,Lav2FB,FB,F,0.99,NA,NA
+2022,Lavisdalen,Lav2,Lav2FB,FB,G,12.85,leftover,NA
+2022,Lavisdalen,Lav2,Lav2FB,FB,L,1.96,leftover,NA
+2022,Lavisdalen,Lav3,Lav3FB,FB,B,0.35,NA,No lichen in the plot
+2022,Lavisdalen,Lav3,Lav3FB,FB,F,1.34,NA,No lichen in the plot
+2022,Lavisdalen,Lav3,Lav3FB,FB,G,3.96,leftover,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4FB,FB,B,0.34,NA,NA
+2022,Lavisdalen,Lav4,Lav4FB,FB,F,0.48,NA,NA
+2022,Lavisdalen,Lav4,Lav4FB,FB,G,2.88,leftover,NA
+2022,Lavisdalen,Lav4,Lav4FB,FB,L,0.01,leftover,NA
+2022,Lavisdalen,Lav1,Lav1GB,GB,B,1.87,NA,NA
+2022,Lavisdalen,Lav1,Lav1GB,GB,F,5.96,leftover,NA
+2022,Lavisdalen,Lav1,Lav1GB,GB,G,0.32,NA,NA
+2022,Lavisdalen,Lav1,Lav1GB,GB,L,0.18,leftover,NA
+2022,Lavisdalen,Lav2,Lav2GB,GB,B,1.66,NA,NA
+2022,Lavisdalen,Lav2,Lav2GB,GB,F,12.73,leftover,NA
+2022,Lavisdalen,Lav2,Lav2GB,GB,G,0.29,NA,NA
+2022,Lavisdalen,Lav2,Lav2GB,GB,L,0.73,leftover,NA
+2022,Lavisdalen,Lav3,Lav3GB,GB,B,0.21,NA,No lichen in the plot
+2022,Lavisdalen,Lav3,Lav3GB,GB,F,13.72,leftover,No lichen in the plot
+2022,Lavisdalen,Lav3,Lav3GB,GB,G,0.42,NA,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4GB,GB,B,0.18,NA,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4GB,GB,F,3.2,leftover,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4GB,GB,G,0.28,NA,No lichen in the plot
+2022,Lavisdalen,Lav1,Lav1C,C,B,16.07,NA,NA
+2022,Lavisdalen,Lav1,Lav1C,C,F,15.17,NA,NA
+2022,Lavisdalen,Lav1,Lav1C,C,G,5.55,NA,NA
+2022,Lavisdalen,Lav1,Lav1C,C,L,0.14,leftover,NA
+2022,Lavisdalen,Lav2,Lav2C,C,B,25.01,NA,NA
+2022,Lavisdalen,Lav2,Lav2C,C,F,5.82,NA,NA
+2022,Lavisdalen,Lav2,Lav2C,C,G,13.45,NA,NA
+2022,Lavisdalen,Lav2,Lav2C,C,L,0.54,leftover,NA
+2022,Lavisdalen,Lav3,Lav3C,C,B,15.78,NA,NA
+2022,Lavisdalen,Lav3,Lav3C,C,F,13.23,NA,NA
+2022,Lavisdalen,Lav3,Lav3C,C,G,9.82,NA,NA
+2022,Lavisdalen,Lav3,Lav3C,C,L,0.22,leftover,NA
+2022,Lavisdalen,Lav4,Lav4C,C,B,9.15,NA,NA
+2022,Lavisdalen,Lav4,Lav4C,C,F,12.17,NA,NA
+2022,Lavisdalen,Lav4,Lav4C,C,G,3,NA,NA
+2022,Lavisdalen,Lav4,Lav4C,C,L,0.52,leftover,NA
+2022,Lavisdalen,Lav1,Lav1G,G,B,33.98,leftover,NA
+2022,Lavisdalen,Lav1,Lav1G,G,F,11.75,leftover,NA
+2022,Lavisdalen,Lav1,Lav1G,G,G,0.91,NA,NA
+2022,Lavisdalen,Lav1,Lav1G,G,L,2.07,leftover,NA
+2022,Lavisdalen,Lav2,Lav2G,G,B,31.14,leftover,NA
+2022,Lavisdalen,Lav2,Lav2G,G,F,16.14,leftover,NA
+2022,Lavisdalen,Lav2,Lav2G,G,G,0.32,NA,NA
+2022,Lavisdalen,Lav2,Lav2G,G,L,0.26,leftover,NA
+2022,Lavisdalen,Lav3,Lav3G,G,B,7.26,leftover,NA
+2022,Lavisdalen,Lav3,Lav3G,G,F,6.39,leftover,NA
+2022,Lavisdalen,Lav3,Lav3G,G,G,0.27,NA,NA
+2022,Lavisdalen,Lav3,Lav3G,G,L,0.36,leftover,NA
+2022,Lavisdalen,Lav4,Lav4G,G,B,18.51,leftover,NA
+2022,Lavisdalen,Lav4,Lav4G,G,F,19.64,leftover,NA
+2022,Lavisdalen,Lav4,Lav4G,G,G,0.75,NA,NA
+2022,Lavisdalen,Lav4,Lav4G,G,L,1.75,leftover,NA
+2022,Lavisdalen,Lav1,Lav1F,F,B,22.18,leftover,NA
+2022,Lavisdalen,Lav1,Lav1F,F,F,2.89,NA,NA
+2022,Lavisdalen,Lav1,Lav1F,F,G,4.99,leftover,NA
+2022,Lavisdalen,Lav1,Lav1F,F,L,1.07,leftover,NA
+2022,Lavisdalen,Lav2,Lav2F,F,B,36.05,leftover,NA
+2022,Lavisdalen,Lav2,Lav2F,F,F,1.65,NA,NA
+2022,Lavisdalen,Lav2,Lav2F,F,G,7.93,leftover,NA
+2022,Lavisdalen,Lav2,Lav2F,F,L,0.36,leftover,NA
+2022,Lavisdalen,Lav3,Lav3F,F,B,8.92,leftover,NA
+2022,Lavisdalen,Lav3,Lav3F,F,F,0.95,NA,NA
+2022,Lavisdalen,Lav3,Lav3F,F,G,2.86,leftover,NA
+2022,Lavisdalen,Lav3,Lav3F,F,L,0.31,leftover,NA
+2022,Lavisdalen,Lav4,Lav4F,F,B,17.95,leftover,NA
+2022,Lavisdalen,Lav4,Lav4F,F,F,2.64,NA,NA
+2022,Lavisdalen,Lav4,Lav4F,F,G,4.72,leftover,NA
+2022,Lavisdalen,Lav4,Lav4F,F,L,0.1,leftover,NA
+2022,Lavisdalen,Lav1,Lav1B,B,B,7.33,NA,NA
+2022,Lavisdalen,Lav1,Lav1B,B,F,23.07,leftover,NA
+2022,Lavisdalen,Lav1,Lav1B,B,G,5.34,leftover,NA
+2022,Lavisdalen,Lav1,Lav1B,B,L,0.94,leftover,NA
+2022,Lavisdalen,Lav2,Lav2B,B,B,1.71,NA,NA
+2022,Lavisdalen,Lav2,Lav2B,B,F,12.83,leftover,NA
+2022,Lavisdalen,Lav2,Lav2B,B,G,3.22,leftover,NA
+2022,Lavisdalen,Lav2,Lav2B,B,L,0.7,leftover,NA
+2022,Lavisdalen,Lav3,Lav3B,B,B,0.64,NA,NA
+2022,Lavisdalen,Lav3,Lav3B,B,F,6.92,leftover,NA
+2022,Lavisdalen,Lav3,Lav3B,B,G,1.82,leftover,NA
+2022,Lavisdalen,Lav3,Lav3B,B,L,0.1,leftover,NA
+2022,Lavisdalen,Lav4,Lav4B,B,B,1.91,NA,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4B,B,F,7.08,leftover,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4B,B,G,11.64,leftover,No lichen in the plot
+2022,Lavisdalen,Lav1,Lav1FGB,FGB,B,0.21,NA,NA
+2022,Lavisdalen,Lav1,Lav1FGB,FGB,F,0.56,NA,NA
+2022,Lavisdalen,Lav1,Lav1FGB,FGB,G,0.02,NA,NA
+2022,Lavisdalen,Lav1,Lav1FGB,FGB,L,0.04,leftover,NA
+2022,Lavisdalen,Lav2,Lav2FGB,FGB,B,1.21,NA,NA
+2022,Lavisdalen,Lav2,Lav2FGB,FGB,F,1.49,NA,NA
+2022,Lavisdalen,Lav2,Lav2FGB,FGB,G,0.26,NA,NA
+2022,Lavisdalen,Lav2,Lav2FGB,FGB,L,0.08,leftover,NA
+2022,Lavisdalen,Lav3,Lav3FGB,FGB,B,0.06,NA,No lichen in the plot
+2022,Lavisdalen,Lav3,Lav3FGB,FGB,F,0.23,NA,No lichen in the plot
+2022,Lavisdalen,Lav3,Lav3FGB,FGB,G,0.06,NA,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4FGB,FGB,B,0.16,NA,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4FGB,FGB,F,0.94,NA,No lichen in the plot
+2022,Lavisdalen,Lav4,Lav4FGB,FGB,G,0.29,NA,No lichen in the plot
