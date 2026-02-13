@@ -61,6 +61,7 @@ data/*
 *.html
 *.log
 *.md
+!README.md
 *.lua
 *.tex
 

@@ -23,20 +23,59 @@ analysis_plan <- list(
         fancy_stats(.)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
+        # significant: p <= 0.05 (bold, default colour)
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
         ) %>%
+        # marginal: 0.05 < p <= 0.07 (bold, grey)
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
   ),
+
+  # # results factorial analysis
+  # tar_target(
+  #   name = model_response_factorial_out,
+  #   command = {
+
+  #     out <- model_response |>
+  #       unnest(result_factorial) |>
+  #       filter(effect == "fixed") |>
+  #       select(-data, -model, -model_factorial, -model_treatment, -result, -result_treatment, -group, -effect, -anova, -anova_tidy) %>% 
+  #       fancy_stats(.)
+
+  #     round_numbers_tidy(out) |>
+  #       gt() |>
+  #       tab_style(
+  #         style = list(
+  #           cell_text(weight = "bold")
+  #         ),
+  #         locations = cells_body(
+  #           columns = c(term, estimate, std.error, statistic, df, p.value),
+  #           rows = `p.value` <= 0.05
+  #         )
+  #       ) %>%
+  #       table_style(., font_size = 11)
+
+  #   }
+  # ),
 
   # results treatment only model
   tar_target(
@@ -50,16 +89,26 @@ analysis_plan <- list(
         fancy_stats(.)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -70,11 +119,8 @@ analysis_plan <- list(
   # run all models
   tar_target(
     name = model_group,
-    command = run_models(dat = big_data |>
-                           # remove functions where we have many
-                           filter(!response %in% c("decomposition forbs", "Reco", "root productivity", "root turnover")) |>
-                           rename(level = group),
-                         response_var = value_std,
+    command = run_models(dat = multifunctionality_group,
+                         response_var = multifuntionality,
                          fg_var = fg_richness,
                          group = "level")
   ),
@@ -88,19 +134,31 @@ analysis_plan <- list(
         unnest(result) |>
         filter(effect == "fixed") |>
         select(-data, -model, -model_factorial, -model_treatment, -result_factorial, -result_treatment, -group, -effect, -anova, -anova_tidy) %>%
-        fancy_stats(.)
+        fancy_stats(.) |>
+        mutate(level = factor(level, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
+        arrange(level, term)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
         ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -115,19 +173,31 @@ analysis_plan <- list(
         unnest(result_treatment) |>
         filter(effect == "fixed") |>
         select(-data, -model, -model_factorial, -model_treatment, -result, -result_factorial, -group, -effect, -anova, -anova_tidy) %>%
-        fancy_stats(.)
+        fancy_stats(.) |>
+        mutate(level = factor(level, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
+        arrange(level, term)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -136,14 +206,21 @@ analysis_plan <- list(
 
   #### MULTIFUNCTIONALITY ANALYSIS ####
 
-  # run models at multifunctionality level
+  # run models at multifunctionality level (drop rows with NA in model variables)
   tar_target(
     name = model_multifun,
-    command = run_models(dat = multifunctionality,
-                           group = "level",
-                            response = multifuntionality,
-                            fg_var = fg_richness)
+    command = multifunctionality %>%
+      run_models(dat = .,
+                 group = "level",
+                 response = multifuntionality,
+                 fg_var = fg_richness)
+  ),
 
+  # variance partitioning: FG vs Climate (T + P) using glmm.hp
+  # Uses model from model_multifun (same formula as run_models, colon notation)
+  tar_target(
+    name = multifun_variance_partitioning,
+    command = run_multifun_variance_partitioning(model_multifun)
   ),
 
   # make prediction for functional groups present model
@@ -152,11 +229,17 @@ analysis_plan <- list(
     command = model_multifun |>
       select(data, model) |>
       mutate(prediction = map2(.x = data, .y = model, .f = ~ safely(lmer_prediction)(.x, .y)$result)) |>
-      # merge data and prediction
-      mutate(output = map2(.x = data, .y = prediction, ~ bind_cols(.x, .y))) |>
-      unnest(output) |>
-      rename(.functional_group = .functional_group...14, temperature_scaled = temperature_scaled...10, precipitation_scaled = precipitation_scaled...11, .response = .response...19) |>
-      select(- ".response...21", ".functional_group...22", "temperature_scaled...23", "precipitation_scaled...24")
+      # merge data and prediction; when prediction is NULL, add NA columns so fitted exists
+      mutate(output = map2(.x = data, .y = prediction, .f = ~ {
+        if (is.null(.y)) {
+          n <- nrow(.x)
+          bind_cols(.x, tibble(fitted = rep(NA_real_, n), plo = NA_real_, phi = NA_real_, tlo = NA_real_, thi = NA_real_))
+        } else {
+          # bind only prediction columns to avoid duplicating .response, .functional_group, etc.
+          bind_cols(.x, .y %>% select(fitted, plo, phi, tlo, thi))
+        }
+      })) |>
+      unnest(output)
   ),
 
 
@@ -172,16 +255,26 @@ analysis_plan <- list(
         fancy_stats(.)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -199,16 +292,26 @@ analysis_plan <- list(
         fancy_stats(., sort = FALSE)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -226,16 +329,26 @@ analysis_plan <- list(
         fancy_stats(.)
 
       round_numbers_tidy(out) |>
-        gt() |>
+        gt() %>%
         tab_style(
           style = list(
             cell_text(weight = "bold")
           ),
           locations = cells_body(
             columns = c(term, estimate, std.error, statistic, df, p.value),
-            rows = `p.value` <= 0.05
+            rows = p_raw <= 0.05
           )
-        )%>%
+        ) %>%
+        tab_style(
+          style = list(
+            cell_text(style = "italic")
+          ),
+          locations = cells_body(
+            columns = c(term, estimate, std.error, statistic, df, p.value),
+            rows = p_raw > 0.05 & p_raw <= 0.07
+          )
+        ) %>%
+        cols_hide(p_raw) %>%
         table_style(., font_size = 11)
 
     }
@@ -267,12 +380,3 @@ analysis_plan <- list(
   # )
 
 )
-
-
-
-
-
-
-
-
-

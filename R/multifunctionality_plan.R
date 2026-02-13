@@ -1,5 +1,4 @@
 # Multifunctionality plan
-
 multifunctionality_plan <- list(
 
   # merge datasets with different functions
@@ -9,22 +8,27 @@ multifunctionality_plan <- list(
       # primary producers
       plant_biomass,
       root_biomass,
-      root_productivity,
-      root_turnover,
+      root_traits,
+      plant_richness,
 
       # higher trophic levels
       nematode_density,
       microarthropod_density,
+      nematode_ecosytem_condition,
+      microbial_density,
 
       # carbon cycle
       decomposition_forbs,
       decomposition_gram,
-      organic_matter,
+      # carbon and nitrogen stocks
+      cn_stocks |> filter(response != "CN"),
       gpp,
       nee,
       reco,
 
       # nutrient cycle
+      # nitrogen stocks added above
+      macronutrients,
       available_nutrients
 
     ) |>
@@ -40,14 +44,27 @@ multifunctionality_plan <- list(
   # transformation: normaliue (log) and standardize between 0 and 1
   tar_target(
     name = big_data,
-    command = big_data_raw |>
+    command = big_data_raw |> 
+      # shift values to make all positive (for responses with negative values)
+      group_by(response) |>
+      mutate(value = case_when(
+        response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
+        #response == "fungal bacterial ratio" ~ asinh(value),
+        TRUE ~ value
+      )) |> 
+      ungroup() |> 
       # normalize data
-        ### WARNING WHY???  !!!
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "root turnover", "microarthropod density", "organic matter", "nitrogen", "phosphate"), log(value), value)) |>
+      # if zeros in data (nematodes and microarthropods), then there will be NAs here
+      tidylog::mutate(value_trans = case_when(
+        # log for responses with only positive values
+        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity", "fungal bacterial ratio") ~ log(value),
+        # no transformation for others
+        TRUE ~ value
+      )) |>
       # scale variables between 0 and 1
       group_by(data_type, group, response) |>
       mutate(value_std = scale(value_trans)[, 1]) |>
-      # trasnf
+      # transform
       mutate(forb = if_else(str_detect(treatment, "F"), 0, 1),
              gram = if_else(str_detect(treatment, "G"), 0, 1),
              bryo = if_else(str_detect(treatment, "B"), 0, 1)) |>
@@ -68,13 +85,44 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "nee", "root productivity", "root turnover")) |>
-      group_by(year, siteID, blockID, plotID, treatment, habitat, temperature_degree, precipitation_mm, precipitation_name, temperature_scaled, precipitation_scaled, data_type, group, fg_richness, fg_remaining, forb, gram, bryo) |>
-      summarise(multifuntionality = mean(value_std, na.rm = TRUE),
-                se = sd(value_std, na.rm = TRUE)/sqrt(n())) |>
+      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |> 
+      group_by(
+        siteID, blockID, plotID, treatment, habitat,
+        temperature_degree, precipitation_mm, precipitation_name,
+        temperature_scaled, precipitation_scaled,
+        fg_richness, fg_remaining, forb, gram, bryo
+      ) |>
+      summarise(
+        multifuntionality = mean(value_std, na.rm = TRUE),
+        se = sd(value_std, na.rm = TRUE) / sqrt(n()),
+        #data_type = dplyr::first(data_type),
+        #group     = dplyr::first(group),
+        .groups = "drop"
+      ) |> 
       # global level (useful for group_by map)
-      mutate(level = "global") |>
-      ungroup()
+      mutate(level = "global")
+
+  ),
+
+    # average multifunctionality by group
+  tar_target(
+    name = multifunctionality_group,
+    command = big_data |>
+      # SHOULD NOT NEED TO FILTER THIS!
+      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |> 
+      group_by(
+        siteID, blockID, plotID, treatment, habitat,
+        temperature_degree, precipitation_mm, precipitation_name,
+        temperature_scaled, precipitation_scaled,
+        fg_richness, fg_remaining, forb, gram, bryo, group
+      ) |>
+      summarise(
+        multifuntionality = mean(value_std, na.rm = TRUE),
+        se = sd(value_std, na.rm = TRUE) / sqrt(n()),
+        .groups = "drop"
+      ) |> 
+      # group level (useful for group_by map)
+      mutate(level = group)
 
   )
 )
