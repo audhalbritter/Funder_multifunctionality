@@ -1,8 +1,23 @@
+# R
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 .Rdata
 .httr-oauth
+
+# OS
 .DS_Store
+
+# Quarto
 .quarto
+*.html
+*_files/
+
+# Targets pipeline
+_targets/
+
+# Generated outputs
+data/
+figures/
+output/
