@@ -108,16 +108,8 @@ model_results <- model_response |>
 #| echo: false
 #| warning: false
 
-# Exclude certain responses
-exclude_responses <- c("collembola_fungivorous_density", "mite_fungivorous_density", 
-                      "mite_nematophagous_density", "mite_predaceous_density", 
-                      "collembola_predaceous_density", "specific_root_length_m_per_g", 
-                      "root_tissue_density_g_per_m3", "root_dry_matter_content",
-                      "nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density")
-
 # Get responses with significant effects and their groups
 significant_responses_df <- model_results |>
-  filter(!response %in% exclude_responses) |>
   filter(p.value <= 0.05) |>
   group_by(response) |>
   summarise(

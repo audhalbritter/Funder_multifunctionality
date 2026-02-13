@@ -66,11 +66,11 @@ Overview of ecosystem functions measured across sites and treatments, grouped by
 | Primary producers | Aboveground biomass | All | All | productivity |
 |  | Belowground biomass | All | All | productivity / nutrient uptake |
 |  | Plant richness (vascular & non-vascular) | All | All | biodiversity |
-|  | Root traits (SRL, RTD, RDMC) | not included yet |  | functional diversity |
+|  | Specific root length | All | All | high vs. low root turnover |
 | Higher trophic level | Nematode density | All | only single treatment | productivity? |
 |  | Mites/collembola density | All | only single treatment | productivity? |
 |  | Ecosystem condition index (nematode) | All | All | scale from 1 -5 (‘colonizer‘ = resource availability - ‘persister’ = stability) |
-|  | Microbial density (only fungi so far) | All | All | productivity? |
+|  | Fungal - bacteria ratio | All | All | carbon storage (low vs high f/g ratio) |
 | Carbon cycling | Decomposition of graminoid litter | All | All | decomposition |
 |  | Decomposition of forb litter | not included |  | decomposition |
 |  | Carbon stock | All | All | carbon storage |

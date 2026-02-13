@@ -35,15 +35,15 @@ download_plan <- list(
   #   format = "file"
   # ),
 
-  # # root productivity and traits (need to change to newly cleaned root trait data)
-  # tar_target(
-  #   name = root_productivity_download,
-  #   command =  get_file(node = "tx9r2",
-  #                       file = "FUNDER_clean_root_productivity_trait_2024.csv",
-  #                       path = here::here("data"),
-  #                       remote_path = "1_Vegetation/Clean_data"),
-  #   format = "file"
-  # ),
+  # root traits
+  tar_target(
+    name = root_traits_download,
+    command =  get_file(node = "tx9r2",
+                        file = "FUNDER_clean_root_traits_corrected_2022.csv",
+                        path = here::here("data"),
+                        remote_path = "1_Vegetation/Clean_data"),
+    format = "file"
+  ),
 
   # community composition
   tar_target(
@@ -98,7 +98,7 @@ download_plan <- list(
     name = microbial_download,
     command = get_file(
       node = "tx9r2",
-      file = "FUNDER_fungal_abundance_2022.csv",
+      file = "FUNDER_clean_soil_microbial_abundance.csv",
       path = here::here("data"),
       remote_path = "3_Fungi_microbes/Clean_data"
     ),
@@ -186,7 +186,7 @@ download_plan <- list(
   # root productivity and traits
   tar_target(
     name = root_traits_raw,
-    command = read_csv(here::here("data", "FUNDER_clean_root_traits_2022.csv"))
+    command = read_csv(root_traits_download)
   ),
 
   # community composition

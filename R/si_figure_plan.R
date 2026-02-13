@@ -26,14 +26,14 @@ si_figure_plan <- list(
       group_by(response) |>
       mutate(value = case_when(
         response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
-        response == "microbial density" ~ asinh(value),
+        #response == "fungal bacterial ratio" ~ asinh(value),
         TRUE ~ value
       )) |>
       ungroup() |>
       # log transform some functions (careful this code is duplicated, also in mf plan)
       mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity") ~ log(value),
+        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity", "fungal bacterial ratio") ~ log(value),
         # no transformation for others
         TRUE ~ value
       )) |>

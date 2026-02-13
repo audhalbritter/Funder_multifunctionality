@@ -8,7 +8,7 @@ multifunctionality_plan <- list(
       # primary producers
       plant_biomass,
       root_biomass,
-      #root_traits,
+      root_traits,
       plant_richness,
 
       # higher trophic levels
@@ -49,7 +49,7 @@ multifunctionality_plan <- list(
       group_by(response) |>
       mutate(value = case_when(
         response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
-        response == "microbial density" ~ asinh(value),
+        #response == "fungal bacterial ratio" ~ asinh(value),
         TRUE ~ value
       )) |> 
       ungroup() |> 
@@ -57,7 +57,7 @@ multifunctionality_plan <- list(
       # if zeros in data (nematodes and microarthropods), then there will be NAs here
       tidylog::mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity") ~ log(value),
+        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity", "fungal bacterial ratio") ~ log(value),
         # no transformation for others
         TRUE ~ value
       )) |>
@@ -85,7 +85,7 @@ multifunctionality_plan <- list(
     name = multifunctionality,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients")) |> 
+      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |> 
       group_by(
         siteID, blockID, plotID, treatment, habitat,
         temperature_degree, precipitation_mm, precipitation_name,
@@ -109,7 +109,7 @@ multifunctionality_plan <- list(
     name = multifunctionality_group,
     command = big_data |>
       # SHOULD NOT NEED TO FILTER THIS!
-      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients")) |> 
+      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |> 
       group_by(
         siteID, blockID, plotID, treatment, habitat,
         temperature_degree, precipitation_mm, precipitation_name,

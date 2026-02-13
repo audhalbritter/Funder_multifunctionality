@@ -51,7 +51,7 @@ These are the variables included in the multifunctionality analysis.
 # Extract variable list from data used in model_multifun (multifunctionality comes from big_data)
 tar_load(big_data)
 big_data |>
-      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients")) |> 
+      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |> 
       mutate(group = factor(group, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
       distinct(group, response, unit) |>
       arrange(group, response) |>

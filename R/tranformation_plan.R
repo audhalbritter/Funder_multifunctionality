@@ -114,14 +114,10 @@ transformation_plan <- list(
   # root traits
   tar_target(
     name = root_traits,
-    command = root_traits_raw %>%
-      ### THIS SHOULD BE DONE IN THE FUNDER GITHUB CLEANING CODE!!!
-      # fix typo, should also be fixed in the cleanin code of Funder
-      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
-      mutate(year = year(retrieval_date)) |>
-      pivot_longer(cols = c(specific_root_length_m_per_g, root_tissue_density_g_per_m3, root_dry_matter_content), names_to = "root trait", values_to = "value") |>
-      select(year, siteID:plotID, treatment, response = "root trait", value) |>
+    command = root_traits_raw |>
+      select(year:treatment, response = "trait", value) |>
       filter(!is.na(value)) |>
+      filter(response %in% c("specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
       mutate(
         data_type = "function",
         group = "primary producers",
@@ -157,7 +153,7 @@ transformation_plan <- list(
       mutate(
         data_type = "biodiversity",
         group = "primary producers",
-        response = "vascular plant richness",
+        response = "plant richness",
         unit = "count per 625 cm\u00B2"
       )
   ),
@@ -262,16 +258,26 @@ transformation_plan <- list(
       )
   ),
 
-  # microbial density
+  # microbial fungal:bacterial ratio (fungal density / bacterial density per plot)
   tar_target(
     name = microbial_density,
     command = microbial_raw |>
-    select(year, siteID, blockID, plotID, treatment, value = abundance) |>
-    mutate(
+      filter(!is.na(abundance_per_g)) |>
+      pivot_wider(
+        id_cols = c(year, siteID, blockID, plotID, treatment),
+        names_from = group,
+        values_from = abundance_per_g
+      ) |>
+      filter(!is.na(bacteria), !is.na(fungi), bacteria > 0) |>
+      mutate(
+        value = fungi / bacteria,
+        response = "fungal bacterial ratio"
+      ) |> 
+      select(year, siteID, blockID, plotID, treatment, response, value) |>
+      mutate(
         data_type = "function",
         group = "higher trophic level",
-        response = "microbial density",
-        unit = "count g\u207B\u00B9?"
+        unit = "unitless"
       )
   ),
 
