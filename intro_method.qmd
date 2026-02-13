@@ -150,7 +150,7 @@ tab_style(
 
 We ran these analysis separately at three different levels:
 
-1)  Each functional group separately
+1)  Each ecosystem function separately (biomass, nematode density,...)
 
 2)  Each groups, including *primary producers*, *higher trophic levels*, *carbon cycling* and *nutrient cycling*
 
