@@ -19,6 +19,7 @@ editor:
 library(targets)
 library(tarchetypes)
 library(tidyverse)
+library(patchwork)
 library(lubridate)
 library(broom)
 library(gt)
@@ -27,6 +28,20 @@ library(lmerTest)
 library(broom.mixed)
 
 ```
+
+## Data transformation
+
+### Raw data
+```{r}
+#| label: fig-raw-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Histograms for all functions before any transformation.
+
+tar_read(raw_functions_plot)
+
+```
+
 
 ### Normalize data
 
@@ -41,6 +56,7 @@ tar_read(normalize_functions_plot)
 ```
 
 
+### Standardize data
 ```{r}
 #| label: fig-std-plot
 #| echo: false
@@ -57,34 +73,172 @@ tar_read(standardize_functions_plot)
 #| echo: false
 #| warning: false
 #| fig-cap: Correlation between all functions (untranformed data).
+#| fig-width: 12
+#| fig-height: 12
 
 tar_read(correlation_plot)
 
 ```
 
 
-### root data 
+## Single function analyses
+
+Each ecosystem function was analyzed separately using linear mixed-effects models with functional group richness, temperature, and precipitation as predictors.
 
 ```{r}
-#| label: fig-root-data-plot
 #| echo: false
 #| warning: false
-#| fig-cap: Different root data plotted in the same figure.
 
-tar_read(root_data_plot)
+# Source functions
+source(here::here("R/functions/make_figures.R"))
+
+# Load targets
+tar_load(c(big_data, model_response, temp_colour, prec_linetype, prec_shape))
+
+# Prepare model results
+model_results <- model_response |>
+  unnest(result) |>
+  filter(effect == "fixed") |>
+    select(-data, -model, -model_factorial, -model_treatment, -result_factorial, -result_treatment, -group, -effect, -anova, -anova_tidy)
+
+```
+
+```{r}
+#| label: check-significant-responses
+#| echo: false
+#| warning: false
+
+# Get responses with significant effects and their groups
+significant_responses_df <- model_results |>
+  filter(p.value <= 0.05) |>
+  group_by(response) |>
+  summarise(
+    has_fg = any(term == ".functional_group"),
+    has_temp = any(term %in% c("temperature_scaled", ".functional_group:temperature_scaled")),
+    has_precip = any(term %in% c("precipitation_scaled", ".functional_group:precipitation_scaled")),
+    has_fg_temp_interaction = any(term == ".functional_group:temperature_scaled"),
+    has_fg_precip_interaction = any(term == ".functional_group:precipitation_scaled"),
+    .groups = "drop"
+  ) |>
+  filter(has_fg | has_temp | has_precip) |>
+  left_join(
+    big_data |> distinct(response, group),
+    by = "response"
+  ) |>
+  mutate(group = factor(group, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
+  arrange(group, response)
+
+# Extract just the response names in order
+significant_responses <- significant_responses_df$response
+
+cat("Responses with significant effects:", length(significant_responses), "\n")
 
 ```
 
 
-### decomposition data 
-
 ```{r}
-#| label: fig-decomposition-data-plot
+#| label: create-all-plots
 #| echo: false
 #| warning: false
-#| fig-cap: Decomposition data for only graminoids, forbs and their average.
 
-tar_read(decomposition_data_plot)
+# Pre-create all plots using purrr (preserves group order)
+all_plots_list <- significant_responses |>
+  set_names() |>
+  map(function(resp) {
+    make_response_plot(
+      resp,
+      big_data,
+      model_results,
+      temp_colour,
+      prec_linetype,
+      prec_shape
+    )
+  }) |>
+  compact()  # Remove NULL values
+
+# Add group information for organizing plots
+plot_info <- significant_responses_df |>
+  filter(response %in% names(all_plots_list)) |>
+  select(response, group)
+
+# Create one combined plot per group using patchwork
+# Filter out NULL/NA plots; bypass wrap_plots for single-plot groups (avoids grid layout errors)
+group_plots <- split(plot_info, plot_info$group) |>
+  map(function(df) {
+    resp_names <- as.character(df$response)
+    plots <- compact(all_plots_list[resp_names])
+    if (length(plots) == 0) return(NULL)
+    if (length(plots) == 1) return(plots[[1]] + theme(legend.position = "bottom"))
+    wrap_plots(plots, ncol = 2, guides = "collect") &
+      theme(legend.position = "bottom")
+  })
+
+# Compute dynamic figure heights per group (based on number of plots)
+# Cap at 24 inches to avoid "invalid height" from graphics device limits
+
+group_fig_info <- plot_info |>
+  count(group, name = "n_plots") |>
+  mutate(
+    n_rows = ceiling(n_plots / 2),
+    fig_height = pmin(2 + 2.5 * n_rows, 24)
+  )
+
+group_fig_heights <- set_names(group_fig_info$fig_height, as.character(group_fig_info$group))
+
+```
+
+```{r}
+#| label: fig-all-responses-primary-producers
+#| echo: false
+#| warning: false
+#| fig-width: 9
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["primary producers"], 10))
+
+if (!is.null(group_plots[["primary producers"]])) group_plots[["primary producers"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
+
+```
+
+```{r}
+#| label: fig-all-responses-higher-trophic
+#| echo: false
+#| warning: false
+#| fig-width: 9
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["higher trophic level"], 10))
+
+if (!is.null(group_plots[["higher trophic level"]])) group_plots[["higher trophic level"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
+
+```
+
+```{r}
+#| label: fig-all-responses-carbon-cycling
+#| echo: false
+#| warning: false
+#| fig-width: 9
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["carbon cycling"], 10))
+
+if (!is.null(group_plots[["carbon cycling"]])) group_plots[["carbon cycling"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
+
+```
+
+```{r}
+#| label: fig-all-responses-nutrient-cycling
+#| echo: false
+#| warning: false
+#| fig-width: 9
+#| fig-height: !expr as.numeric(coalesce(group_fig_heights["nutrient cycling"], 10))
+
+if (!is.null(group_plots[["nutrient cycling"]])) group_plots[["nutrient cycling"]] else { plot.new(); text(0.5, 0.5, "No significant responses", cex = 1.2) }
+
+```
+
+```{r}
+#| label: tbl-model-response
+#| echo: false
+#| warning: false
+#| tbl-cap: Model output from testing effect of number of functional groups present, summer temperature and annual precipitation on ecosystem functions.
+
+tar_read(model_response_nr_out)
+    
 
 ```
 
@@ -110,7 +264,7 @@ tar_read(model_group_nr_out)
 #| warning: false
 #| fig-cap: Standardized functions related to primary producers in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 
-tar_read(pp_plot)
+tar_read(primary_producers_plot)
 
 ```
 
@@ -121,7 +275,7 @@ tar_read(pp_plot)
 #| warning: false
 #| fig-cap: Standardized functions related to higher trophic levels in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 
-tar_read(htl_plot)
+tar_read(higher_trophic_level_plot)
 
 ```
 
@@ -132,7 +286,7 @@ tar_read(htl_plot)
 #| warning: false
 #| fig-cap: Standardized functions related to carbon cycling in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 #| 
-tar_read(cc_plot)
+tar_read(carbon_cycling_plot)
 
 ```
 
@@ -143,7 +297,7 @@ tar_read(cc_plot)
 #| warning: false
 #| fig-cap: Standardized functions related to nutrient cycling in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 
-tar_read(nc_plot)
+tar_read(nutrient_cycling_plot)
 
 ```
 

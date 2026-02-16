@@ -1,0 +1,34 @@
+---
+format: 
+  html:
+    self-contained: true
+title: Plant functional group affect on multifunctionality
+execute:
+  echo: false
+bibliography: bibliography.bib
+csl: journal-of-ecology.csl
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+::: {.authors}
+A.H. Halbritter^1,2^, I.H.J. Althuizen^2,3^, M. Demeaux^1,2^, P.G. Farsund^1,2^, S. Geange^1,2^, F. Jaroszynska^1,2,4^, K.M. Jörgensen^1,2,5^, P. Kardol^6^, H. Kauserud^7^, R.J. Telford^1,2^, E. Thoen^7^, D.A. Wardle^8^, L. Øverås^1^, and V. Vandvik^1,2^
+
+**Affiliations**
+
+^1^ Department of Biological Sciences, University of Bergen, Bergen, Norway  
+^2^ Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway  
+^3^ NORCE, Norwegian Research Centre AS, Bjerknes Centre for Climate Research, Bergen, Norway  
+^4^ University of Aix-Marseille, Marseille, France  
+^5^ Department of Soil and Environment, Swedish University of Agricultural Sciences, Uppsala, Sweden  
+^6^ Department of Forest Mycology and Plant Pathology, Swedish University of Agricultural Science, Uppsala, Sweden  
+^7^ Section for Genetics and Evolutionary Biology, Department of Biosciences, University of Oslo, Norway  
+^8^ Department of Ecology and Environmental Science, Umeå University, Umeå, Sweden
+
+**Corresponding authors:** aud.halbritter@uib.no, vigdis.vandvik@uib.no
+:::
+
+{{< include intro_method.qmd >}}
+
+{{< include results.qmd >}}

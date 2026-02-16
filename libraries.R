@@ -1,5 +1,5 @@
 # load libraries
-
+library(here)
 library(targets)
 library(tarchetypes)
 library(tidyverse)
@@ -7,6 +7,7 @@ library(dataDownloader)
 library(dataDocumentation)
 library(vegan)
 library(ggvegan)
+#pak::pkg_install("gavinsimpson/ggvegan")
 library(glue)
 library(grid)
 library(lme4)

@@ -8,12 +8,35 @@ si_figure_plan <- list(
     command = plot_pca(other_available_nutrients)
   ),
 
+  # Raw data
+  tar_target(
+    name = raw_functions_plot,
+    command = big_data_raw |>
+      ggplot(aes(x = value)) +
+      geom_histogram() +
+      labs(x = "Raw functions") +
+      facet_wrap(~ response, scales = "free")
+  ),
+
   # Normalize functions
   tar_target(
     name = normalize_functions_plot,
-    command = big_data_raw |>
+    command = big_data_raw |> 
+      # shift values to make all positive (for responses with negative values)
+      group_by(response) |>
+      mutate(value = case_when(
+        response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
+        #response == "fungal bacterial ratio" ~ asinh(value),
+        TRUE ~ value
+      )) |>
+      ungroup() |>
       # log transform some functions (careful this code is duplicated, also in mf plan)
-      mutate(value_trans = if_else(response %in% c("biomass", "root biomass", "root turnover", "organic matter", "microarthropod density", "nitrogen", "phosphate"), log(value), value)) |>
+      mutate(value_trans = case_when(
+        # log for responses with only positive values
+        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity", "fungal bacterial ratio") ~ log(value),
+        # no transformation for others
+        TRUE ~ value
+      )) |>
       ggplot(aes(x = value_trans)) +
       geom_histogram() +
       labs(x = "Normalized functions") +
@@ -28,19 +51,6 @@ si_figure_plan <- list(
       geom_histogram() +
       labs(x = "Standardized value") +
       facet_wrap(~ response, scales = "free")
-  ),
-
-  # root data
-  tar_target(
-    name = root_data_plot,
-    command = big_data |>
-      filter(response %in% c("root biomass", "root productivity", "root turnover")) |>
-      ggplot(aes(y = value_std, x = fg_richness, colour = response)) +
-      geom_point() +
-      geom_smooth(method = "lm") +
-      labs(y = "Standardized value") +
-      facet_grid(habitat ~ precipitation_name, scales = "free") +
-      theme_bw()
   ),
 
   # decomposition data
@@ -75,43 +85,49 @@ si_figure_plan <- list(
     command = {
 
       function_table <- big_data |>
-        ungroup() |>
-        select(-year, -value_trans, -value_std, -unit, -duration, -litter_type, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -data_type, -group) |>
+        select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-        select(`biomass`:`micro nutrients`)
+        select(`aboveground biomass`:`micronutrients`)
 
-      corr <- round(cor(function_table), 1)
-      p.mat <- cor_pmat(function_table)
+      # pairwise.complete.obs avoids NA in cor matrix (root_biomass, root_traits have a few NAs)
+      corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
+      p.mat <- ggcorrplot::cor_pmat(function_table)
 
-      ggcorrplot(corr, hc.order = TRUE, type = "lower",
+      ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                  colors = c("#6D9EC1", "white", "#E46726"),
-                 lab = TRUE)
+                 lab = TRUE,
+                 lab_size = 8,
+                 tl.cex = 14,
+                 tl.srt = 45) +
+        theme(axis.text = element_text(size = 8))
 
     }
   ),
 
 
-  # group figures
+  # group figures: one plot per group (multifunctionality vs fg_richness), raw + prediction, significance
   tar_target(
-    name = pp_plot,
-    command = make_group_figure(big_data, group = "primary producers")
+    name = primary_producers_plot,
+    command = make_group_figure(multifunctionality_group, group = "primary producers",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   ),
 
   tar_target(
-    name = htl_plot,
-    command = make_group_figure(big_data, group = "higher trophic level")
+    name = higher_trophic_level_plot,
+    command = make_group_figure(multifunctionality_group, group = "higher trophic level",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   ),
 
   tar_target(
-    name = cc_plot,
-    command = make_group_figure(big_data |>
-                                  filter(!response %in% c("decomposition forbs", "Reco")),
-                                group = "carbon cycling")
+    name = carbon_cycling_plot,
+    command = make_group_figure(multifunctionality_group, group = "carbon cycling",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   ),
 
   tar_target(
-    name = nc_plot,
-    command = make_group_figure(big_data, group = "nutrient cycling")
+    name = nutrient_cycling_plot,
+    command = make_group_figure(multifunctionality_group, group = "nutrient cycling",
+                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
   )
 
 

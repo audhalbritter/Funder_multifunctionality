@@ -9,17 +9,29 @@ figure_plan <- list(
     command = c(6, 0, 1, 2)
       ),
 
-  # shape for prec starting with continental - oceanic
+  # colour for temperature (boreal to alpine)
   tar_target(
     name = temp_colour,
     command = c("#EF9A9AFF", "#E53935FF", "#B71C1CFF")
   ),
 
+  # colour for precipitation (700 to 2800 mm, continental to oceanic)
+  tar_target(
+    name = prec_colour,
+    command = c("#C6DBEF", "#6BAED6", "#2171B5", "#084594")
+  ),
+  
+  # linetype for precipitation (continental to oceanic)
+  tar_target(
+    name = prec_linetype,
+    command = c("solid", "dashed", "dotted", "dotdash")
+  ),
+
   # function figure (spaghetti plot)
   tar_target(
     name = function_figure,
-    command = big_data |>
-      filter(!is.na(habitat)) |>
+    command = big_data |> 
+      filter(!response %in% c("nema_bacterivores_density", "nema_fungivores_density", "nema_herbivores_density", "nema_omnivores_density", "nema_predators_density", "collembola_fungivorous_density", "mite_fungivorous_density", "mite_nematophagous_density", "mite_predaceous_density", "collembola_predaceous_density", "specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
       mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
       ggplot(aes(x = fg_richness, y = value_std, colour = response,
                  shape = group, linetype = group)) +
@@ -32,25 +44,70 @@ figure_plan <- list(
            y ="Standardized function") +
       guides(fill = "none") +
       facet_grid(habitat ~ precipitation_name) +
-      theme_bw()
+      theme_bw() +
+      theme(legend.position = "bottom",
+            legend.box = "vertical")
   ),
 
   # multifunctionality figure
   ### For now only showing facet by temp, because precip is not important!!!
   tar_target(
     name = multifunctionality_figure,
-    command = multi_nr_pred |>
-      ggplot(aes(x = .functional_group, y = .response,
-                 colour = habitat, shape = habitat, fill = habitat)) +
-      geom_jitter(width = 0.2, alpha = 0.5) +
-      geom_line(aes(y = fitted, colour = habitat), size = 1.2) +
-      scale_colour_manual(values = temp_colour) +
-      scale_shape_manual(values = c(2, 1, 6)) +
-      labs(x = "Number of functional groups present",
-           y ="Average multifunctionality") +
-      theme_bw() +
-      theme(text = element_text(size = 15))
+    command = {
+      # one point per (.functional_group, habitat) so geom_line draws one straight line per habitat
+      pred_line <- multi_nr_pred |>
+        group_by(.functional_group, habitat) |>
+        summarise(fitted = mean(fitted, na.rm = TRUE), .groups = "drop")
 
+      multi_nr_pred |>
+        ggplot(aes(x = .functional_group, y = .response,
+                   colour = habitat, shape = habitat, fill = habitat)) +
+        geom_jitter(width = 0.2, alpha = 0.5) +
+        geom_line(data = pred_line,
+                  aes(y = fitted, group = habitat),
+                  linewidth = 1.2,
+                  inherit.aes = TRUE) +
+        scale_colour_manual(values = temp_colour) +
+        scale_shape_manual(values = c(2, 1, 6)) +
+        labs(x = "Number of functional groups present",
+             y = "Average multifunctionality") +
+        theme_bw() +
+        theme(text = element_text(size = 15))
+    }
+  ),
+
+  # factorial multifunctionality plot by habitat (temperature)
+  tar_target(
+    name = factorial_multifun_temp_figure,
+    command = make_factorial_multifun_plot(
+      model_multifun,
+      temp_colour,
+      prec_colour,
+      climate_var = "temp"
+    )
+  ),
+
+  # factorial multifunctionality plot: colours for precipitation, facets by temperature
+  tar_target(
+    name = factorial_multifun_combined_figure,
+    command = make_factorial_multifun_plot(
+      model_multifun,
+      temp_colour,
+      prec_colour,
+      climate_var = "combined"
+    )
+  ),
+
+  # factorial multifunctionality plot by precipitation
+  tar_target(
+    name = factorial_multifun_prec_figure,
+    command = make_factorial_multifun_plot(
+      model_multifun,
+      temp_colour,
+      prec_colour,
+      climate_var = "prec"
+    )
+  ),
 
       # multifunctionality |>
       # filter(!is.na(habitat),
@@ -67,7 +124,6 @@ figure_plan <- list(
       #      y ="Average multifunctionality") +
       # facet_wrap( ~ habitat) +
       # theme_bw()
-  ),
 
 
   #multifunctionality figure
@@ -120,19 +176,18 @@ figure_plan <- list(
   tar_target(
     name = multifunctionality_figure2,
     command = multifunctionality |>
-      filter(!is.na(habitat),
-             data_type == "function") |>
+      filter(!is.na(habitat)) |>
       mutate(precipitation_name = factor(precipitation_name, levels = c("700 mm", "1400 mm", "2100 mm", "2800 mm"))) |>
       ggplot(aes(x = fg_remaining, y = multifuntionality, fill = fg_remaining)) +
       geom_boxplot() +
       scale_fill_manual(values = treatment_patterns) +
       #scale_x_discrete(labels = c(0, "", 1, "", "", 2, "", 3), name = "") +
       #scale_x_discrete(labels = c("A", "B"), breaks = c(1, 3, 6, 8)) +
-      geom_signif(comparisons = list(c("B", "All"),
-                                     c("F", "All"),
-                                     c("None", "All")),
-                  map_signif_level = TRUE,
-                  y_position = c(4.3, 4.6, 4.9)) +
+      # geom_signif(comparisons = list(c("B", "All"),
+      #                                c("F", "All"),
+      #                                c("None", "All")),
+      #             map_signif_level = TRUE,
+      #             y_position = c(4.3, 4.6, 4.9)) +
       labs(x = "Functional groups present",
            y ="Average multifunctionality") +
       #facet_grid(habitat ~ precipitation_name) +

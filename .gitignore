@@ -47,6 +47,7 @@ output/
 *.html
 *.log
 *.md
+!README.md
 *.lua
 *.tex
 *_files/

@@ -6,11 +6,18 @@ run_models <- function(dat, response_var, fg_var, group){
   dat |>
     rename(.response = {{response_var}},
            .functional_group = {{fg_var}}) |>
-    group_by(across(all_of({{group}})))|>
+    group_by(across(all_of({{group}}))) |>
     nest() |>
     mutate(
-      # nr of functional groups analysis
-      model = map(data, ~lmerTest::lmer(data = ., .response ~ .functional_group * temperature_scaled * precipitation_scaled + (1|siteID))),
+      # formula with colons (not *) so glmm.hp works on the same model
+      model = map(data, ~ lmerTest::lmer(
+        data = .,
+        formula = .response ~ .functional_group + temperature_scaled + precipitation_scaled +
+          .functional_group:temperature_scaled + .functional_group:precipitation_scaled +
+          temperature_scaled:precipitation_scaled +
+          .functional_group:temperature_scaled:precipitation_scaled +
+          (1 | siteID)
+      )),
 
       # factorial analysis
       model_factorial = map(data,
@@ -33,24 +40,40 @@ run_models <- function(dat, response_var, fg_var, group){
 
 
 # make prediction for functional group analysis
-lmer_prediction <- function(dat, fit){
+# expects dat with no NA in .response, .functional_group, temperature_scaled, precipitation_scaled
+lmer_prediction <- function(dat, fit) {
+  if (is.null(fit)) return(NULL)
 
-  newdat <- dat %>%
-    select(.response, .functional_group, temperature_scaled, precipitation_scaled)
+  result <- tryCatch({
+    newdat <- dat %>%
+      select(.response, .functional_group, temperature_scaled, precipitation_scaled)
 
-  newdat$fitted <- predict(fit, newdat, re.form = NA)
+    newdat$fitted <- predict(fit, newdat, re.form = NA)
 
-  mm <- model.matrix(terms(fit), newdat)
+    # fixed-effects model matrix (matches run_models formula)
+    form_fixed <- ~ .functional_group + temperature_scaled + precipitation_scaled +
+      .functional_group:temperature_scaled + .functional_group:precipitation_scaled +
+      temperature_scaled:precipitation_scaled +
+      .functional_group:temperature_scaled:precipitation_scaled
+    mm <- model.matrix(form_fixed, data = newdat)
+    mm <- mm[, names(lme4::fixef(fit)), drop = FALSE]
 
-  prediction <- newdat %>%
-    mutate(pvar1 = diag(mm %*% tcrossprod(vcov(fit), mm)),
-           tvar1 = pvar1 + VarCorr(fit)$siteID[1],  ## must be adapted for more complex models
-           cmult = 1.96) %>%
-    mutate(plo = fitted - cmult*sqrt(pvar1),
-           phi = fitted + cmult*sqrt(pvar1),
-           tlo = fitted - cmult*sqrt(tvar1),
-           thi = fitted + cmult*sqrt(tvar1))
+    vc <- as.data.frame(VarCorr(fit))
+    sigma2_re <- vc$vcov[1]
 
-  return(prediction)
+    newdat %>%
+      mutate(pvar1 = diag(mm %*% tcrossprod(vcov(fit), mm)),
+             tvar1 = pvar1 + sigma2_re,
+             cmult = 1.96) %>%
+      mutate(plo = fitted - cmult * sqrt(pvar1),
+             phi = fitted + cmult * sqrt(pvar1),
+             tlo = fitted - cmult * sqrt(tvar1),
+             thi = fitted + cmult * sqrt(tvar1))
+  }, error = function(e) {
+    warning("lmer_prediction failed: ", conditionMessage(e))
+    NULL
+  })
+
+  return(result)
 }
 

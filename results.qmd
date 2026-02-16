@@ -1,167 +1,66 @@
----
-format: 
-  html:
-    self-contained: true
-title: Plant functional group affect on multifunctionality
-execute:
-  echo: false
-bibliography: bibliography.bib
-csl: journal-of-ecology.csl
-editor: 
-  markdown: 
-    wrap: sentence
----
-
 ```{r}
-#| label: set-up
+#| label: set-up-results
 #| echo: false
 #| message: false
 library(targets)
 library(tarchetypes)
-library(tidyverse)
-library(lubridate)
-library(broom)
+library(ggplot2)
 library(gt)
-library(lme4)
-library(lmerTest)
-library(broom.mixed)
-
-tar_load(big_data_raw)
-tar_load(big_data)
-
 ```
-
-# Abstract
-
-Climate change threatens biodiversity in plant and soil communities with consequences for key ecosystem functions and services.
-Predicting how biodiversity loss affects multiple ecosystem functions (i.e. multifunctionality) has gained traction, but the context-dependent nature of these relationships is poorly understood.
-Here we disentangle the direct effects of climate from the indirect effects, mediated through biotic interactions on multifunctionality including ecosystem function of the whole plant-soil food web.
-We use a powerful macroecological experimental approach, by replicating a plant functional group removal experiment across factorial broad-scale temperature and precipitation gradients.
-We use a multifunctionality approach and assess the effect of plant functional group presence on biodiversity (plants, bryophytes, nematodes, microarthropods, fungi and bacteria) as well as ecosystem functions including biomass, decomposition, carbon and nutrient stocks and dynamics.
-
-Preliminary results show that biodiversity loss reduced multifunctionality, but these responses differ across climate gradients.
-The results from this study will improve process understanding on climate change impacts on the multifunctionality of the plant-soil food web of mountain ecosystems, and how this varies along climate gradients and in response to different climate change drivers.
-
-# Introduction
-
-\[Climate change impacts biodiversity and ecosystem functioning\]
-
-\[What is multifunctionality?
-Biodiversity-functioning relationships\]
-
-\[What is the research gap?
-context dependency in multifunctionality?\]
-
-The aim of this study was to assess how climate change and the presence of three functional groups and combinations of these affects multifunctionality.
-Specifically, we test how loss of functional groups affect ecosystem functions across a climate grid.
-We use a macroecological experimental approach, by replicating a plant functional group removal experiment (i.e. removal of graminoids, forbs and bryophytes and their combinations) across factorial broad-scale temperature and precipitation gradients.
-We recorded taxonomic and functional biodiversity across different organismal groups (plants, bryophytes, microbes, mesofauna), and ecosystem functions (carbon and nutrient stocks and fluxes).
-We hypothesize that (i) loss of functional groups decrease ecosystem functions.
-Do we have specific hypotheses for graminoids, forbs and bryophytes?
-Further, (ii) the decrease in multifunctionality is context dependent.
-
-# Methods
-
-### Site description and experimental design
-
-\[Describe site selection and climate grid, annual precipitation and summer temperature\]
-
-\[Describe the removal experiment\] For more details see (Vandvik et al. 2022).
-
-![Study area, site selection, experimental design, and field sampling overview for the FunCaB plant functional group experiment. (a) Location of the study area and the 12 study sites in Vestland county, Western Norway. (b) The Vestland Climate Grid is established across independent broad-scale biogeographic gradients in summer temperature (mean of four warmest months, °C), and annual precipitation (mean annual precipitation, mm). Temperature levels are given as boreal, sub-alpine, and alpine; precipitation levels range from 1 (dry) to 4 (wet). (c) Experimental design, with the timeline (species composition recordings \[dataset v\], seedling recruitment monitoring \[vi\], ecosystem carbon flux monitoring \[vii\], and functional group removals \[i\] indicated, see legend for dataset symbols, for other datasets see text), an overview of the eight factorial removal treatments, and plot layout with subplots used for the community and seedling recording. The removal treatments are described by the functional groups removed from the respective plots, note that in the figure the 'Intact' plot refers to the no removal controls whereas the 'Gap' are plots with all functional groups removed. For detailed description of treatments and their abbreviations as used in the datasets, see text.](funcab.png)
-
-### Data collection
-
-\[Describe the data collection for each function\]
-
-| Grouping             | Ecosystem function                                  |
-|------------------------------|------------------------------------------|
-| Primary producers    | Aboveground biomass                                 |
-|                      | Belowground production (maybe biomass, or turnover) |
-|                      | Reproduction (proportion flowering)                 |
-|                      | Resistance to invasion (seedling recruitment)       |
-| Higher trophic level | Mesofauna (nematode density)                        |
-|                      | Mesofauna (mites and collembola density)            |
-|                      | Fungi density/diversity                             |
-|                      | Bacteria density/diversity                          |
-| Carbon cycling       | Decomposition of graminoid litter                   |
-|                      | C stock                                             |
-|                      | Soil organic matter                                 |
-|                      | NPP                                                 |
-|                      | GPP                                                 |
-| Nutrient cycling     | N stock                                             |
-|                      | P stocks                                            |
-|                      | available nitrogen (ammonium and nitrate)           |
-|                      | available phosphate                                 |
-|                      | other available nutrients                           |
-
-### Multifunctionality approach
-
-Calculations are based on Fanin et al. 2018.
-
--   All functions should have positive values (use absolute, transform?)
-
--   For all functions, more positive values should be higher functioning.
-
-    -   E.g. higher GPP =\> more productive plants;
-
-    -   More litter =\> less decomposition, need to take the inverse?
-
--   Do functions need to be weighed?
-    No weighing needed, because no function is more desired or has higher value.
-
--   Merge all data to one dataset
-
--   **Standardized all functions** between 0 and 1 to remove differences in measurement scale between the variables.
-    Standardize each of the functions to a common scale by dividing by the maximum observed level of functioning.
-    Do we want to use this approach or another one?
-    $f(x) = \frac{x_i}{max(x)}$
-
--   Outlier labeling method?
-    (We tackled the outlier issue by removing extreme values following the outlier labelling rule with a tuning parameter^[64](https://www.nature.com/articles/s41559-017-0415-0#ref-CR63 "Maestre, F. T., Castillo‐Monroy, A. P., Bowker, M. A. & Ochoa‐Hueso, R. Species richness effects on ecosystem multifunctionality depend on evenness, composition and spatial pattern. J. Ecol. 100, 317–330 (2012).")^ of *g* = 2.)
-
--   **Average multifunctionality** was then calculated as the mean of standardized values across all individual functions $MF_a = \frac{1}{F} \sum_{i=1}^{F} g(r_i(f_i))$
-
--   Threshold-based approaches is appropriate as long as each cluster is weighted equally in the EF-multifunctionality measure, irrespective of the number of functions within each cluster.
-    Prevent the overrepresentation of many similar functions
-
-\
-
-### Data analysis
-
-To test if average multifuncitonality is affected by the number of functional groups present, (or identity of functional groups), summer temperature and annual precipitation as well as their interactions, we used a linear mixed-effects models:
-
-lmer(average multifunctionality \~ nr of functional group x temperature x precipitation + (1/siteID), data)
 
 # Results
 
-### Standardized functioning
+### Main results (so far)
+
+- Ecosystem functions are affected by functional groups, summer temperature and annual precipitation. So, we expect average multifunctionality also to be affected by these factors.
+
+- Average multifunctionality increased with the number of functional groups present (Figure 2). This effect is stronger for warmer sites when fewer functional groups are present and vice versa for colder sites when more functional groups are present (a bit unclear how this works...). -> Note that previously there was a temperature x FG effect before.
+
+- The identity of functional groups present also affected average multifunctionality (Figure 3). Multifunctionality decreased when one or two groups were removed, and was lowest under bare soil. The presence of forbs and/or graminoid increase multifuntionality more than bryophytes.
+
+- Factorial analysis: the presence of forbs, graminoids and bryophytes increase average multifunctionality (AMF). AMF is higher in warm and dry sites. (There are some 3-way interactions which are difficult to interpret...)
+
+### Standardized functioning (spaghetti plot)
 
 The effect of plant functional group removal, summer temperature and annual precipitation on single ecosystem functions.
+This is a very chaotic plot, mostly serves as giving a visual overview and will most likely not be included in the manuscript.
 
 ```{r}
 #| label: fig-function
 #| echo: false
 #| warning: false
+#| fig-width: 10
+#| fig-height: 10
 #| fig-cap: Standardized function in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functions are shown in different colours and the different groups have different symbols.
 
 tar_read(function_figure)
 
 ```
 
-```{r}
-#| label: tbl-model-response
-#| echo: false
-#| warning: false
-#| tbl-cap: Model output from testing effect of number of functional groups present, summer temperature and annual precipitation on ecosystem functions.
-
-tar_read(model_response_nr_out)
-    
-
-```
-
 
 ### Average multifunctionality
+
+These are the variables included in the multifunctionality analysis.
+
+```{r}
+#| label: vars-multifunctionality
+#| echo: false
+#| warning: false
+#| message: false
+
+# Extract variable list from data used in model_multifun (multifunctionality comes from big_data)
+tar_load(big_data)
+big_data |>
+      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |> 
+      mutate(group = factor(group, levels = c("primary producers", "higher trophic level", "carbon cycling", "nutrient cycling"))) |>
+      distinct(group, response, unit) |>
+      arrange(group, response) |>
+      gt() |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels()
+      )
+```
 
 The number of functional groups present and temperature both increased average multifunctionality.
 
@@ -169,7 +68,7 @@ The number of functional groups present and temperature both increased average m
 #| label: fig-multifunctionality
 #| echo: false
 #| warning: false
-#| fig-cap: Average multifuntionality in response to number of functional groups present and summer temperature (habitat). The colours represent the different habitats. The points are the raw data and the lines represent the predictions from the model (not that the line is a simple lm model for now!).
+#| fig-cap: Average multifuntionality in response to number of functional groups present and summer temperature (habitat). The colours represent the different habitats. The points are the raw data and the lines represent the predictions from the model.
 
 tar_read(multifunctionality_figure)
 
@@ -185,14 +84,29 @@ tar_read(model_multi_nr_out)
 
 ```
 
+```{r}
+#| label: tbl-var-part
+#| echo: false
+#| tbl-cap: Variance partitioning of multifunctionality into functional groups and climate.
+
+tar_load(multifun_variance_partitioning)
+
+multifun_variance_partitioning$summary_fg_vs_climate |>
+      gt::gt() |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels()
+      )
+
+```
+
 The identity of the functional groups removed had an effect on average multifunctionality.
 Multifunctionality was reduced when no plants, only forbs or only bryophytes were present.
-
 
 ```{r}
 #| label: fig-multifunctionality2
 #| echo: false
-#| warning: false
+#| fig-height: 4
 #| fig-cap: Average multifuntionality in response to number of functional groups present across different precipitation levels and alpine, sub-alpine and boreal habitats. The different functional groups present are shown in different colours.
 
 tar_read(multifunctionality_figure2)
@@ -206,6 +120,40 @@ tar_read(multifunctionality_figure2)
 #| tbl-cap: Model output from testing effect of treatment on multifunctionality.
 
 tar_read(model_multi_trt_out)
+
+```
+
+### Factorial approach: presence of forbs, graminoids and bryophytes
+
+Predicted multifunctionality from the factorial model (forb × gram × bryo × temperature × precipitation) for each functional group's presence (0 = absent, 1 = present), stratified by habitat (summer temperature) or precipitation.
+
+```{r}
+#| label: fig-factorial-multifun-temp
+#| echo: false
+#| fig-height: 3
+#| fig-cap: Average multifunctionality in response to presence of forbs, graminoids or bryophytes, by habitat (summer temperature). Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+
+tar_read(factorial_multifun_temp_figure)
+
+```
+
+```{r}
+#| label: fig-factorial-multifun-prec
+#| echo: false
+#| fig-height: 3
+#| fig-cap: Average multifunctionality in response to presence of forbs, graminoids or bryophytes, by precipitation. Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+
+tar_read(factorial_multifun_prec_figure)
+
+```
+
+```{r}
+#| label: fig-factorial-multifun-combined
+#| echo: false
+#| fig-height: 6
+#| fig-cap: Average multifunctionality in response to presence of forbs, graminoids or bryophytes, by habitat (summer temperature) and precipitation. Colours show precipitation level; panels show habitat. Points show predictions at each site's observed climate; lines connect mean predictions at absence (0) and presence (1).
+
+tar_read(factorial_multifun_combined_figure)
 
 ```
 

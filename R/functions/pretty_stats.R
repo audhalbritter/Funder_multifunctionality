@@ -39,7 +39,8 @@ round_numbers_anova <- function(table){
 
 round_numbers_tidy <- function(table){
   table |>
-    mutate(estimate = round(estimate, 2),
+    mutate(p_raw = p.value,
+           estimate = round(estimate, 2),
            std.error = round(std.error, 2),
            statistic = round(statistic, 2),
            df = round(df, 2),
