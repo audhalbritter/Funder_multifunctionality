@@ -9,7 +9,6 @@ multifunctionality_plan <- list(
       plant_biomass,
       root_biomass,
       root_traits,
-      plant_richness,
 
       # higher trophic levels
       nematode_density,
@@ -28,7 +27,6 @@ multifunctionality_plan <- list(
 
       # nutrient cycle
       # nitrogen stocks added above
-      macronutrients,
       available_nutrients
 
     ) |>

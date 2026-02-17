@@ -105,6 +105,18 @@ download_plan <- list(
     format = "file"
   ),
 
+  # fungal necromass
+  tar_target(
+    name = necromass_download,
+    command = get_file(
+      node = "tx9r2",
+      file = "FUNDER_clean_fungal_necromass_decomposition.csv",
+      path = here::here("data"),
+      remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"
+    ),
+    format = "file"
+  ),
+
   # carbon and nutrient stocks and dynamics
   # decomposition
   tar_target(
@@ -159,6 +171,18 @@ download_plan <- list(
       file = "FunCaB_clean_Cflux_2015-2017.csv",
       path = here::here("data"),
       remote_path = "5_Carbon_fluxes"
+    ),
+    format = "file"
+  ),
+
+  # microclimate
+  tar_target(
+    name = microclimate_download,
+    command = get_file(
+      node = "tx9r2",
+      file = "FUNDER_clean_microclimate_2022.csv",
+      path = here::here("data"),
+      remote_path = "6_Environment/Clean_data"
     ),
     format = "file"
   ),
@@ -218,7 +242,11 @@ download_plan <- list(
     name = microbial_raw,
     command = read_csv(microbial_download)
   ),
-
+  # fungal necromass
+  tar_target(
+    name = necromass_raw,
+    command = read_csv(necromass_download)
+  ),
 
   # carbon and nutrient stocks and dynamics
   # loi
@@ -249,5 +277,10 @@ download_plan <- list(
   tar_target(
     name = cflux_raw,
     command = read_csv(cflux_download)
+  ),
+  # microclimate
+  tar_target(
+    name = microclimate_raw,
+    command = read_csv(microclimate_download)
   )
 )

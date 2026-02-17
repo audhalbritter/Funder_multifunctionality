@@ -196,7 +196,8 @@ transformation_plan <- list(
       select(year, siteID, blockID, plotID, treatment, functional_group, abundance, sample_weight_g) |>
       # remove missing data (1 plot, Fau2FB)
       filter(!is.na(abundance)) |>
-      mutate(abundance_per_g_dry_soil = abundance / sample_weight_g)
+      mutate(abundance_per_g_dry_soil = abundance / sample_weight_g) |>
+      filter(!is.na(abundance_per_g_dry_soil))
   ),
   tar_target(
     name = microarthropod_density,
@@ -278,6 +279,20 @@ transformation_plan <- list(
         data_type = "function",
         group = "higher trophic level",
         unit = "unitless"
+      )
+  ),
+
+  # fungal necromass
+  tar_target(
+    name = fungal_necromass,
+    command = necromass_raw |>
+      mutate(year = year(retrieval_date))|>
+      select(year, siteID, blockID, plotID, treatment, functional_group = mycelium, value = relative_weight_loss) |>
+      mutate(
+        data_type = "function",
+        group = "carbon cycling",
+        response = "fungal necromass decomposition",
+        unit = "g m\u207B\u00B2"
       )
   ),
 
@@ -382,53 +397,54 @@ transformation_plan <- list(
     )
   ),
   tar_target(
-    name = macronutrients_pca,
-    command = make_nutrient_pca(
-      available_nutrients_raw |>
-        filter(elements %in% c("NH4-N", "NO3-N", "P", "K", "Ca", "Mg", "S")),
-      meta
-    )
-  ),
-  tar_target(
     name = micronutrients_pca,
     command = make_nutrient_pca(
       available_nutrients_raw |>
-        filter(elements %in% c("Fe", "Mn", "Zn", "Cu", "B", "Al", "Pb")),
+        filter(!elements %in% c("NH4-N", "NO3-N", "P")),
       meta
     )
   ),
+  # tar_target(
+  #   name = micronutrients_pca,
+  #   command = make_nutrient_pca(
+  #     available_nutrients_raw |>
+  #       filter(elements %in% c("Fe", "Mn", "Zn", "Cu", "B", "Al", "Pb")),
+  #     meta
+  #   )
+  # ),
 
   # make ordination for other available nutrients
   tar_target(
     name = available_nutrients,
     command = bind_rows(
-      macronutrients = macronutrients_pca[[1]],
-      micronutrients = micronutrients_pca[[1]],
+      available_nitrogen = available_nutrients_raw |>
+        filter(elements %in% c("NH4-N", "NO3-N")) |>
+        group_by(siteID, blockID, plotID, treatment) |>
+        summarise(value = mean(value)),
+      available_phosphorus = available_nutrients_raw |>
+        filter(elements %in% c("P")) |>
+        select(siteID, blockID, plotID, treatment, value),
+      avialable_micronutrients = micronutrients_pca[[1]] |>
+      select(siteID, blockID, plotID, treatment, value = PC1),
       .id = "response"
     ) |>
       mutate(
+        year = 2021,
         data_type = "function",
         group = "nutrient cycling",
-        unit = "PCA axis 1"
+        unit = case_when(
+          response == "available_nitrogen" ~ "µg m\u207B\u00B2",
+          response == "available_phosphorus" ~ "µg m\u207B\u00B2",
+          response == "avialable_micronutrients" ~ "PCA axis 1"
+        ),
+        response = case_when(
+          response == "available_nitrogen" ~ "available nitrogen",
+          response == "available_phosphorus" ~ "available phosphorus",
+          response == "avialable_micronutrients" ~ "available micro nutrients"
+        )
       ) |>
-      select(siteID:year, response, value = PC1, data_type:unit)
+      select(siteID:year, response, value, data_type:unit)
   ),
-
-  # # make ordination for other available nutrients
-  # tar_target(
-  #   name = available_nutrients,
-  #   command = bind_rows(
-  #     available_np,
-  #     other_available_nutrients[[1]] |>
-  #       mutate(
-  #         data_type = "function",
-  #         group = "nutrient cycling",
-  #         response = "available micro nutrients",
-  #         unit = "PCA axis 1"
-  #       ) |>
-  #       select(siteID:year, value = PC1, data_type:unit)
-  #   )
-  # ),
 
   # cflux
   # prep data
@@ -484,5 +500,22 @@ transformation_plan <- list(
         .groups = "drop"
       ) |>
       mutate(response = "ecosystem respiration")
+  ),
+
+  # microclimate
+  tar_target(
+    name = microclimate,
+    command = microclimate_raw |> 
+      filter(variable %in% c("soil_temperature", "soilmoisture")) |>
+      mutate(year = 2022) |>
+      select(year, siteID, blockID, plotID, treatment, response = variable, value) |>
+      mutate(
+        data_type = "function",
+        group = "microenvironment",
+        unit = case_when(
+          response == "soil_temperature" ~ "°C",
+          response == "soilmoisture" ~ "%"
+        )
+      )
   )
 )
