@@ -301,3 +301,14 @@ tar_read(nutrient_cycling_plot)
 
 ```
 
+### Treatment model
+```{r}
+#| label: tbl-model-group-trt
+#| echo: false
+#| warning: false
+#| tbl-cap: Model output from testing treatment effects on functions related to primary producers, higher trophic levels, carbon and nutrient cycling.
+
+tar_read(model_group_trt_out)
+
+```
+
