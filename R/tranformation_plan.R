@@ -44,7 +44,6 @@ transformation_plan <- list(
       )
   ),
 
-
   # prep biomass
   # 2015 - 2021 (maybe remove)
   tar_target(
@@ -138,116 +137,6 @@ transformation_plan <- list(
         unit = "g m\u207B\u00B2"
       ) |>
       select(-ric_radius, -ric_area)
-  ),
-
-  # root traits
-  tar_target(
-    name = root_traits,
-    command = root_traits_raw |>
-      select(year:treatment, response = "trait", value) |>
-      filter(!is.na(value)) |>
-      filter(response %in% c("specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
-      mutate(
-        data_type = "function",
-        group = "primary producers",
-        unit = case_when(
-          response == "specific_root_length_m_per_g" ~ "m g\u207B\u00B9",
-          response == "root_tissue_density_g_per_m3" ~ "g m\u207B\u00B3",
-          response == "root_dry_matter_content" ~ "unitless",
-          TRUE ~ NA_character_
-        )
-      )
-  ),
-
-  # community
-  tar_target(
-    name = community,
-    command = community_raw |>
-      # remove extra plots in 2016, select last year
-      filter(
-        treatment != "XC",
-        year == 2022
-      )
-  ),
-
-  # plant richness (vascular and bryophytes)
-  tar_target(
-    name = plant_richness,
-    command = community |>
-      # remove where species are NA, treatments with only bryophytes etc. Is only needed if intersted in moss hieght, litter cover etc.
-      filter(!is.na(species)) |>
-      bind_rows(bryophyte_richness) |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = n()) |>
-      mutate(
-        data_type = "biodiversity",
-        group = "primary producers",
-        response = "plant richness",
-        unit = "count per 625 cm\u00B2"
-      )
-  ),
-
-  # bryophyte richness
-  tar_target(
-    name = bryophyte_richness,
-    command = bryophyte_raw %>%
-      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
-      mutate(year = 2022)
-    # group_by(year, siteID, blockID, plotID, treatment) |>
-    # summarise(value = n()) |>
-    # mutate(data_type = "biodiversity",
-    #        group = "primary producers",
-    #        response = "plant richness",
-    #        unit = "count")
-  ),
-
-  # prep microarthropod
-  tar_target(
-    name = microarthropod,
-    command = microarthropod_raw |>
-      mutate(
-        siteID = case_when(
-          siteID == "Gud" ~ "Gudmedalen",
-          siteID == "Lav" ~ "Lavisdalen",
-          siteID == "Ram" ~ "Rambera",
-          siteID == "Ulv" ~ "Ulvehaugen",
-          siteID == "Skj" ~ "Skjelingahaugen",
-          siteID == "Alr" ~ "Alrust",
-          siteID == "Arh" ~ "Arhelleren",
-          siteID == "Fau" ~ "Fauske",
-          siteID == "Hog" ~ "Hogsete",
-          siteID == "Ovs" ~ "Ovstedalen",
-          siteID == "Vik" ~ "Vikesland",
-          siteID == "Ves" ~ "Veskre",
-          TRUE ~ siteID
-        )
-      ) |>
-      select(year, siteID, blockID, plotID, treatment, organisms = group, functional_group, abundance, sample_weight_g) |>
-      # remove missing data (1 plot, Fau2FB)
-      filter(!is.na(abundance)) |>
-      mutate(abundance_per_g_dry_soil = abundance / sample_weight_g) |>
-      filter(!is.na(abundance_per_g_dry_soil),
-             functional_group != "juvenile")
-  ),
-  tar_target(
-    name = microarthropod_density,
-    command = microarthropod |>
-      group_by(year, siteID, blockID, plotID, treatment, organisms) |>
-      summarise(value = sum(abundance_per_g_dry_soil)) |>
-      mutate(
-        data_type = "function",
-        group = "higher trophic level",
-        response = case_when(
-          organisms == "collembola" ~ "collembola density",
-          organisms == "mite" ~ "mite density",
-          TRUE ~ NA_character_
-        ),
-        unit = case_when(
-          organisms == "collembola" ~ "count g\u207B\u00B9",
-          organisms == "mite" ~ "count g\u207B\u00B9",
-          TRUE ~ NA_character_
-        )
-      )
   ),
 
   # prep nematodes
@@ -492,99 +381,6 @@ transformation_plan <- list(
       )
   ),
 
-  # macronutrients
-  tar_target(
-    name = macronutrients,
-    command = macronutrients_raw |>
-      filter(name == "phosphorous") |>
-      # convert from mg per 100g dry soil to g per g dry soil
-      mutate(value = value / 100) |>
-      select(year, siteID, blockID, plotID, treatment, value) |>
-      mutate(
-        data_type = "stock",
-        response = "phosphorus stock",
-        group = "nutrient cycling",
-        unit = "g g\u207B\u00B9"
-      )
-  ),
-
-  # available nutrients
-  # nitrogen and phosphorus
-  tar_target(
-    name = available_np,
-    command = available_nutrients_raw |>
-      mutate(year = year(retrieval_date)) |>
-      # convert to <U+00B5>g per m2 per 35 days
-      mutate(value = value * 10000 / 10) |>
-      filter(elements == "P") |>
-      mutate(
-        data_type = "function",
-        group = "nutrient cycling",
-        response = "available phosphate",
-        unit = "\u00B5g m\u207B\u00B2 35 days"
-      ) |>
-      select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
-  ),
-
-  # make ordination for other available nutrients
-  tar_target(
-    name = other_available_nutrients,
-    command = make_nutrient_pca(
-      available_nutrients_raw |>
-        filter(!elements %in% c("NH4-N", "NO3-N", "P")),
-      meta
-    )
-  ),
-  tar_target(
-    name = micronutrients_pca,
-    command = make_nutrient_pca(
-      available_nutrients_raw |>
-        filter(!elements %in% c("NH4-N", "NO3-N", "P")),
-      meta
-    )
-  ),
-  # tar_target(
-  #   name = micronutrients_pca,
-  #   command = make_nutrient_pca(
-  #     available_nutrients_raw |>
-  #       filter(elements %in% c("Fe", "Mn", "Zn", "Cu", "B", "Al", "Pb")),
-  #     meta
-  #   )
-  # ),
-
-  # make ordination for other available nutrients
-  tar_target(
-    name = available_nutrients,
-    command = bind_rows(
-      available_nitrogen = available_nutrients_raw |>
-        filter(elements %in% c("NH4-N", "NO3-N")) |>
-        group_by(siteID, blockID, plotID, treatment) |>
-        summarise(value = sum(value)),
-      available_phosphorus = available_nutrients_raw |>
-        filter(elements %in% c("P")) |>
-        select(siteID, blockID, plotID, treatment, value),
-      avialable_micronutrients = micronutrients_pca[[1]] |>
-      select(siteID, blockID, plotID, treatment, value = PC1),
-      .id = "response"
-    ) |>
-      mutate(
-        year = 2021,
-        data_type = "process",
-        group = "nutrient cycling",
-        unit = case_when(
-          response == "available_nitrogen" ~ "µg m\u207B\u00B2",
-          response == "available_phosphorus" ~ "µg m\u207B\u00B2",
-          response == "avialable_micronutrients" ~ "PCA axis 1"
-        ),
-        response = case_when(
-          response == "available_nitrogen" ~ "available nitrogen",
-          response == "available_phosphorus" ~ "available phosphorus",
-          response == "avialable_micronutrients" ~ "available micro nutrients"
-        )
-      ) |>
-      select(siteID:year, response, value, data_type:unit)
-  ),
-
   # cflux
   # prep data
   tar_target(
@@ -639,6 +435,62 @@ transformation_plan <- list(
         .groups = "drop"
       ) |>
       mutate(response = "ecosystem respiration")
+  ),
+
+  ## nutrient cycling
+  # macronutrients
+  tar_target(
+    name = phosphorus_stock,
+    command = macronutrients_raw |>
+      filter(name == "phosphorous") |>
+      # convert from mg per 100g dry soil to g per g dry soil
+      mutate(value = value / 100) |>
+      select(year, siteID, blockID, plotID, treatment, value) |>
+      mutate(
+        data_type = "stock",
+        response = "phosphorus stock",
+        group = "nutrient cycling",
+        unit = "g g\u207B\u00B9"
+      )
+  ),
+
+  # available nutrients
+  # make ordination for other available nutrients
+  tar_target(
+    name = micronutrients_pca,
+    command = make_nutrient_pca(
+      available_nutrients_raw |>
+        filter(!elements %in% c("NH4-N", "NO3-N", "P")),
+      meta
+    )
+  ),
+
+  # make ordination for other available nutrients
+  tar_target(
+    name = available_nutrients,
+    command = bind_rows(
+      available_nitrogen = available_nutrients_raw |>
+        filter(elements %in% c("NH4-N", "NO3-N")) |>
+        group_by(siteID, blockID, plotID, treatment) |>
+        summarise(value = sum(value)),
+      available_phosphorus = available_nutrients_raw |>
+        filter(elements %in% c("P")) |>
+        select(siteID, blockID, plotID, treatment, value),
+      avialable_micronutrients = micronutrients_pca[[1]] |>
+      select(siteID, blockID, plotID, treatment, value = PC1),
+      .id = "response"
+    ) |>
+      mutate(
+        year = 2021,
+        data_type = "process",
+        group = "nutrient cycling",
+        unit = case_when(
+          response == "available_nitrogen" ~ "µg m\u207B\u00B2",
+          response == "available_phosphorus" ~ "µg m\u207B\u00B2",
+          response == "avialable_micronutrients" ~ "PCA axis 1"
+        )
+      ) |>
+      select(year,siteID:treatment, response, value, data_type:unit)
   ),
 
   # microclimate: frost_days, daily_temp_amplitude (top 25%), min_soil_moisture (bottom 25%)
