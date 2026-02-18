@@ -22,9 +22,10 @@ list(
   download_plan,
   transformation_plan,
   multifunctionality_plan,
-  analysis_plan,
-  figure_plan,
+  new_analysis_plan,
+  # analysis_plan,
+  # figure_plan,
   si_analysis_plan,
-  manuscript_plan,
-  si_figure_plan
+  # manuscript_plan,
+  # si_figure_plan
 )
