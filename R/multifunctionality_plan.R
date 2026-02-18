@@ -6,28 +6,37 @@ multifunctionality_plan <- list(
     name = big_data_raw,
     command = bind_rows(
       # primary producers
-      plant_biomass,
-      root_biomass,
-      root_traits,
+      # plant_biomass,
+      # root_biomass,
+      # plant_llitter,
 
-      # higher trophic levels
+      # nematodes
       nematode_density,
-      microarthropod_density,
-      nematode_ecosytem_condition,
+      nematode_feeding_group_density,
+      nematode_fungal_bacterial_feeder_ratio,
+      nematode_indices,
+
+      # microbes
       microbial_density,
+      microbial_ratio,
+      fungal_necromass,
 
       # carbon cycle
       decomposition_forbs,
       decomposition_gram,
-      # carbon and nitrogen stocks
-      cn_stocks |> filter(response != "CN"),
+      cn_stocks |> filter(response != "CN"), # includes nitrogen stocks
+      som,
       gpp,
       nee,
       reco,
 
       # nutrient cycle
-      # nitrogen stocks added above
-      available_nutrients
+      phosphorus_stock,
+      available_nutrients,
+
+      # microenvironment
+      microclimate
+  
 
     ) |>
       # add number of functional groups
@@ -66,8 +75,16 @@ multifunctionality_plan <- list(
       mutate(forb = if_else(str_detect(treatment, "F"), 0, 1),
              gram = if_else(str_detect(treatment, "G"), 0, 1),
              bryo = if_else(str_detect(treatment, "B"), 0, 1)) |>
-    # make treatment factor and sort
-    mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB", "FGB"))) |>
+      # get contrast from bare ground (difference to FGB within plot and response)
+      group_by(siteID, blockID, plotID, response) |>
+      mutate(
+        value_std_contrast = {
+          bare <- if (any(treatment == "FGB")) value_std[treatment == "FGB"][1] else NA_real_
+          value_std - bare
+        }
+      ) |>
+      # make treatment factor and sort
+      mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB", "FGB"))) |>
       ungroup()
       #mutate(value_std = rescale(value_trans))
 
