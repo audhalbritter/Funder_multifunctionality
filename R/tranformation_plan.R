@@ -254,21 +254,19 @@ transformation_plan <- list(
   tar_target(
     name = nematode,
     command = nematode_raw |>
-      select(year:treatment, family, functional_group, value = total_nematode_abundance_per_g_dry_soil, per_family_abundance_per_g_dry_soil) |>
-      # remove unknown families
-      filter(family != "unknown") |>
-      # merge omnivores into predators
-      mutate(functional_group = if_else(family == "omnivore", "predator", functional_group)) |>
-      summarise(value = sum(value), 
-                per_family_abundance_per_g_dry_soil = sum(per_family_abundance_per_g_dry_soil),
-        .by = c(year, siteID, blockID, plotID, treatment, family, functional_group))
+      tidylog::filter(family != "unknown") |>
+      tidylog::mutate(functional_group = if_else(functional_group == "omnivore", "predator", functional_group)) |>
+      summarise(
+        value = sum(per_family_abundance_per_g_dry_soil),
+        .by = c(year, siteID, blockID, plotID, treatment, family, functional_group)
+      )
   ),
 
   tar_target(
     name = nematode_density,
-    command = nematode |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = sum(value)) |>
+    command = nematode_raw |>
+      distinct(year, siteID, blockID, plotID, treatment, total_nematode_abundance_per_g_dry_soil) |>
+      rename(value = total_nematode_abundance_per_g_dry_soil) |>
       mutate(
         data_type = "stock",
         group = "nematodes",
@@ -285,6 +283,7 @@ transformation_plan <- list(
       mutate(
         data_type = "stock",
         group = "nematodes",
+        response = paste0(response, " density"),
         unit = "count g\u207B\u00B9"
       )
   ),
@@ -296,7 +295,7 @@ transformation_plan <- list(
       group_by(year, siteID, blockID, plotID, treatment, response = functional_group) |>
       summarise(value = sum(value)) |>
       pivot_wider(id_cols = c(year, siteID, blockID, plotID, treatment), names_from = response, values_from = value) |>
-      mutate(value = fungivore / (fungivore + bacterivore)) |>
+      mutate(value = fungivore / (fungivore + bacterivore)) |> 
       select(year, siteID, blockID, plotID, treatment, value) |>
       mutate(
         data_type = "process",
@@ -305,7 +304,7 @@ transformation_plan <- list(
         unit = "unitless"
       )
   ),
-
+  
   # cp values for nematodes (fill NA cp_group with literature values)
   tar_target(
     name = nematode_cp,
@@ -343,7 +342,7 @@ transformation_plan <- list(
       plant_parasite <- joined |>
         filter(`Functional Group` == "Plant") |>
         summarise(
-          value = weighted.mean(as.numeric(cp_group), per_family_abundance_per_g_dry_soil),
+          value = weighted.mean(as.numeric(cp_group), value),
           .by = c(year, siteID, blockID, plotID, treatment)
         ) |>
         mutate(response = "plant_parasite_index")
@@ -351,7 +350,7 @@ transformation_plan <- list(
       maturity <- joined |>
         filter(`Functional Group` != "Plant") |>
         summarise(
-          value = weighted.mean(as.numeric(cp_group), per_family_abundance_per_g_dry_soil),
+          value = weighted.mean(as.numeric(cp_group), value),
           .by = c(year, siteID, blockID, plotID, treatment)
         ) |>
         mutate(response = "maturity_index")
