@@ -493,7 +493,8 @@ transformation_plan <- list(
       select(year,siteID:treatment, response, value, data_type:unit)
   ),
 
-  # microclimate: frost_days, daily_temp_amplitude (top 25%), min_soil_moisture (bottom 25%)
+  # microclimate: average min/max ground temperature, daily_temp_amplitude (top 25%),
+  # min_soil_moisture (bottom 25%), mean soil moisture
   tar_target(
     name = microclimate,
     command = process_microclimate(microclimate_raw) |>

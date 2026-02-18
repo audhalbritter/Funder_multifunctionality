@@ -1,4 +1,5 @@
-# microclimate: frost_days, daily_temp_amplitude (top 25%), min_soil_moisture (bottom 25%)
+# microclimate: average min/max ground temperature, daily_temp_amplitude (top 25%),
+# min_soil_moisture (bottom 25%), mean soil moisture
 
 process_microclimate <- function(microclimate_raw, year = 2022) {
   raw <- microclimate_raw |>
@@ -8,20 +9,21 @@ process_microclimate <- function(microclimate_raw, year = 2022) {
       date = as.Date(substr(date_time, 1, 10))
     )
 
-  # 1) frost_days: number of days with ground T < 0°C per plot (0 if no frost days)
-  plots <- raw |>
+  # 1) average min ground temperature: mean of daily min ground T per plot
+  avg_min_ground_temp <- raw |>
     filter(variable == "ground_temperature") |>
-    distinct(year, siteID, blockID, plotID, treatment)
-  frost <- raw |>
-    filter(variable == "ground_temperature") |>
-    summarise(min_T = min(value), .by = c(year, siteID, blockID, plotID, treatment, date)) |>
-    filter(min_T < 0) |>
-    summarise(value = n(), .by = c(year, siteID, blockID, plotID, treatment))
-  frost <- plots |>
-    left_join(frost, by = c("year", "siteID", "blockID", "plotID", "treatment")) |>
-    mutate(value = replace_na(value, 0L), response = "frost_days", unit = "days")
+    summarise(daily_min = min(value), .by = c(year, siteID, blockID, plotID, treatment, date)) |>
+    summarise(value = mean(daily_min, na.rm = TRUE), .by = c(year, siteID, blockID, plotID, treatment)) |>
+    mutate(response = "average min ground temperature", unit = "°C")
 
-  # 2) daily_temp_amplitude: mean of top 25% of daily (maxT - minT) per plot (ground temperature)
+  # 2) average max ground temperature: mean of daily max ground T per plot
+  avg_max_ground_temp <- raw |>
+    filter(variable == "ground_temperature") |>
+    summarise(daily_max = max(value), .by = c(year, siteID, blockID, plotID, treatment, date)) |>
+    summarise(value = mean(daily_max, na.rm = TRUE), .by = c(year, siteID, blockID, plotID, treatment)) |>
+    mutate(response = "average max ground temperature", unit = "°C")
+
+  # 3) daily_temp_amplitude: mean of top 25% of daily (maxT - minT) per plot (ground temperature)
   temp_amp <- raw |>
     filter(variable == "ground_temperature") |>
     summarise(amplitude = max(value) - min(value), .by = c(year, siteID, blockID, plotID, treatment, date)) |>
@@ -36,7 +38,7 @@ process_microclimate <- function(microclimate_raw, year = 2022) {
     ) |>
     mutate(response = "daily_temp_amplitude", unit = "°C")
 
-  # 3) min_soil_moisture: mean of bottom 25% of daily min moisture (driest days) per plot
+  # 4) min_soil_moisture: mean of bottom 25% of daily min moisture (driest days) per plot
   moist_extreme <- raw |>
     filter(variable == "soilmoisture") |>
     summarise(daily_min = min(value), .by = c(year, siteID, blockID, plotID, treatment, date)) |>
@@ -51,5 +53,11 @@ process_microclimate <- function(microclimate_raw, year = 2022) {
     ) |>
     mutate(response = "min_soil_moisture", unit = "%")
 
-  bind_rows(frost, temp_amp, moist_extreme)
+  # 5) mean soil moisture: mean soil moisture per plot
+  mean_soil_moisture <- raw |>
+    filter(variable == "soilmoisture") |>
+    summarise(value = mean(value, na.rm = TRUE), .by = c(year, siteID, blockID, plotID, treatment)) |>
+    mutate(response = "mean soil moisture", unit = "%")
+
+  bind_rows(avg_min_ground_temp, avg_max_ground_temp, temp_amp, moist_extreme, mean_soil_moisture)
 }
