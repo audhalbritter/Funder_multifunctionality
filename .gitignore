@@ -12,6 +12,7 @@
 vignettes/*.html
 vignettes/*.pdf
 .httr-oauth
+other_code
 
 # knitr and R markdown
 *_cache/
