@@ -184,11 +184,12 @@ transformation_plan <- list(
       group_by(year, siteID, blockID, plotID, treatment, response = functional_group) |>
       summarise(value = sum(value)) |>
       pivot_wider(id_cols = c(year, siteID, blockID, plotID, treatment), names_from = response, values_from = value) |>
-      mutate(value = fungivore / (fungivore + bacterivore)) |> 
+      # bacteria to fungi ratio to make it slow to fast
+      mutate(value = bacterivore / (fungivore + bacterivore)) |> 
       select(year, siteID, blockID, plotID, treatment, value) |>
       mutate(
         data_type = "process",
-        response = "fungal_bacterial_feeder_ratio",
+        response = "bacterial_fungal_feeder_ratio",
         group = "nematodes",
         unit = "unitless"
       )
@@ -245,6 +246,8 @@ transformation_plan <- list(
         mutate(response = "maturity_index")
 
       bind_rows(plant_parasite, maturity) |>
+        # invert value to make it slow to fast
+        mutate(value = -1 * value) |>
         mutate(
           data_type = "process",
           group = "nematodes",
@@ -283,9 +286,10 @@ transformation_plan <- list(
         names_from = group,
         values_from = value
       ) |>
+      # bacteria to fungi ratio to make it slow to fast
       mutate(
-        value = fungi / (fungi + bacteria),
-        response = "fungal bacterial ratio"
+        value = bacteria / (fungi + bacteria),
+        response = "bacteria-fungi ratio"
       ) |> 
       select(year, siteID, blockID, plotID, treatment, response, value) |>
       mutate(
