@@ -172,7 +172,7 @@ transformation_plan <- list(
       mutate(
         data_type = "stock",
         group = "nematodes",
-        response = paste0(response, " density"),
+        response = paste0(response, " feeder density"),
         unit = "count g\u207B\u00B9"
       )
   ),
@@ -300,7 +300,9 @@ transformation_plan <- list(
     name = fungal_necromass,
     command = necromass_raw |>
       mutate(year = year(retrieval_date))|>
-      select(year, siteID, blockID, plotID, treatment, response = mycelium, value = relative_weight_loss) |>
+      select(year, siteID, blockID, plotID, treatment, response = mycelium, value = relative_weight_loss) %>%
+      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
+      tidylog::filter(!is.na(value)) |>
       mutate(
         data_type = "function",
         group = "carbon cycling",
