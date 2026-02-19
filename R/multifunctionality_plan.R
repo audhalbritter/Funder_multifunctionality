@@ -11,12 +11,12 @@ multifunctionality_plan <- list(
       # plant_llitter,
 
       # nematodes
-      nematode_density,
+      # nematode_density,
       nematode_feeding_group_density,
       nematode_fungal_bacterial_feeder_ratio,
       nematode_indices,
 
-      # microbes
+      # fungi and bacteria
       microbial_density,
       microbial_ratio,
       fungal_necromass,
@@ -25,9 +25,9 @@ multifunctionality_plan <- list(
       decomposition_forbs,
       decomposition_gram,
       cn_stocks |> filter(response != "CN"), # includes nitrogen stocks
-      som,
+      #som,
       gpp,
-      nee,
+      #nee,
       reco,
 
       # nutrient cycle
@@ -35,7 +35,8 @@ multifunctionality_plan <- list(
       available_nutrients,
 
       # microenvironment
-      microclimate
+      microclimate |> 
+        filter(!response %in% c("mean soil moisture", "average min ground temperature", "average max ground temperature"))
   
 
     ) |>
@@ -55,7 +56,7 @@ multifunctionality_plan <- list(
       # shift values to make all positive (for responses with negative values)
       group_by(response) |>
       mutate(value = case_when(
-        response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
+        response %in% c("avialable_micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
         #response == "fungal bacterial ratio" ~ asinh(value),
         TRUE ~ value
       )) |> 
@@ -64,7 +65,7 @@ multifunctionality_plan <- list(
       # if zeros in data (nematodes and microarthropods), then there will be NAs here
       tidylog::mutate(value_trans = case_when(
         # log for responses with only positive values
-        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity", "fungal bacterial ratio") ~ log(value),
+        response %in% c("available_nitrogen", "available_phosphorus", "bacteria density", "bacterivore feeder density", "bacterivore density", "carbon stock", "fungal bacterial ratio", "fungal_bacterial_feeder_ratio", "fungi density", "fungivore feeder density", "nematode density", "nitrogen stock", "phosphorus stock", "plant_feeder feeder density", "predator feeder density", "soil organic matter") ~ log(value + 1),
         # no transformation for others
         TRUE ~ value
       )) |>
