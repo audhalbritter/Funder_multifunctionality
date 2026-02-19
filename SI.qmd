@@ -36,6 +36,8 @@ library(broom.mixed)
 #| label: fig-raw-plot
 #| echo: false
 #| warning: false
+#| fig-width: 10
+#| fig-height: 8
 #| fig-cap: Histograms for all functions before any transformation.
 
 tar_read(raw_functions_plot)
@@ -49,36 +51,85 @@ tar_read(raw_functions_plot)
 #| label: fig-normalized-plot
 #| echo: false
 #| warning: false
+#| fig-width: 10
+#| fig-height: 8
 #| fig-cap: Histograms for all functions after log tranformation.
 
 tar_read(normalize_functions_plot)
 
 ```
 
-
 ### Standardize data
 ```{r}
 #| label: fig-std-plot
 #| echo: false
 #| warning: false
+#| fig-width: 10
+#| fig-height: 8
 #| fig-cap: Histograms for all functions after standardization to mean 0 and sd.
 
 tar_read(standardize_functions_plot)
 
 ```
 
-
 ```{r}
 #| label: fig-correlation-plot
 #| echo: false
 #| warning: false
-#| fig-cap: Correlation between all functions (untranformed data).
+#| fig-cap: Correlation between all functions (untransformed data).
 #| fig-width: 12
 #| fig-height: 12
 
 tar_read(correlation_plot)
 
 ```
+
+```{r}
+#| label: fig-correlation-contrast-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Correlation between ecosystem functions (contrast to bare ground, FGB).
+#| fig-width: 12
+#| fig-height: 12
+
+tar_read(correlation_contrast_plot)
+
+```
+
+```{r}
+#| label: tbl-responses
+#| echo: false
+#| warning: false
+#| fig-cap: PCA of all functions.
+#| fig-width: 8
+#| fig-height: 8
+
+tar_load(big_data)
+
+big_data |>
+  group_by(group) |>
+  summarise(response = paste(sort(unique(response)), collapse = ", "), .groups = "drop") |>
+  gt() |>
+  tab_header(title = "Ecosystem functions by group") |>
+  cols_label(group = "Group", response = "Ecosystem functions / responses")
+
+```
+
+```{r}
+#| label: fig-pca-plot
+#| echo: false
+#| warning: false
+#| fig-cap: PCA of all functions.
+#| fig-width: 8
+#| fig-height: 8
+
+tar_read(all_functions_pca_plot)
+
+```
+
+
+#| label: stop-here
+knitr::knit_exit()
 
 
 ## Single function analyses
