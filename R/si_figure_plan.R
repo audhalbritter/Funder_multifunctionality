@@ -16,11 +16,10 @@ si_figure_plan <- list(
   tar_target(
     name = normalize_functions_plot,
     command = big_data_raw |> 
-# shift values to make all positive (for responses with negative values)
+      # shift values to make all positive (for responses with negative values)
       group_by(response) |>
       mutate(value = case_when(
         response %in% c("avialable_micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
-        #response == "fungal bacterial ratio" ~ asinh(value),
         TRUE ~ value
       )) |> 
       ungroup() |> 
@@ -29,6 +28,7 @@ si_figure_plan <- list(
       tidylog::mutate(value_trans = case_when(
         # logit for ratio variables (proportions in 0-1); exclude "respiration" (contains "ratio")
         str_detect(response, "ratio") & !str_detect(response, "respiration") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
+        response %in% c("root_asscociated_sapro", "other", "sapro", "yeast_dimorphic", "animal_parasite", "mycorrhiza", "lichenized", "plant_pathogen") ~ sqrt(value),
         # log for responses with only positive values
         response %in% c("available_nitrogen", "available_phosphorus", "bacteria density", "bacterivore feeder density", "bacterivore density", "carbon stock", "fungi density", "fungivore feeder density", "nematode density", "nitrogen stock", "phosphorus stock", "plant_feeder feeder density", "predator feeder density", "soil organic matter") ~ log(value + 1),
         # no transformation for others
@@ -83,8 +83,8 @@ si_figure_plan <- list(
 
       function_table <- big_data |>
         select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
-        pivot_wider(names_from = response, values_from = value, values_fill = 0) |> 
-        select(-c(siteID:value_std_contrast))
+        pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
+        select(-c(siteID:group))
 
       # pairwise.complete.obs avoids NA in cor matrix (root_biomass, root_traits have a few NAs)
       corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
@@ -99,8 +99,32 @@ si_figure_plan <- list(
         theme(axis.text = element_text(size = 8))
 
     }
-  )
+  ),
 
+  # correlation matrix (contrast to bare ground)
+  tar_target(
+    name = correlation_contrast_plot,
+    command = {
+
+      function_table <- big_data_contrast |>
+        select(siteID, blockID, treatment, response, value_contrast) |>
+        pivot_wider(names_from = response, values_from = value_contrast, values_fill = 0) |>
+        select(-siteID, -blockID, -treatment) |>
+        mutate(across(everything(), as.numeric))
+
+      corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
+      p.mat <- ggcorrplot::cor_pmat(function_table)
+
+      ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
+                 colors = c("#6D9EC1", "white", "#E46726"),
+                 lab = TRUE,
+                 lab_size = 4,
+                 tl.cex = 14,
+                 tl.srt = 45) +
+        theme(axis.text = element_text(size = 8))
+
+    }
+  )
 
   # # group figures: one plot per group (multifunctionality vs fg_richness), raw + prediction, significance
   # tar_target(
@@ -126,7 +150,4 @@ si_figure_plan <- list(
   #   command = make_group_figure(multifunctionality_group, group = "nutrient cycling",
   #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
   # )
-
-
-
 )

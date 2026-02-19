@@ -117,6 +117,18 @@ download_plan <- list(
     format = "file"
   ),
 
+  # fungal functional groups
+  tar_target(
+    name = fungal_fg_download,
+    command = get_file(
+      node = "tx9r2",
+      file = "FUNDER_fungal_functional_groups.csv",
+      path = here::here("data"),
+      remote_path = "3_Fungi_microbes/Clean_data"
+    ),
+    format = "file"
+  ),
+
   # fungal necromass
   tar_target(
     name = necromass_download,
@@ -279,6 +291,10 @@ download_plan <- list(
   tar_target(
     name = microbial_raw,
     command = read_csv(microbial_download)
+  ),
+  tar_target(
+    name = fungal_fg_raw,
+    command = read_csv(fungal_fg_download)
   ),
   # fungal necromass
   tar_target(

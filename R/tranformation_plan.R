@@ -299,6 +299,21 @@ transformation_plan <- list(
       )
   ),
 
+  # fungal functional groups
+  tar_target(
+    name = fungal_fg_density,
+    command = fungal_fg_raw |> 
+      select(-any_of("...1")) |>
+      rename(value = relative_abundance) |> 
+      mutate(
+        data_type = "process",
+        group = "microbes",
+        response = functional_group,
+        unit = "g m\u207B\u00B2"
+      ) |>
+      select(-functional_group)
+  ),
+
   # fungal necromass
   tar_target(
     name = fungal_necromass,
