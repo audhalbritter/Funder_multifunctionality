@@ -22,6 +22,7 @@ list(
   transformation_plan,
   multifunctionality_plan,
   new_analysis_plan,
+  model_plan,
   # analysis_plan,
   # figure_plan,
   #si_analysis_plan,
