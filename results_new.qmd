@@ -1,0 +1,148 @@
+---
+format:
+  html:
+    self-contained: true
+title: Results (new)
+execute:
+  echo: false
+---
+
+```{r}
+#| label: set-up-results-new
+#| echo: false
+#| message: false
+library(targets)
+library(tarchetypes)
+library(ggplot2)
+library(patchwork)
+library(gt)
+library(ggnewscale)
+library(tibble)
+```
+
+# Results
+
+## PCA ordination
+
+Scree plots showing variance explained by each principal component for bare ground and intact vegetation.
+
+```{r}
+#| label: fig-pca-scree
+#| echo: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 4
+#| fig-cap: Scree plot of PCA eigenvalues for bare ground (left) and intact vegetation (right) plots.
+
+tar_read(pca_combined_scree)
+```
+
+PCA of ecosystem functions for bare ground (FGB) and intact vegetation (C) plots.
+
+```{r}
+#| label: fig-pca-ordination
+#| echo: false
+#| warning: false
+#| fig-width: 12
+#| fig-height: 12
+#| fig-cap: PCA ordination of ecosystem functions for bare ground (left) and intact vegetation (right) plots. Sites are coloured by summer temperature and shaped by precipitation. Loadings (arrows) are coloured by functional group.
+
+tar_read(pca_combined_plot)
+```
+
+Variation in ecosystem function composition explained by the climate grid (temperature × precipitation) from PERMANOVA.
+
+```{r}
+#| label: tab-permanova-climate
+#| echo: false
+#| tbl-cap: "Variation in ecosystem function composition explained by climate (temperature × precipitation) from PERMANOVA."
+
+pca_bare <- tar_read(pca_bare)
+pca_intact <- tar_read(pca_intact)
+
+permanova_bare <- pca_bare[[4]]
+permanova_intact <- pca_intact[[4]]
+
+tibble(
+  `Vegetation type` = c("Bare ground", "Intact vegetation"),
+  `Explained by climate` = c(
+    round(permanova_bare$R2[1] * 100, 1),
+    round(permanova_intact$R2[1] * 100, 1)
+  ),
+  `Not explained` = c(
+    round(permanova_bare$R2[2] * 100, 1),
+    round(permanova_intact$R2[2] * 100, 1)
+  )
+) |>
+  gt() |>
+  fmt_number(columns = c(`Explained by climate`, `Not explained`), decimals = 1, pattern = "{x}%")
+```
+
+### PCA with site effect partitioned out
+
+PCA of all plots: full ordination (left) and partial ordination with site effect removed (right).
+
+```{r}
+#| label: fig-pca-all-vs-no-site
+#| echo: false
+#| warning: false
+#| fig-width: 12
+#| fig-height: 12
+#| fig-cap: "PCA ordination of ecosystem functions for all plots. Left: full ordination. Right: site effect partitioned out (within-site variation only). Sites are coloured by summer temperature and shaped by precipitation."
+
+tar_read(pca_all_vs_no_site_plot)
+```
+
+
+### Single function models
+
+Model output for each ecosystem function: treatment × temperature × precipitation (excluding single removals F, G, B).
+
+```{r}
+#| label: tbl-model-single-function
+#| echo: false
+#| eval: false
+#| warning: false
+#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on each ecosystem function."
+
+tar_read(model_single_function_out)
+```
+
+Heatmap of model estimates: blue = negative, red = positive; bold numbers indicate p ≤ 0.01.
+
+```{r}
+#| label: fig-model-single-function-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model estimates for each ecosystem function. Fill colour indicates effect direction (blue = negative, red = positive); bold numbers indicate p ≤ 0.01. Responses ordered by functional group."
+
+tar_read(model_single_function_heatmap)
+```
+
+### Contrast to bare ground
+
+Same model for contrast to bare ground (treatment − FGB): treatment × temperature × precipitation.
+
+```{r}
+#| label: tbl-model-single-function-contrast
+#| echo: false
+#| eval: false
+#| warning: false
+#| tbl-cap: "Model output for contrast to bare ground (treatment − FGB)."
+
+tar_read(model_single_function_contrast_out)
+```
+
+```{r}
+#| label: fig-model-single-function-contrast-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model estimates for contrast to bare ground. Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
+
+tar_read(model_single_function_contrast_heatmap)
+```
+
