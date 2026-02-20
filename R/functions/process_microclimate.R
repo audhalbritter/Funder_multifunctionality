@@ -48,7 +48,7 @@ process_microclimate <- function(microclimate_raw, year = 2022) {
       .by = c(year, siteID, blockID, plotID, treatment)
     ) |>
     summarise(
-      value = mean(daily_min[is_extreme], na.rm = TRUE),
+      value = mean(daily_min[is_extreme], na.rm = TRUE) * -1,
       .by = c(year, siteID, blockID, plotID, treatment)
     ) |>
     mutate(response = "min_soil_moisture", unit = "%")
