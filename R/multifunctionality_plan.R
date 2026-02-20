@@ -64,9 +64,9 @@ multifunctionality_plan <- list(
       # normalize data
       # if zeros in data (nematodes and microarthropods), then there will be NAs here
       tidylog::mutate(value_trans = case_when(
-        # logit for ratio variables (proportions in 0-1); exclude "respiration" (contains "ratio")
+        # logit for ratio variables (proportions in 0-1) and fungal guilds; exclude "respiration" (contains "ratio")
         str_detect(response, "ratio") & !str_detect(response, "respiration") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
-        response %in% c("root_asscociated_sapro", "other", "sapro", "yeast_dimorphic", "animal_parasite", "mycorrhiza", "lichenized", "plant_pathogen") ~ sqrt(value),
+        response %in% c("root_asscociated_sapro", "other", "sapro", "yeast_dimorphic", "animal_parasite", "mycorrhiza", "lichenized", "plant_pathogen") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
         # log for responses with only positive values
         response %in% c("available_nitrogen", "available_phosphorus", "bacteria density", "bacterivore feeder density", "bacterivore density", "carbon stock", "fungi density", "fungivore feeder density", "nematode density", "nitrogen stock", "phosphorus stock", "plant_feeder feeder density", "predator feeder density", "soil organic matter") ~ log(value + 1),
         # no transformation for others
