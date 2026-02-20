@@ -3,23 +3,35 @@
 fancy_stats <- function(dat, sort = TRUE){
 
   dat <- dat %>%
-    mutate(term = str_replace(term, "treatment", ""),
-           term = str_replace(term, "\\(Intercept\\)", "Intercept"),
-           term = str_replace(term, "forb", "F"),
-           term = str_replace(term, "gram", "G"),
-           term = str_replace(term, "bryo", "B"),
-           term = str_replace(term, ".functional_group", "FG"),
-           term = str_replace(term, "temperature_scaled", "T"),
-           term = str_replace(term, "precipitation_scaled", "P"))
+    mutate(
+      term = str_replace(term, "treatment", ""),
+      term = str_replace(term, "\\(Intercept\\)", "Intercept"),
+      term = str_replace(term, "forb", "F"),
+      term = str_replace(term, "gram", "G"),
+      term = str_replace(term, "bryo", "B"),
+      # treatment model: .functional_groupGF -> GF, etc.
+      term = str_replace(term, "\\.functional_group", ""),
+      term = str_replace(term, "temperature_scaled", "T"),
+      term = str_replace(term, "precipitation_scaled", "P")
+    )
 
-           # sort
-           if(sort == TRUE){
-             dat <- dat |>
-               mutate(term = factor(term, levels = c("Intercept",
-                                                     "FG", "T", "P", "FG:T",
-                                                     "FG:P", "T:P", "FG:T:P",
-                                                     "F", "G", "B", "GF", "FB", "GB", "FGB")))
-           }
+  if (sort == TRUE) {
+    term_levels <- c(
+      "Intercept",
+      "T", "P", "GF", "FB", "GB", "FGB",
+      "T:P",
+      "GF:T", "FB:T", "GB:T", "FGB:T",
+      "GF:P", "FB:P", "GB:P", "FGB:P",
+      "GF:T:P", "FB:T:P", "GB:T:P", "FGB:T:P",
+      # factorial model (forb, gram, bryo)
+      "FG", "FG:T", "FG:P", "FG:T:P",
+      "F", "G", "B"
+    )
+    all_terms <- unique(dat$term)
+    ordered_terms <- c(intersect(term_levels, all_terms), setdiff(all_terms, term_levels))
+    dat <- dat |>
+      mutate(term = factor(term, levels = ordered_terms))
+  }
 
   return(dat)
 
