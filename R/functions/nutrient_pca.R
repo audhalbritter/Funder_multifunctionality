@@ -33,7 +33,7 @@ make_nutrient_pca <- function(available_nutrients_raw, meta){
 }
 
 
-plot_pca <- function(other_available_nutrients){
+plot_nutrient_pca <- function(other_available_nutrients){
 
 
   e_B <- eigenvals(other_available_nutrients[[3]])/sum(eigenvals(other_available_nutrients[[3]]))

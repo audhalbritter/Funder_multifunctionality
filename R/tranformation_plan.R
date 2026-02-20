@@ -44,7 +44,6 @@ transformation_plan <- list(
       )
   ),
 
-
   # prep biomass
   # 2015 - 2021 (maybe remove)
   tar_target(
@@ -73,19 +72,48 @@ transformation_plan <- list(
   # 2022
   tar_target(
     name = plant_biomass,
-    command = biomass_22_raw |>
+    command = biomass_22_raw |> 
       # sum biomass from different rounds and functional group (add removed_fg to group_by to keep them)
       group_by(year, siteID, blockID, plotID, treatment) |>
       summarise(value = sum(biomass), .groups = "drop") |>
       # convert to g per m2
       mutate(value = value * 10000 / 625) |>
       mutate(
-        data_type = "function",
+        data_type = "stock",
         group = "primary producers",
         response = "aboveground biomass",
         unit = "g m\u207B\u00B2"
       ) |>
       select(year:treatment, data_type, group, response, value, unit)
+  ),
+
+  # plant litter
+  tar_target(
+    name = plant_litter,
+    command = {
+
+      litter_prep <- litter_raw_2 |>
+        filter(Measure == "Cover") |>
+        select(siteID, blockID, turfID, treatment = Treatment, value = Litter) |>
+        mutate(
+          treatment = if_else(treatment %in% c("B", "FB", "GF", "FGB", "G", "F", "GB"), treatment, "C"),
+          blockID = paste0(substr(siteID, 1, 3), blockID)
+        ) |>
+        select(siteID, blockID, plotID = turfID, treatment, value) %>%
+        dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
+        mutate(value = if_else(is.na(value), 0, value))
+
+      meta |>
+        select(siteID, blockID, plotID, treatment) |>
+        tidylog::left_join(litter_prep, by = c("siteID", "blockID", "plotID", "treatment")) |>
+        tidylog::mutate(value = replace_na(value, 0)) |>
+        mutate(
+          data_type = "stock",
+          group = "primary producers",
+          response = "plant litter",
+          unit = "% cover"
+        )
+    }
   ),
 
   # root productivity and traits
@@ -103,7 +131,7 @@ transformation_plan <- list(
         value = value * 10000 / ric_area
       ) |>
       mutate(
-        data_type = "function",
+        data_type = "stock",
         group = "primary producers",
         response = "root biomass",
         unit = "g m\u207B\u00B2"
@@ -111,173 +139,194 @@ transformation_plan <- list(
       select(-ric_radius, -ric_area)
   ),
 
-  # root traits
-  tar_target(
-    name = root_traits,
-    command = root_traits_raw |>
-      select(year:treatment, response = "trait", value) |>
-      filter(!is.na(value)) |>
-      filter(response %in% c("specific_root_length_m_per_g", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
-      mutate(
-        data_type = "function",
-        group = "primary producers",
-        unit = case_when(
-          response == "specific_root_length_m_per_g" ~ "m g\u207B\u00B9",
-          response == "root_tissue_density_g_per_m3" ~ "g m\u207B\u00B3",
-          response == "root_dry_matter_content" ~ "unitless",
-          TRUE ~ NA_character_
-        )
-      )
-  ),
-
-  # community
-  tar_target(
-    name = community,
-    command = community_raw |>
-      # remove extra plots in 2016, select last year
-      filter(
-        treatment != "XC",
-        year == 2022
-      )
-  ),
-
-  # plant richness (vascular and bryophytes)
-  tar_target(
-    name = plant_richness,
-    command = community |>
-      # remove where species are NA, treatments with only bryophytes etc. Is only needed if intersted in moss hieght, litter cover etc.
-      filter(!is.na(species)) |>
-      bind_rows(bryophyte_richness) |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = n()) |>
-      mutate(
-        data_type = "biodiversity",
-        group = "primary producers",
-        response = "plant richness",
-        unit = "count per 625 cm\u00B2"
-      )
-  ),
-
-  # bryophyte richness
-  tar_target(
-    name = bryophyte_richness,
-    command = bryophyte_raw %>%
-      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
-      mutate(year = 2022)
-    # group_by(year, siteID, blockID, plotID, treatment) |>
-    # summarise(value = n()) |>
-    # mutate(data_type = "biodiversity",
-    #        group = "primary producers",
-    #        response = "plant richness",
-    #        unit = "count")
-  ),
-
-  # prep microarthropod
-  tar_target(
-    name = microarthropod,
-    command = microarthropod_raw |>
-      mutate(
-        siteID = case_when(
-          siteID == "Gud" ~ "Gudmedalen",
-          siteID == "Lav" ~ "Lavisdalen",
-          siteID == "Ram" ~ "Rambera",
-          siteID == "Ulv" ~ "Ulvehaugen",
-          siteID == "Skj" ~ "Skjelingahaugen",
-          siteID == "Alr" ~ "Alrust",
-          siteID == "Arh" ~ "Arhelleren",
-          siteID == "Fau" ~ "Fauske",
-          siteID == "Hog" ~ "Hogsete",
-          siteID == "Ovs" ~ "Ovstedalen",
-          siteID == "Vik" ~ "Vikesland",
-          siteID == "Ves" ~ "Veskre",
-          TRUE ~ siteID
-        )
-      ) |>
-      select(year, siteID, blockID, plotID, treatment, functional_group, abundance, sample_weight_g) |>
-      # remove missing data (1 plot, Fau2FB)
-      filter(!is.na(abundance)) |>
-      mutate(abundance_per_g_dry_soil = abundance / sample_weight_g)
-  ),
-  tar_target(
-    name = microarthropod_density,
-    command = microarthropod |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = sum(abundance_per_g_dry_soil)) |>
-      mutate(
-        data_type = "function",
-        group = "higher trophic level",
-        response = "microarthropod density",
-        unit = "count g\u207B\u00B9"
-      )
-  ),
-
   # prep nematodes
   tar_target(
     name = nematode,
     command = nematode_raw |>
-      select(year:treatment, family, functional_group, value = total_nematode_abundance_per_g_dry_soil, per_family_abundance_per_g_dry_soil) |>
-      filter(value != 0)
-    # filter(!family %in% c("unknown", "unknown_bacterial_feeder", "unknown_plant_feeder")) |>
+      tidylog::filter(family != "unknown") |>
+      tidylog::mutate(functional_group = if_else(functional_group == "omnivore", "predator", functional_group)) |>
+      summarise(
+        value = sum(per_family_abundance_per_g_dry_soil),
+        .by = c(year, siteID, blockID, plotID, treatment, family, functional_group)
+      )
   ),
+
   tar_target(
     name = nematode_density,
-    command = nematode |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = sum(value)) |>
+    command = nematode_raw |>
+      distinct(year, siteID, blockID, plotID, treatment, total_nematode_abundance_per_g_dry_soil) |>
+      rename(value = total_nematode_abundance_per_g_dry_soil) |>
       mutate(
-        data_type = "function",
-        group = "higher trophic level",
+        data_type = "stock",
+        group = "nematodes",
         response = "nematode density",
         unit = "count g\u207B\u00B9"
       )
   ),
+
   tar_target(
-    name = nematode_ecosytem_condition,
+    name = nematode_feeding_group_density,
     command = nematode |>
-      filter(!family %in% c("unknown", "unknown_bacterial_feeder", "unknown_plant_feeder")) |>
-      # Tripylidae does not join because it is filtered out
-      # Aphelenchidae is in the family table but not in the data
-      tidylog::left_join(
-        nematode_cp |>
-          mutate(Family = tolower(Family)) |>
-          rename(family = Family),
-        by = "family"
-      ) |>
-      # remove observations with no cp_group (26% removed)
-      tidylog::filter(!is.na(cp_group)) |>
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(
-        value = weighted.mean(as.numeric(cp_group), per_family_abundance_per_g_dry_soil),
-        .groups = "drop"
-      ) |>
+      group_by(year, siteID, blockID, plotID, treatment, response = functional_group) |>
+      summarise(value = sum(value)) |>
       mutate(
-        data_type = "function",
-        group = "higher trophic level",
-        response = "nematode ecosystem condition",
+        data_type = "stock",
+        group = "nematodes",
+        response = paste0(response, " feeder density"),
+        unit = "count g\u207B\u00B9"
+      )
+  ),
+
+    tar_target(
+    name = nematode_fungal_bacterial_feeder_ratio,
+    command = nematode |> 
+      filter(functional_group %in% c("fungivore", "bacterivore")) |>
+      group_by(year, siteID, blockID, plotID, treatment, response = functional_group) |>
+      summarise(value = sum(value)) |>
+      pivot_wider(id_cols = c(year, siteID, blockID, plotID, treatment), names_from = response, values_from = value) |>
+      # bacteria to fungi ratio to make it slow to fast
+      mutate(value = bacterivore / (fungivore + bacterivore)) |> 
+      select(year, siteID, blockID, plotID, treatment, value) |>
+      mutate(
+        data_type = "process",
+        response = "bacterial_fungal_feeder_ratio",
+        group = "nematodes",
+        unit = "unitless"
+      )
+  ),
+  
+  # cp values for nematodes (fill NA cp_group with literature values)
+  tar_target(
+    name = nematode_cp,
+    command = nematode_cp_raw |>
+      mutate(
+        cp_group = case_when(
+          Family == "Desmodoridae" ~ 3L,
+          Family == "Diphterophoridae" ~ 3L,
+          Family == "Diplogasteridae" ~ 1L,
+          Family == "Dorylaimoidea" ~ 4L,
+          Family == "Ecphyadophoridae" ~ 2L,
+          Family == "Metateratocephalidae" ~ 3L,
+          Family == "Neodiplogasteridae" ~ 1L,
+          Family == "Odontolaimidae" ~ 3L,
+          Family == "Paratylenchidae" ~ 2L,
+          Family == "Psilenchidae" ~ 2L,
+          TRUE ~ as.integer(cp_group)
+        )
+      ) |>
+      select(Family, `Functional Group`, cp_group)
+  ),
+
+  tar_target(
+    name = nematode_indices,
+    command = {
+      joined <- nematode |>
+        tidylog::left_join(
+          nematode_cp |>
+            mutate(Family = tolower(Family)) |>
+            rename(family = Family),
+          by = "family"
+        ) |>
+        tidylog::filter(!is.na(cp_group))
+
+      plant_parasite <- joined |>
+        filter(`Functional Group` == "Plant") |>
+        summarise(
+          value = weighted.mean(as.numeric(cp_group), value),
+          .by = c(year, siteID, blockID, plotID, treatment)
+        ) |>
+        mutate(response = "plant_parasite_index")
+
+      maturity <- joined |>
+        filter(`Functional Group` != "Plant") |>
+        summarise(
+          value = weighted.mean(as.numeric(cp_group), value),
+          .by = c(year, siteID, blockID, plotID, treatment)
+        ) |>
+        mutate(response = "maturity_index")
+
+      bind_rows(plant_parasite, maturity) |>
+        # invert value to make it slow to fast
+        mutate(value = -1 * value) |>
+        mutate(
+          data_type = "process",
+          group = "nematodes",
+          unit = "unitless"
+        )
+    }
+  ),
+
+  # fungal and bacterial density
+  tar_target(
+    name = microbes,
+    command = microbial_raw |> 
+      tidylog::mutate(abundance_per_g = if_else(is.na(abundance_per_g), 0, abundance_per_g)) |>
+      select(year, siteID, blockID, plotID, treatment, group, value = abundance_per_g)
+  ),
+
+    # fungal and bacterial density
+  tar_target(
+    name = microbial_density,
+    command = microbes |> 
+      select(year, siteID, blockID, plotID, treatment, response = group, value) |>
+      mutate(
+        data_type = "stock",
+        group = "microbes",
+        response = paste0(response, " density"),
+        unit = "count g\u207B\u00B9"
+      )
+  ),
+
+  # microbial fungal:bacterial ratio (fungal density / total microbial density per plot)
+  tar_target(
+    name = microbial_ratio,
+    command = microbes |>
+      pivot_wider(
+        id_cols = c(year, siteID, blockID, plotID, treatment),
+        names_from = group,
+        values_from = value
+      ) |>
+      # bacteria to fungi ratio to make it slow to fast
+      mutate(
+        value = bacteria / (fungi + bacteria),
+        response = "bacteria-fungi ratio"
+      ) |> 
+      select(year, siteID, blockID, plotID, treatment, response, value) |>
+      mutate(
+        data_type = "process",
+        group = "microbes",
         unit = "unitless"
       )
   ),
 
-  # microbial fungal:bacterial ratio (fungal density / bacterial density per plot)
+  # fungal functional groups
   tar_target(
-    name = microbial_density,
-    command = microbial_raw |>
-      filter(!is.na(abundance_per_g)) |>
-      pivot_wider(
-        id_cols = c(year, siteID, blockID, plotID, treatment),
-        names_from = group,
-        values_from = abundance_per_g
-      ) |>
-      filter(!is.na(bacteria), !is.na(fungi), bacteria > 0) |>
+    name = fungal_fg_density,
+    command = fungal_fg_raw |> 
+      select(-any_of("...1")) |>
+      rename(value = relative_abundance) |> 
       mutate(
-        value = fungi / bacteria,
-        response = "fungal bacterial ratio"
-      ) |> 
-      select(year, siteID, blockID, plotID, treatment, response, value) |>
+        data_type = "process",
+        group = "microbes",
+        response = functional_group,
+        unit = "g m\u207B\u00B2"
+      ) |>
+      select(-functional_group)
+  ),
+
+  # fungal necromass
+  tar_target(
+    name = fungal_necromass,
+    command = necromass_raw |>
+      mutate(year = year(retrieval_date))|>
+      select(year, siteID, blockID, plotID, treatment, response = mycelium, value = relative_weight_loss) %>%
+      dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
+      tidylog::filter(!is.na(value)) |>
       mutate(
         data_type = "function",
-        group = "higher trophic level",
-        unit = "unitless"
+        group = "carbon cycling",
+        response = paste0(response, " fungal necromass decomposition"),
+        unit = "g m\u207B\u00B2"
       )
   ),
 
@@ -294,7 +343,7 @@ transformation_plan <- list(
       select(siteID:treatment, litter_type, value = relative_weight_loss) |>
       mutate(
         year = 2022,
-        data_type = "function",
+        data_type = "process",
         group = "carbon cycling",
         unit = "%"
       )
@@ -322,7 +371,7 @@ transformation_plan <- list(
     command = cn_raw |>
       select(year:plotID, response = variable, value) |>
       mutate(
-        data_type = "function",
+        data_type = "stock",
         response = case_when(
           response == "C" ~ "carbon stock",
           response == "N" ~ "nitrogen stock",
@@ -338,97 +387,20 @@ transformation_plan <- list(
       )
   ),
 
-  # macronutrients
+  # soil organic matter
   tar_target(
-    name = macronutrients,
-    command = macronutrients_raw |>
-      filter(name == "phosphorous") |>
-      # convert from mg per 100g dry soil to g per g dry soil
-      mutate(value = value / 100) |>
-      select(year, siteID, blockID, plotID, treatment, value) |>
+    name = som,
+    command = som_raw |>
+      mutate(year = 2022) |>
+      filter(variable == "organic_matter") |>
+      select(year, siteID, blockID, plotID, treatment, value) |> 
       mutate(
-        data_type = "function",
-        response = "phosphorus stock",
-        group = "nutrient cycling",
-        unit = "g g\u207B\u00B9"
+        data_type = "stock",
+        response = "soil organic matter",
+        group = "carbon cycling",
+        unit = "%"
       )
   ),
-
-  # available nutrients
-  # nitrogen and phosphorus
-  tar_target(
-    name = available_np,
-    command = available_nutrients_raw |>
-      mutate(year = year(retrieval_date)) |>
-      # convert to <U+00B5>g per m2 per 35 days
-      mutate(value = value * 10000 / 10) |>
-      filter(elements == "P") |>
-      mutate(
-        data_type = "function",
-        group = "nutrient cycling",
-        response = "available phosphate",
-        unit = "\u00B5g m\u207B\u00B2 35 days"
-      ) |>
-      select(year, siteID, blockID, plotID, treatment, data_type, group, response, value, unit)
-  ),
-
-  # make ordination for other available nutrients
-  tar_target(
-    name = other_available_nutrients,
-    command = make_nutrient_pca(
-      available_nutrients_raw |>
-        filter(!elements %in% c("NH4-N", "NO3-N", "P")),
-      meta
-    )
-  ),
-  tar_target(
-    name = macronutrients_pca,
-    command = make_nutrient_pca(
-      available_nutrients_raw |>
-        filter(elements %in% c("NH4-N", "NO3-N", "P", "K", "Ca", "Mg", "S")),
-      meta
-    )
-  ),
-  tar_target(
-    name = micronutrients_pca,
-    command = make_nutrient_pca(
-      available_nutrients_raw |>
-        filter(elements %in% c("Fe", "Mn", "Zn", "Cu", "B", "Al", "Pb")),
-      meta
-    )
-  ),
-
-  # make ordination for other available nutrients
-  tar_target(
-    name = available_nutrients,
-    command = bind_rows(
-      macronutrients = macronutrients_pca[[1]],
-      micronutrients = micronutrients_pca[[1]],
-      .id = "response"
-    ) |>
-      mutate(
-        data_type = "function",
-        group = "nutrient cycling",
-        unit = "PCA axis 1"
-      ) |>
-      select(siteID:year, response, value = PC1, data_type:unit)
-  ),
-
-  # # make ordination for other available nutrients
-  # tar_target(
-  #   name = available_nutrients,
-  #   command = bind_rows(
-  #     available_np,
-  #     other_available_nutrients[[1]] |>
-  #       mutate(
-  #         data_type = "function",
-  #         group = "nutrient cycling",
-  #         response = "available micro nutrients",
-  #         unit = "PCA axis 1"
-  #       ) |>
-  #       select(siteID:year, value = PC1, data_type:unit)
-  #   )
-  # ),
 
   # cflux
   # prep data
@@ -463,7 +435,7 @@ transformation_plan <- list(
     name = nee,
     command = cflux |>
       # transform data to not have negative values
-      ### IS THIS CORRECT OR SHOULD WE USE SCALE? !!!!
+      #### ADD MIM VALUE OR SOMETHING
       mutate(nee = nee + 15) |>
       group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(
@@ -484,5 +456,69 @@ transformation_plan <- list(
         .groups = "drop"
       ) |>
       mutate(response = "ecosystem respiration")
+  ),
+
+  ## nutrient cycling
+  # macronutrients
+  tar_target(
+    name = phosphorus_stock,
+    command = macronutrients_raw |>
+      filter(name == "phosphorous") |>
+      # convert from mg per 100g dry soil to g per g dry soil
+      mutate(value = value / 100) |>
+      select(year, siteID, blockID, plotID, treatment, value) |>
+      mutate(
+        data_type = "stock",
+        response = "phosphorus stock",
+        group = "nutrient cycling",
+        unit = "g g\u207B\u00B9"
+      )
+  ),
+
+  # available nutrients
+  # make ordination for other available nutrients
+  tar_target(
+    name = micronutrients_pca,
+    command = make_nutrient_pca(
+      available_nutrients_raw |>
+        filter(!elements %in% c("NH4-N", "NO3-N", "P")),
+      meta
+    )
+  ),
+
+  # make ordination for other available nutrients
+  tar_target(
+    name = available_nutrients,
+    command = bind_rows(
+      available_nitrogen = available_nutrients_raw |>
+        filter(elements %in% c("NH4-N", "NO3-N")) |>
+        group_by(siteID, blockID, plotID, treatment) |>
+        summarise(value = sum(value)),
+      available_phosphorus = available_nutrients_raw |>
+        filter(elements %in% c("P")) |>
+        select(siteID, blockID, plotID, treatment, value),
+      avialable_micronutrients = micronutrients_pca[[1]] |>
+      select(siteID, blockID, plotID, treatment, value = PC1),
+      .id = "response"
+    ) |>
+      mutate(
+        year = 2021,
+        data_type = "process",
+        group = "nutrient cycling",
+        unit = case_when(
+          response == "available_nitrogen" ~ "µg m\u207B\u00B2",
+          response == "available_phosphorus" ~ "µg m\u207B\u00B2",
+          response == "avialable_micronutrients" ~ "PCA axis 1"
+        )
+      ) |>
+      select(year,siteID:treatment, response, value, data_type:unit)
+  ),
+
+  # microclimate: average min/max ground temperature, daily_temp_amplitude (top 25%),
+  # min_soil_moisture (bottom 25%), mean soil moisture
+  tar_target(
+    name = microclimate,
+    command = process_microclimate(microclimate_raw) |>
+      mutate(data_type = "process", group = "microenvironment")
   )
 )

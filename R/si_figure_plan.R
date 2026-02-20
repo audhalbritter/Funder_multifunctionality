@@ -2,12 +2,6 @@
 
 si_figure_plan <- list(
 
-  # plot ordination for other available nutrients
-  tar_target(
-    name = nutrient_pca,
-    command = plot_pca(other_available_nutrients)
-  ),
-
   # Raw data
   tar_target(
     name = raw_functions_plot,
@@ -25,15 +19,18 @@ si_figure_plan <- list(
       # shift values to make all positive (for responses with negative values)
       group_by(response) |>
       mutate(value = case_when(
-        response %in% c("macronutrients", "micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
-        #response == "fungal bacterial ratio" ~ asinh(value),
+        response %in% c("avialable_micronutrients") ~ value + abs(min(value, na.rm = TRUE)) + 1,
         TRUE ~ value
-      )) |>
-      ungroup() |>
-      # log transform some functions (careful this code is duplicated, also in mf plan)
-      mutate(value_trans = case_when(
+      )) |> 
+      ungroup() |> 
+      # normalize data
+      # if zeros in data (nematodes and microarthropods), then there will be NAs here
+      tidylog::mutate(value_trans = case_when(
+        # logit for ratio variables (proportions in 0-1) and fungal guilds; exclude "respiration" (contains "ratio")
+        str_detect(response, "ratio") & !str_detect(response, "respiration") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
+        response %in% c("root_asscociated_sapro", "other", "sapro", "yeast_dimorphic", "animal_parasite", "mycorrhiza", "lichenized", "plant_pathogen") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
         # log for responses with only positive values
-        response %in% c("aboveground biomass", "root biomass", "microarthropod density", "nematode density", "carbon stock", "nitrogen stock", "phosphorus stock", "micronutrients", "gross primary producticity", "fungal bacterial ratio") ~ log(value),
+        response %in% c("available_nitrogen", "available_phosphorus", "bacteria density", "bacterivore feeder density", "bacterivore density", "carbon stock", "fungi density", "fungivore feeder density", "nematode density", "nitrogen stock", "phosphorus stock", "plant_feeder feeder density", "predator feeder density", "soil organic matter") ~ log(value + 1),
         # no transformation for others
         TRUE ~ value
       )) |>
@@ -53,31 +50,31 @@ si_figure_plan <- list(
       facet_wrap(~ response, scales = "free")
   ),
 
-  # decomposition data
-  tar_target(
-    name = decomposition_data_plot,
-    command = {
+  # # decomposition data
+  # tar_target(
+  #   name = decomposition_data_plot,
+  #   command = {
 
-      dat <- big_data |>
-        filter(response %in% c("decomposition graminoids", "decomposition forbs"))
+  #     dat <- big_data |>
+  #       filter(response %in% c("decomposition graminoids", "decomposition forbs"))
 
-      mean <- dat |>
-        group_by(siteID, blockID, plotID, fg_richness, treatment, habitat, precipitation_name) |>
-        summarise(value_std = mean(value_std)) |>
-        mutate(data_type = "function",
-               group = "carbon cycling",
-               response = "decomposition mean")
+  #     mean <- dat |>
+  #       group_by(siteID, blockID, plotID, fg_richness, treatment, habitat, precipitation_name) |>
+  #       summarise(value_std = mean(value_std)) |>
+  #       mutate(data_type = "function",
+  #              group = "carbon cycling",
+  #              response = "decomposition mean")
 
-      bind_rows(dat, mean) |>
-        ggplot(aes(y = value_std, x = fg_richness, colour = response)) +
-        geom_point() +
-        geom_smooth(method = "lm") +
-        labs(y = "Standardized value") +
-        facet_grid(habitat ~ precipitation_name, scales = "free") +
-        theme_bw()
-    }
+  #     bind_rows(dat, mean) |>
+  #       ggplot(aes(y = value_std, x = fg_richness, colour = response)) +
+  #       geom_point() +
+  #       geom_smooth(method = "lm") +
+  #       labs(y = "Standardized value") +
+  #       facet_grid(habitat ~ precipitation_name, scales = "free") +
+  #       theme_bw()
+  #   }
 
-  ),
+  # ),
 
   # correlation matrix
   tar_target(
@@ -87,7 +84,7 @@ si_figure_plan <- list(
       function_table <- big_data |>
         select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-        select(`aboveground biomass`:`micronutrients`)
+        select(-c(siteID:group))
 
       # pairwise.complete.obs avoids NA in cor matrix (root_biomass, root_traits have a few NAs)
       corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
@@ -96,7 +93,7 @@ si_figure_plan <- list(
       ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                  colors = c("#6D9EC1", "white", "#E46726"),
                  lab = TRUE,
-                 lab_size = 8,
+                 lab_size = 4,
                  tl.cex = 14,
                  tl.srt = 45) +
         theme(axis.text = element_text(size = 8))
@@ -104,32 +101,53 @@ si_figure_plan <- list(
     }
   ),
 
-
-  # group figures: one plot per group (multifunctionality vs fg_richness), raw + prediction, significance
+  # correlation matrix (contrast to bare ground)
   tar_target(
-    name = primary_producers_plot,
-    command = make_group_figure(multifunctionality_group, group = "primary producers",
-                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
-  ),
+    name = correlation_contrast_plot,
+    command = {
 
-  tar_target(
-    name = higher_trophic_level_plot,
-    command = make_group_figure(multifunctionality_group, group = "higher trophic level",
-                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
-  ),
+      function_table <- big_data_contrast |>
+        select(siteID, blockID, treatment, response, value_contrast) |>
+        pivot_wider(names_from = response, values_from = value_contrast, values_fill = 0) |>
+        select(-siteID, -blockID, -treatment) |>
+        mutate(across(everything(), as.numeric))
 
-  tar_target(
-    name = carbon_cycling_plot,
-    command = make_group_figure(multifunctionality_group, group = "carbon cycling",
-                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
-  ),
+      corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
+      p.mat <- ggcorrplot::cor_pmat(function_table)
 
-  tar_target(
-    name = nutrient_cycling_plot,
-    command = make_group_figure(multifunctionality_group, group = "nutrient cycling",
-                                model_group = model_group, temp_colour, prec_linetype, prec_shape)
+      ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
+                 colors = c("#6D9EC1", "white", "#E46726"),
+                 lab = TRUE,
+                 lab_size = 4,
+                 tl.cex = 14,
+                 tl.srt = 45) +
+        theme(axis.text = element_text(size = 8))
+
+    }
   )
 
+  # # group figures: one plot per group (multifunctionality vs fg_richness), raw + prediction, significance
+  # tar_target(
+  #   name = primary_producers_plot,
+  #   command = make_group_figure(multifunctionality_group, group = "primary producers",
+  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
+  # ),
 
+  # tar_target(
+  #   name = higher_trophic_level_plot,
+  #   command = make_group_figure(multifunctionality_group, group = "higher trophic level",
+  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
+  # ),
 
+  # tar_target(
+  #   name = carbon_cycling_plot,
+  #   command = make_group_figure(multifunctionality_group, group = "carbon cycling",
+  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
+  # ),
+
+  # tar_target(
+  #   name = nutrient_cycling_plot,
+  #   command = make_group_figure(multifunctionality_group, group = "nutrient cycling",
+  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
+  # )
 )

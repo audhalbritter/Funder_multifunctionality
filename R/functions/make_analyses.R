@@ -77,3 +77,33 @@ lmer_prediction <- function(dat, fit) {
   return(result)
 }
 
+
+make_model <- function(dat, response_var, fg_var, group){
+  dat |>
+    rename(.response = {{response_var}},
+           .functional_group = {{fg_var}}) |>
+    group_by(across(all_of({{group}}))) |>
+    nest() |>
+    mutate(
+      model = map(
+        data,
+        ~ {
+          safe_fit <- purrr::safely(function(df) {
+            lmerTest::lmer(
+              data = df,
+              .response ~ .functional_group * (temperature_scaled + precipitation_scaled) + (1 | siteID)
+            )
+          })
+          res <- safe_fit(.)
+          if (!is.null(res$error)) {
+            warning("Model failed to converge for one group: ", conditionMessage(res$error))
+          }
+          res$result
+        }
+      ),
+      # model output (NULL when model failed to converge or downstream fails)
+      result = map(model, ~ purrr::safely(tidy)(.)$result),
+      anova = map(model, ~ purrr::safely(car::Anova)(.)$result),
+      anova_tidy = map(anova, ~ purrr::safely(tidy)(.)$result)
+    )
+}

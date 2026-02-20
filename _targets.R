@@ -6,8 +6,7 @@ library(tarchetypes)
 
 # Set target options:
 tar_option_set(
-  packages = c("here", "tidyverse", "dataDownloader", "dataDocumentation", "scales", "vegan", "ggvegan", "glue","grid", "ggcorrplot", "lme4", "broom.mixed", "lmerTest", "patchwork", "gt", "ggsignif", "performance", "glmm.hp"), # packages that your targets need to run
-  #format = "rds" # default storage format
+  packages = c("here", "tidyverse", "dataDownloader", "dataDocumentation", "scales", "vegan", "ggvegan", "glue", "grid", "ggcorrplot", "ggnewscale", "lme4", "broom.mixed", "lmerTest", "patchwork", "gt", "ggsignif", "performance", "glmm.hp")
 )
 
 # tar_make_clustermq() configuration (okay to leave alone):
@@ -22,9 +21,11 @@ list(
   download_plan,
   transformation_plan,
   multifunctionality_plan,
-  analysis_plan,
-  figure_plan,
-  si_analysis_plan,
-  manuscript_plan,
+  new_analysis_plan,
+  model_plan,
+  # analysis_plan,
+  # figure_plan,
+  #si_analysis_plan,
+  # manuscript_plan,
   si_figure_plan
 )
