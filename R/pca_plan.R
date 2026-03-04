@@ -52,7 +52,7 @@ new_analysis_plan <- list(
     tar_target(
         name = pca_all_vs_no_site_plot,
         command = {
-            p_all <- plot_pca_separate(pca_all, facet_var = "treatment") + ggtitle("All data")
+            p_all <- plot_pca_separate(pca_all, facet_var = "habitat") + ggtitle("All data")
             p_no_site <- plot_pca_separate(pca_no_site, display = "treatment", facet_var = "treatment") + ggtitle("Site effect partitioned out")
             (p_all | p_no_site) + patchwork::plot_layout(guides = "collect")
         }
