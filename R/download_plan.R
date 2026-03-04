@@ -122,7 +122,7 @@ download_plan <- list(
     name = fungal_fg_download,
     command = get_file(
       node = "tx9r2",
-      file = "FUNDER_fungal_functional_groups.csv",
+      file = "FUNDER_functional_fungi_2022.csv",
       path = here::here("data"),
       remote_path = "3_Fungi_microbes/Clean_data"
     ),
