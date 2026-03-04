@@ -304,6 +304,7 @@ transformation_plan <- list(
     name = fungal_fg_density,
     command = fungal_fg_raw |> 
       select(-any_of("...1")) |>
+      filter(functional_group != "other") |>
       rename(value = relative_abundance) |> 
       mutate(
         data_type = "process",
