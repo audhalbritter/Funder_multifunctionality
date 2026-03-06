@@ -101,7 +101,7 @@ multifunctionality_plan <- list(
       contrast_long |>
         left_join(
           big_data |> select(-plotID, -value, -value_trans, -value_std),
-          by = c("siteID", "blockID", "treatment", "response")
+          by = c("year", "siteID", "blockID", "treatment", "response")
         )
     }
   ),

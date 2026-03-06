@@ -12,15 +12,22 @@
 #' @param permanova_permutations Number of permutations (default 999)
 make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova_method = "euclidean", permanova_permutations = 999) {
 
-  meta_cols <- c("siteID", "blockID", "plotID", "treatment", "temperature_degree",
-                 "habitat", "precipitation_name", "precipitation_mm",
-                 "temperature_scaled", "precipitation_scaled")
+  # include year so each year × plot is a separate observation in the PCA
+  meta_cols <- c(
+    "year", "siteID", "blockID", "plotID", "treatment", "temperature_degree",
+    "habitat", "precipitation_name", "precipitation_mm",
+    "temperature_scaled", "precipitation_scaled"
+  )
   meta_cols <- intersect(meta_cols, names(big_data))
 
-  # prep data: one row per plot
+  # prep data: one row per meta combo, one column per response
   big_data_wide <- big_data |>
     select(all_of(meta_cols), response, value_std) |>
-    pivot_wider(names_from = response, values_from = value_std, values_fill = 0)
+    tidyr::pivot_wider(
+      names_from  = response,
+      values_from = value_std,
+      values_fill = 0
+    )
 
   response_matrix <- big_data_wide |> select(-all_of(meta_cols))
   metadata <- big_data_wide |> select(all_of(meta_cols))

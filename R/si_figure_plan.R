@@ -82,7 +82,9 @@ si_figure_plan <- list(
     command = {
 
       function_table <- big_data |>
-        select(-year, -value_trans, -value_std, -unit, -temperature_degree, -habitat, -temperature_scaled, -precipitation_mm, -precipitation_name, -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
+        select(-value_trans, -value_std, -unit, -temperature_degree, -habitat,
+               -temperature_scaled, -precipitation_mm, -precipitation_name,
+               -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
         select(-c(siteID:group))
 
@@ -107,7 +109,7 @@ si_figure_plan <- list(
     command = {
 
       function_table <- big_data_contrast |>
-        select(siteID, blockID, treatment, response, value_contrast) |>
+        select(year, siteID, blockID, treatment, response, value_contrast) |>
         pivot_wider(names_from = response, values_from = value_contrast, values_fill = 0) |>
         select(-siteID, -blockID, -treatment) |>
         mutate(across(everything(), as.numeric))
