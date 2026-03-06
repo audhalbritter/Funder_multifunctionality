@@ -403,24 +403,52 @@ transformation_plan <- list(
       )
   ),
 
-  # cflux
-  # prep data
+  # cflux block
+  # prep data and average replicates within year × site × block × plot × treatment
   tar_target(
     name = cflux,
-    command = cflux_raw |>
-      filter(year == 2017) |>
-      filter(!treatment %in% c("RTC", "XC")) |>
-      mutate(
-        data_type = "function",
-        group = "carbon cycling",
-        unit = "\u00B5mol m\u207B\u00B2 s\u207B\u00B9"
-      )
+    command = {
+      # 2017 FunCaB fluxes (may have repeated measurements per plot)
+      cflux_2017 <- cflux_raw |>
+        filter(year == 2017, !treatment %in% c("RTC", "XC")) |>
+        group_by(year, siteID, blockID, plotID, treatment) |>
+        summarise(
+          nee  = mean(nee,  na.rm = TRUE),
+          gpp  = mean(gpp,  na.rm = TRUE),
+          Reco = mean(Reco, na.rm = TRUE),
+          .groups = "drop"
+        )
+
+      # 2022 FUNDER fluxes: wide format, then average over replicate per plot
+      cflux_2022 <- cflux_22_raw |>
+        pivot_wider(
+          id_cols = c(siteID, blockID, plotID, treatment, replicate),
+          names_from = type,
+          values_from = f_flux
+        ) |>
+        rename(nee = NEE, gpp = GPP) |>
+        mutate(year = 2022) |>
+        group_by(year, siteID, blockID, plotID, treatment) |>
+        summarise(
+          nee  = mean(nee,  na.rm = TRUE),
+          gpp  = mean(gpp,  na.rm = TRUE),
+          Reco = mean(Reco, na.rm = TRUE),
+          .groups = "drop"
+        ) |> filter(!is.na(gpp))
+
+      bind_rows(cflux_2017, cflux_2022) |>
+        mutate(
+          data_type = "function",
+          group     = "carbon cycling",
+          unit      = "\u00B5mol m\u207B\u00B2 s\u207B\u00B9"
+        )
+    }
     # Negative NEE values reflect CO2 uptake in the ecosystem, and positive values reflect CO2 release from the ecosystem to the atmosphere -> needs to be converted to + ecosystem uptake and - is release to atmosphere
   ),
 
-  # gpp
+  # gpp (rename target to avoid name clash with gpp column in cflux)
   tar_target(
-    name = gpp,
+    name = gpp_flux,
     command = cflux |>
       mutate(gpp = -1 * gpp) |>
       group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
@@ -433,7 +461,7 @@ transformation_plan <- list(
 
   # nee
   tar_target(
-    name = nee,
+    name = nee_flux,
     command = cflux |>
       # transform data to not have negative values
       #### ADD MIM VALUE OR SOMETHING
@@ -446,10 +474,9 @@ transformation_plan <- list(
       mutate(response = "net ecosystem exchange")
   ),
 
-
   # reco
   tar_target(
-    name = reco,
+    name = reco_flux,
     command = cflux |>
       group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(

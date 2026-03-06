@@ -27,9 +27,9 @@ multifunctionality_plan <- list(
       decomposition_gram,
       cn_stocks |> filter(response != "CN"), # includes nitrogen stocks
       #som,
-      gpp,
-      #nee,
-      reco,
+      gpp_flux,
+      #nee_flux,
+      reco_flux,
 
       # nutrient cycle
       phosphorus_stock,
@@ -90,7 +90,7 @@ multifunctionality_plan <- list(
     name = big_data_contrast,
     command = {
       contrast_wide <- big_data |>
-        select(siteID, blockID, treatment, response, value_std) |>
+        select(year, siteID, blockID, treatment, response, value_std) |>
         pivot_wider(names_from = treatment, values_from = value_std) |>
         mutate(across(any_of(c("C", "F", "G", "B", "GF", "FB", "GB")), ~ .x - FGB))
 

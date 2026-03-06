@@ -211,6 +211,16 @@ download_plan <- list(
     ),
     format = "file"
   ),
+  tar_target(
+    name = cflux_22_download,
+    command = get_file(
+      node = "tx9r2",
+      file = "FUNDER_clean_cfluxes_2022.csv",
+      path = here::here("data"),
+      remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"
+    ),
+    format = "file"
+  ),
 
   # microclimate
   tar_target(
@@ -335,6 +345,10 @@ download_plan <- list(
   tar_target(
     name = cflux_raw,
     command = read_csv(cflux_download)
+  ),
+  tar_target(
+    name = cflux_22_raw,
+    command = read_csv(cflux_22_download)
   ),
   # microclimate
   tar_target(
