@@ -18,11 +18,11 @@ fancy_stats <- function(dat, sort = TRUE){
   if (sort == TRUE) {
     term_levels <- c(
       "Intercept",
-      "T", "P", "GF", "FB", "GB", "FGB",
+      "T", "P", "GB", "FB", "GF", "B", "G", "F", "C",
       "T:P",
-      "GF:T", "FB:T", "GB:T", "FGB:T",
-      "GF:P", "FB:P", "GB:P", "FGB:P",
-      "GF:T:P", "FB:T:P", "GB:T:P", "FGB:T:P",
+      "GB:T", "FB:T", "GF:T", "B:T", "G:T", "F:T", "C:T",
+      "GB:P", "FB:P", "GF:P", "B:P", "G:P", "F:P", "C:P",
+      "GB:T:P", "FB:T:P", "GF:T:P", "B:T:P", "G:T:P", "F:T:P", "C:T:P",
       # factorial model (forb, gram, bryo)
       "FG", "FG:T", "FG:P", "FG:T:P",
       "F", "G", "B"

@@ -79,7 +79,7 @@ multifunctionality_plan <- list(
       mutate(forb = if_else(str_detect(treatment, "F"), 0, 1),
              gram = if_else(str_detect(treatment, "G"), 0, 1),
              bryo = if_else(str_detect(treatment, "B"), 0, 1)) |>
-      mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB", "FGB"))) |>
+      mutate(treatment = factor(treatment, levels = c("FGB", "GB", "FB", "GF", "B", "G", "F", "C"))) |>
       ungroup()
   ),
 
@@ -92,12 +92,12 @@ multifunctionality_plan <- list(
       contrast_wide <- big_data |>
         select(year, siteID, blockID, treatment, response, value_std) |>
         pivot_wider(names_from = treatment, values_from = value_std) |>
-        mutate(across(any_of(c("C", "F", "G", "B", "GF", "FB", "GB")), ~ .x - FGB))
+        mutate(across(any_of(c("GB", "FB", "GF", "B", "G", "F", "C")), ~ .x - FGB))
 
       contrast_long <- contrast_wide |>
-        pivot_longer(cols = any_of(c("C", "F", "G", "B", "GF", "FB", "GB")), names_to = "treatment", values_to = "value_contrast") |>
+        pivot_longer(cols = any_of(c("GB", "FB", "GF", "B", "G", "F", "C")), names_to = "treatment", values_to = "value_contrast") |>
         filter(!is.na(value_contrast)) |>
-        mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB")))
+        mutate(treatment = factor(treatment, levels = c("GB", "FB", "GF", "B", "G", "F", "C")))
       contrast_long |>
         left_join(
           big_data |> select(-plotID, -value, -value_trans, -value_std),

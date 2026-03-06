@@ -18,7 +18,7 @@ model_plan <- list(
             out <- model_single_function |>
                 unnest(result) |>
                 filter(effect == "fixed") |>
-                select(-data, -model, -effect, -group, -anova, -anova_tidy) %>%
+                select(-data, -model, -effect, -group, -anova, -anova_tidy) %>% 
                 fancy_stats(.)
             round_numbers_tidy(out) |>
                 gt() |>

@@ -48,12 +48,13 @@ plot_model_heatmap <- function(model_data,
              term = str_replace(term, "\\(Intercept\\)", "Intercept"))
   }
 
-  # Order terms
+  # Order terms (FGB as baseline; effects for other treatments and climate)
   term_levels <- c(
-    "Intercept", "GF", "FB", "GB", "FGB", "T", "P",
-    "T:P", "GF:T", "FB:T", "GB:T", "FGB:T",
-    "GF:P", "FB:P", "GB:P", "FGB:P",
-    "GF:T:P", "FB:T:P", "GB:T:P", "FGB:T:P"
+    "Intercept",
+    "GB", "FB", "GF", "C",
+    "T", "P",
+    "GB:T", "FB:T", "GF:T", "C:T",
+    "GB:P", "FB:P", "GF:P", "C:P"
   )
   dat <- dat |>
     mutate(term = factor(term, levels = intersect(term_levels, unique(term))))

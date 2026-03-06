@@ -35,7 +35,7 @@ transformation_plan <- list(
           treatment == "G" ~ "FB",
           treatment == "C" ~ "All"
         ),
-        fg_remaining = factor(fg_remaining, levels = c("None", "G", "F", "B", "GF", "GB", "FB", "All"))
+        fg_remaining = factor(fg_remaining, levels = c("None", "F", "G", "B", "GF", "FB", "GB", "All"))
       ) |>
       # scale temperature and precipitation variable
       mutate(

@@ -135,7 +135,7 @@ We ran three models using a different metrics for functional group:
 
 big_data |> 
 distinct(treatment, fg_remaining, forb, gram, bryo) |>
-mutate(treatment = factor(treatment, levels = c("C", "F", "G", "B", "GF", "FB", "GB", "FGB"))) |>
+mutate(treatment = factor(treatment, levels = c("FGB", "GB", "FB", "GF", "B", "G", "F", "C"))) |>
 arrange(treatment) |>
 rename("FG removed" = treatment, "FG present" = fg_remaining) |>
 gt() |>
