@@ -146,3 +146,28 @@ tar_read(model_single_function_contrast_out)
 tar_read(model_single_function_contrast_heatmap)
 ```
 
+### Group models
+
+Model output for group models: treatment × temperature × precipitation
+
+```{r}
+#| label: tbl-model-group
+#| echo: false
+#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on multifunctionality within each functional group."
+
+tar_read(model_group_out)
+```
+
+### Multifunctionality
+
+Model output for global multifunctionality: treatment × temperature × precipitation (excluding single removals F, G, B).
+
+```{r}
+#| label: tbl-model-multifunctionality
+#| echo: false
+#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on global multifunctionality."
+
+tar_read(model_multifunctionality_out)
+```
+
+
