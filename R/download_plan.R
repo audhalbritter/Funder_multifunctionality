@@ -13,12 +13,12 @@ download_plan <- list(
     format = "file"
   ),
 
-  # biomass 2022
+  # standing biomass 2022
   tar_target(
-    name = biomass_22_download,
+    name = standing_biomass_download,
     command = get_file(
       node = "tx9r2",
-      file = "FUNDER_clean_biomass_2022.csv",
+      file = "FUNDER_clean_standing_biomass_2022.csv",
       path = here::here("data"),
       remote_path = "1_Vegetation/Clean_data"
     ),
@@ -244,8 +244,8 @@ download_plan <- list(
 
   # 2022 biomass
   tar_target(
-    name = biomass_22_raw,
-    command = read_csv(biomass_22_download)
+    name = standing_biomass_raw,
+    command = read_csv(standing_biomass_download)
   ),
 
   # litter from bryophyte plots

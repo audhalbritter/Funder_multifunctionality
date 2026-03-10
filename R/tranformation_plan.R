@@ -69,22 +69,26 @@ transformation_plan <- list(
       select(year:removed_fg, data_type, group, response, value, unit)
   ),
 
-  # 2022
+  # standing biomass
   tar_target(
-    name = plant_biomass,
-    command = biomass_22_raw |> 
-      # sum biomass from different rounds and functional group (add removed_fg to group_by to keep them)
-      group_by(year, siteID, blockID, plotID, treatment) |>
-      summarise(value = sum(biomass), .groups = "drop") |>
+    name = standing_biomass,
+    command = standing_biomass_raw |> 
+      # remove lichens
+      filter(removed_fg != "L") |>
+      
       # convert to g per m2
-      mutate(value = value * 10000 / 625) |>
+      mutate(biomass = biomass * 10000 / 625) |>
       mutate(
-        data_type = "stock",
-        group = "primary producers",
-        response = "aboveground biomass",
         unit = "g m\u207B\u00B2"
-      ) |>
-      select(year:treatment, data_type, group, response, value, unit)
+      )
+  ),
+
+  # sum of standing biomass
+  tar_target(
+    name = standing_biomass_sum,
+    command = standing_biomass |>
+      group_by(siteID, blockID, plotID, treatment) |>
+      summarise(biomass = sum(biomass))
   ),
 
   # plant litter
