@@ -88,7 +88,7 @@ transformation_plan <- list(
     name = standing_biomass_sum,
     command = standing_biomass |>
       group_by(siteID, blockID, plotID, treatment) |>
-      summarise(biomass = sum(biomass))
+      summarise(total_biomass = sum(biomass))
   ),
 
   # wide biomass
@@ -316,6 +316,9 @@ transformation_plan <- list(
     command = fungal_fg_raw |> 
       select(-any_of("...1")) |>
       filter(functional_group != "other") |>
+      # remove plots that were cut wrongly or lost after 2017
+      # THIS SHOULD BE FILTERED IN THE RAW DATA!
+      filter(!plotID %in% c("Fau2GB", "Ulv1B")) |>
       rename(value = relative_abundance) |> 
       mutate(
         data_type = "process",
@@ -420,8 +423,10 @@ transformation_plan <- list(
     name = cflux,
     command = {
       # 2017 FunCaB fluxes (may have repeated measurements per plot)
-      cflux_2017 <- cflux_raw |>
+      cflux_2017 <- cflux_raw |> 
         filter(year == 2017, !treatment %in% c("RTC", "XC")) |>
+        # remove plots that were cut wrongly or lost after 2017
+        filter(!plotID %in% c("Fau2GB", "Ulv1B", "Skj4C")) |>
         group_by(year, siteID, blockID, plotID, treatment) |>
         summarise(
           nee  = mean(nee,  na.rm = TRUE),
@@ -431,7 +436,8 @@ transformation_plan <- list(
         )
 
       # 2022 FUNDER fluxes: wide format, then average over replicate per plot
-      cflux_2022 <- cflux_22_raw |>
+      cflux_2022 <- cflux_22_raw |> 
+        tidylog::filter(plotID != "Skj4C") |>
         pivot_wider(
           id_cols = c(siteID, blockID, plotID, treatment, replicate),
           names_from = type,
