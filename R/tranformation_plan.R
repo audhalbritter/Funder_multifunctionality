@@ -91,6 +91,13 @@ transformation_plan <- list(
       summarise(biomass = sum(biomass))
   ),
 
+  # wide biomass
+  tar_target(
+    name = standing_biomass_wide,
+    command = standing_biomass |>
+      pivot_wider(id_cols = c(siteID, blockID, plotID, treatment), names_from = removed_fg, values_from = biomass, names_prefix = "biomass_")
+  ),
+
   # plant litter
   tar_target(
     name = plant_litter,
@@ -112,7 +119,7 @@ transformation_plan <- list(
         tidylog::left_join(litter_prep, by = c("siteID", "blockID", "plotID", "treatment")) |>
         tidylog::mutate(value = replace_na(value, 0)) |>
         mutate(
-          data_type = "stock",
+          data_type = "stocstanding_biomassk",
           group = "primary producers",
           response = "plant litter",
           unit = "% cover"
@@ -441,6 +448,13 @@ transformation_plan <- list(
         ) |> filter(!is.na(gpp))
 
       bind_rows(cflux_2017, cflux_2022) |>
+        group_by(siteID, blockID, plotID, treatment) |>
+        summarise(
+          nee  = mean(nee,  na.rm = TRUE),
+          gpp  = mean(gpp,  na.rm = TRUE),
+          Reco = mean(Reco, na.rm = TRUE),
+          .groups = "drop"
+        ) |> filter(!is.na(gpp)) |>
         mutate(
           data_type = "function",
           group     = "carbon cycling",
@@ -455,7 +469,7 @@ transformation_plan <- list(
     name = gpp_flux,
     command = cflux |>
       mutate(gpp = -1 * gpp) |>
-      group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
+      group_by(siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(
         value = mean(gpp),
         .groups = "drop"
@@ -470,7 +484,7 @@ transformation_plan <- list(
       # transform data to not have negative values
       #### ADD MIM VALUE OR SOMETHING
       mutate(nee = nee + 15) |>
-      group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
+      group_by(siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(
         value = mean(nee),
         .groups = "drop"
@@ -482,7 +496,7 @@ transformation_plan <- list(
   tar_target(
     name = reco_flux,
     command = cflux |>
-      group_by(year, siteID, blockID, plotID, treatment, data_type, group, unit) |>
+      group_by(siteID, blockID, plotID, treatment, data_type, group, unit) |>
       summarise(
         value = mean(Reco),
         .groups = "drop"
