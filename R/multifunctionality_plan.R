@@ -76,7 +76,11 @@ multifunctionality_plan <- list(
         bryo = if_else(str_detect(treatment, "B"), 0, 1)
       ) |>
       mutate(treatment = factor(treatment, levels = c("FGB", "GB", "FB", "GF", "B", "G", "F", "C"))) |>
-      ungroup()
+      ungroup() |>
+      # add total standing biomass and biomass per functional group
+      # Block 4 in Arh, Gud, and Ram do not join, because there is no data (only biomass)
+      tidylog::left_join(standing_biomass_sum, by = c("siteID", "blockID", "plotID", "treatment")) |> 
+      tidylog::left_join(standing_biomass_wide, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
   # contrast to bare ground (FGB): difference treatment - FGB per block and response
