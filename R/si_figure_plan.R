@@ -101,55 +101,6 @@ si_figure_plan <- list(
         theme(axis.text = element_text(size = 8))
 
     }
-  ),
-
-  # correlation matrix (contrast to bare ground)
-  tar_target(
-    name = correlation_contrast_plot,
-    command = {
-
-      function_table <- big_data_contrast |>
-        select(siteID, blockID, treatment, response, value_contrast) |>
-        pivot_wider(names_from = response, values_from = value_contrast, values_fill = 0) |>
-        select(-siteID, -blockID, -treatment) |>
-        mutate(across(everything(), as.numeric))
-
-      corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
-      p.mat <- ggcorrplot::cor_pmat(function_table)
-
-      ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
-                 colors = c("#6D9EC1", "white", "#E46726"),
-                 lab = TRUE,
-                 lab_size = 4,
-                 tl.cex = 14,
-                 tl.srt = 45) +
-        theme(axis.text = element_text(size = 8))
-
-    }
   )
 
-  # # group figures: one plot per group (multifunctionality vs fg_richness), raw + prediction, significance
-  # tar_target(
-  #   name = primary_producers_plot,
-  #   command = make_group_figure(multifunctionality_group, group = "primary producers",
-  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
-  # ),
-
-  # tar_target(
-  #   name = higher_trophic_level_plot,
-  #   command = make_group_figure(multifunctionality_group, group = "higher trophic level",
-  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
-  # ),
-
-  # tar_target(
-  #   name = carbon_cycling_plot,
-  #   command = make_group_figure(multifunctionality_group, group = "carbon cycling",
-  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
-  # ),
-
-  # tar_target(
-  #   name = nutrient_cycling_plot,
-  #   command = make_group_figure(multifunctionality_group, group = "nutrient cycling",
-  #                               model_group = model_group, temp_colour, prec_linetype, prec_shape)
-  # )
 )

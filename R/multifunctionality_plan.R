@@ -83,29 +83,6 @@ multifunctionality_plan <- list(
       tidylog::left_join(standing_biomass_wide, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
-  # contrast to bare ground (FGB): difference treatment - FGB per block and response
-  # Pivot by (siteID, blockID, response) so we get all 8 treatment values in one row;
-  # including plotID would create one row per plot with only one treatment filled -> NAs
-  tar_target(
-    name = big_data_contrast,
-    command = {
-      contrast_wide <- big_data |>
-        select(year, siteID, blockID, treatment, response, value_std) |>
-        pivot_wider(names_from = treatment, values_from = value_std) |>
-        mutate(across(any_of(c("GB", "FB", "GF", "B", "G", "F", "C")), ~ .x - FGB))
-
-      contrast_long <- contrast_wide |>
-        pivot_longer(cols = any_of(c("GB", "FB", "GF", "B", "G", "F", "C")), names_to = "treatment", values_to = "value_contrast") |>
-        filter(!is.na(value_contrast)) |>
-        mutate(treatment = factor(treatment, levels = c("GB", "FB", "GF", "B", "G", "F", "C")))
-      contrast_long |>
-        left_join(
-          big_data |> select(-plotID, -value, -value_trans, -value_std),
-          by = c("year", "siteID", "blockID", "treatment", "response")
-        )
-    }
-  ),
-
   # big data for multifunctionality analysis
   tar_target(
     name = absolute_group_data,
@@ -144,25 +121,6 @@ multifunctionality_plan <- list(
         .groups = "drop"
       ) |>
       # global level (useful for group_by map)
-      mutate(level = "global")
-  ),
-
-  # multifunctionality contrast to bare ground (FGB)
-  tar_target(
-    name = multifunctionality_contrast,
-    command = big_data_contrast |>
-      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
-      group_by(
-        siteID, blockID, treatment, habitat,
-        temperature_degree, precipitation_mm, precipitation_name,
-        temperature_scaled, precipitation_scaled,
-        fg_richness, fg_remaining, forb, gram, bryo
-      ) |>
-      summarise(
-        multifuntionality = mean(value_contrast, na.rm = TRUE),
-        se = sd(value_contrast, na.rm = TRUE) / sqrt(n()),
-        .groups = "drop"
-      ) |>
       mutate(level = "global")
   )
 )

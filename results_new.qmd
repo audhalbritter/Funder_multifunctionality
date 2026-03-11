@@ -121,31 +121,6 @@ Heatmap of model estimates: blue = negative, red = positive; bold numbers indica
 tar_read(model_single_function_heatmap)
 ```
 
-### Contrast to bare ground
-
-Same model for contrast to bare ground (treatment − FGB): treatment × temperature × precipitation.
-
-```{r}
-#| label: tbl-model-single-function-contrast
-#| echo: false
-#| eval: false
-#| warning: false
-#| tbl-cap: "Model output for contrast to bare ground (treatment − FGB)."
-
-tar_read(model_single_function_contrast_out)
-```
-
-```{r}
-#| label: fig-model-single-function-contrast-heatmap
-#| echo: false
-#| warning: false
-#| fig-width: 14
-#| fig-height: 12
-#| fig-cap: "Heatmap of model estimates for contrast to bare ground. Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
-
-tar_read(model_single_function_contrast_heatmap)
-```
-
 ### Group models
 
 Model output for group models: treatment × temperature × precipitation
