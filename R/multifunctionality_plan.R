@@ -94,7 +94,8 @@ multifunctionality_plan <- list(
         siteID, blockID, plotID, treatment, habitat,
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
-        fg_richness, fg_remaining, forb, gram, bryo, group
+        fg_richness, fg_remaining, forb, gram, bryo, group, 
+        total_biomass, biomass_B, biomass_F, biomass_G
       ) |>
       summarise(
         value = mean(value_abs, na.rm = TRUE),
@@ -113,7 +114,8 @@ multifunctionality_plan <- list(
         siteID, blockID, plotID, treatment, habitat,
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
-        fg_richness, fg_remaining, forb, gram, bryo
+        fg_richness, fg_remaining, forb, gram, bryo,
+        total_biomass, biomass_B, biomass_F, biomass_G
       ) |>
       summarise(
         multifuntionality = mean(value, na.rm = TRUE),
