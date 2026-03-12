@@ -316,9 +316,6 @@ transformation_plan <- list(
     command = fungal_fg_raw |> 
       select(-any_of("...1")) |>
       filter(functional_group != "other") |>
-      # remove plots that were cut wrongly or lost after 2017
-      # THIS SHOULD BE FILTERED IN THE RAW DATA!
-      filter(!plotID %in% c("Fau2GB", "Ulv1B")) |>
       rename(value = relative_abundance) |> 
       mutate(
         data_type = "process",
