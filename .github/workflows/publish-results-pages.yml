@@ -1,0 +1,40 @@
+# Deploy docs/ to GitHub Pages (render results_new.qmd locally first; then commit docs/index.html)
+name: Publish results to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/index.html"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check docs/index.html exists
+        run: test -f docs/index.html || (echo "Run: quarto render results_new.qmd --output-dir docs --output index.html  (then mv docs/results_new.html docs/index.html if needed)" && exit 1)
+
+      - uses: actions/configure-pages@v4
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

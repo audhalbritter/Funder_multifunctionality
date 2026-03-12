@@ -21,7 +21,23 @@ Pipeline entry point: `_targets.R`. Run the pipeline with `run.R` or `targets::t
 ## Results
 
 - **`results.qmd`** — Main results document (figures and model tables): effects of functional group number and identity on single functions and average multifunctionality, and how these vary with climate.
+- **`results_new.qmd`** — Updated results (PCA, heatmaps, model tables).
 - **`SI.qmd`** — Supplementary information.
+
+### Publishing `results_new.qmd` (shareable page)
+
+1. Run the pipeline, then render into `docs/` (output must be basename only; directory via `--output-dir`):
+   ```bash
+   quarto render results_new.qmd --output-dir docs --output index.html
+   ```
+   If you get `docs/results_new.html` instead, run `mv docs/results_new.html docs/index.html`.
+2. Commit `docs/index.html` and `docs/.nojekyll`, push to `main`.
+3. **GitHub Pages**: **Settings → Pages** → deploy from branch **main**, folder **/docs**.  
+   Site URL: `https://audhalbritter.github.io/Funder_multifunctionality/`
+
+   Or set Pages source to **GitHub Actions** and run the workflow **Publish results to GitHub Pages** (after `docs/index.html` is committed).
+
+See **`docs/README.md`** for details.
 
 ## Setup
 

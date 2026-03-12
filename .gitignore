@@ -12,6 +12,7 @@
 vignettes/*.html
 vignettes/*.pdf
 .httr-oauth
+other_code
 
 # knitr and R markdown
 *_cache/
@@ -45,6 +46,10 @@ output/
 # Quarto
 .quarto
 *.html
+# Published site for GitHub Pages (render with quarto, then commit docs/)
+!docs/
+!docs/**
+!docs/README.md
 *.log
 *.md
 !README.md
@@ -54,3 +59,6 @@ output/
 
 # OS
 .DS_Store
+
+/.quarto/
+**/*.quarto_ipynb
