@@ -96,19 +96,11 @@ tar_read(pca_all_vs_no_site_plot)
 
 ### Single function models
 
-Model output for each ecosystem function: treatment × temperature × precipitation (excluding single removals F, G, B).
-
-```{r}
-#| label: tbl-model-single-function
-#| echo: false
-#| eval: false
-#| warning: false
-#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on each ecosystem function."
-
-tar_read(model_single_function_out)
-```
 
 Heatmap of model estimates: blue = negative, red = positive; bold numbers indicate p ≤ 0.01.
+
+Model 1 (FG × climate only):
+This is the same model we had previously, for comparison.
 
 ```{r}
 #| label: fig-model-single-function-heatmap
@@ -116,9 +108,35 @@ Heatmap of model estimates: blue = negative, red = positive; bold numbers indica
 #| warning: false
 #| fig-width: 14
 #| fig-height: 12
-#| fig-cap: "Heatmap of model estimates for each ecosystem function. Fill colour indicates effect direction (blue = negative, red = positive); bold numbers indicate p ≤ 0.01. Responses ordered by functional group."
+#| fig-cap: "Heatmap of model 1 estimates (treatment × climate). Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
 
 tar_read(model_single_function_heatmap)
+```
+
+Model 2 (treatment × climate + total biomass):
+
+```{r}
+#| label: fig-model-single-function-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 2 estimates (treatment × climate + total biomass)."
+
+tar_read(model_single_function_biomass_heatmap)
+```
+
+Model 3 (biomass G/F/B × climate only):
+
+```{r}
+#| label: fig-model-single-function-fg-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 3 estimates (biomass composition × climate)."
+
+tar_read(model_single_function_FG_biomass_heatmap)
 ```
 
 ### Group models
@@ -133,6 +151,22 @@ Model output for group models: treatment × temperature × precipitation
 tar_read(model_group_out)
 ```
 
+```{r}
+#| label: tbl-model-group-biomass
+#| echo: false
+#| tbl-cap: "Group models: treatment × climate + total biomass."
+
+tar_read(model_group_biomass_out)
+```
+
+```{r}
+#| label: tbl-model-group-fg-biomass
+#| echo: false
+#| tbl-cap: "Group models: biomass composition × climate only."
+
+tar_read(model_group_FG_biomass_out)
+```
+
 ### Multifunctionality
 
 Model output for global multifunctionality: treatment × temperature × precipitation (excluding single removals F, G, B).
@@ -145,4 +179,38 @@ Model output for global multifunctionality: treatment × temperature × precipit
 tar_read(model_multifunctionality_out)
 ```
 
+```{r}
+#| label: tbl-model-multifunctionality-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality: treatment × climate + total biomass."
 
+tar_read(model_multifunctionality_biomass_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-fg-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality: biomass composition × climate only."
+
+tar_read(model_multifunctionality_FG_biomass_out)
+```
+
+### Multifunctionality (FG richness as predictor)
+
+Same multifunctionality response and levels as above, but with **functional group richness** (`fg_richness`) in place of treatment in the model (richness × climate).
+
+```{r}
+#| label: tbl-model-multifunctionality-richness
+#| echo: false
+#| tbl-cap: "Multifunctionality: FG richness × climate (model 1)."
+
+tar_read(model_multifunctionality_richness_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-richness-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality (richness): richness × climate + total biomass."
+
+tar_read(model_multifunctionality_richness_biomass_out)
+```

@@ -6,7 +6,7 @@ library(tarchetypes)
 
 # Set target options:
 tar_option_set(
-  packages = c("here", "tidyverse", "dataDownloader", "dataDocumentation", "scales", "vegan", "ggvegan", "glue", "grid", "ggcorrplot", "ggnewscale", "lme4", "broom.mixed", "lmerTest", "patchwork", "gt", "ggsignif", "performance", "glmm.hp")
+  packages = c("here", "tidyverse", "dataDownloader", "dataDocumentation", "scales", "vegan", "ggvegan", "glue", "grid", "ggcorrplot", "ggnewscale", "lme4", "broom.mixed", "lmerTest", "patchwork", "gt", "ggsignif", "performance", "glmm.hp", "paletteer")
 )
 
 # tar_make_clustermq() configuration (okay to leave alone):
@@ -25,7 +25,7 @@ list(
   model_plan,
   # analysis_plan,
   # figure_plan,
-  #si_analysis_plan,
+  # si_analysis_plan,
   # manuscript_plan,
   si_figure_plan
 )
