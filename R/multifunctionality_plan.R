@@ -79,7 +79,8 @@ multifunctionality_plan <- list(
       ungroup() |>
       # add total standing biomass and biomass per functional group
       # Block 4 in Arh, Gud, and Ram do not join, because there is no data (only biomass)
-      tidylog::left_join(standing_biomass_sum, by = c("siteID", "blockID", "plotID", "treatment")) |> 
+      # Biomass: raw total_biomass + total_biomass_scaled; wide columns from biomass_scaled in standing_biomass
+      tidylog::left_join(standing_biomass_sum, by = c("siteID", "blockID", "plotID", "treatment")) |>
       tidylog::left_join(standing_biomass_wide, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
@@ -95,7 +96,7 @@ multifunctionality_plan <- list(
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
         fg_richness, fg_remaining, forb, gram, bryo, group, 
-        total_biomass, biomass_B, biomass_F, biomass_G
+        total_biomass_scaled, biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
       ) |>
       summarise(
         value = mean(value_abs, na.rm = TRUE),
@@ -115,7 +116,7 @@ multifunctionality_plan <- list(
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
         fg_richness, fg_remaining, forb, gram, bryo,
-        total_biomass, biomass_B, biomass_F, biomass_G
+        total_biomass_scaled, biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
       ) |>
       summarise(
         multifuntionality = mean(value, na.rm = TRUE),

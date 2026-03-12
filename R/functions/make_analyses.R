@@ -85,6 +85,7 @@ make_model <- function(dat, response_var, fg_var, group){
     group_by(across(all_of({{group}}))) |>
     nest() |>
     mutate(
+      # 1) No biomass: treatment × climate only
       model = map(
         data,
         ~ {
@@ -96,7 +97,41 @@ make_model <- function(dat, response_var, fg_var, group){
           })
           res <- safe_fit(.)
           if (!is.null(res$error)) {
-            warning("Model failed to converge for one group: ", conditionMessage(res$error))
+            warning("Model (no biomass) failed for one group: ", conditionMessage(res$error))
+          }
+          res$result
+        }
+      ),
+      # 2) Model 1 + total_biomass_scaled (z-scored in standing_biomass_sum)
+      model_biomass = map(
+        data,
+        ~ {
+          safe_fit <- purrr::safely(function(df) {
+            lmerTest::lmer(
+              data = df,
+              .response ~ .functional_group * (temperature_scaled + precipitation_scaled) + total_biomass_scaled + (1 | siteID)
+            )
+          })
+          res <- safe_fit(.)
+          if (!is.null(res$error)) {
+            warning("Model + total_biomass_scaled failed for one group: ", conditionMessage(res$error))
+          }
+          res$result
+        }
+      ),
+      # 3) Functional group biomass × climate only (biomass_G/F/B; no treatment term)
+      model_FG_biomass = map(
+        data,
+        ~ {
+          safe_fit <- purrr::safely(function(df) {
+            lmerTest::lmer(
+              data = df,
+              .response ~ (biomass_scaled_G + biomass_scaled_F + biomass_scaled_B) * (temperature_scaled + precipitation_scaled) + (1 | siteID)
+            )
+          })
+          res <- safe_fit(.)
+          if (!is.null(res$error)) {
+            warning("FG biomass model failed for one group: ", conditionMessage(res$error))
           }
           res$result
         }
@@ -104,6 +139,14 @@ make_model <- function(dat, response_var, fg_var, group){
       # model output (NULL when model failed to converge or downstream fails)
       result = map(model, ~ purrr::safely(tidy)(.)$result),
       anova = map(model, ~ purrr::safely(car::Anova)(.)$result),
-      anova_tidy = map(anova, ~ purrr::safely(tidy)(.)$result)
+      anova_tidy = map(anova, ~ purrr::safely(tidy)(.)$result),
+      # model 2 output (model 1 + total_biomass)
+      result_biomass = map(model_biomass, ~ purrr::safely(tidy)(.)$result),
+      anova_biomass = map(model_biomass, ~ purrr::safely(car::Anova)(.)$result),
+      anova_tidy_biomass = map(anova_biomass, ~ purrr::safely(tidy)(.)$result),
+      # model 3 output (model_FG_biomass: biomass_G/F/B × climate only)
+      result_FG_biomass = map(model_FG_biomass, ~ purrr::safely(tidy)(.)$result),
+      anova_FG_biomass = map(model_FG_biomass, ~ purrr::safely(car::Anova)(.)$result),
+      anova_tidy_FG_biomass = map(anova_FG_biomass, ~ purrr::safely(tidy)(.)$result)
     )
 }

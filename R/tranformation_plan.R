@@ -78,6 +78,8 @@ transformation_plan <- list(
       
       # convert to g per m2
       mutate(biomass = biomass * 10000 / 625) |>
+      # z-score once here; sum/wide use biomass_scaled so scaling is not duplicated
+      mutate(biomass_scaled = scale(biomass)[, 1]) |>
       mutate(
         unit = "g m\u207B\u00B2"
       )
@@ -88,14 +90,14 @@ transformation_plan <- list(
     name = standing_biomass_sum,
     command = standing_biomass |>
       group_by(siteID, blockID, plotID, treatment) |>
-      summarise(total_biomass = sum(biomass))
+      summarise(total_biomass_scaled = sum(biomass_scaled))
   ),
 
   # wide biomass
   tar_target(
     name = standing_biomass_wide,
     command = standing_biomass |>
-      pivot_wider(id_cols = c(siteID, blockID, plotID, treatment), names_from = removed_fg, values_from = biomass, names_prefix = "biomass_")
+      pivot_wider(id_cols = c(siteID, blockID, plotID, treatment), names_from = removed_fg, values_from = biomass_scaled, names_prefix = "biomass_scaled_")
   ),
 
   # plant litter

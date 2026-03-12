@@ -1,6 +1,7 @@
 # Pretty figures
 
-#' Heatmap of model estimates coloured by sign (blue/red); bold numbers = p <= 0.01
+#' Heatmap of model estimates (paletteer ramp); bold numbers = p <= 0.01.
+#' Faceted by group (facet_grid, free_y) instead of side stripes — compare visually.
 #'
 #' @param model_data Data frame with columns: response, term, estimate, p.value (numeric)
 #' @param group_lookup Data frame with columns: response, group (for sorting responses)
@@ -48,71 +49,100 @@ plot_model_heatmap <- function(model_data,
              term = str_replace(term, "\\(Intercept\\)", "Intercept"))
   }
 
-  # Order terms (FGB as baseline; effects for other treatments and climate)
+  # Order terms: FGs first, then biomass, then climate, then interactions
+  # (matches fancy_stats labels: Bio = total_biomass; BioG/BioF/BioB = composition)
   term_levels <- c(
     "Intercept",
-    "GB", "FB", "GF", "C",
+    # Functional group / treatment contrasts (FGB baseline)
+    "GB", "FB", "GF", "B", "G", "F", "C",
+    # Biomass mains
+    "Bio", "BioG", "BioF", "BioB",
+    # Climate mains
     "T", "P",
-    "GB:T", "FB:T", "GF:T", "C:T",
-    "GB:P", "FB:P", "GF:P", "C:P"
+    # FG × climate (two-way then three-way)
+    "GB:T", "FB:T", "GF:T", "B:T", "G:T", "F:T", "C:T",
+    "GB:P", "FB:P", "GF:P", "B:P", "G:P", "F:P", "C:P",
+    "GB:T:P", "FB:T:P", "GF:T:P", "B:T:P", "G:T:P", "F:T:P", "C:T:P",
+    # Total biomass × climate (model 2 if present)
+    "Bio:T", "Bio:P", "Bio:T:P",
+    # Composition × climate (model 3)
+    "BioG:T", "BioF:T", "BioB:T",
+    "BioG:P", "BioF:P", "BioB:P",
+    "BioG:T:P", "BioF:T:P", "BioB:T:P",
+    # Climate interaction only
+    "T:P",
+    # Factorial / other (fg_richness etc.)
+    "FG", "FG:T", "FG:P", "FG:T:P"
   )
+  all_terms <- unique(as.character(dat$term))
+  ordered_terms <- c(intersect(term_levels, all_terms), setdiff(all_terms, term_levels))
   dat <- dat |>
-    mutate(term = factor(term, levels = intersect(term_levels, unique(term))))
+    mutate(term = factor(term, levels = ordered_terms))
 
-  # Colours for each group (for strip and legend)
-  group_colours <- c(
-    "microenvironment" = "#E41A1C",
-    "nutrient cycling" = "#377EB8",
-    "carbon cycling" = "#4DAF4A",
-    "nematodes" = "#984EA3",
-    "microbes" = "#FF7F00",
-    "primary producers" = "#A65628",
-    "higher trophic level" = "#F781BF"
-  )
-
-  # Strip data: one row per response with group colour (same response order as heatmap)
-  strip_data <- tibble(response = levels(dat$response)) |>
-    left_join(dat |> distinct(response, group), by = "response") |>
+  # Group factor for facets: group_order first, then any other groups
+  dat <- dat |>
     mutate(
-      response = factor(response, levels = levels(dat$response)),
-      group_char = as.character(group),
-      fill = if_else(group_char %in% names(group_colours), group_colours[group_char], "grey40")
+      group = factor(
+        group,
+        levels = unique(c(group_order, as.character(dat$group)))
+      )
     )
 
-  # Heatmap
+  # Per-facet y-axis: only responses in that group; level order reversed so first in
+  # response_order appears at top of panel (matches previous rev(levels(...)) behaviour)
+  dat <- dat |>
+    mutate(response = as.character(response)) |>
+    group_by(group) |>
+    mutate(
+      response = factor(
+        response,
+        # intersect keeps response_order; rev so first in order is at top of panel
+        levels = rev(intersect(response_order, unique(response)))
+      )
+    ) |>
+    ungroup()
+
+  # Heatmap fill: colorBlindness Blue2DarkOrange (12 steps); symmetric limits when span includes 0
+  est_range <- range(dat$estimate, na.rm = TRUE)
+  fill_limits <- if (!anyNA(est_range) && est_range[1] < 0 && est_range[2] > 0) {
+    m <- max(abs(est_range))
+    c(-m, m)
+  } else {
+    NULL
+  }
+
+  # Facet by group: free_y + free space so panel height matches #responses per group
   p_heatmap <- ggplot(dat, aes(x = term, y = response, fill = estimate)) +
     geom_tile(colour = "grey90", linewidth = 0.3) +
     geom_text(
       aes(label = round(estimate, 2), fontface = ifelse(significant, "bold", "plain")),
-      size = 3.5, colour = "grey20"
+      size = 5.2, colour = "grey20"
     ) +
-    scale_fill_gradient2(
-      low = "blue", mid = "white", high = "red",
-      midpoint = 0, name = "Estimate"
+    scale_fill_gradientn(
+      colours = paletteer::paletteer_d("colorBlindness::Blue2DarkOrange12Steps"),
+      limits = fill_limits,
+      name = "Estimate"
     ) +
     scale_x_discrete(guide = guide_axis(angle = 45)) +
-    scale_y_discrete(limits = rev(levels(dat$response))) +
+    scale_y_discrete() +
+    facet_grid(
+      rows = vars(group),
+      scales = "free_y",
+      space = "free_y",
+      switch = "y"
+    ) +
     labs(x = NULL, y = NULL) +
     theme_bw() +
     theme(
-      axis.text.y = element_text(size = 9),
-      axis.text.x = element_text(size = 8),
+      axis.text.y = element_text(size = 12),
+      axis.text.x = element_text(size = 11),
       legend.position = "right",
-      panel.grid = element_blank()
+      panel.grid = element_blank(),
+      strip.background = element_rect(fill = "grey92", colour = "grey80"),
+      # Facet labels on left: rotate 90° so they read vertically
+      strip.text.y.left = element_text(size = 11, angle = 90, hjust = 0.5, vjust = 0.5),
+      panel.spacing.y = unit(0.4, "lines")
     )
 
-  # Strip: thin bar on left with group colours
-  p_strip <- ggplot(strip_data, aes(x = 1, y = response, fill = fill)) +
-    geom_tile() +
-    scale_y_discrete(limits = rev(levels(dat$response)), position = "right") +
-    scale_fill_identity() +
-    labs(x = NULL, y = NULL) +
-    theme_void() +
-    theme(
-      axis.text.y = element_blank(),
-      plot.margin = margin(0, 0, 0, 0)
-    )
-
-  # Combine: strip left, heatmap right
-  patchwork::wrap_plots(p_strip, p_heatmap, nrow = 1, widths = c(0.02, 0.98), guides = "collect")
+  p_heatmap
 }
