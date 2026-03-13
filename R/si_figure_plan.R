@@ -84,7 +84,7 @@ si_figure_plan <- list(
       function_table <- big_data |>
         select(-year,-value_trans, -value_std, -unit, -temperature_degree, -habitat,
                -temperature_scaled, -precipitation_mm, -precipitation_name,
-               -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo) |>
+               -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo, -total_biomass_scaled, -biomass_scaled_B, -biomass_scaled_F, -biomass_scaled_G) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
         select(-c(siteID:group))
 

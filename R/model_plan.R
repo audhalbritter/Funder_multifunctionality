@@ -6,9 +6,9 @@ model_plan <- list(
     name = model_single_function,
     command = make_model(
       dat = big_data |>
-        tidylog::filter(!treatment %in% c("F", "G", "B")),
+        tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
       response_var = value_std,
-      fg_var = treatment,
+      fg_var = fg_remaining,
       group = "response"
     )
   ),
@@ -66,9 +66,9 @@ model_plan <- list(
   tar_target(
     name = model_group,
     command = make_model(
-      dat = absolute_group_data |> filter(!treatment %in% c("F", "G", "B")),
+      dat = absolute_group_data |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
       response_var = value,
-      fg_var = treatment,
+      fg_var = fg_remaining,
       group = "group"
     )
   ),
@@ -98,9 +98,9 @@ model_plan <- list(
   tar_target(
     name = model_multifunctionality,
     command = make_model(
-      dat = multifunctionality |> filter(!treatment %in% c("F", "G", "B")),
+      dat = multifunctionality |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
       response_var = multifuntionality,
-      fg_var = treatment,
+      fg_var = fg_remaining,
       group = "level"
     )
   ),
@@ -133,7 +133,7 @@ model_plan <- list(
   tar_target(
     name = model_multifunctionality_richness,
     command = make_model(
-      dat = multifunctionality |> filter(!treatment %in% c("F", "G", "B")),
+      dat = multifunctionality |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
       response_var = multifuntionality,
       fg_var = fg_richness,
       group = "level"

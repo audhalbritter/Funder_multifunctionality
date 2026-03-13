@@ -99,8 +99,7 @@ tar_read(pca_all_vs_no_site_plot)
 
 Heatmap of model estimates: blue = negative, red = positive; bold numbers indicate p ≤ 0.01.
 
-Model 1 (FG × climate only):
-This is the same model we had previously, for comparison.
+Model 1 (functional groups remaining × climate only):
 
 ```{r}
 #| label: fig-model-single-function-heatmap
@@ -108,12 +107,12 @@ This is the same model we had previously, for comparison.
 #| warning: false
 #| fig-width: 14
 #| fig-height: 12
-#| fig-cap: "Heatmap of model 1 estimates (treatment × climate). Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
+#| fig-cap: "Heatmap of model 1 estimates (functional groups remaining × climate). Baseline = no FGs remaining (bare ground). Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
 
 tar_read(model_single_function_heatmap)
 ```
 
-Model 2 (treatment × climate + total biomass):
+Model 2 (functional groups remaining × climate + total biomass):
 
 ```{r}
 #| label: fig-model-single-function-biomass-heatmap
@@ -121,7 +120,7 @@ Model 2 (treatment × climate + total biomass):
 #| warning: false
 #| fig-width: 14
 #| fig-height: 12
-#| fig-cap: "Heatmap of model 2 estimates (treatment × climate + total biomass)."
+#| fig-cap: "Heatmap of model 2 estimates (functional groups remaining × climate + total biomass)."
 
 tar_read(model_single_function_biomass_heatmap)
 ```
@@ -141,12 +140,12 @@ tar_read(model_single_function_FG_biomass_heatmap)
 
 ### Group models
 
-Model output for group models: treatment × temperature × precipitation
+Model output for group models: functional groups remaining × temperature × precipitation
 
 ```{r}
 #| label: tbl-model-group
 #| echo: false
-#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on multifunctionality within each functional group."
+#| tbl-cap: "Model output from testing effect of functional groups remaining, summer temperature and annual precipitation on multifunctionality within each functional group."
 
 tar_read(model_group_out)
 ```
@@ -154,7 +153,7 @@ tar_read(model_group_out)
 ```{r}
 #| label: tbl-model-group-biomass
 #| echo: false
-#| tbl-cap: "Group models: treatment × climate + total biomass."
+#| tbl-cap: "Group models: functional groups remaining × climate + total biomass."
 
 tar_read(model_group_biomass_out)
 ```
@@ -169,12 +168,12 @@ tar_read(model_group_FG_biomass_out)
 
 ### Multifunctionality
 
-Model output for global multifunctionality: treatment × temperature × precipitation (excluding single removals F, G, B).
+Model output for global multifunctionality: functional groups remaining × temperature × precipitation (excluding two-group-remaining plots: GF, FB, GB).
 
 ```{r}
 #| label: tbl-model-multifunctionality
 #| echo: false
-#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on global multifunctionality."
+#| tbl-cap: "Model output from testing effect of functional groups remaining, summer temperature and annual precipitation on global multifunctionality."
 
 tar_read(model_multifunctionality_out)
 ```
@@ -182,7 +181,7 @@ tar_read(model_multifunctionality_out)
 ```{r}
 #| label: tbl-model-multifunctionality-biomass
 #| echo: false
-#| tbl-cap: "Multifunctionality: treatment × climate + total biomass."
+#| tbl-cap: "Multifunctionality: functional groups remaining × climate + total biomass."
 
 tar_read(model_multifunctionality_biomass_out)
 ```

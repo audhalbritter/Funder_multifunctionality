@@ -1,12 +1,11 @@
 # Fancy stats dictionary
 #
 #' @param functional_group_as How the model's .functional_group was defined:
-#'   - `"treatment"` (default): factorial levels (F, G, B, ...); strips `.functional_group`
-#'     prefix from treatment-contrast terms.
-#'   - `"richness"`: numeric predictor passed as `.functional_group` in make_model (e.g. fg_richness
-#'     renamed); lme4/broom emit terms like `.functional_group`, `.functional_group:temperature_scaled`.
-#'     Those are labelled `FR` (functional group richness). No forb/gram/bryo replacements.
-fancy_stats <- function(dat, sort = TRUE, functional_group_as = c("treatment", "richness")) {
+#'   - `"fg_remaining"` (default): factorial levels from fg_remaining (None, F, G, B, GF, FB, GB,
+#'     All); baseline = "None" (all FGs removed). Strips `.functional_group` prefix so terms become
+#'     e.g. "F", "GB", "All", "All:T", etc.
+#'   - `"richness"`: numeric predictor (fg_richness); terms labelled `FR`.
+fancy_stats <- function(dat, sort = TRUE, functional_group_as = c("fg_remaining", "richness")) {
   functional_group_as <- match.arg(functional_group_as)
 
   if (functional_group_as == "richness") {
@@ -51,12 +50,11 @@ fancy_stats <- function(dat, sort = TRUE, functional_group_as = c("treatment", "
     return(dat)
   }
 
-  # Default: treatment / factorial .functional_group
+  # Default: fg_remaining factorial levels (None = baseline; All = intact control)
   dat <- dat %>%
     mutate(
-      term = str_replace(term, "treatment", ""),
       term = str_replace(term, "\\(Intercept\\)", "Intercept"),
-      # treatment model: .functional_groupGF -> GF, etc.
+      # make_model renames fg_remaining -> .functional_group; strip prefix: .functional_groupAll -> All
       term = str_replace(term, "\\.functional_group", ""),
       term = str_replace(term, "temperature_scaled", "T"),
       term = str_replace(term, "precipitation_scaled", "P"),
@@ -70,16 +68,14 @@ fancy_stats <- function(dat, sort = TRUE, functional_group_as = c("treatment", "
     )
 
   if (sort == TRUE) {
+    # Baseline = "None" (all FGs removed); "All" = intact control (fg_remaining = "All")
     term_levels <- c(
       "Intercept",
-      "T", "P", "GB", "FB", "GF", "B", "G", "F", "C",
+      "T", "P", "F", "G", "B", "GF", "FB", "GB", "All",
       "T:P",
-      "GB:T", "FB:T", "GF:T", "B:T", "G:T", "F:T", "C:T",
-      "GB:P", "FB:P", "GF:P", "B:P", "G:P", "F:P", "C:P",
-      "GB:T:P", "FB:T:P", "GF:T:P", "B:T:P", "G:T:P", "F:T:P", "C:T:P",
-      # factorial model (forb, gram, bryo)
-      "FG", "FG:T", "FG:P", "FG:T:P",
-      "F", "G", "B",
+      "F:T", "G:T", "B:T", "GF:T", "FB:T", "GB:T", "All:T",
+      "F:P", "G:P", "B:P", "GF:P", "FB:P", "GB:P", "All:P",
+      "F:T:P", "G:T:P", "B:T:P", "GF:T:P", "FB:T:P", "GB:T:P", "All:T:P",
       # biomass model: total_biomass -> Bio; biomass_G/F/B -> BioG, BioF, BioB
       "Bio",
       "BioG", "BioF", "BioB",
@@ -142,14 +138,14 @@ table_style <- function(gt_table, font_size){
 #' @param dat Nested tibble from make_model()
 #' @param unnest_col Name of list-column to unnest
 #' @param extra_drop Extra column names to drop after unnest (e.g. "level_name")
-#' @param functional_group_as Passed to [fancy_stats]: `"treatment"` (default) for factorial
-#'   treatment contrasts; `"richness"` when `.functional_group` was fg_richness (numeric), terms
-#'   labelled `FR`.
+#' @param functional_group_as Passed to [fancy_stats]: `"fg_remaining"` (default) for factorial
+#'   fg_remaining contrasts (baseline = "None"); `"richness"` when `.functional_group` was
+#'   fg_richness (numeric), terms labelled `FR`.
 model_output_gt <- function(
     dat,
     unnest_col = "result",
     extra_drop = NULL,
-    functional_group_as = "treatment"
+    functional_group_as = "fg_remaining"
 ) {
   drops <- c(
     "data", "model", "model_biomass", "model_FG_biomass", "effect", "group",

@@ -32,16 +32,7 @@ plot_model_heatmap <- function(model_data,
   # Apply fancy term names if requested
   if (fancy_terms) {
     dat <- dat |> fancy_stats(sort = FALSE)
-  }
-
-  # Significance: p <= 0.01 = bold
-  dat <- dat |>
-    mutate(p_raw = as.numeric(p.value)) |>
-    mutate(p_raw = if_else(is.na(p_raw), 1, p_raw)) |>
-    mutate(significant = p_raw <= 0.01)
-
-  # If fancy_terms was FALSE, we may not have formatted terms
-  if (!fancy_terms) {
+  } else {
     dat <- dat |>
       mutate(term = str_replace(term, "\\.functional_group", ""),
              term = str_replace(term, "temperature_scaled", "T"),
@@ -49,20 +40,37 @@ plot_model_heatmap <- function(model_data,
              term = str_replace(term, "\\(Intercept\\)", "Intercept"))
   }
 
-  # Order terms: FGs first, then biomass, then climate, then interactions
+  # Heatmap-only display tweaks (not applied to tables):
+  # "Intercept" -> "Bare" (baseline = bare ground / no FGs remaining)
+  # "microenvironment" -> "microenv" (shorter facet label)
+  dat <- dat |>
+    mutate(
+      term = if_else(as.character(term) == "Intercept", "Bare", as.character(term)),
+      group = str_replace(as.character(group), "microenvironment", "microenv")
+    )
+
+  # Significance: p <= 0.01 = bold
+  dat <- dat |>
+    mutate(p_raw = as.numeric(p.value)) |>
+    mutate(p_raw = if_else(is.na(p_raw), 1, p_raw)) |>
+    mutate(significant = p_raw <= 0.01)
+
+  # Order terms: FGs first (baseline = "None"; intact control = "All"),
+  # then biomass, then climate, then interactions.
   # (matches fancy_stats labels: Bio = total_biomass; BioG/BioF/BioB = composition)
   term_levels <- c(
-    "Intercept",
-    # Functional group / treatment contrasts (FGB baseline)
-    "GB", "FB", "GF", "B", "G", "F", "C",
+    "Bare",
+    # fg_remaining contrasts (None = baseline; All = intact vegetation control)
+    "F", "G", "B", "GF", "FB", "GB", "All",
     # Biomass mains
     "Bio", "BioG", "BioF", "BioB",
     # Climate mains
     "T", "P",
-    # FG × climate (two-way then three-way)
-    "GB:T", "FB:T", "GF:T", "B:T", "G:T", "F:T", "C:T",
-    "GB:P", "FB:P", "GF:P", "B:P", "G:P", "F:P", "C:P",
-    "GB:T:P", "FB:T:P", "GF:T:P", "B:T:P", "G:T:P", "F:T:P", "C:T:P",
+    # FG × climate (two-way)
+    "F:T", "G:T", "B:T", "GF:T", "FB:T", "GB:T", "All:T",
+    "F:P", "G:P", "B:P", "GF:P", "FB:P", "GB:P", "All:P",
+    # FG × climate (three-way)
+    "F:T:P", "G:T:P", "B:T:P", "GF:T:P", "FB:T:P", "GB:T:P", "All:T:P",
     # Total biomass × climate (model 2 if present)
     "Bio:T", "Bio:P", "Bio:T:P",
     # Composition × climate (model 3)
@@ -70,21 +78,22 @@ plot_model_heatmap <- function(model_data,
     "BioG:P", "BioF:P", "BioB:P",
     "BioG:T:P", "BioF:T:P", "BioB:T:P",
     # Climate interaction only
-    "T:P",
-    # Factorial / other (fg_richness etc.)
-    "FG", "FG:T", "FG:P", "FG:T:P"
+    "T:P"
   )
   all_terms <- unique(as.character(dat$term))
   ordered_terms <- c(intersect(term_levels, all_terms), setdiff(all_terms, term_levels))
   dat <- dat |>
     mutate(term = factor(term, levels = ordered_terms))
 
+  # Apply the same "microenvironment" -> "microenv" rename to group_order so levels align
+  group_order_display <- str_replace(group_order, "microenvironment", "microenv")
+
   # Group factor for facets: group_order first, then any other groups
   dat <- dat |>
     mutate(
       group = factor(
         group,
-        levels = unique(c(group_order, as.character(dat$group)))
+        levels = unique(c(group_order_display, as.character(dat$group)))
       )
     )
 
