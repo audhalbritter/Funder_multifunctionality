@@ -69,13 +69,16 @@ transformation_plan <- list(
       select(year:removed_fg, data_type, group, response, value, unit)
   ),
 
-  # standing biomass
+  # standing biomass (final harvest)
   tar_target(
     name = standing_biomass,
     command = standing_biomass_raw |> 
       # remove lichens
       filter(removed_fg != "L") |>
-      
+      # remove the biomass from FGs that were removed
+      filter(is.na(no_treatment)) |>
+      # for FGB replace biomass with 0
+      mutate(biomass = if_else(treatment == "FGB", 0, biomass)) |>
       # convert to g per m2
       mutate(biomass = biomass * 10000 / 625) |>
       # z-score once here; sum/wide use biomass_scaled so scaling is not duplicated
