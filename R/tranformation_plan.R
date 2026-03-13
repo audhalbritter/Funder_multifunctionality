@@ -85,7 +85,8 @@ transformation_plan <- list(
       mutate(biomass_scaled = scale(biomass)[, 1]) |>
       mutate(
         unit = "g m\u207B\u00B2"
-      )
+      ) |>
+      select(-no_treatment, -comment)
   ),
 
   # sum of standing biomass
