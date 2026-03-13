@@ -56,9 +56,6 @@ fancy_stats <- function(dat, sort = TRUE, functional_group_as = c("treatment", "
     mutate(
       term = str_replace(term, "treatment", ""),
       term = str_replace(term, "\\(Intercept\\)", "Intercept"),
-      term = str_replace(term, "forb", "F"),
-      term = str_replace(term, "gram", "G"),
-      term = str_replace(term, "bryo", "B"),
       # treatment model: .functional_groupGF -> GF, etc.
       term = str_replace(term, "\\.functional_group", ""),
       term = str_replace(term, "temperature_scaled", "T"),
