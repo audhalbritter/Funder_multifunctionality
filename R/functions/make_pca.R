@@ -10,7 +10,8 @@
 #'   If provided, runs vegan::adonis2 and adds result as 4th list element.
 #' @param permanova_method Distance method for adonis2 (default "euclidean")
 #' @param permanova_permutations Number of permutations (default 999)
-make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova_method = "euclidean", permanova_permutations = 999) {
+#' @param seed Integer seed passed to set.seed() before adonis2 for reproducible permutation p-values (default 42)
+make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova_method = "euclidean", permanova_permutations = 999, seed = 42) {
 
   # include year so each year × plot is a separate observation in the PCA
   meta_cols <- c(
@@ -56,9 +57,10 @@ make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova
     rename(response = label) |>
     left_join(response_to_group, by = "response")
 
-  # optional PERMANOVA
+  # optional PERMANOVA (seed ensures reproducible permutation p-values)
   permanova <- NULL
   if (!is.null(formula_terms)) {
+    set.seed(seed)
     formula_obj <- as.formula(paste("response_matrix ~", paste(formula_terms, collapse = " + ")))
     permanova <- vegan::adonis2(formula_obj, data = metadata, method = permanova_method, permutations = permanova_permutations)
   }
