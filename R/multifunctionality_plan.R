@@ -84,6 +84,19 @@ multifunctionality_plan <- list(
       tidylog::left_join(standing_biomass_wide, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
+  # long-format data: big_data × standing_biomass (one row per FG per response per plot)
+  # fg_id = identity of the present FG in each row (renamed from removed_fg after filtering)
+  tar_target(
+    name = big_data_long,
+    command = big_data |>
+      filter(!fg_remaining %in% c("GF", "FB", "GB")) |>
+      left_join(
+        standing_biomass |>
+          select(siteID, blockID, plotID, treatment, fg_id, biomass_scaled),
+        by = c("siteID", "blockID", "plotID", "treatment")
+      )
+  ),
+
   # big data for multifunctionality analysis
   tar_target(
     name = absolute_group_data,
@@ -125,5 +138,29 @@ multifunctionality_plan <- list(
       ) |>
       # global level (useful for group_by map)
       mutate(level = "global")
+  ),
+
+  # long-format group data: absolute_group_data × standing_biomass (one row per FG per group per plot)
+  tar_target(
+    name = absolute_group_data_long,
+    command = absolute_group_data |>
+      filter(!fg_remaining %in% c("GF", "FB", "GB")) |>
+      left_join(
+        standing_biomass |>
+          select(siteID, blockID, plotID, treatment, fg_id, biomass_scaled),
+        by = c("siteID", "blockID", "plotID", "treatment")
+      )
+  ),
+
+  # long-format multifunctionality data: multifunctionality × standing_biomass (one row per FG per plot)
+  tar_target(
+    name = multifunctionality_long,
+    command = multifunctionality |>
+      filter(!fg_remaining %in% c("GF", "FB", "GB")) |>
+      left_join(
+        standing_biomass |>
+          select(siteID, blockID, plotID, treatment, fg_id, biomass_scaled),
+        by = c("siteID", "blockID", "plotID", "treatment")
+      )
   )
 )

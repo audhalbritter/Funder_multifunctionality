@@ -138,6 +138,19 @@ Model 3 (biomass G/F/B × climate only):
 tar_read(model_single_function_FG_biomass_heatmap)
 ```
 
+Model 4 (FG identity × FG biomass × climate): each row in the data is one functional group remaining in one plot; `fg_id` identifies which FG is present (contrast vs baseline B = bryophytes), `Bio` is that FG's scaled standing biomass.
+
+```{r}
+#| label: fig-model-single-function-fg-bio-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 4 estimates (FG identity × FG biomass × climate). Baseline FG = B (bryophytes). Bold numbers indicate p ≤ 0.01."
+
+tar_read(model_single_function_fg_bio_heatmap)
+```
+
 ### Group models
 
 Model output for group models: functional groups remaining × temperature × precipitation
@@ -166,6 +179,14 @@ tar_read(model_group_biomass_out)
 tar_read(model_group_FG_biomass_out)
 ```
 
+```{r}
+#| label: tbl-model-group-fg-bio
+#| echo: false
+#| tbl-cap: "Group models: FG identity × FG biomass × climate (model 4). Baseline FG = B (bryophytes)."
+
+tar_read(model_group_fg_bio_out)
+```
+
 ### Multifunctionality
 
 Model output for global multifunctionality: functional groups remaining × temperature × precipitation (excluding two-group-remaining plots: GF, FB, GB).
@@ -192,6 +213,14 @@ tar_read(model_multifunctionality_biomass_out)
 #| tbl-cap: "Multifunctionality: biomass composition × climate only."
 
 tar_read(model_multifunctionality_FG_biomass_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-fg-bio
+#| echo: false
+#| tbl-cap: "Multifunctionality: FG identity × FG biomass × climate (model 4). Baseline FG = B (bryophytes)."
+
+tar_read(model_multifunctionality_fg_bio_out)
 ```
 
 ### Multifunctionality (FG richness as predictor)

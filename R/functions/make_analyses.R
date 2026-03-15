@@ -72,6 +72,38 @@ make_model <- function(dat, response_var, fg_var, group){
     )
 }
 
+# Model: FG identity × FG biomass × climate (long-format data from big_data_long)
+# dat must have one row per FG per response per plot (from big_data |> left_join(standing_biomass))
+# fg_id identifies which FG is present in each row; biomass_scaled is that FG's biomass.
+# Baseline FG for contrasts = alphabetically first level of fg_id ("B").
+make_model_fg_bio <- function(dat, response_var, group) {
+  dat |>
+    rename(.response = {{response_var}}) |>
+    group_by(across(all_of({{group}}))) |>
+    nest() |>
+    mutate(
+      model_fg_bio = map(
+        data,
+        ~ {
+          safe_fit <- purrr::safely(function(df) {
+            lmerTest::lmer(
+              data = df,
+              .response ~ fg_id * biomass_scaled * (temperature_scaled + precipitation_scaled) + (1 | siteID)
+            )
+          })
+          res <- safe_fit(.)
+          if (!is.null(res$error)) {
+            warning("FG bio model failed: ", conditionMessage(res$error))
+          }
+          res$result
+        }
+      ),
+      result_fg_bio     = map(model_fg_bio, ~ purrr::safely(tidy)(.)$result),
+      anova_fg_bio      = map(model_fg_bio, ~ purrr::safely(car::Anova)(.)$result),
+      anova_tidy_fg_bio = map(anova_fg_bio, ~ purrr::safely(tidy)(.)$result)
+    )
+}
+
 
 # make prediction for functional group analysis
 # expects dat with no NA in .response, .functional_group, temperature_scaled, precipitation_scaled

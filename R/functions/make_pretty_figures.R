@@ -7,10 +7,13 @@
 #' @param group_lookup Data frame with columns: response, group (for sorting responses)
 #' @param group_order Character vector: order of groups for y-axis (default: microenvironment, nutrient cycling, carbon cycling, nematodes, microbes)
 #' @param fancy_terms Apply fancy_stats term formatting (default TRUE)
+#' @param functional_group_as Passed to fancy_stats: `"fg_remaining"` (default), `"richness"`, or
+#'   `"fg_bio"`. For `"fg_bio"`, the intercept label is kept as-is (not renamed to "Bare").
 plot_model_heatmap <- function(model_data,
                                group_lookup,
                                group_order = c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes"),
-                               fancy_terms = TRUE) {
+                               fancy_terms = TRUE,
+                               functional_group_as = "fg_remaining") {
 
   # Join group and define explicit response order
   group_lookup_distinct <- group_lookup |> distinct(response, group)
@@ -31,7 +34,7 @@ plot_model_heatmap <- function(model_data,
 
   # Apply fancy term names if requested
   if (fancy_terms) {
-    dat <- dat |> fancy_stats(sort = FALSE)
+    dat <- dat |> fancy_stats(sort = FALSE, functional_group_as = functional_group_as)
   } else {
     dat <- dat |>
       mutate(term = str_replace(term, "\\.functional_group", ""),
@@ -41,11 +44,15 @@ plot_model_heatmap <- function(model_data,
   }
 
   # Heatmap-only display tweaks (not applied to tables):
-  # "Intercept" -> "Bare" (baseline = bare ground / no FGs remaining)
+  # "Intercept" -> "Bare" only for fg_remaining / richness models
+  #   (baseline = bare ground / no FGs remaining; NOT meaningful for fg_bio where baseline = FG "B")
   # "microenvironment" -> "microenv" (shorter facet label)
   dat <- dat |>
     mutate(
-      term = if_else(as.character(term) == "Intercept", "Bare", as.character(term)),
+      term = if_else(
+        as.character(term) == "Intercept" & functional_group_as != "fg_bio",
+        "Bare", as.character(term)
+      ),
       group = str_replace(as.character(group), "microenvironment", "microenv")
     )
 
@@ -58,8 +65,9 @@ plot_model_heatmap <- function(model_data,
   # Order terms: FGs first (baseline = "None"; intact control = "All"),
   # then biomass, then climate, then interactions.
   # (matches fancy_stats labels: Bio = total_biomass; BioG/BioF/BioB = composition)
+  # fg_bio model: Intercept = baseline FG "B"; contrasts F/G; Bio = biomass_scaled
   term_levels <- c(
-    "Bare",
+    "Bare", "Intercept",
     # fg_remaining contrasts (None = baseline; All = intact vegetation control)
     "F", "G", "B", "GF", "FB", "GB", "All",
     # Biomass mains
@@ -71,12 +79,16 @@ plot_model_heatmap <- function(model_data,
     "F:P", "G:P", "B:P", "GF:P", "FB:P", "GB:P", "All:P",
     # FG × climate (three-way)
     "F:T:P", "G:T:P", "B:T:P", "GF:T:P", "FB:T:P", "GB:T:P", "All:T:P",
-    # Total biomass × climate (model 2 if present)
+    # Total biomass × climate (model 2)
     "Bio:T", "Bio:P", "Bio:T:P",
     # Composition × climate (model 3)
     "BioG:T", "BioF:T", "BioB:T",
     "BioG:P", "BioF:P", "BioB:P",
     "BioG:T:P", "BioF:T:P", "BioB:T:P",
+    # fg_bio model: FG identity × biomass × climate interactions
+    "F:Bio", "G:Bio",
+    "F:Bio:T", "G:Bio:T", "F:Bio:P", "G:Bio:P",
+    "F:Bio:T:P", "G:Bio:T:P",
     # Climate interaction only
     "T:P"
   )

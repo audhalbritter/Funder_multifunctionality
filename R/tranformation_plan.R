@@ -86,7 +86,9 @@ transformation_plan <- list(
       mutate(
         unit = "g m\u207B\u00B2"
       ) |>
-      select(-no_treatment, -comment)
+      # after filtering, removed_fg only contains FGs that are present; rename for clarity
+      rename(fg_id = removed_fg) |>
+      select(-no_treatment, -comments)
   ),
 
   # sum of standing biomass
@@ -101,7 +103,7 @@ transformation_plan <- list(
   tar_target(
     name = standing_biomass_wide,
     command = standing_biomass |>
-      pivot_wider(id_cols = c(siteID, blockID, plotID, treatment), names_from = removed_fg, values_from = biomass_scaled, names_prefix = "biomass_scaled_")
+      pivot_wider(id_cols = c(siteID, blockID, plotID, treatment), names_from = fg_id, values_from = biomass_scaled, names_prefix = "biomass_scaled_")
   ),
 
   # plant litter
