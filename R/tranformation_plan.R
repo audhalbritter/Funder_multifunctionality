@@ -96,7 +96,11 @@ transformation_plan <- list(
     name = standing_biomass_sum,
     command = standing_biomass |>
       group_by(siteID, blockID, plotID, treatment) |>
-      summarise(total_biomass_scaled = sum(biomass_scaled))
+      summarise(
+        total_biomass = sum(biomass, na.rm = TRUE),
+        total_biomass_scaled = sum(biomass_scaled, na.rm = TRUE),
+        .groups = "drop"
+      )
   ),
 
   # wide biomass (missing FG = removed, so biomass 0)

@@ -18,67 +18,13 @@ library(patchwork)
 library(gt)
 library(ggnewscale)
 library(tibble)
+library(purrr)
+library(dplyr)
 ```
 
 # Results
 
-## PCA ordination
-
-Scree plots showing variance explained by each principal component for bare ground and intact vegetation.
-
-```{r}
-#| label: fig-pca-scree
-#| echo: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 4
-#| fig-cap: Scree plot of PCA eigenvalues for bare ground (left) and intact vegetation (right) plots.
-
-tar_read(pca_combined_scree)
-```
-
-PCA of ecosystem functions for bare ground (FGB) and intact vegetation (C) plots.
-
-```{r}
-#| label: fig-pca-ordination
-#| echo: false
-#| warning: false
-#| fig-width: 12
-#| fig-height: 12
-#| fig-cap: PCA ordination of ecosystem functions for bare ground (left) and intact vegetation (right) plots. Sites are coloured by summer temperature and shaped by precipitation. Loadings (arrows) are coloured by functional group.
-
-tar_read(pca_combined_plot)
-```
-
-Variation in ecosystem function composition explained by the climate grid (temperature × precipitation) from PERMANOVA.
-
-```{r}
-#| label: tab-permanova-climate
-#| echo: false
-#| tbl-cap: "Variation in ecosystem function composition explained by climate (temperature × precipitation) from PERMANOVA."
-
-pca_bare <- tar_read(pca_bare)
-pca_intact <- tar_read(pca_intact)
-
-permanova_bare <- pca_bare[[4]]
-permanova_intact <- pca_intact[[4]]
-
-tibble(
-  `Vegetation type` = c("Bare ground", "Intact vegetation"),
-  `Explained by climate` = c(
-    round(permanova_bare$R2[1] * 100, 1),
-    round(permanova_intact$R2[1] * 100, 1)
-  ),
-  `Not explained` = c(
-    round(permanova_bare$R2[2] * 100, 1),
-    round(permanova_intact$R2[2] * 100, 1)
-  )
-) |>
-  gt() |>
-  fmt_number(columns = c(`Explained by climate`, `Not explained`), decimals = 1, pattern = "{x}%")
-```
-
-### PCA with site effect partitioned out
+## PCA ordination (all data and site effect partitioned out)
 
 PCA of all plots: full ordination (left) and partial ordination with site effect removed (right).
 
@@ -92,6 +38,80 @@ PCA of all plots: full ordination (left) and partial ordination with site effect
 
 tar_read(pca_all_vs_no_site_plot)
 ```
+
+Variation in ecosystem function composition explained by PERMANOVA for all plots and site-partitioned PCA: (1) climate only, (2) FG × climate + biomass, (3) biomass G/F/B × climate.
+
+```{r}
+#| label: tab-permanova-climate
+#| echo: false
+#| tbl-cap: "Variance in ecosystem function composition explained by PERMANOVA (% R²). Values are grouped into Climate, FG, Biomass, and Residual for each model."
+
+pca_all <- tar_read(pca_all)
+pca_no_site <- tar_read(pca_no_site)
+
+permanova_all <- pca_all[[4]]
+permanova_no_site <- pca_no_site[[4]]
+
+# [[4]] is a named list of adonis2 results.
+# adonis2 is run with by = "terms", so each term has its own R2 row.
+# We aggregate terms into Climate, FG, Biomass, and keep one Residual.
+r2_by_term <- function(ad) {
+  if (is.null(ad)) return(NULL)
+  rn <- row.names(ad)
+  r2 <- ad$R2
+  climate_r2 <- 0
+  fg_r2 <- 0
+  biomass_r2 <- 0
+  for (i in seq_along(rn)) {
+    if (rn[i] %in% c("Residual", "Total")) next
+    term <- rn[i]
+    if (grepl("treatment", term, fixed = TRUE)) {
+      fg_r2 <- fg_r2 + r2[i]
+    } else if (grepl("total_biomass_scaled", term, fixed = TRUE) || grepl("biomass_scaled", term, fixed = TRUE)) {
+      biomass_r2 <- biomass_r2 + r2[i]
+    } else if (grepl("temperature_scaled", term, fixed = TRUE) || grepl("precipitation_scaled", term, fixed = TRUE)) {
+      climate_r2 <- climate_r2 + r2[i]
+    }
+  }
+  residual_r2 <- if ("Residual" %in% rn) ad["Residual", "R2"] else NA_real_
+  list(
+    climate_r2 = climate_r2 * 100,
+    fg_r2 = fg_r2 * 100,
+    biomass_r2 = biomass_r2 * 100,
+    residual_r2 = residual_r2 * 100
+  )
+}
+format_r2_num <- function(x, field) {
+  if (is.null(x)) return(NA_real_)
+  round(x[[field]], 1)
+}
+
+bind_rows(
+  tibble(
+    Dataset = "All data",
+    Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
+    name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
+    res = map(name, ~ r2_by_term(permanova_all[[.x]]))
+  ),
+  tibble(
+    Dataset = "Site partitioned out",
+    Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
+    name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
+    res = map(name, ~ r2_by_term(permanova_no_site[[.x]]))
+  )
+) |>
+  mutate(
+    Climate = map_dbl(res, ~ format_r2_num(.x, "climate_r2")),
+    FG = map_dbl(res, ~ format_r2_num(.x, "fg_r2")),
+    Biomass = map_dbl(res, ~ format_r2_num(.x, "biomass_r2")),
+    Residual = map_dbl(res, ~ format_r2_num(.x, "residual_r2"))
+) |>
+  select(Dataset, Model, Climate, FG, Biomass, Residual) |>
+  gt() |>
+  fmt_number(columns = c(Climate, FG, Biomass, Residual), decimals = 1, pattern = "{x}%")
+```
+
+
 
 
 ### Single function models
