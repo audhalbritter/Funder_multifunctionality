@@ -99,11 +99,17 @@ transformation_plan <- list(
       summarise(total_biomass_scaled = sum(biomass_scaled))
   ),
 
-  # wide biomass
+  # wide biomass (missing FG = removed, so biomass 0)
   tar_target(
     name = standing_biomass_wide,
     command = standing_biomass |>
-      pivot_wider(id_cols = c(siteID, blockID, plotID, treatment), names_from = fg_id, values_from = biomass_scaled, names_prefix = "biomass_scaled_")
+      pivot_wider(
+        id_cols = c(siteID, blockID, plotID, treatment),
+        names_from = fg_id,
+        values_from = biomass_scaled,
+        names_prefix = "biomass_scaled_",
+        values_fill = 0
+      )
   ),
 
   # plant litter
