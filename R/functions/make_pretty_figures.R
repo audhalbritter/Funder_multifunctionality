@@ -9,11 +9,14 @@
 #' @param fancy_terms Apply fancy_stats term formatting (default TRUE)
 #' @param functional_group_as Passed to fancy_stats: `"fg_remaining"` (default), `"richness"`, or
 #'   `"fg_bio"`. For `"fg_bio"`, the intercept label is kept as-is (not renamed to "Bare").
+#' @param r2_tibble Optional tibble with columns `response` and `R2_marginal`. If provided,
+#'   a narrow marginal R² panel is patchworked to the right of the main heatmap.
 plot_model_heatmap <- function(model_data,
                                group_lookup,
                                group_order = c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes"),
                                fancy_terms = TRUE,
-                               functional_group_as = "fg_remaining") {
+                               functional_group_as = "fg_remaining",
+                               r2_tibble = NULL) {
 
   # Join group and define explicit response order
   group_lookup_distinct <- group_lookup |> distinct(response, group)
@@ -56,11 +59,31 @@ plot_model_heatmap <- function(model_data,
       group = str_replace(as.character(group), "microenvironment", "microenv")
     )
 
-  # Significance: p <= 0.01 = bold
+  # Significance styling for heatmap text:
+  # - p <= 0.001           -> bold
+  # - 0.001 < p <= 0.01    -> bold italic
+  # - 0.01  < p <= 0.1     -> plain
+  # - p  >= 0.1            -> plain + grey text
   dat <- dat |>
     mutate(p_raw = as.numeric(p.value)) |>
     mutate(p_raw = if_else(is.na(p_raw), 1, p_raw)) |>
-    mutate(significant = p_raw <= 0.01)
+    mutate(
+      p_cat = case_when(
+        p_raw <= 0.001 ~ "p_le_0.001",
+        p_raw <= 0.01  ~ "p_le_0.01",
+        p_raw <= 0.1   ~ "p_le_0.1",
+        TRUE           ~ "p_gt_0.1"
+      ),
+      text_fontface = case_when(
+        p_cat == "p_le_0.001" ~ "bold",
+        p_cat == "p_le_0.01"  ~ "bold.italic",
+        TRUE                  ~ "plain"
+      ),
+      text_colour = case_when(
+        p_cat == "p_gt_0.1" ~ "grey60",
+        TRUE               ~ "grey20"
+      )
+    )
 
   # Order terms: FGs first (baseline = "None"; intact control = "All"),
   # then biomass, then climate, then interactions.
@@ -136,14 +159,15 @@ plot_model_heatmap <- function(model_data,
   p_heatmap <- ggplot(dat, aes(x = term, y = response, fill = estimate)) +
     geom_tile(colour = "grey90", linewidth = 0.3) +
     geom_text(
-      aes(label = round(estimate, 2), fontface = ifelse(significant, "bold", "plain")),
-      size = 5.2, colour = "grey20"
+      aes(label = round(estimate, 2), fontface = text_fontface, colour = text_colour),
+      size = 5.2
     ) +
     scale_fill_gradientn(
       colours = paletteer::paletteer_d("colorBlindness::Blue2DarkOrange12Steps"),
       limits = fill_limits,
       name = "Estimate"
     ) +
+    scale_colour_identity(guide = "none") +
     scale_x_discrete(guide = guide_axis(angle = 45)) +
     scale_y_discrete() +
     facet_grid(
@@ -157,7 +181,7 @@ plot_model_heatmap <- function(model_data,
     theme(
       axis.text.y = element_text(size = 12),
       axis.text.x = element_text(size = 11),
-      legend.position = "right",
+      legend.position = "top",
       panel.grid = element_blank(),
       strip.background = element_rect(fill = "grey92", colour = "grey80"),
       # Facet labels on left: rotate 90° so they read vertically
@@ -165,5 +189,61 @@ plot_model_heatmap <- function(model_data,
       panel.spacing.y = unit(0.4, "lines")
     )
 
-  p_heatmap
+  if (is.null(r2_tibble)) {
+    return(p_heatmap)
+  }
+
+  # Build marginal R2 side panel, aligned by group × response
+  r2_panel_data <- dat |>
+    distinct(group, response) |>
+    left_join(r2_tibble, by = "response")
+
+  # If no usable R2 values, fall back to plain heatmap
+  if (!"R2_marginal" %in% names(r2_panel_data) || all(is.na(r2_panel_data$R2_marginal))) {
+    return(p_heatmap)
+  }
+
+  r2_panel_data <- r2_panel_data |>
+    mutate(
+      r2_label = "R2_marginal",
+      R2_marginal = as.numeric(R2_marginal)
+    )
+
+  # Use a one-sided (warm) subset of the main heatmap palette for R2 (0–1)
+  r2_cols <- paletteer::paletteer_d("colorBlindness::Blue2DarkOrange12Steps")
+  r2_cols_pos <- r2_cols[7:12]
+
+  p_r2 <- ggplot(r2_panel_data, aes(x = r2_label, y = response, fill = R2_marginal)) +
+    geom_tile(colour = "grey90", linewidth = 0.3) +
+    geom_text(
+      aes(label = round(R2_marginal, 2)),
+      size = 4, colour = "grey20"
+    ) +
+    scale_fill_gradientn(
+      colours = r2_cols_pos,
+      limits = c(0, 1),
+      name = "R² (marginal)"
+    ) +
+    scale_x_discrete(NULL) +
+    scale_y_discrete() +
+    facet_grid(
+      rows = vars(group),
+      scales = "free_y",
+      space = "free_y",
+      switch = "y"
+    ) +
+    theme_bw() +
+    theme(
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.title.y = element_blank(),
+      axis.ticks.x = element_blank(),
+      panel.grid = element_blank(),
+      strip.background = element_blank(),
+      strip.text.y.left = element_blank(),
+      panel.spacing.y = unit(0.4, "lines"),
+      legend.position = "top"
+    )
+
+  p_heatmap + p_r2 + patchwork::plot_layout(widths = c(4, 1))
 }

@@ -113,6 +113,19 @@ bind_rows(
 ```
 
 
+## Analyis for functions and multifunctionality
+
+Run 3 models for each function and multifunctionality:
+
+1. Functional groups remaining × climate only
+
+2. Functional groups remaining × climate + total biomass
+
+3. Biomass G/F/B × climate only
+
+For multifunctionality, I used absolute values and functional group richness as predictor to simplify the model.
+
+
 ### Multifunctionality (FG richness as predictor)
 
 Same multifunctionality response and levels as above, but with **functional group richness** (`fg_richness`) in place of treatment in the model (richness × climate).
@@ -155,8 +168,19 @@ tar_read(model_multifunctionality_FG_biomass_out)
 
 ### Single function models
 
+```{r}
+#| label: fig-model-single-function-r2
+#| echo: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Comparison of marginal and conditional R² for single-function models. Each point is a response; panels compare models without biomass to models with total biomass (left) or FG biomass (right). The dashed line is the 1:1 reference."
 
-Heatmap of model estimates: blue = negative, red = positive; bold numbers indicate p ≤ 0.01.
+tar_read(model_single_function_r2_plot)
+```
+
+
+Heatmap of model estimates: blue = negative, red = positive. Text style encodes p-values as follows: **bold** for p ≤ 0.001, **_bold italic_** for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1.
 
 Model 1 (functional groups remaining × climate only):
 
@@ -196,6 +220,54 @@ Model 3 (biomass G/F/B × climate only):
 
 tar_read(model_single_function_FG_biomass_heatmap)
 ```
+
+Main-effects versions of the same three models (FG/biomass mains + climate mains + T × P only):
+
+```{r}
+#| label: fig-model-single-function-main-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 1 estimates (functional groups remaining + climate mains + T × P). Baseline = no FGs remaining (bare ground)."
+
+tar_read(model_single_function_main_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 2 estimates (functional groups remaining + climate mains + T × P + total biomass)."
+
+tar_read(model_single_function_main_biomass_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-fg-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 3 estimates (biomass composition + climate mains + T × P)."
+
+tar_read(model_single_function_main_FG_biomass_heatmap)
+```
+
+
+```{r}
+#| label: fig-single-function-fg-biomass-panels
+#| echo: false
+#| warning: false
+#| fig-width: 12
+#| fig-height: 5
+#| fig-cap: "Example single-function response against biomass of each functional group (three panels: graminoids, forbs, bryophytes). Points are observations; black line is a single linear fit per panel."
+
+tar_read(single_function_fg_biomass_panel_plot)
+```
+
 
 ### Group models
 
