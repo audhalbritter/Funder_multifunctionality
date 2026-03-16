@@ -18,67 +18,13 @@ library(patchwork)
 library(gt)
 library(ggnewscale)
 library(tibble)
+library(purrr)
+library(dplyr)
 ```
 
 # Results
 
-## PCA ordination
-
-Scree plots showing variance explained by each principal component for bare ground and intact vegetation.
-
-```{r}
-#| label: fig-pca-scree
-#| echo: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 4
-#| fig-cap: Scree plot of PCA eigenvalues for bare ground (left) and intact vegetation (right) plots.
-
-tar_read(pca_combined_scree)
-```
-
-PCA of ecosystem functions for bare ground (FGB) and intact vegetation (C) plots.
-
-```{r}
-#| label: fig-pca-ordination
-#| echo: false
-#| warning: false
-#| fig-width: 12
-#| fig-height: 12
-#| fig-cap: PCA ordination of ecosystem functions for bare ground (left) and intact vegetation (right) plots. Sites are coloured by summer temperature and shaped by precipitation. Loadings (arrows) are coloured by functional group.
-
-tar_read(pca_combined_plot)
-```
-
-Variation in ecosystem function composition explained by the climate grid (temperature × precipitation) from PERMANOVA.
-
-```{r}
-#| label: tab-permanova-climate
-#| echo: false
-#| tbl-cap: "Variation in ecosystem function composition explained by climate (temperature × precipitation) from PERMANOVA."
-
-pca_bare <- tar_read(pca_bare)
-pca_intact <- tar_read(pca_intact)
-
-permanova_bare <- pca_bare[[4]]
-permanova_intact <- pca_intact[[4]]
-
-tibble(
-  `Vegetation type` = c("Bare ground", "Intact vegetation"),
-  `Explained by climate` = c(
-    round(permanova_bare$R2[1] * 100, 1),
-    round(permanova_intact$R2[1] * 100, 1)
-  ),
-  `Not explained` = c(
-    round(permanova_bare$R2[2] * 100, 1),
-    round(permanova_intact$R2[2] * 100, 1)
-  )
-) |>
-  gt() |>
-  fmt_number(columns = c(`Explained by climate`, `Not explained`), decimals = 1, pattern = "{x}%")
-```
-
-### PCA with site effect partitioned out
+## PCA ordination (all data and site effect partitioned out)
 
 PCA of all plots: full ordination (left) and partial ordination with site effect removed (right).
 
@@ -93,14 +39,150 @@ PCA of all plots: full ordination (left) and partial ordination with site effect
 tar_read(pca_all_vs_no_site_plot)
 ```
 
+Variation in ecosystem function composition explained by PERMANOVA for all plots and site-partitioned PCA: (1) climate only, (2) FG × climate + biomass, (3) biomass G/F/B × climate.
+
+```{r}
+#| label: tab-permanova-climate
+#| echo: false
+#| eval: false
+#| tbl-cap: "Variance in ecosystem function composition explained by PERMANOVA (% R²). Values are grouped into Climate, FG, Biomass, and Residual for each model."
+
+pca_all <- tar_read(pca_all)
+pca_no_site <- tar_read(pca_no_site)
+
+permanova_all <- pca_all[[4]]
+permanova_no_site <- pca_no_site[[4]]
+
+# [[4]] is a named list of adonis2 results.
+# adonis2 is run with by = "terms", so each term has its own R2 row.
+# We aggregate terms into Climate, FG, Biomass, and keep one Residual.
+r2_by_term <- function(ad) {
+  if (is.null(ad)) return(NULL)
+  rn <- row.names(ad)
+  r2 <- ad$R2
+  climate_r2 <- 0
+  fg_r2 <- 0
+  biomass_r2 <- 0
+  for (i in seq_along(rn)) {
+    if (rn[i] %in% c("Residual", "Total")) next
+    term <- rn[i]
+    if (grepl("treatment", term, fixed = TRUE)) {
+      fg_r2 <- fg_r2 + r2[i]
+    } else if (grepl("total_biomass_scaled", term, fixed = TRUE) || grepl("biomass_scaled", term, fixed = TRUE)) {
+      biomass_r2 <- biomass_r2 + r2[i]
+    } else if (grepl("temperature_scaled", term, fixed = TRUE) || grepl("precipitation_scaled", term, fixed = TRUE)) {
+      climate_r2 <- climate_r2 + r2[i]
+    }
+  }
+  residual_r2 <- if ("Residual" %in% rn) ad["Residual", "R2"] else NA_real_
+  list(
+    climate_r2 = climate_r2 * 100,
+    fg_r2 = fg_r2 * 100,
+    biomass_r2 = biomass_r2 * 100,
+    residual_r2 = residual_r2 * 100
+  )
+}
+format_r2_num <- function(x, field) {
+  if (is.null(x)) return(NA_real_)
+  round(x[[field]], 1)
+}
+
+bind_rows(
+  tibble(
+    Dataset = "All data",
+    Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
+    name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
+    res = map(name, ~ r2_by_term(permanova_all[[.x]]))
+  ),
+  tibble(
+    Dataset = "Site partitioned out",
+    Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
+    name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
+    res = map(name, ~ r2_by_term(permanova_no_site[[.x]]))
+  )
+) |>
+  mutate(
+    Climate = map_dbl(res, ~ format_r2_num(.x, "climate_r2")),
+    FG = map_dbl(res, ~ format_r2_num(.x, "fg_r2")),
+    Biomass = map_dbl(res, ~ format_r2_num(.x, "biomass_r2")),
+    Residual = map_dbl(res, ~ format_r2_num(.x, "residual_r2"))
+) |>
+  select(Dataset, Model, Climate, FG, Biomass, Residual) |>
+  gt() |>
+  fmt_number(columns = c(Climate, FG, Biomass, Residual), decimals = 1, pattern = "{x}%")
+```
+
+
+## Analyis for functions and multifunctionality
+
+Run 3 models for each function and multifunctionality:
+
+1. Functional groups remaining × climate only
+
+2. Functional groups remaining × climate + total biomass
+
+3. Biomass G/F/B × climate only
+
+For multifunctionality, I used absolute values and functional group richness as predictor to simplify the model.
+
+
+### Multifunctionality (FG richness as predictor)
+
+Same multifunctionality response and levels as above, but with **functional group richness** (`fg_richness`) in place of treatment in the model (richness × climate).
+
+```{r}
+#| label: tbl-model-multifunctionality-richness
+#| echo: false
+#| tbl-cap: "Multifunctionality: FG richness × climate (model 1)."
+
+tar_read(model_multifunctionality_richness_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-richness-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality (richness): FG richness × climate + total biomass."
+
+tar_read(model_multifunctionality_richness_biomass_out)
+```
+
+```{r}
+#| label: fig-model-multifunctionality-richness-data
+#| echo: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Observed multifunctionality vs functional group richness. Point size indicates total biomass."
+
+tar_read(model_multifunctionality_richness_plot)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-fg-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality: biomass composition × climate only."
+
+tar_read(model_multifunctionality_FG_biomass_out)
+```
+
 
 ### Single function models
 
+```{r}
+#| label: fig-model-single-function-r2
+#| echo: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Comparison of marginal and conditional R² for single-function models. Each point is a response; panels compare models without biomass to models with total biomass (left) or FG biomass (right). The dashed line is the 1:1 reference."
 
-Heatmap of model estimates: blue = negative, red = positive; bold numbers indicate p ≤ 0.01.
+tar_read(model_single_function_r2_plot)
+```
 
-Model 1 (FG × climate only):
-This is the same model we had previously, for comparison.
+
+Heatmap of model estimates: blue = negative, red = positive. Text style encodes p-values as follows: **bold** for p ≤ 0.001, **_bold italic_** for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1.
+
+Model 1 (functional groups remaining × climate only):
 
 ```{r}
 #| label: fig-model-single-function-heatmap
@@ -108,12 +190,12 @@ This is the same model we had previously, for comparison.
 #| warning: false
 #| fig-width: 14
 #| fig-height: 12
-#| fig-cap: "Heatmap of model 1 estimates (treatment × climate). Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
+#| fig-cap: "Heatmap of model 1 estimates (functional groups remaining × climate). Baseline = no FGs remaining (bare ground). Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
 
 tar_read(model_single_function_heatmap)
 ```
 
-Model 2 (treatment × climate + total biomass):
+Model 2 (functional groups remaining × climate + total biomass):
 
 ```{r}
 #| label: fig-model-single-function-biomass-heatmap
@@ -121,7 +203,7 @@ Model 2 (treatment × climate + total biomass):
 #| warning: false
 #| fig-width: 14
 #| fig-height: 12
-#| fig-cap: "Heatmap of model 2 estimates (treatment × climate + total biomass)."
+#| fig-cap: "Heatmap of model 2 estimates (functional groups remaining × climate + total biomass)."
 
 tar_read(model_single_function_biomass_heatmap)
 ```
@@ -139,14 +221,62 @@ Model 3 (biomass G/F/B × climate only):
 tar_read(model_single_function_FG_biomass_heatmap)
 ```
 
+Main-effects versions of the same three models (FG/biomass mains + climate mains + T × P only):
+
+```{r}
+#| label: fig-model-single-function-main-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 1 estimates (functional groups remaining + climate mains + T × P). Baseline = no FGs remaining (bare ground)."
+
+tar_read(model_single_function_main_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 2 estimates (functional groups remaining + climate mains + T × P + total biomass)."
+
+tar_read(model_single_function_main_biomass_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-fg-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 3 estimates (biomass composition + climate mains + T × P)."
+
+tar_read(model_single_function_main_FG_biomass_heatmap)
+```
+
+
+```{r}
+#| label: fig-single-function-fg-biomass-panels
+#| echo: false
+#| warning: false
+#| fig-width: 12
+#| fig-height: 5
+#| fig-cap: "Example single-function response against biomass of each functional group (three panels: graminoids, forbs, bryophytes). Points are observations; black line is a single linear fit per panel."
+
+tar_read(single_function_fg_biomass_panel_plot)
+```
+
+
 ### Group models
 
-Model output for group models: treatment × temperature × precipitation
+Model output for group models: functional groups remaining × temperature × precipitation
 
 ```{r}
 #| label: tbl-model-group
 #| echo: false
-#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on multifunctionality within each functional group."
+#| tbl-cap: "Model output from testing effect of functional groups remaining, summer temperature and annual precipitation on multifunctionality within each functional group."
 
 tar_read(model_group_out)
 ```
@@ -154,7 +284,7 @@ tar_read(model_group_out)
 ```{r}
 #| label: tbl-model-group-biomass
 #| echo: false
-#| tbl-cap: "Group models: treatment × climate + total biomass."
+#| tbl-cap: "Group models: functional groups remaining × climate + total biomass."
 
 tar_read(model_group_biomass_out)
 ```
@@ -169,12 +299,12 @@ tar_read(model_group_FG_biomass_out)
 
 ### Multifunctionality
 
-Model output for global multifunctionality: treatment × temperature × precipitation (excluding single removals F, G, B).
+Model output for global multifunctionality: functional groups remaining × temperature × precipitation (excluding two-group-remaining plots: GF, FB, GB).
 
 ```{r}
 #| label: tbl-model-multifunctionality
 #| echo: false
-#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on global multifunctionality."
+#| tbl-cap: "Model output from testing effect of functional groups remaining, summer temperature and annual precipitation on global multifunctionality."
 
 tar_read(model_multifunctionality_out)
 ```
@@ -182,35 +312,8 @@ tar_read(model_multifunctionality_out)
 ```{r}
 #| label: tbl-model-multifunctionality-biomass
 #| echo: false
-#| tbl-cap: "Multifunctionality: treatment × climate + total biomass."
+#| tbl-cap: "Multifunctionality: functional groups remaining × climate + total biomass."
 
 tar_read(model_multifunctionality_biomass_out)
 ```
 
-```{r}
-#| label: tbl-model-multifunctionality-fg-biomass
-#| echo: false
-#| tbl-cap: "Multifunctionality: biomass composition × climate only."
-
-tar_read(model_multifunctionality_FG_biomass_out)
-```
-
-### Multifunctionality (FG richness as predictor)
-
-Same multifunctionality response and levels as above, but with **functional group richness** (`fg_richness`) in place of treatment in the model (richness × climate).
-
-```{r}
-#| label: tbl-model-multifunctionality-richness
-#| echo: false
-#| tbl-cap: "Multifunctionality: FG richness × climate (model 1)."
-
-tar_read(model_multifunctionality_richness_out)
-```
-
-```{r}
-#| label: tbl-model-multifunctionality-richness-biomass
-#| echo: false
-#| tbl-cap: "Multifunctionality (richness): richness × climate + total biomass."
-
-tar_read(model_multifunctionality_richness_biomass_out)
-```

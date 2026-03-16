@@ -69,20 +69,26 @@ transformation_plan <- list(
       select(year:removed_fg, data_type, group, response, value, unit)
   ),
 
-  # standing biomass
+  # standing biomass (final harvest)
   tar_target(
     name = standing_biomass,
     command = standing_biomass_raw |> 
       # remove lichens
       filter(removed_fg != "L") |>
-      
+      # remove the biomass from FGs that were removed
+      filter(is.na(no_treatment)) |>
+      # for FGB replace biomass with 0
+      mutate(biomass = if_else(treatment == "FGB", 0, biomass)) |>
       # convert to g per m2
       mutate(biomass = biomass * 10000 / 625) |>
       # z-score once here; sum/wide use biomass_scaled so scaling is not duplicated
       mutate(biomass_scaled = scale(biomass)[, 1]) |>
       mutate(
         unit = "g m\u207B\u00B2"
-      )
+      ) |>
+      # after filtering, removed_fg only contains FGs that are present; rename for clarity
+      rename(fg_id = removed_fg) |>
+      select(-no_treatment, -comments)
   ),
 
   # sum of standing biomass
@@ -90,14 +96,24 @@ transformation_plan <- list(
     name = standing_biomass_sum,
     command = standing_biomass |>
       group_by(siteID, blockID, plotID, treatment) |>
-      summarise(total_biomass_scaled = sum(biomass_scaled))
+      summarise(
+        total_biomass = sum(biomass, na.rm = TRUE),
+        total_biomass_scaled = sum(biomass_scaled, na.rm = TRUE),
+        .groups = "drop"
+      )
   ),
 
-  # wide biomass
+  # wide biomass (missing FG = removed, so biomass 0)
   tar_target(
     name = standing_biomass_wide,
     command = standing_biomass |>
-      pivot_wider(id_cols = c(siteID, blockID, plotID, treatment), names_from = removed_fg, values_from = biomass_scaled, names_prefix = "biomass_scaled_")
+      pivot_wider(
+        id_cols = c(siteID, blockID, plotID, treatment),
+        names_from = fg_id,
+        values_from = biomass_scaled,
+        names_prefix = "biomass_scaled_",
+        values_fill = 0
+      )
   ),
 
   # plant litter

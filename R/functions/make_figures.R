@@ -188,6 +188,43 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
   return(p)
 }
 
+# Plot one response against biomass of each FG in 3 panels (single global fit line per panel)
+plot_response_vs_fg_biomass <- function(data, response_name, response_var = value_std) {
+  plot_dat <- data |>
+    filter(response == response_name) |>
+    select(
+      response,
+      .response = {{response_var}},
+      biomass_scaled_G,
+      biomass_scaled_F,
+      biomass_scaled_B
+    ) |>
+    pivot_longer(
+      cols = c(biomass_scaled_G, biomass_scaled_F, biomass_scaled_B),
+      names_to = "fg_biomass",
+      values_to = "biomass_value"
+    ) |>
+    mutate(
+      fg_biomass = recode(
+        fg_biomass,
+        biomass_scaled_G = "Graminoid biomass",
+        biomass_scaled_F = "Forb biomass",
+        biomass_scaled_B = "Bryophyte biomass"
+      )
+    )
+
+  ggplot(plot_dat, aes(x = biomass_value, y = .response)) +
+    geom_point(alpha = 0.5) +
+    geom_smooth(method = "lm", se = TRUE, colour = "black", linewidth = 0.8) +
+    facet_wrap(~ fg_biomass, scales = "free_x") +
+    labs(
+      x = "Functional-group biomass (scaled)",
+      y = "Standardized function value",
+      title = response_name
+    ) +
+    theme_bw()
+}
+
 
 # Factorial multifunctionality plot (forb/gram/bryo presence vs predicted multifunctionality)
 # climate_var: "temp" (habitat), "prec" (precipitation), or "combined" (prec colours, temp facets)
