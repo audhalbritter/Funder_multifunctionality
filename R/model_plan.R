@@ -62,35 +62,6 @@ model_plan <- list(
     }
   ),
 
-  # Model 4: FG identity × FG biomass × climate (long format: one row per FG per plot)
-  tar_target(
-    name = model_single_function_fg_bio,
-    command = make_model_fg_bio(
-      dat = big_data_long,
-      response_var = value_std,
-      group = "response"
-    )
-  ),
-  tar_target(
-    name = model_single_function_fg_bio_out,
-    command = model_output_gt(
-      model_single_function_fg_bio,
-      unnest_col = "result_fg_bio",
-      functional_group_as = "fg_bio"
-    )
-  ),
-  tar_target(
-    name = model_single_function_fg_bio_heatmap,
-    command = {
-      group_lookup <- big_data_long |> distinct(response, group)
-      heatmap_data <- model_single_function_fg_bio |>
-        unnest(result_fg_bio) |>
-        filter(effect == "fixed") |>
-        select(response, term, estimate, p.value)
-      plot_model_heatmap(heatmap_data, group_lookup, functional_group_as = "fg_bio")
-    }
-  ),
-
   ### Group-level models (same structure as single response)
   tar_target(
     name = model_group,
@@ -120,23 +91,6 @@ model_plan <- list(
     command = model_output_gt(
       model_group |> rename(group_name = group),
       unnest_col = "result_FG_biomass"
-    )
-  ),
-
-  tar_target(
-    name = model_group_fg_bio,
-    command = make_model_fg_bio(
-      dat = absolute_group_data_long,
-      response_var = value,
-      group = "group"
-    )
-  ),
-  tar_target(
-    name = model_group_fg_bio_out,
-    command = model_output_gt(
-      model_group_fg_bio |> rename(group_name = group),
-      unnest_col = "result_fg_bio",
-      functional_group_as = "fg_bio"
     )
   ),
 
@@ -171,24 +125,6 @@ model_plan <- list(
     command = model_output_gt(
       model_multifunctionality |> rename(level_name = level),
       unnest_col = "result_FG_biomass",
-      extra_drop = "level_name"
-    )
-  ),
-
-  tar_target(
-    name = model_multifunctionality_fg_bio,
-    command = make_model_fg_bio(
-      dat = multifunctionality_long,
-      response_var = multifuntionality,
-      group = "level"
-    )
-  ),
-  tar_target(
-    name = model_multifunctionality_fg_bio_out,
-    command = model_output_gt(
-      model_multifunctionality_fg_bio |> rename(level_name = level),
-      unnest_col = "result_fg_bio",
-      functional_group_as = "fg_bio",
       extra_drop = "level_name"
     )
   ),
