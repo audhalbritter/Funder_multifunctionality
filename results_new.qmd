@@ -44,6 +44,7 @@ Variation in ecosystem function composition explained by PERMANOVA for all plots
 ```{r}
 #| label: tab-permanova-climate
 #| echo: false
+#| eval: false
 #| tbl-cap: "Variance in ecosystem function composition explained by PERMANOVA (% R²). Values are grouped into Climate, FG, Biomass, and Residual for each model."
 
 pca_all <- tar_read(pca_all)
@@ -112,6 +113,44 @@ bind_rows(
 ```
 
 
+### Multifunctionality (FG richness as predictor)
+
+Same multifunctionality response and levels as above, but with **functional group richness** (`fg_richness`) in place of treatment in the model (richness × climate).
+
+```{r}
+#| label: tbl-model-multifunctionality-richness
+#| echo: false
+#| tbl-cap: "Multifunctionality: FG richness × climate (model 1)."
+
+tar_read(model_multifunctionality_richness_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-richness-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality (richness): FG richness × climate + total biomass."
+
+tar_read(model_multifunctionality_richness_biomass_out)
+```
+
+```{r}
+#| label: fig-model-multifunctionality-richness-data
+#| echo: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6
+#| fig-cap: "Observed multifunctionality vs functional group richness. Point size indicates total biomass."
+
+tar_read(model_multifunctionality_richness_plot)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-fg-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality: biomass composition × climate only."
+
+tar_read(model_multifunctionality_FG_biomass_out)
+```
 
 
 ### Single function models
@@ -206,30 +245,3 @@ tar_read(model_multifunctionality_out)
 tar_read(model_multifunctionality_biomass_out)
 ```
 
-```{r}
-#| label: tbl-model-multifunctionality-fg-biomass
-#| echo: false
-#| tbl-cap: "Multifunctionality: biomass composition × climate only."
-
-tar_read(model_multifunctionality_FG_biomass_out)
-```
-
-### Multifunctionality (FG richness as predictor)
-
-Same multifunctionality response and levels as above, but with **functional group richness** (`fg_richness`) in place of treatment in the model (richness × climate).
-
-```{r}
-#| label: tbl-model-multifunctionality-richness
-#| echo: false
-#| tbl-cap: "Multifunctionality: FG richness × climate (model 1)."
-
-tar_read(model_multifunctionality_richness_out)
-```
-
-```{r}
-#| label: tbl-model-multifunctionality-richness-biomass
-#| echo: false
-#| tbl-cap: "Multifunctionality (richness): richness × climate + total biomass."
-
-tar_read(model_multifunctionality_richness_biomass_out)
-```

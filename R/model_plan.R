@@ -156,5 +156,20 @@ model_plan <- list(
       extra_drop = "level_name",
       functional_group_as = "richness"
     )
+  ),
+  tar_target(
+    name = model_multifunctionality_richness_plot,
+    command = model_multifunctionality_richness |>
+      unnest(data) |>
+      ggplot(aes(x = total_biomass, y = .response, size = total_biomass, shape = as.factor(.functional_group))) +
+      geom_point(alpha = 0.6) +
+      scale_x_continuous(
+        name = "Total biomass",
+        expand = expansion(mult = c(0.05, 0.05))
+      ) +
+      scale_y_continuous(name = "Multifunctionality") +
+      scale_size_continuous(name = "Total biomass") +
+      scale_shape_discrete(name = "Functional group") +
+      theme_bw()
   )
 )

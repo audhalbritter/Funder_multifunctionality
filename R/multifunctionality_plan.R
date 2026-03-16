@@ -96,7 +96,8 @@ multifunctionality_plan <- list(
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
         fg_richness, fg_remaining, forb, gram, bryo, group, 
-        total_biomass_scaled, biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
+        total_biomass, total_biomass_scaled,
+        biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
       ) |>
       summarise(
         value = mean(value_abs, na.rm = TRUE),
@@ -116,7 +117,8 @@ multifunctionality_plan <- list(
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
         fg_richness, fg_remaining, forb, gram, bryo,
-        total_biomass_scaled, biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
+        total_biomass, total_biomass_scaled,
+        biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
       ) |>
       summarise(
         multifuntionality = mean(value, na.rm = TRUE),
