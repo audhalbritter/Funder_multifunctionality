@@ -327,6 +327,21 @@ model_plan <- list(
     }
   ),
   tar_target(
+    name = model_single_function_estimate_plot,
+    command = plot_single_function_estimate_comparison(
+      model_single_function_tbl = model_single_function,
+      response_group_lookup = big_data |> distinct(response, group),
+      colour_by = "group"
+    )
+  ),
+  tar_target(
+    name = model_single_function_estimate_term_plot,
+    command = plot_single_function_estimate_comparison(
+      model_single_function_tbl = model_single_function,
+      colour_by = "term"
+    )
+  ),
+  tar_target(
     name = single_function_fg_biomass_panel_plot,
     command = plot_response_vs_fg_biomass(
       data = big_data |> tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),

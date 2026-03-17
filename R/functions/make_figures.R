@@ -1,5 +1,302 @@
 ### make figures
 
+# Build prediction lines from Model 3 at fixed climate (scaled T/P values),
+# varying one biomass axis per panel while holding the other two at 0.
+make_fg_biomass_prediction_lines <- function(data,
+                                             response_name,
+                                             model_fg_biomass_tbl,
+                                             plot_dat,
+                                             temp_value = 0,
+                                             precip_value = 0,
+                                             n_points = 100) {
+  if (is.null(model_fg_biomass_tbl)) {
+    return(NULL)
+  }
+
+  fit <- model_fg_biomass_tbl |>
+    filter(response == response_name) |>
+    pull(model_FG_biomass)
+  fit <- if (length(fit) == 0) NULL else fit[[1]]
+  if (is.null(fit)) {
+    return(NULL)
+  }
+
+  x_ranges <- plot_dat |>
+    group_by(fg_biomass) |>
+    summarise(
+      x_min = min(biomass_value, na.rm = TRUE),
+      x_max = max(biomass_value, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  site_ref <- data |>
+    filter(response == response_name) |>
+    pull(siteID)
+  site_ref <- site_ref[!is.na(site_ref)][1]
+  if (length(site_ref) == 0) {
+    site_ref <- NA_character_
+  }
+
+  pred_lines <- x_ranges |>
+    rowwise() |>
+    do({
+      fg_name <- .$fg_biomass
+      x_seq <- seq(.$x_min, .$x_max, length.out = n_points)
+      n_pts <- length(x_seq)
+
+      newdat <- tibble(
+        biomass_scaled_G = rep(0, n_pts),
+        biomass_scaled_F = rep(0, n_pts),
+        biomass_scaled_B = rep(0, n_pts),
+        temperature_scaled = rep(temp_value, n_pts),
+        precipitation_scaled = rep(precip_value, n_pts),
+        siteID = rep(site_ref, n_pts)
+      )
+
+      if (fg_name == "Graminoid biomass") newdat$biomass_scaled_G <- x_seq
+      if (fg_name == "Forb biomass") newdat$biomass_scaled_F <- x_seq
+      if (fg_name == "Bryophyte biomass") newdat$biomass_scaled_B <- x_seq
+
+      newdat$biomass_value <- x_seq
+      newdat$fg_biomass <- fg_name
+      newdat$pred <- as.numeric(predict(fit, newdata = newdat, re.form = NA))
+
+      # 95% CI for fixed-effects prediction at specified climate values.
+      fixed_form <- lme4::nobars(formula(fit))
+      fixed_terms <- stats::delete.response(stats::terms(fixed_form))
+      mm <- model.matrix(fixed_terms, data = newdat)
+      mm <- mm[, names(lme4::fixef(fit)), drop = FALSE]
+      vcv <- vcov(fit)
+      se_fit <- sqrt(diag(mm %*% vcv %*% t(mm)))
+      newdat$pred_lo <- newdat$pred - 1.96 * se_fit
+      newdat$pred_hi <- newdat$pred + 1.96 * se_fit
+      newdat
+    }) |>
+    ungroup()
+
+  pred_lines
+}
+
+# Plot one response against biomass of each FG in 3 panels.
+# Prediction lines come from Model 3 (biomass composition model) at fixed climate values.
+plot_response_vs_fg_biomass <- function(data,
+                                        response_name,
+                                        model_fg_biomass_tbl = NULL,
+                                        response_var = value_std,
+                                        temp_value = 0,
+                                        precip_value = 0) {
+  plot_dat <- data |>
+    filter(response == response_name) |>
+    select(
+      response,
+      .response = {{response_var}},
+      biomass_scaled_G,
+      biomass_scaled_F,
+      biomass_scaled_B
+    ) |>
+    pivot_longer(
+      cols = c(biomass_scaled_G, biomass_scaled_F, biomass_scaled_B),
+      names_to = "fg_biomass",
+      values_to = "biomass_value"
+    ) |>
+    mutate(
+      fg_biomass = recode(
+        fg_biomass,
+        biomass_scaled_G = "Graminoid biomass",
+        biomass_scaled_F = "Forb biomass",
+        biomass_scaled_B = "Bryophyte biomass"
+      )
+    )
+
+  pred_lines <- make_fg_biomass_prediction_lines(
+    data = data,
+    response_name = response_name,
+    model_fg_biomass_tbl = model_fg_biomass_tbl,
+    plot_dat = plot_dat,
+    temp_value = temp_value,
+    precip_value = precip_value
+  )
+
+  p <- ggplot(plot_dat, aes(x = biomass_value, y = .response)) +
+    geom_point(alpha = 0.5) +
+    facet_wrap(~ fg_biomass, scales = "free_x") +
+    labs(
+      x = "Functional-group biomass (scaled)",
+      y = "Standardized function value",
+      title = response_name
+    ) +
+    theme_bw()
+
+  if (!is.null(pred_lines)) {
+    p <- p +
+      geom_ribbon(
+        data = pred_lines,
+        aes(x = biomass_value, ymin = pred_lo, ymax = pred_hi),
+        inherit.aes = FALSE,
+        fill = "grey40",
+        alpha = 0.2
+      ) +
+      geom_line(
+        data = pred_lines,
+        aes(x = biomass_value, y = pred),
+        inherit.aes = FALSE,
+        colour = "black",
+        linewidth = 0.9
+      )
+  } else {
+    # Fallback if model object is unavailable.
+    p <- p + geom_smooth(method = "lm", se = TRUE, colour = "black", linewidth = 0.8)
+  }
+
+  p
+}
+
+
+
+
+# Compare fixed-effect estimates across single-function model variants.
+# Plots climate-model estimates on x against estimates from biomass/FG-biomass models on y.
+# colour_by can be "group" (response group) or "term" (model term).
+plot_single_function_estimate_comparison <- function(model_single_function_tbl, response_group_lookup = NULL, colour_by = c("group", "term")) {
+  colour_by <- match.arg(colour_by)
+
+  extract_fixed <- function(tbl, model_col, label) {
+    tbl |>
+      select(response, all_of(model_col)) |>
+      unnest(cols = all_of(model_col)) |>
+      filter(effect == "fixed") |>
+      select(response, term, estimate) |>
+      mutate(model = label)
+  }
+
+  climate_term_short <- function(term) {
+    case_when(
+      term == "(Intercept)" ~ "Intercept",
+      term == ".functional_groupF" ~ "F",
+      term == ".functional_groupG" ~ "G",
+      term == ".functional_groupB" ~ "B",
+      term == "temperature_scaled" ~ "T",
+      term == "precipitation_scaled" ~ "P",
+      term == "temperature_scaled:precipitation_scaled" ~ "T:P",
+      term == ".functional_groupF:temperature_scaled" ~ "F:T",
+      term == ".functional_groupG:temperature_scaled" ~ "G:T",
+      term == ".functional_groupB:temperature_scaled" ~ "B:T",
+      term == ".functional_groupF:precipitation_scaled" ~ "F:P",
+      term == ".functional_groupG:precipitation_scaled" ~ "G:P",
+      term == ".functional_groupB:precipitation_scaled" ~ "B:P",
+      TRUE ~ term
+    )
+  }
+
+  # Map climate-model FG terms to biomassFG-model terms so they are comparable.
+  # Example: .functional_groupF <-> biomass_scaled_F and corresponding climate interactions.
+  map_climate_to_fg_key <- function(term) {
+    case_when(
+      term == ".functional_groupF" ~ "F",
+      term == ".functional_groupG" ~ "G",
+      term == ".functional_groupB" ~ "B",
+      term == ".functional_groupF:temperature_scaled" ~ "F:temperature_scaled",
+      term == ".functional_groupG:temperature_scaled" ~ "G:temperature_scaled",
+      term == ".functional_groupB:temperature_scaled" ~ "B:temperature_scaled",
+      term == ".functional_groupF:precipitation_scaled" ~ "F:precipitation_scaled",
+      term == ".functional_groupG:precipitation_scaled" ~ "G:precipitation_scaled",
+      term == ".functional_groupB:precipitation_scaled" ~ "B:precipitation_scaled",
+      TRUE ~ NA_character_
+    )
+  }
+
+  map_biofg_to_fg_key <- function(term) {
+    case_when(
+      term == "biomass_scaled_F" ~ "F",
+      term == "biomass_scaled_G" ~ "G",
+      term == "biomass_scaled_B" ~ "B",
+      term == "biomass_scaled_F:temperature_scaled" ~ "F:temperature_scaled",
+      term == "biomass_scaled_G:temperature_scaled" ~ "G:temperature_scaled",
+      term == "biomass_scaled_B:temperature_scaled" ~ "B:temperature_scaled",
+      term == "biomass_scaled_F:precipitation_scaled" ~ "F:precipitation_scaled",
+      term == "biomass_scaled_G:precipitation_scaled" ~ "G:precipitation_scaled",
+      term == "biomass_scaled_B:precipitation_scaled" ~ "B:precipitation_scaled",
+      TRUE ~ NA_character_
+    )
+  }
+
+  est_climate <- extract_fixed(model_single_function_tbl, "result", "climate")
+  est_biomass <- extract_fixed(model_single_function_tbl, "result_biomass", "biomass")
+  est_fg_biomass <- extract_fixed(model_single_function_tbl, "result_FG_biomass", "biomassFG")
+
+  comp_biomass <- est_climate |>
+    mutate(term = climate_term_short(term)) |>
+    rename(estimate_climate = estimate) |>
+    inner_join(
+      est_biomass |>
+        mutate(term = climate_term_short(term)) |>
+        rename(estimate_other = estimate),
+      by = c("response", "term")
+    ) |>
+    mutate(comparison = "Climate vs biomass")
+
+  comp_fg <- est_climate |>
+    mutate(term_key = map_climate_to_fg_key(term)) |>
+    filter(!is.na(term_key)) |>
+    rename(estimate_climate = estimate) |>
+    inner_join(
+      est_fg_biomass |>
+        mutate(term_key = map_biofg_to_fg_key(term)) |>
+        filter(!is.na(term_key)) |>
+        rename(estimate_other = estimate),
+      by = c("response", "term_key")
+    ) |>
+    transmute(
+      response,
+      term = case_when(
+        term_key == "F" ~ "F",
+        term_key == "G" ~ "G",
+        term_key == "B" ~ "B",
+        term_key == "F:temperature_scaled" ~ "F:T",
+        term_key == "G:temperature_scaled" ~ "G:T",
+        term_key == "B:temperature_scaled" ~ "B:T",
+        term_key == "F:precipitation_scaled" ~ "F:P",
+        term_key == "G:precipitation_scaled" ~ "G:P",
+        term_key == "B:precipitation_scaled" ~ "B:P",
+        TRUE ~ term_key
+      ),
+      estimate_climate,
+      estimate_other,
+      comparison = "Climate vs biomassFG"
+    )
+
+  plot_dat <- bind_rows(comp_biomass, comp_fg) |>
+    select(response, term, comparison, estimate_climate, estimate_other) |>
+    filter(!is.na(estimate_climate), !is.na(estimate_other))
+
+  if (colour_by == "group") {
+    if (is.null(response_group_lookup)) {
+      stop("response_group_lookup is required when colour_by = 'group'")
+    }
+    plot_dat <- plot_dat |>
+      left_join(
+        response_group_lookup |>
+          select(response, group) |>
+          distinct(),
+        by = "response"
+      )
+  }
+
+  colour_name <- if (colour_by == "group") "Function group" else "Model term"
+
+  ggplot(plot_dat, aes(x = estimate_climate, y = estimate_other, colour = .data[[colour_by]])) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
+    geom_point(alpha = 0.6) +
+    facet_wrap(~ comparison) +
+    scale_colour_discrete(name = colour_name, na.translate = FALSE) +
+    labs(
+      x = "Estimate (climate model)",
+      y = "Estimate (comparison model)",
+      title = "Fixed-effect estimate comparison for single-function models"
+    ) +
+    theme_bw()
+}
+
 
 # make_group_figure: one plot per group (4 total), raw multifunctionality + prediction lines,
 # significance letters in upper right; FG-only = simple plot, FG:T = colour by habitat
@@ -186,157 +483,6 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
     theme(legend.position = "bottom")
   
   return(p)
-}
-
-# Build prediction lines from Model 3 at fixed climate (scaled T/P values),
-# varying one biomass axis per panel while holding the other two at 0.
-make_fg_biomass_prediction_lines <- function(data,
-                                             response_name,
-                                             model_fg_biomass_tbl,
-                                             plot_dat,
-                                             temp_value = 0,
-                                             precip_value = 0,
-                                             n_points = 100) {
-  if (is.null(model_fg_biomass_tbl)) {
-    return(NULL)
-  }
-
-  fit <- model_fg_biomass_tbl |>
-    filter(response == response_name) |>
-    pull(model_FG_biomass)
-  fit <- if (length(fit) == 0) NULL else fit[[1]]
-  if (is.null(fit)) {
-    return(NULL)
-  }
-
-  x_ranges <- plot_dat |>
-    group_by(fg_biomass) |>
-    summarise(
-      x_min = min(biomass_value, na.rm = TRUE),
-      x_max = max(biomass_value, na.rm = TRUE),
-      .groups = "drop"
-    )
-
-  site_ref <- data |>
-    filter(response == response_name) |>
-    pull(siteID)
-  site_ref <- site_ref[!is.na(site_ref)][1]
-  if (length(site_ref) == 0) {
-    site_ref <- NA_character_
-  }
-
-  pred_lines <- x_ranges |>
-    rowwise() |>
-    do({
-      fg_name <- .$fg_biomass
-      x_seq <- seq(.$x_min, .$x_max, length.out = n_points)
-      n_pts <- length(x_seq)
-
-      newdat <- tibble(
-        biomass_scaled_G = rep(0, n_pts),
-        biomass_scaled_F = rep(0, n_pts),
-        biomass_scaled_B = rep(0, n_pts),
-        temperature_scaled = rep(temp_value, n_pts),
-        precipitation_scaled = rep(precip_value, n_pts),
-        siteID = rep(site_ref, n_pts)
-      )
-
-      if (fg_name == "Graminoid biomass") newdat$biomass_scaled_G <- x_seq
-      if (fg_name == "Forb biomass") newdat$biomass_scaled_F <- x_seq
-      if (fg_name == "Bryophyte biomass") newdat$biomass_scaled_B <- x_seq
-
-      newdat$biomass_value <- x_seq
-      newdat$fg_biomass <- fg_name
-      newdat$pred <- as.numeric(predict(fit, newdata = newdat, re.form = NA))
-
-      # 95% CI for fixed-effects prediction at specified climate values.
-      fixed_form <- lme4::nobars(formula(fit))
-      fixed_terms <- stats::delete.response(stats::terms(fixed_form))
-      mm <- model.matrix(fixed_terms, data = newdat)
-      mm <- mm[, names(lme4::fixef(fit)), drop = FALSE]
-      vcv <- vcov(fit)
-      se_fit <- sqrt(diag(mm %*% vcv %*% t(mm)))
-      newdat$pred_lo <- newdat$pred - 1.96 * se_fit
-      newdat$pred_hi <- newdat$pred + 1.96 * se_fit
-      newdat
-    }) |>
-    ungroup()
-
-  pred_lines
-}
-
-# Plot one response against biomass of each FG in 3 panels.
-# Prediction lines come from Model 3 (biomass composition model) at fixed climate values.
-plot_response_vs_fg_biomass <- function(data,
-                                        response_name,
-                                        model_fg_biomass_tbl = NULL,
-                                        response_var = value_std,
-                                        temp_value = 0,
-                                        precip_value = 0) {
-  plot_dat <- data |>
-    filter(response == response_name) |>
-    select(
-      response,
-      .response = {{response_var}},
-      biomass_scaled_G,
-      biomass_scaled_F,
-      biomass_scaled_B
-    ) |>
-    pivot_longer(
-      cols = c(biomass_scaled_G, biomass_scaled_F, biomass_scaled_B),
-      names_to = "fg_biomass",
-      values_to = "biomass_value"
-    ) |>
-    mutate(
-      fg_biomass = recode(
-        fg_biomass,
-        biomass_scaled_G = "Graminoid biomass",
-        biomass_scaled_F = "Forb biomass",
-        biomass_scaled_B = "Bryophyte biomass"
-      )
-    )
-
-  pred_lines <- make_fg_biomass_prediction_lines(
-    data = data,
-    response_name = response_name,
-    model_fg_biomass_tbl = model_fg_biomass_tbl,
-    plot_dat = plot_dat,
-    temp_value = temp_value,
-    precip_value = precip_value
-  )
-
-  p <- ggplot(plot_dat, aes(x = biomass_value, y = .response)) +
-    geom_point(alpha = 0.5) +
-    facet_wrap(~ fg_biomass, scales = "free_x") +
-    labs(
-      x = "Functional-group biomass (scaled)",
-      y = "Standardized function value",
-      title = response_name
-    ) +
-    theme_bw()
-
-  if (!is.null(pred_lines)) {
-    p <- p +
-      geom_ribbon(
-        data = pred_lines,
-        aes(x = biomass_value, ymin = pred_lo, ymax = pred_hi),
-        inherit.aes = FALSE,
-        fill = "grey40",
-        alpha = 0.2
-      ) +
-      geom_line(
-        data = pred_lines,
-        aes(x = biomass_value, y = pred),
-        inherit.aes = FALSE,
-        colour = "black",
-        linewidth = 0.9
-      )
-  } else {
-    # Fallback if model object is unavailable.
-    p <- p + geom_smooth(method = "lm", se = TRUE, colour = "black", linewidth = 0.8)
-  }
-
-  p
 }
 
 
