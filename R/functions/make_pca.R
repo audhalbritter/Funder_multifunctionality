@@ -206,7 +206,7 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
       geom_point(
         data = sites,
         aes(x = PC1, y = PC2, colour = temperature_degree, shape = precipitation_name),
-        size = 4,
+        size = 3,
         alpha = point_alpha
       )
     } else {
@@ -229,14 +229,14 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
     point_layer <- if (is.null(point_size_var)) {
       geom_point(
         data = sites,
-        aes(x = PC1, y = PC2, colour = treatment),
-        size = 4,
+        aes(x = PC1, y = PC2, colour = fg_remaining),
+        size = 2,
         alpha = point_alpha
       )
     } else {
       geom_point(
         data = sites,
-        aes(x = PC1, y = PC2, colour = treatment, size = .data[[point_size_var]]),
+        aes(x = PC1, y = PC2, colour = fg_remaining, size = .data[[point_size_var]]),
         alpha = point_alpha
       )
     }
@@ -244,7 +244,7 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
     p_sites <- ggplot() +
       point_layer +
       coord_equal() +
-      scale_colour_brewer(palette = "Set1", name = "Treatment") +
+      scale_colour_brewer(palette = "Set1", name = "FG remaining") +
       labs(x = axis_labs[1], y = axis_labs[2]) +
       theme_bw() +
       theme(aspect.ratio = 1)
