@@ -27,6 +27,63 @@ model_plan <- list(
     name = model_single_function_FG_biomass_out,
     command = model_output_gt(model_single_function, unnest_col = "result_FG_biomass")
   ),
+  tar_target(
+    name = model_single_function_FG_biomass_slope_tests_out,
+    command = {
+      model_single_function |>
+        select(response, model_FG_biomass) |>
+        mutate(
+          slope_tests = purrr::map(
+            model_FG_biomass,
+            ~ compare_fg_biomass_slopes(
+              fit = .x,
+              temp_value = 0,
+              precip_value = 0,
+              adjust_method = "holm"
+            )
+          )
+        ) |>
+        select(response, slope_tests) |>
+        unnest(slope_tests) |>
+        select(response, contrast, estimate_diff, std_error, z_value, p_value, p_value_adjusted) |>
+        arrange(response, contrast) |>
+        mutate(
+          response = as.character(response),
+          contrast = as.character(contrast)
+        ) |>
+        gt(groupname_col = "response") |>
+        cols_label(
+          contrast = "Slope contrast",
+          estimate_diff = "Difference",
+          std_error = "SE",
+          z_value = "z",
+          p_value = "p",
+          p_value_adjusted = "Holm p"
+        ) |>
+        fmt_number(
+          columns = c(estimate_diff, std_error, z_value, p_value, p_value_adjusted),
+          decimals = 3
+        ) |>
+        tab_style(
+          style = gt::cell_text(weight = "bold"),
+          locations = gt::cells_body(
+            columns = p_value,
+            rows = !is.na(p_value) & p_value <= 0.05
+          )
+        ) |>
+        tab_style(
+          style = gt::cell_text(weight = "bold"),
+          locations = gt::cells_body(
+            columns = p_value_adjusted,
+            rows = !is.na(p_value_adjusted) & p_value_adjusted <= 0.05
+          )
+        ) |>
+        tab_header(
+          title = "Pairwise post hoc slope tests for FG biomass (Model 3)",
+          subtitle = "Contrasts tested at scaled temperature = 0 and scaled precipitation = 0"
+        )
+    }
+  ),
   # Heatmaps: one per model (same group_lookup; unnest different result_*)
   tar_target(
     name = model_single_function_heatmap,
@@ -273,7 +330,10 @@ model_plan <- list(
     name = single_function_fg_biomass_panel_plot,
     command = plot_response_vs_fg_biomass(
       data = big_data |> tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
-      response_name = "min_soil_moisture"
+      response_name = "drought_index",
+      model_fg_biomass_tbl = model_single_function |> select(response, model_FG_biomass),
+      temp_value = 0,
+      precip_value = 0
     )
   ),
 

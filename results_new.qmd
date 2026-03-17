@@ -149,6 +149,7 @@ tar_read(model_multifunctionality_richness_biomass_out)
 ```{r}
 #| label: fig-model-multifunctionality-richness-data
 #| echo: false
+#| eval: false
 #| warning: false
 #| fig-width: 8
 #| fig-height: 6
@@ -266,6 +267,14 @@ tar_read(model_single_function_main_FG_biomass_heatmap)
 #| fig-cap: "Example single-function response against biomass of each functional group (three panels: graminoids, forbs, bryophytes). Points are observations; black line is a single linear fit per panel."
 
 tar_read(single_function_fg_biomass_panel_plot)
+```
+
+```{r}
+#| label: tbl-model-single-function-fg-biomass-slope-tests
+#| echo: false
+#| tbl-cap: "Pairwise post hoc tests of Model 3 biomass slopes (BioG, BioF, BioB). Contrasts are Wald tests of fixed-effect slope differences, evaluated at scaled temperature = 0 and scaled precipitation = 0; p-values are Holm-adjusted across the three contrasts per response."
+
+tar_read(model_single_function_FG_biomass_slope_tests_out)
 ```
 
 

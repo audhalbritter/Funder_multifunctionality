@@ -203,6 +203,78 @@ make_main_effects_model <- function(dat, response_var, fg_var, group){
     )
 }
 
+# Post hoc pairwise tests: do BioG, BioF, BioB slopes differ in Model 3?
+# Slopes are evaluated at fixed climate values (default: scaled T = 0, P = 0).
+compare_fg_biomass_slopes <- function(fit, temp_value = 0, precip_value = 0, adjust_method = "holm") {
+  if (is.null(fit)) {
+    return(tibble())
+  }
+
+  coefs <- lme4::fixef(fit)
+  vcv <- as.matrix(vcov(fit))
+
+  # Fetch coefficient by exact name; also try reversed interaction order.
+  get_coef <- function(name_a, name_b = NULL) {
+    if (is.null(name_b)) {
+      return(if (name_a %in% names(coefs)) coefs[[name_a]] else 0)
+    }
+    name_1 <- paste0(name_a, ":", name_b)
+    name_2 <- paste0(name_b, ":", name_a)
+    if (name_1 %in% names(coefs)) return(coefs[[name_1]])
+    if (name_2 %in% names(coefs)) return(coefs[[name_2]])
+    0
+  }
+
+  # Build contrast vectors c so diff = c' * beta.
+  mk_contrast <- function(fg_pos, fg_neg) {
+    cvec <- rep(0, length(coefs))
+    names(cvec) <- names(coefs)
+
+    add_terms <- function(prefix, sign) {
+      main <- prefix
+      int_t_1 <- paste0(prefix, ":temperature_scaled")
+      int_t_2 <- paste0("temperature_scaled:", prefix)
+      int_p_1 <- paste0(prefix, ":precipitation_scaled")
+      int_p_2 <- paste0("precipitation_scaled:", prefix)
+
+      if (main %in% names(cvec)) cvec[main] <<- cvec[main] + sign
+      if (int_t_1 %in% names(cvec)) cvec[int_t_1] <<- cvec[int_t_1] + sign * temp_value
+      if (int_t_2 %in% names(cvec)) cvec[int_t_2] <<- cvec[int_t_2] + sign * temp_value
+      if (int_p_1 %in% names(cvec)) cvec[int_p_1] <<- cvec[int_p_1] + sign * precip_value
+      if (int_p_2 %in% names(cvec)) cvec[int_p_2] <<- cvec[int_p_2] + sign * precip_value
+    }
+
+    add_terms(fg_pos, +1)
+    add_terms(fg_neg, -1)
+    cvec
+  }
+
+  contrasts <- list(
+    "F-G" = mk_contrast("biomass_scaled_F", "biomass_scaled_G"),
+    "F-B" = mk_contrast("biomass_scaled_F", "biomass_scaled_B"),
+    "G-B" = mk_contrast("biomass_scaled_G", "biomass_scaled_B")
+  )
+
+  test_out <- purrr::imap_dfr(contrasts, function(cvec, nm) {
+    est <- as.numeric(cvec %*% coefs)
+    se <- sqrt(as.numeric(cvec %*% vcv %*% cvec))
+    z_val <- est / se
+    p_val <- 2 * stats::pnorm(abs(z_val), lower.tail = FALSE)
+    tibble(
+      contrast = nm,
+      estimate_diff = est,
+      std_error = se,
+      z_value = z_val,
+      p_value = p_val
+    )
+  }) |>
+    mutate(
+      p_value_adjusted = p.adjust(p_value, method = adjust_method)
+    )
+
+  test_out
+}
+
 # make prediction for functional group analysis
 # expects dat with no NA in .response, .functional_group, temperature_scaled, precipitation_scaled
 lmer_prediction <- function(dat, fit) {
