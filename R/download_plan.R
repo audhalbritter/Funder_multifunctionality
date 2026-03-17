@@ -25,18 +25,6 @@ download_plan <- list(
     format = "file"
   ),
 
-  # litter
-  tar_target(
-    name = litter_download,
-    command = get_file(
-      node = "tx9r2",
-      file = "FUNDER_clean_bryophyte_structure_2022.csv",
-      path = here::here("data"),
-      remote_path = "1_Vegetation/Clean_data"
-    ),
-    format = "file"
-  ),
-
   # root biomass (need to change to new root biomass 2021)
   # tar_target(
   #   name = root_biomass_download,
@@ -246,18 +234,6 @@ download_plan <- list(
   tar_target(
     name = standing_biomass_raw,
     command = read_csv(standing_biomass_download)
-  ),
-
-  # litter from bryophyte plots
-  tar_target(
-    name = litter_raw,
-    command = read_csv(litter_download)
-  ),
-
-  # litter from all plots
-  tar_target(
-    name = litter_raw_2,
-    command = read_csv(here::here("data", "FUNDER_raw_vascular_community_2022.csv"))
   ),
 
   # root biomass 21

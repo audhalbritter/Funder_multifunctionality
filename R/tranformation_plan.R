@@ -116,35 +116,6 @@ transformation_plan <- list(
       )
   ),
 
-  # plant litter
-  tar_target(
-    name = plant_litter,
-    command = {
-
-      litter_prep <- litter_raw_2 |>
-        filter(Measure == "Cover") |>
-        select(siteID, blockID, turfID, treatment = Treatment, value = Litter) |>
-        mutate(
-          treatment = if_else(treatment %in% c("B", "FB", "GF", "FGB", "G", "F", "GB"), treatment, "C"),
-          blockID = paste0(substr(siteID, 1, 3), blockID)
-        ) |>
-        select(siteID, blockID, plotID = turfID, treatment, value) %>%
-        dataDocumentation::funcabization(dat = ., convert_to = "FunCaB") |>
-        mutate(value = if_else(is.na(value), 0, value))
-
-      meta |>
-        select(siteID, blockID, plotID, treatment) |>
-        tidylog::left_join(litter_prep, by = c("siteID", "blockID", "plotID", "treatment")) |>
-        tidylog::mutate(value = replace_na(value, 0)) |>
-        mutate(
-          data_type = "stocstanding_biomassk",
-          group = "primary producers",
-          response = "plant litter",
-          unit = "% cover"
-        )
-    }
-  ),
-
   # root productivity and traits
   # Ram2 GB is missing (5GB)
   tar_target(
