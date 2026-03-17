@@ -2,6 +2,31 @@
 
 si_figure_plan <- list(
 
+  # palettes
+  # shape for prec starting with continental - oceanic
+  tar_target(
+    name = prec_shape,
+    command = c(6, 0, 1, 2)
+      ),
+
+  # colour for temperature (boreal to alpine)
+  tar_target(
+    name = temp_colour,
+    command = c("#EF9A9AFF", "#E53935FF", "#B71C1CFF")
+  ),
+
+  # colour for precipitation (700 to 2800 mm, continental to oceanic)
+  tar_target(
+    name = prec_colour,
+    command = c("#C6DBEF", "#6BAED6", "#2171B5", "#084594")
+  ),
+  
+  # linetype for precipitation (continental to oceanic)
+  tar_target(
+    name = prec_linetype,
+    command = c("solid", "dashed", "dotted", "dotdash")
+  ),
+
   # Raw data
   tar_target(
     name = raw_functions_plot,
@@ -50,32 +75,6 @@ si_figure_plan <- list(
       facet_wrap(~ response, scales = "free")
   ),
 
-  # # decomposition data
-  # tar_target(
-  #   name = decomposition_data_plot,
-  #   command = {
-
-  #     dat <- big_data |>
-  #       filter(response %in% c("decomposition graminoids", "decomposition forbs"))
-
-  #     mean <- dat |>
-  #       group_by(siteID, blockID, plotID, fg_richness, treatment, habitat, precipitation_name) |>
-  #       summarise(value_std = mean(value_std)) |>
-  #       mutate(data_type = "function",
-  #              group = "carbon cycling",
-  #              response = "decomposition mean")
-
-  #     bind_rows(dat, mean) |>
-  #       ggplot(aes(y = value_std, x = fg_richness, colour = response)) +
-  #       geom_point() +
-  #       geom_smooth(method = "lm") +
-  #       labs(y = "Standardized value") +
-  #       facet_grid(habitat ~ precipitation_name, scales = "free") +
-  #       theme_bw()
-  #   }
-
-  # ),
-
   # correlation matrix
   tar_target(
     name = correlation_plot,
@@ -101,6 +100,39 @@ si_figure_plan <- list(
         theme(axis.text = element_text(size = 8))
 
     }
+  ),
+
+  # Biomass plot
+  tar_target(
+    name = biomass_plot,
+    command = standing_biomass |>
+      tidylog::left_join(
+        meta |>
+          select(siteID, blockID, plotID, treatment, fg_remaining, temperature_degree, precipitation_mm, habitat),
+        by = c("siteID", "blockID", "plotID", "treatment")
+      ) |>
+      ggplot(aes(x = fg_remaining, y = biomass, fill = fg_id)) +
+      geom_col() +
+      scale_fill_manual(values = c("orange", "purple", "green")) +
+      labs(
+        x = "FG remaining",
+        y = "Standing biomass (g m^-2)",
+        fill = "FG"
+      ) +
+      facet_grid(no_treatment ~ habitat, scales = "free") +
+      theme_bw()
+  ),
+
+  # Biomass variation
+  tar_target(
+    name = biomass_variation_plot,
+    command = standing_biomass |>
+      ggplot(aes(x = log(biomass), fill = fg_id)) +
+      geom_histogram() +
+      scale_fill_manual(values = c("orange", "purple", "green")) +
+      labs(x = "log(Biomass) (g m^-2)", fill = "FG") +
+      facet_grid(no_treatment ~ fg_id) +
+      theme_bw()
   )
 
 )
