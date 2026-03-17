@@ -31,6 +31,7 @@ si_figure_plan <- list(
   tar_target(
     name = raw_functions_plot,
     command = big_data_raw |>
+      rename_response_pretty(response) |>
       ggplot(aes(x = value)) +
       geom_histogram() +
       labs(x = "Raw functions") +
@@ -41,6 +42,7 @@ si_figure_plan <- list(
   tar_target(
     name = normalize_functions_plot,
     command = big_data_raw |> 
+      rename_response_pretty(response) |>
       # shift values to make all positive (for responses with negative values)
       group_by(response) |>
       mutate(value = case_when(
@@ -69,6 +71,7 @@ si_figure_plan <- list(
   tar_target(
     name = standardize_functions_plot,
     command = big_data |>
+      rename_response_pretty(response) |>
       ggplot(aes(x = value_std)) +
       geom_histogram() +
       labs(x = "Standardized value") +

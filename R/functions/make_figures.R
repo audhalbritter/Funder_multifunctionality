@@ -1,5 +1,49 @@
 ### make figures
 
+# Pretty labels for response names used in plots.
+pretty_response_lookup <- c(
+  "bacterivore feeder density" = "Bacterivore feeder",
+  "fungivore feeder density" = "Fungivore feeder",
+  "plant_feeder feeder density" = "Plant feeder",
+  "predator feeder density" = "Predator feeder",
+  "bacterial_fungal_feeder_ratio" = "Bacteria:fungal feeder",
+  "plant_parasite_index" = "Plant parasite index",
+  "maturity_index" = "Maturity index",
+  "bacteria density" = "Bacteria",
+  "fungi density" = "Fungi",
+  "bacteria-fungi ratio" = "Bacteria:Fungi",
+  "bacteria_fungi_ratio" = "Bacteria:Fungi",
+  "root_associated_fungi" = "Root associated",
+  "saprotroph" = "Saprotroph",
+  "yeast_dimorphic" = "Yeast diamorphic",
+  "ectomycorrhizal" = "Ectomycorrhizal",
+  "melanised fungal necromass decomposition" = "Melanised",
+  "non-melanised fungal necromass decomposition" = "Non-melanised",
+  "decomposition forbs" = "Forb decomp",
+  "decomposition graminoids" = "Graminoid decomp.",
+  "carbon stock" = "C stock",
+  "nitrogen stock" = "N stock",
+  "gross primary productivity" = "GPP",
+  "ecosystem respiration" = "ER",
+  "phosphorus stock" = "P stock",
+  "available_nitrogen" = "Avail. N",
+  "available_phosphorus" = "Avail. P",
+  "avialable_micronutrients" = "Avail. micronutrients",
+  "daily_temp_amplitude" = "Daily T amplitude",
+  "drought_index" = "Drought index"
+)
+
+pretty_response_label <- function(x) {
+  dplyr::recode(as.character(x), !!!pretty_response_lookup, .default = as.character(x))
+}
+
+# Rename a response column to pretty labels in-place.
+rename_response_pretty <- function(dat, response_col = response) {
+  response_col <- rlang::as_string(rlang::ensym(response_col))
+  dat |>
+    mutate("{response_col}" := pretty_response_label(.data[[response_col]]))
+}
+
 # Build prediction lines from Model 3 at fixed climate (scaled T/P values),
 # varying one biomass axis per panel while holding the other two at 0.
 make_fg_biomass_prediction_lines <- function(data,
@@ -123,7 +167,7 @@ plot_response_vs_fg_biomass <- function(data,
     labs(
       x = "Functional-group biomass (scaled)",
       y = "Standardized function value",
-      title = response_name
+      title = pretty_response_label(response_name)
     ) +
     theme_bw()
 
@@ -476,7 +520,7 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
     scale_x_continuous(breaks = c(0, 1, 2, 3)) +
     labs(x = "Number of functional groups present",
          y = "Standardized function value",
-         title = response_name) +
+         title = pretty_response_label(response_name)) +
     annotate("text", x = Inf, y = Inf, label = sig_text, 
              hjust = 1.1, vjust = 1.1, size = 3.5, fontface = "bold") +
     theme_bw() +

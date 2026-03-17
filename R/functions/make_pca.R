@@ -60,7 +60,8 @@ make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova
 
   pca_traits <- fortify(pca_output, display = "species") |>
     rename(response = label) |>
-    left_join(response_to_group, by = "response")
+    left_join(response_to_group, by = "response") |>
+    mutate(response = pretty_response_label(response))
 
   # optional PERMANOVA: one model or multiple (seed ensures reproducible permutation p-values)
   # if partitioned PCA is requested, use residualized responses for PERMANOVA as well
