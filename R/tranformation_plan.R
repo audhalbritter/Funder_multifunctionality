@@ -74,11 +74,11 @@ transformation_plan <- list(
     name = standing_biomass,
     command = standing_biomass_raw |> 
       # remove lichens
-      filter(removed_fg != "L") |>
+      filter(removed_fg != "L") |> 
       # remove the biomass from FGs that were removed
-      filter(is.na(no_treatment)) |>
+      #filter(is.na(no_treatment)) |> 
       # for FGB replace biomass with 0
-      mutate(biomass = if_else(treatment == "FGB", 0, biomass)) |>
+      #tidylog::mutate(biomass = if_else(treatment == "FGB", 0, biomass)) |>
       # convert to g per m2
       mutate(biomass = biomass * 10000 / 625) |>
       # z-score once here; sum/wide use biomass_scaled so scaling is not duplicated
@@ -88,7 +88,7 @@ transformation_plan <- list(
       ) |>
       # after filtering, removed_fg only contains FGs that are present; rename for clarity
       rename(fg_id = removed_fg) |>
-      select(-no_treatment, -comments)
+      select(-comments)
   ),
 
   # sum of standing biomass
