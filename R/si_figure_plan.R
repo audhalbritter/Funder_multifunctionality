@@ -119,7 +119,7 @@ si_figure_plan <- list(
         y = "Standing biomass (g m^-2)",
         fill = "FG"
       ) +
-      facet_grid(no_treatment ~ habitat, scales = "free") +
+      facet_grid(no_treatment ~ habitat) +
       theme_bw()
   ),
 

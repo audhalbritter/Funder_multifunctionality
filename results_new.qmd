@@ -26,6 +26,27 @@ library(dplyr)
 
 ## Standing biomass
 
+```{r}
+#| label: fig-standing-biomass
+#| echo: false
+#| warning: false
+#| fig-width: 12
+#| fig-height: 7
+#| fig-cap: "Standing biomass by functional-group composition and habitat."
+
+tar_read(biomass_plot)
+```
+
+```{r}
+#| label: fig-standing-biomass-variation
+#| echo: false
+#| warning: false
+#| fig-width: 12
+#| fig-height: 7
+#| fig-cap: "Distribution of standing biomass (log scale) across functional groups and removal treatments."
+
+tar_read(biomass_variation_plot)
+```
 
 
 ## PCA ordination (all data and site effect partitioned out)
