@@ -44,9 +44,9 @@ multifunctionality_plan <- list(
       left_join(meta, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
-  # transformation: normaliue (log) and standardize between 0 and 1
+  # transformation: normalize (log) and standardize between 0 and 1 (full dataset)
   tar_target(
-    name = big_data,
+    name = big_data_full,
     command = big_data_raw |>
       # shift values to make all positive (for responses with negative values)
       group_by(response) |>
@@ -82,6 +82,14 @@ multifunctionality_plan <- list(
       # Biomass: raw total_biomass + total_biomass_scaled; wide columns from biomass_scaled in standing_biomass
       tidylog::left_join(standing_biomass_sum, by = c("siteID", "blockID", "plotID", "treatment")) |>
       tidylog::left_join(standing_biomass_wide, by = c("siteID", "blockID", "plotID", "treatment"))
+  ),
+
+  # analysis subset: keep 5 treatments (None/F/G/B/All) and 9 sites
+  tar_target(
+    name = big_data,
+    command = big_data_full |>
+      filter(!fg_remaining %in% c("GF", "FB", "GB")) |>
+      filter(!siteID %in% c("Gudmedalen", "Rambera", "Arhelleren"))
   ),
 
   # big data for multifunctionality analysis

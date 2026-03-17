@@ -5,8 +5,7 @@ model_plan <- list(
   tar_target(
     name = model_single_function,
     command = make_model(
-      dat = big_data |>
-        tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = big_data,
       response_var = value_std,
       fg_var = fg_remaining,
       group = "response"
@@ -140,8 +139,7 @@ model_plan <- list(
   tar_target(
     name = model_single_function_main,
     command = make_main_effects_model(
-      dat = big_data |>
-        tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = big_data,
       response_var = value_std,
       fg_var = fg_remaining,
       group = "response"
@@ -344,7 +342,7 @@ model_plan <- list(
   tar_target(
     name = single_function_fg_biomass_panel_plot,
     command = plot_response_vs_fg_biomass(
-      data = big_data |> tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      data = big_data,
       response_name = "drought_index",
       model_fg_biomass_tbl = model_single_function |> select(response, model_FG_biomass),
       temp_value = 0,
@@ -356,7 +354,7 @@ model_plan <- list(
   tar_target(
     name = model_group,
     command = make_model(
-      dat = absolute_group_data |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = absolute_group_data,
       response_var = value,
       fg_var = fg_remaining,
       group = "group"
@@ -388,7 +386,7 @@ model_plan <- list(
   tar_target(
     name = model_multifunctionality,
     command = make_model(
-      dat = multifunctionality |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = multifunctionality,
       response_var = multifuntionality,
       fg_var = fg_remaining,
       group = "level"
@@ -423,7 +421,7 @@ model_plan <- list(
   tar_target(
     name = model_multifunctionality_richness,
     command = make_model(
-      dat = multifunctionality |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = multifunctionality,
       response_var = multifuntionality,
       fg_var = fg_richness,
       group = "level"
