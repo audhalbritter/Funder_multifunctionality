@@ -1,5 +1,5 @@
 # microclimate: average min/max ground temperature, daily_temp_amplitude (top 25%),
-# min_soil_moisture (bottom 25%), mean soil moisture
+# drought_index (bottom 25%), mean soil moisture
 
 process_microclimate <- function(microclimate_raw, year = 2022) {
   raw <- microclimate_raw |>
@@ -38,7 +38,7 @@ process_microclimate <- function(microclimate_raw, year = 2022) {
     ) |>
     mutate(response = "daily_temp_amplitude", unit = "°C")
 
-  # 4) min_soil_moisture: mean of bottom 25% of daily min moisture (driest days) per plot
+  # 4) drought_index: mean of bottom 25% of daily min moisture (driest days) per plot
   moist_extreme <- raw |>
     filter(variable == "soilmoisture") |>
     summarise(daily_min = min(value), .by = c(year, siteID, blockID, plotID, treatment, date)) |>
@@ -51,7 +51,7 @@ process_microclimate <- function(microclimate_raw, year = 2022) {
       value = mean(daily_min[is_extreme], na.rm = TRUE) * -1,
       .by = c(year, siteID, blockID, plotID, treatment)
     ) |>
-    mutate(response = "min_soil_moisture", unit = "%")
+    mutate(response = "drought_index", unit = "%")
 
   # 5) mean soil moisture: mean soil moisture per plot
   mean_soil_moisture <- raw |>

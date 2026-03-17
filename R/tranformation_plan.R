@@ -582,7 +582,7 @@ transformation_plan <- list(
   ),
 
   # microclimate: average min/max ground temperature, daily_temp_amplitude (top 25%),
-  # min_soil_moisture (bottom 25%), mean soil moisture
+  # drought_index (bottom 25%), mean soil moisture
   tar_target(
     name = microclimate,
     command = process_microclimate(microclimate_raw) |>
