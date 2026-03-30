@@ -42,7 +42,6 @@ si_figure_plan <- list(
   tar_target(
     name = normalize_functions_plot,
     command = big_data_raw |> 
-      rename_response_pretty(response) |>
       # shift values to make all positive (for responses with negative values)
       group_by(response) |>
       mutate(value = case_when(
@@ -56,11 +55,12 @@ si_figure_plan <- list(
         # logit for ratio variables (proportions in 0-1) and fungal guilds; exclude "respiration" (contains "ratio")
         str_detect(response, "ratio") & !str_detect(response, "respiration") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
         response %in% c("root_associated_fungi", "saprotroph", "yeast_dimorphic", "ectomycorrhizal") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
-        # log for responses with only positive values
-        response %in% c("available_nitrogen", "available_phosphorus", "bacteria density", "bacterivore feeder density", "bacterivore density", "carbon stock", "fungi density", "fungivore feeder density", "nematode density", "nitrogen stock", "phosphorus stock", "plant_feeder feeder density", "predator feeder density", "soil organic matter") ~ log(value + 1),
+        # log for responses with only positive values (avoid log(non-positive) = NaN)
+        response %in% c("available_nitrogen", "available_phosphorus", "bacteria density", "bacterivore feeder density", "bacterivore density", "carbon stock", "fungi density", "fungivore feeder density", "nematode density", "nitrogen stock", "phosphorus stock", "plant_feeder feeder density", "predator feeder density", "soil organic matter") ~ log(pmax(value + 1, .Machine$double.eps)),
         # no transformation for others
         TRUE ~ value
       )) |>
+      rename_response_pretty(response) |>
       ggplot(aes(x = value_trans)) +
       geom_histogram() +
       labs(x = "Normalized functions") +
