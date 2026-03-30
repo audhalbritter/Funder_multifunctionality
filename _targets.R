@@ -25,7 +25,7 @@ list(
   model_plan,
   # analysis_plan,
   # figure_plan,
-  # si_analysis_plan,
+  si_analysis_plan,
   # manuscript_plan,
   si_figure_plan
 )
