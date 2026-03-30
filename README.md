@@ -13,7 +13,11 @@ The project uses the [**targets**](https://docs.ropensci.org/targets/) R package
 1. **Download** (`R/download_plan.R`) — Fetch data from the data repository (biomass, community composition, bryophytes, mesofauna, nematodes, etc.).
 2. **Transform** (`R/tranformation_plan.R`) — Curate and standardise data; create site × treatment metadata.
 3. **Multifunctionality** (`R/multifunctionality_plan.R`) — Merge functions, standardise to 0–1, compute average multifunctionality.
-4. **Analysis** (`R/analysis_plan.R`) — Linear mixed-effects models for effects of functional group richness, treatment identity, temperature, and precipitation.
+4. **Analysis** (`R/model_plan.R`, `R/pca_plan.R`, `R/si_analysis_plan.R`) — The main analyses encompass:
+   - **Single-Function Models**: Linear mixed-effects models evaluating how functional group removals, functional group richness, or functional group-specific biomass affect individual ecosystem functions across temperature and precipitation gradients.
+   - **Global Multifunctionality Models**: Testing how treatments and climate interactions affect an averaged ecosystem multifunctionality index.
+   - **Multivariate Analysis (PCA & PERMANOVA)**: Assessing overall shifts in the functional composition of the ecosystem in response to treatments, climate, and site effects.
+   - Model variants are run to compare the effect sizes of categorical treatment identity vs. continuous total or group-specific biomass (assessed via marginal/conditional $R^2$).
 5. **Figures** (`R/figure_plan.R`) — Outputs for the main results.
 
 Pipeline entry point: `_targets.R`. Run the pipeline with `run.R` or `targets::tar_make()`.
