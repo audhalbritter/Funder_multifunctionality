@@ -114,6 +114,11 @@ si_figure_plan <- list(
           select(siteID, blockID, plotID, treatment, fg_remaining, temperature_degree, precipitation_mm, habitat),
         by = c("siteID", "blockID", "plotID", "treatment")
       ) |>
+      mutate(no_treatment = case_when(
+        is.na(no_treatment) ~ "remaining",
+        no_treatment == "leftover" ~ "removed",
+        TRUE ~ no_treatment
+      )) |>
       ggplot(aes(x = fg_remaining, y = biomass, fill = fg_id)) +
       geom_col() +
       scale_fill_manual(values = c("orange", "purple", "green")) +
@@ -130,6 +135,11 @@ si_figure_plan <- list(
   tar_target(
     name = biomass_variation_plot,
     command = standing_biomass |>
+      mutate(no_treatment = case_when(
+        is.na(no_treatment) ~ "remaining",
+        no_treatment == "leftover" ~ "removed",
+        TRUE ~ no_treatment
+      )) |>
       ggplot(aes(x = log(biomass), fill = fg_id)) +
       geom_histogram() +
       scale_fill_manual(values = c("orange", "purple", "green")) +

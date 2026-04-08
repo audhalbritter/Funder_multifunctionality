@@ -2,7 +2,7 @@
 format:
   html:
     self-contained: true
-title: Results (new)
+title: Results
 execute:
   echo: false
 ---
@@ -22,9 +22,8 @@ library(purrr)
 library(dplyr)
 ```
 
-# Results
 
-## Standing biomass
+## Remaining standing biomass in 2022
 
 ```{r}
 #| label: fig-standing-biomass
@@ -32,7 +31,7 @@ library(dplyr)
 #| warning: false
 #| fig-width: 12
 #| fig-height: 7
-#| fig-cap: "Standing biomass by functional-group composition and habitat."
+#| fig-cap: "Standing biomass by functional-group composition and habitat. The upper row shows the the remaining biomass at the final harvest and the lower row shows the biomass that was removed during the experimental treatment."
 
 tar_read(biomass_plot)
 ```
@@ -43,7 +42,7 @@ tar_read(biomass_plot)
 #| warning: false
 #| fig-width: 12
 #| fig-height: 7
-#| fig-cap: "Distribution of standing biomass (log scale) across functional groups and removal treatments."
+#| fig-cap: "Distribution of standing biomass (log scale) across functional groups and removal treatments. The upper row shows the the remaining biomass at the final harvest and the lower row shows the biomass that was removed during the experimental treatment."
 
 tar_read(biomass_variation_plot)
 ```
@@ -82,59 +81,63 @@ permanova_no_site <- pca_no_site[[4]]
 # adonis2 is run with by = "terms", so each term has its own R2 row.
 # We aggregate terms into Climate, FG, Biomass, and keep one Residual.
 r2_by_term <- function(ad) {
-  if (is.null(ad)) return(NULL)
-  rn <- row.names(ad)
-  r2 <- ad$R2
-  climate_r2 <- 0
-  fg_r2 <- 0
-  biomass_r2 <- 0
-  for (i in seq_along(rn)) {
-    if (rn[i] %in% c("Residual", "Total")) next
-    term <- rn[i]
-    if (grepl("treatment", term, fixed = TRUE)) {
-      fg_r2 <- fg_r2 + r2[i]
-    } else if (grepl("total_biomass_scaled", term, fixed = TRUE) || grepl("biomass_scaled", term, fixed = TRUE)) {
-      biomass_r2 <- biomass_r2 + r2[i]
-    } else if (grepl("temperature_scaled", term, fixed = TRUE) || grepl("precipitation_scaled", term, fixed = TRUE)) {
-      climate_r2 <- climate_r2 + r2[i]
+    if (is.null(ad)) {
+        return(NULL)
     }
-  }
-  residual_r2 <- if ("Residual" %in% rn) ad["Residual", "R2"] else NA_real_
-  list(
-    climate_r2 = climate_r2 * 100,
-    fg_r2 = fg_r2 * 100,
-    biomass_r2 = biomass_r2 * 100,
-    residual_r2 = residual_r2 * 100
-  )
+    rn <- row.names(ad)
+    r2 <- ad$R2
+    climate_r2 <- 0
+    fg_r2 <- 0
+    biomass_r2 <- 0
+    for (i in seq_along(rn)) {
+        if (rn[i] %in% c("Residual", "Total")) next
+        term <- rn[i]
+        if (grepl("treatment", term, fixed = TRUE)) {
+            fg_r2 <- fg_r2 + r2[i]
+        } else if (grepl("total_biomass_scaled", term, fixed = TRUE) || grepl("biomass_scaled", term, fixed = TRUE)) {
+            biomass_r2 <- biomass_r2 + r2[i]
+        } else if (grepl("temperature_scaled", term, fixed = TRUE) || grepl("precipitation_scaled", term, fixed = TRUE)) {
+            climate_r2 <- climate_r2 + r2[i]
+        }
+    }
+    residual_r2 <- if ("Residual" %in% rn) ad["Residual", "R2"] else NA_real_
+    list(
+        climate_r2 = climate_r2 * 100,
+        fg_r2 = fg_r2 * 100,
+        biomass_r2 = biomass_r2 * 100,
+        residual_r2 = residual_r2 * 100
+    )
 }
 format_r2_num <- function(x, field) {
-  if (is.null(x)) return(NA_real_)
-  round(x[[field]], 1)
+    if (is.null(x)) {
+        return(NA_real_)
+    }
+    round(x[[field]], 1)
 }
 
 bind_rows(
-  tibble(
-    Dataset = "All data",
-    Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
-    name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
-    res = map(name, ~ r2_by_term(permanova_all[[.x]]))
-  ),
-  tibble(
-    Dataset = "Site partitioned out",
-    Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
-    name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
-    res = map(name, ~ r2_by_term(permanova_no_site[[.x]]))
-  )
+    tibble(
+        Dataset = "All data",
+        Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
+        name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
+        res = map(name, ~ r2_by_term(permanova_all[[.x]]))
+    ),
+    tibble(
+        Dataset = "Site partitioned out",
+        Model = c("Climate only", "FG × climate + biomass", "Biomass G/F/B × climate"),
+        name = c("climate", "fg_climate_biomass", "biomass_fg_climate"),
+        res = map(name, ~ r2_by_term(permanova_no_site[[.x]]))
+    )
 ) |>
-  mutate(
-    Climate = map_dbl(res, ~ format_r2_num(.x, "climate_r2")),
-    FG = map_dbl(res, ~ format_r2_num(.x, "fg_r2")),
-    Biomass = map_dbl(res, ~ format_r2_num(.x, "biomass_r2")),
-    Residual = map_dbl(res, ~ format_r2_num(.x, "residual_r2"))
-) |>
-  select(Dataset, Model, Climate, FG, Biomass, Residual) |>
-  gt() |>
-  fmt_number(columns = c(Climate, FG, Biomass, Residual), decimals = 1, pattern = "{x}%")
+    mutate(
+        Climate = map_dbl(res, ~ format_r2_num(.x, "climate_r2")),
+        FG = map_dbl(res, ~ format_r2_num(.x, "fg_r2")),
+        Biomass = map_dbl(res, ~ format_r2_num(.x, "biomass_r2")),
+        Residual = map_dbl(res, ~ format_r2_num(.x, "residual_r2"))
+    ) |>
+    select(Dataset, Model, Climate, FG, Biomass, Residual) |>
+    gt() |>
+    fmt_number(columns = c(Climate, FG, Biomass, Residual), decimals = 1, pattern = "{x}%")
 ```
 
 
