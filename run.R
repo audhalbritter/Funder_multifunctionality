@@ -15,3 +15,6 @@ targets::tar_load_everything()
 
 # check for warnings
 targets::tar_meta(fields = warnings, complete_only = TRUE)
+
+# Or render specifically to Word
+quarto::quarto_render("results_new.qmd", output_format = "docx")
