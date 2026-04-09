@@ -5,8 +5,8 @@ format:
 title: Plant functional group affect on multifunctionality
 execute:
   echo: false
-bibliography: bibliography.bib
-csl: journal-of-ecology.csl
+bibliography: ../bibliography.bib
+csl: ../journal-of-ecology.csl
 editor: 
   markdown: 
     wrap: sentence
