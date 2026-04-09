@@ -29,6 +29,8 @@ A.H. Halbritter^1,2^, I.H.J. Althuizen^2,3^, M. Demeaux^1,2^, P.G. Farsund^1,2^,
 **Corresponding authors:** aud.halbritter@uib.no, vigdis.vandvik@uib.no
 :::
 
-{{< include intro_method.qmd >}}
+{{< include introduction.qmd >}}
+
+{{< include methods.qmd >}}
 
 {{< include results.qmd >}}
