@@ -27,6 +27,9 @@ library(lme4)
 library(lmerTest)
 library(broom.mixed)
 
+# Set targets store path
+tar_config_set(store = "../_targets")
+
 ```
 
 ## Data transformation

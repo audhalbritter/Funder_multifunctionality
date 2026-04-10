@@ -19,11 +19,15 @@ library(performance)
 library(see)
 library(DHARMa)
 
+# Set targets store path
+tar_config_set(store = "../_targets")
+
 ```
 
 ## Multifunctionality
 
 ### Number of functional groups present
+
 ```{r}
 #| label: multifun-nr-check
 #| echo: false
@@ -44,8 +48,8 @@ mutate(check = map(model, ~ plot(simulateResiduals(.)))) |>
   
 ```
 
-
 ### Treatment effect
+
 ```{r}
 #| label: multifun-trt-check
 #| echo: false
@@ -64,8 +68,8 @@ model_multifun |>
   
 ```
 
-
 ### Factorial approach
+
 ```{r}
 #| label: multifun-factorial-check
 #| echo: false

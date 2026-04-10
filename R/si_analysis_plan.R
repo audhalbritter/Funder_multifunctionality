@@ -11,10 +11,14 @@ si_analysis_plan <- list(
   tar_target(
     name = si_model_plots,
     command = plot_si_fg_biomass(
-      dat = big_data, 
+      dat = big_data,
       selected_models = si_fg_biomass_model_selection$selected_models,
       temp_colour = temp_colour,
       prec_colour = prec_colour
     )
+  ),
+  tar_target(
+    name = si_model_check,
+    command = check_si_fg_biomass_models(si_fg_biomass_model_selection$selected_models)
   )
 )

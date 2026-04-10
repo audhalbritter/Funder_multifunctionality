@@ -21,6 +21,9 @@ library(ggnewscale)
 library(tibble)
 library(purrr)
 library(dplyr)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
 ```
 
 

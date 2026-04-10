@@ -12,7 +12,23 @@ utils::globalVariables(
     "model_type",
     "model_rank",
     "n",
-    "log_shift"
+    "log_shift",
+    "fit",
+    "habitat",
+    "temperature_scaled",
+    "precipitation_name",
+    "precipitation_scaled",
+    "value_std",
+    "x",
+    "y",
+    "pred",
+    "is_sig",
+    "predictor_label",
+    "label_text",
+    "response_value",
+    "predictor_value",
+    "temperature_value",
+    "precipitation_value"
   )
 )
 
@@ -302,4 +318,13 @@ plot_si_fg_biomass <- function(dat, selected_models, temp_colour, prec_colour) {
     }
   }
   return(plots)
+}
+
+#' Check SI functional group biomass models
+#' Runs performance::check_model for each selected model.
+check_si_fg_biomass_models <- function(selected_models) {
+  selected_models |>
+    dplyr::mutate(
+      check_plot = purrr::map(fit, ~ performance::check_model(.x, check = "all"))
+    )
 }

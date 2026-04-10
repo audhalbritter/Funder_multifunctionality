@@ -6,6 +6,9 @@ library(targets)
 library(tarchetypes)
 library(ggplot2)
 library(gt)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
 ```
 
 # Results

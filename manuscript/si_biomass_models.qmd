@@ -21,6 +21,9 @@ library(targets)
 library(tidyverse)
 library(patchwork)
 library(gt)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
 ```
 
 # Function vs functional group biomass for each temperature and preciptiation level
