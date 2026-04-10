@@ -17,4 +17,4 @@ targets::tar_load_everything()
 targets::tar_meta(fields = warnings, complete_only = TRUE)
 
 # Or render specifically to Word
-quarto::quarto_render("results_new.qmd", output_format = "docx")
+quarto::quarto_render("manuscript/results_new.qmd", output_format = "docx")
