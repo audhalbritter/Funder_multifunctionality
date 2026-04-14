@@ -24,7 +24,22 @@ tar_config_set(store = "../_targets")
 - Factorial analysis: the presence of forbs, graminoids and bryophytes increase average multifunctionality (AMF). AMF is higher in warm and dry sites. (There are some 3-way interactions which are difficult to interpret...)
 
 
-### PCA
+## PCA ordination (all data and site effect partitioned out)
+
+PCA of all plots: full ordination (left) and partial ordination with site effect removed (right).
+
+```{r}
+#| label: fig-pca-all-vs-no-site
+#| echo: false
+#| warning: false
+#| fig-width: 12
+#| fig-height: 12
+#| fig-cap: "PCA ordination of ecosystem functions. a) full ordination and b) site effect partitioned out (within-site variation only). Sites are coloured by summer temperature (left) and treatment (right) and the shape indicates the precipitation level."
+
+tar_read(pca_all_vs_no_site_plot)
+```
+
+Variance partitioning ordination!!!
 
 
 

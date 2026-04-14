@@ -21,7 +21,7 @@ list(
   download_plan,
   transformation_plan,
   multifunctionality_plan,
-  new_analysis_plan,
+  pca_plan,
   model_plan,
   # analysis_plan,
   # figure_plan,

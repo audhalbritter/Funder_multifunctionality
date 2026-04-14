@@ -32,9 +32,9 @@ tar_config_set(store = "../_targets")
 
 ```
 
-## Data transformation
+###  Data transformation
 
-### Raw data
+#### Raw data
 ```{r}
 #| label: fig-raw-plot
 #| echo: false
@@ -48,7 +48,7 @@ tar_read(raw_functions_plot)
 ```
 
 
-### Normalize data
+#### Normalize data
 
 ```{r}
 #| label: fig-normalized-plot
@@ -62,7 +62,7 @@ tar_read(normalize_functions_plot)
 
 ```
 
-### Standardize data
+#### Standardize data
 ```{r}
 #| label: fig-std-plot
 #| echo: false
@@ -75,6 +75,7 @@ tar_read(standardize_functions_plot)
 
 ```
 
+#### Correlation between functions
 ```{r}
 #| label: fig-correlation-plot
 #| echo: false
@@ -87,6 +88,7 @@ tar_read(correlation_plot)
 
 ```
 
+#### Ecosystem functions by group
 ```{r}
 #| label: tbl-responses
 #| echo: false
@@ -98,23 +100,24 @@ tar_read(correlation_plot)
 tar_load(big_data)
 
 big_data |>
-  group_by(group) |>
-  summarise(response = paste(sort(unique(response)), collapse = ", "), .groups = "drop") |>
-  gt() |>
-  tab_header(title = "Ecosystem functions by group") |>
-  cols_label(group = "Group", response = "Ecosystem functions / responses")
+    group_by(group) |>
+    summarise(response = paste(sort(unique(response)), collapse = ", "), .groups = "drop") |>
+    gt() |>
+    tab_header(title = "Ecosystem functions by group") |>
+    cols_label(group = "Group", response = "Ecosystem functions / responses")
 
 ```
 
+### PCA ordination - scree plots
 ```{r}
-#| label: fig-pca-plot
+#| label: fig-scree-plot
 #| echo: false
 #| warning: false
-#| fig-cap: PCA of all functions.
+#| fig-cap: Scree plot of PCA for a) full ordination and b) site effect partitioned out.
 #| fig-width: 8
 #| fig-height: 8
 
-tar_read(all_functions_pca_plot)
+tar_read(pca_scree_plot)
 
 ```
 
