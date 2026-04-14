@@ -48,10 +48,11 @@ si_fg_biomass_model_selection$selected_models |>
 #| fig-width: 10
 #| fig-height: 4
 
+source("../R/functions/make_figures.R")
 tar_load(si_model_plots)
 
 for (response_name in names(si_model_plots)) {
-    cat(paste0("## ", response_name, "\n\n"))
+    cat(paste0("## ", pretty_response_label(response_name), "\n\n"))
 
     plot_list <- si_model_plots[[response_name]]
 

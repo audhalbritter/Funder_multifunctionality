@@ -171,7 +171,33 @@ plot_si_fg_biomass <- function(dat, selected_models, temp_colour, prec_colour) {
   t_levels <- dat |> dplyr::group_by(habitat) |> dplyr::summarize(val = mean(temperature_scaled, na.rm=TRUE), .groups = "drop") |> tidyr::drop_na()
   p_levels <- dat |> dplyr::group_by(precipitation_name) |> dplyr::summarize(val = mean(precipitation_scaled, na.rm=TRUE), .groups = "drop") |> tidyr::drop_na()
   
+  # Standard group order from heatmaps
+  group_order <- c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes")
+  
+  # Sort responses by group order and pretty labels to match heatmap order
   responses <- unique(selected_models$response)
+  
+  # Try to use pretty labels if available (sourced from make_figures.R in the pipeline)
+  has_pretty_labels <- exists("pretty_response_label")
+  
+  response_lookup <- dat |> 
+    dplyr::distinct(response, group)
+  
+  if (has_pretty_labels) {
+    response_lookup <- response_lookup |>
+      dplyr::mutate(pretty_response = pretty_response_label(response))
+  } else {
+    response_lookup <- response_lookup |>
+      dplyr::mutate(pretty_response = response)
+  }
+  
+  responses <- response_lookup |>
+    dplyr::filter(response %in% responses) |>
+    dplyr::mutate(group_order = match(group, group_order)) |>
+    dplyr::mutate(group_order = tidyr::replace_na(group_order, 999)) |>
+    dplyr::arrange(group_order, pretty_response) |>
+    dplyr::pull(response)
+  
   plots <- list()
   
   for (resp in responses) {
@@ -217,11 +243,11 @@ plot_si_fg_biomass <- function(dat, selected_models, temp_colour, prec_colour) {
       pvals <- anv$`Pr(>F)`
       
       # Determine significance using exact term boundary matches
-      t_sig <- any(pvals[grepl("(^|:)t(:|$)", terms)] < 0.05, na.rm = TRUE)
-      p_sig <- any(pvals[grepl("(^|:)p(:|$)", terms)] < 0.05, na.rm = TRUE)
-      x_sig <- any(pvals[grepl("(^|:)x(:|$)|x_log|poly", terms)] < 0.05, na.rm = TRUE)
+      t_sig <- any(pvals[grepl("(^|:)t(:|$)", terms)] <= 0.01, na.rm = TRUE)
+      p_sig <- any(pvals[grepl("(^|:)p(:|$)", terms)] <= 0.01, na.rm = TRUE)
+      x_sig <- any(pvals[grepl("(^|:)x(:|$)|x_log|poly", terms)] <= 0.01, na.rm = TRUE)
       
-      sig_terms <- terms[!is.na(pvals) & pvals < 0.05]
+      sig_terms <- terms[!is.na(pvals) & pvals <= 0.01]
       friendly_terms <- sig_terms
       friendly_terms <- gsub("stats::", "", friendly_terms)
       friendly_terms <- gsub("poly\\(x[^)]*\\)", "B", friendly_terms)
@@ -317,7 +343,7 @@ plot_si_fg_biomass <- function(dat, selected_models, temp_colour, prec_colour) {
       plots[[resp]]$main_plot <- p
     }
   }
-  return(plots)
+  return(plots[responses])
 }
 
 #' Check SI functional group biomass models
