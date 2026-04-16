@@ -1,12 +1,14 @@
 # make models including models without biomass, with biomass and with functional group biomass
-make_model <- function(dat, response_var, fg_var, group){
+make_model <- function(dat, response_var, fg_var, group) {
   dat |>
-    rename(.response = {{response_var}},
-           .functional_group = {{fg_var}}) |>
-    group_by(across(all_of({{group}}))) |>
+    rename(
+      .response = {{ response_var }},
+      .functional_group = {{ fg_var }}
+    ) |>
+    group_by(across(all_of({{ group }}))) |>
     nest() |>
     mutate(
-      # 1) No biomass: treatment × climate only
+      # 1) Factorial model without biomass: treatment × climate only
       model = map(
         data,
         ~ {
@@ -65,9 +67,13 @@ make_model <- function(dat, response_var, fg_var, group){
       r2 = map(
         model,
         ~ {
-          if (is.null(.x)) return(NULL)
+          if (is.null(.x)) {
+            return(NULL)
+          }
           r2_res <- purrr::safely(performance::r2)(.x)
-          if (!is.null(r2_res$error) || is.null(r2_res$result)) return(NULL)
+          if (!is.null(r2_res$error) || is.null(r2_res$result)) {
+            return(NULL)
+          }
           as_tibble(r2_res$result)
         }
       ),
@@ -78,9 +84,13 @@ make_model <- function(dat, response_var, fg_var, group){
       r2_biomass = map(
         model_biomass,
         ~ {
-          if (is.null(.x)) return(NULL)
+          if (is.null(.x)) {
+            return(NULL)
+          }
           r2_res <- purrr::safely(performance::r2)(.x)
-          if (!is.null(r2_res$error) || is.null(r2_res$result)) return(NULL)
+          if (!is.null(r2_res$error) || is.null(r2_res$result)) {
+            return(NULL)
+          }
           as_tibble(r2_res$result)
         }
       ),
@@ -91,9 +101,13 @@ make_model <- function(dat, response_var, fg_var, group){
       r2_FG_biomass = map(
         model_FG_biomass,
         ~ {
-          if (is.null(.x)) return(NULL)
+          if (is.null(.x)) {
+            return(NULL)
+          }
           r2_res <- purrr::safely(performance::r2)(.x)
-          if (!is.null(r2_res$error) || is.null(r2_res$result)) return(NULL)
+          if (!is.null(r2_res$error) || is.null(r2_res$result)) {
+            return(NULL)
+          }
           as_tibble(r2_res$result)
         }
       )
@@ -101,11 +115,13 @@ make_model <- function(dat, response_var, fg_var, group){
 }
 
 # make simpler models: main effects of FG/biomass and climate, plus T:P interaction (no biomass interactions)
-make_main_effects_model <- function(dat, response_var, fg_var, group){
+make_main_effects_model <- function(dat, response_var, fg_var, group) {
   dat |>
-    rename(.response = {{response_var}},
-           .functional_group = {{fg_var}}) |>
-    group_by(across(all_of({{group}}))) |>
+    rename(
+      .response = {{ response_var }},
+      .functional_group = {{ fg_var }}
+    ) |>
+    group_by(across(all_of({{ group }}))) |>
     nest() |>
     mutate(
       # 1) No biomass: FG main effect + climate mains + T:P
@@ -170,9 +186,13 @@ make_main_effects_model <- function(dat, response_var, fg_var, group){
       r2_main = map(
         model_main,
         ~ {
-          if (is.null(.x)) return(NULL)
+          if (is.null(.x)) {
+            return(NULL)
+          }
           r2_res <- purrr::safely(performance::r2)(.x)
-          if (!is.null(r2_res$error) || is.null(r2_res$result)) return(NULL)
+          if (!is.null(r2_res$error) || is.null(r2_res$result)) {
+            return(NULL)
+          }
           as_tibble(r2_res$result)
         }
       ),
@@ -182,9 +202,13 @@ make_main_effects_model <- function(dat, response_var, fg_var, group){
       r2_main_biomass = map(
         model_main_biomass,
         ~ {
-          if (is.null(.x)) return(NULL)
+          if (is.null(.x)) {
+            return(NULL)
+          }
           r2_res <- purrr::safely(performance::r2)(.x)
-          if (!is.null(r2_res$error) || is.null(r2_res$result)) return(NULL)
+          if (!is.null(r2_res$error) || is.null(r2_res$result)) {
+            return(NULL)
+          }
           as_tibble(r2_res$result)
         }
       ),
@@ -194,9 +218,13 @@ make_main_effects_model <- function(dat, response_var, fg_var, group){
       r2_main_FG_biomass = map(
         model_main_FG_biomass,
         ~ {
-          if (is.null(.x)) return(NULL)
+          if (is.null(.x)) {
+            return(NULL)
+          }
           r2_res <- purrr::safely(performance::r2)(.x)
-          if (!is.null(r2_res$error) || is.null(r2_res$result)) return(NULL)
+          if (!is.null(r2_res$error) || is.null(r2_res$result)) {
+            return(NULL)
+          }
           as_tibble(r2_res$result)
         }
       )
@@ -220,8 +248,12 @@ compare_fg_biomass_slopes <- function(fit, temp_value = 0, precip_value = 0, adj
     }
     name_1 <- paste0(name_a, ":", name_b)
     name_2 <- paste0(name_b, ":", name_a)
-    if (name_1 %in% names(coefs)) return(coefs[[name_1]])
-    if (name_2 %in% names(coefs)) return(coefs[[name_2]])
+    if (name_1 %in% names(coefs)) {
+      return(coefs[[name_1]])
+    }
+    if (name_2 %in% names(coefs)) {
+      return(coefs[[name_2]])
+    }
     0
   }
 
@@ -278,37 +310,46 @@ compare_fg_biomass_slopes <- function(fit, temp_value = 0, precip_value = 0, adj
 # make prediction for functional group analysis
 # expects dat with no NA in .response, .functional_group, temperature_scaled, precipitation_scaled
 lmer_prediction <- function(dat, fit) {
-  if (is.null(fit)) return(NULL)
+  if (is.null(fit)) {
+    return(NULL)
+  }
 
-  result <- tryCatch({
-    newdat <- dat %>%
-      select(.response, .functional_group, temperature_scaled, precipitation_scaled)
+  result <- tryCatch(
+    {
+      newdat <- dat %>%
+        select(.response, .functional_group, temperature_scaled, precipitation_scaled)
 
-    newdat$fitted <- predict(fit, newdat, re.form = NA)
+      newdat$fitted <- predict(fit, newdat, re.form = NA)
 
-    # fixed-effects model matrix (matches run_models formula)
-    form_fixed <- ~ .functional_group + temperature_scaled + precipitation_scaled +
-      .functional_group:temperature_scaled + .functional_group:precipitation_scaled +
-      temperature_scaled:precipitation_scaled +
-      .functional_group:temperature_scaled:precipitation_scaled
-    mm <- model.matrix(form_fixed, data = newdat)
-    mm <- mm[, names(lme4::fixef(fit)), drop = FALSE]
+      # fixed-effects model matrix (matches run_models formula)
+      form_fixed <- ~ .functional_group + temperature_scaled + precipitation_scaled +
+        .functional_group:temperature_scaled + .functional_group:precipitation_scaled +
+        temperature_scaled:precipitation_scaled +
+        .functional_group:temperature_scaled:precipitation_scaled
+      mm <- model.matrix(form_fixed, data = newdat)
+      mm <- mm[, names(lme4::fixef(fit)), drop = FALSE]
 
-    vc <- as.data.frame(VarCorr(fit))
-    sigma2_re <- vc$vcov[1]
+      vc <- as.data.frame(VarCorr(fit))
+      sigma2_re <- vc$vcov[1]
 
-    newdat %>%
-      mutate(pvar1 = diag(mm %*% tcrossprod(vcov(fit), mm)),
-             tvar1 = pvar1 + sigma2_re,
-             cmult = 1.96) %>%
-      mutate(plo = fitted - cmult * sqrt(pvar1),
-             phi = fitted + cmult * sqrt(pvar1),
-             tlo = fitted - cmult * sqrt(tvar1),
-             thi = fitted + cmult * sqrt(tvar1))
-  }, error = function(e) {
-    warning("lmer_prediction failed: ", conditionMessage(e))
-    NULL
-  })
+      newdat %>%
+        mutate(
+          pvar1 = diag(mm %*% tcrossprod(vcov(fit), mm)),
+          tvar1 = pvar1 + sigma2_re,
+          cmult = 1.96
+        ) %>%
+        mutate(
+          plo = fitted - cmult * sqrt(pvar1),
+          phi = fitted + cmult * sqrt(pvar1),
+          tlo = fitted - cmult * sqrt(tvar1),
+          thi = fitted + cmult * sqrt(tvar1)
+        )
+    },
+    error = function(e) {
+      warning("lmer_prediction failed: ", conditionMessage(e))
+      NULL
+    }
+  )
 
   return(result)
 }
