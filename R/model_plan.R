@@ -205,37 +205,6 @@ model_plan <- list(
     )
   ),
 
-  ### Group-level models (same structure as single response)
-  tar_target(
-    name = model_group,
-    command = make_model(
-      dat = absolute_group_data,
-      response_var = value,
-      fg_var = fg_remaining,
-      group = "group"
-    )
-  ),
-  tar_target(
-    name = model_group_out,
-    command = model_output_gt(
-      model_group |> rename(group_name = group),
-      unnest_col = "result"
-    )
-  ),
-  tar_target(
-    name = model_group_biomass_out,
-    command = model_output_gt(
-      model_group |> rename(group_name = group),
-      unnest_col = "result_biomass"
-    )
-  ),
-  tar_target(
-    name = model_group_FG_biomass_out,
-    command = model_output_gt(
-      model_group |> rename(group_name = group),
-      unnest_col = "result_FG_biomass"
-    )
-  ),
 
   ### Global multifunctionality models
   tar_target(

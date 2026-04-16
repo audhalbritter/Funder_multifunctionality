@@ -332,33 +332,6 @@ tar_read(model_single_function_FG_biomass_slope_tests_out)
 ```
 
 
-### Group models
-
-Model output for group models: functional groups remaining × temperature × precipitation
-
-```{r}
-#| label: tbl-model-group
-#| echo: false
-#| tbl-cap: "Model output from testing effect of functional groups remaining, summer temperature and annual precipitation on multifunctionality within each functional group."
-
-tar_read(model_group_out)
-```
-
-```{r}
-#| label: tbl-model-group-biomass
-#| echo: false
-#| tbl-cap: "Group models: functional groups remaining × climate + total biomass."
-
-tar_read(model_group_biomass_out)
-```
-
-```{r}
-#| label: tbl-model-group-fg-biomass
-#| echo: false
-#| tbl-cap: "Group models: biomass composition × climate only."
-
-tar_read(model_group_FG_biomass_out)
-```
 
 ### Multifunctionality
 
