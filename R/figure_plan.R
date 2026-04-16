@@ -108,5 +108,159 @@ figure_plan <- list(
       # facet_grid(habitat ~ precipitation_name) +
       theme_bw() +
       theme(legend.position = "none")
+  ),
+
+  # Heatmaps: one per model (same group_lookup; unnest different result_*)
+  tar_target(
+    name = model_single_function_heatmap,
+    command = {
+      group_lookup <- big_data |> distinct(response, group)
+      heatmap_data <- model_single_function |>
+        unnest(result) |>
+        filter(effect == "fixed") |>
+        select(response, term, estimate, p.value)
+      r2_tbl <- model_single_function |>
+        mutate(
+          R2_marginal = purrr::map_dbl(
+            r2,
+            ~ {
+              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
+                NA_real_
+              } else {
+                as.numeric(.x$R2_marginal[1])
+              }
+            }
+          )
+        ) |>
+        select(response, R2_marginal)
+      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+    }
+  ),
+  tar_target(
+    name = model_single_function_biomass_heatmap,
+    command = {
+      group_lookup <- big_data |> distinct(response, group)
+      heatmap_data <- model_single_function |>
+        unnest(result_biomass) |>
+        filter(effect == "fixed") |>
+        select(response, term, estimate, p.value)
+      r2_tbl <- model_single_function |>
+        mutate(
+          R2_marginal = purrr::map_dbl(
+            r2_biomass,
+            ~ {
+              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
+                NA_real_
+              } else {
+                as.numeric(.x$R2_marginal[1])
+              }
+            }
+          )
+        ) |>
+        select(response, R2_marginal)
+      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+    }
+  ),
+  tar_target(
+    name = model_single_function_FG_biomass_heatmap,
+    command = {
+      group_lookup <- big_data |> distinct(response, group)
+      heatmap_data <- model_single_function |>
+        unnest(result_FG_biomass) |>
+        filter(effect == "fixed") |>
+        select(response, term, estimate, p.value)
+      r2_tbl <- model_single_function |>
+        mutate(
+          R2_marginal = purrr::map_dbl(
+            r2_FG_biomass,
+            ~ {
+              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
+                NA_real_
+              } else {
+                as.numeric(.x$R2_marginal[1])
+              }
+            }
+          )
+        ) |>
+        select(response, R2_marginal)
+      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+    }
+  ),
+
+  ### Main-effects models (FG/biomass + climate mains + T:P only)
+  tar_target(
+    name = model_single_function_main_heatmap,
+    command = {
+      group_lookup <- big_data |> distinct(response, group)
+      heatmap_data <- model_single_function_main |>
+        unnest(result_main) |>
+        filter(effect == "fixed") |>
+        select(response, term, estimate, p.value)
+      r2_tbl <- model_single_function_main |>
+        mutate(
+          R2_marginal = purrr::map_dbl(
+            r2_main,
+            ~ {
+              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
+                NA_real_
+              } else {
+                as.numeric(.x$R2_marginal[1])
+              }
+            }
+          )
+        ) |>
+        select(response, R2_marginal)
+      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+    }
+  ),
+  tar_target(
+    name = model_single_function_main_biomass_heatmap,
+    command = {
+      group_lookup <- big_data |> distinct(response, group)
+      heatmap_data <- model_single_function_main |>
+        unnest(result_main_biomass) |>
+        filter(effect == "fixed") |>
+        select(response, term, estimate, p.value)
+      r2_tbl <- model_single_function_main |>
+        mutate(
+          R2_marginal = purrr::map_dbl(
+            r2_main_biomass,
+            ~ {
+              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
+                NA_real_
+              } else {
+                as.numeric(.x$R2_marginal[1])
+              }
+            }
+          )
+        ) |>
+        select(response, R2_marginal)
+      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+    }
+  ),
+  tar_target(
+    name = model_single_function_main_FG_biomass_heatmap,
+    command = {
+      group_lookup <- big_data |> distinct(response, group)
+      heatmap_data <- model_single_function_main |>
+        unnest(result_main_FG_biomass) |>
+        filter(effect == "fixed") |>
+        select(response, term, estimate, p.value)
+      r2_tbl <- model_single_function_main |>
+        mutate(
+          R2_marginal = purrr::map_dbl(
+            r2_main_FG_biomass,
+            ~ {
+              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
+                NA_real_
+              } else {
+                as.numeric(.x$R2_marginal[1])
+              }
+            }
+          )
+        ) |>
+        select(response, R2_marginal)
+      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+    }
   )
 )
