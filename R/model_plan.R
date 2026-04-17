@@ -187,23 +187,6 @@ model_plan <- list(
       colour_by = "group"
     )
   ),
-  tar_target(
-    name = model_single_function_estimate_term_plot,
-    command = plot_single_function_estimate_comparison(
-      model_single_function_tbl = model_single_function,
-      colour_by = "term"
-    )
-  ),
-  tar_target(
-    name = single_function_fg_biomass_panel_plot,
-    command = plot_response_vs_fg_biomass(
-      data = big_data,
-      response_name = "drought_index",
-      model_fg_biomass_tbl = model_single_function |> select(response, model_FG_biomass),
-      temp_value = 0,
-      precip_value = 0
-    )
-  ),
 
 
   ### Global multifunctionality models

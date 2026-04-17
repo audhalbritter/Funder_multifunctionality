@@ -312,16 +312,6 @@ tar_read(model_single_function_main_FG_biomass_heatmap)
 ```
 
 
-```{r}
-#| label: fig-single-function-fg-biomass-panels
-#| echo: false
-#| warning: false
-#| fig-width: 12
-#| fig-height: 5
-#| fig-cap: "Example single-function response against biomass of each functional group (three panels: graminoids, forbs, bryophytes). Points are observations; black line is a single linear fit per panel."
-
-tar_read(single_function_fg_biomass_panel_plot)
-```
 
 ```{r}
 #| label: tbl-model-single-function-fg-biomass-slope-tests
