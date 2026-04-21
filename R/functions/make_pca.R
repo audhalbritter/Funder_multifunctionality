@@ -15,7 +15,6 @@
 #' @param seed Integer seed passed to set.seed() before adonis2 for reproducible permutation p-values (default 42)
 #' @param permanova_by Passed to vegan::adonis2(by = ...). Default "terms" to return R2 per model term.
 make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova_method = "euclidean", permanova_permutations = 999, seed = 42, permanova_by = "terms") {
-
   # include year so each year × plot is a separate observation in the PCA
   meta_cols <- c(
     "year", "siteID", "blockID", "plotID", "treatment", "temperature_degree",
@@ -104,26 +103,31 @@ make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova
   list(pca_sites, pca_traits, pca_output, permanova)
 }
 
-make_scree_plot <- function(pca_output){
+make_scree_plot <- function(pca_output) {
   # pca_output is list(sites, traits, rda) from make_pca; extract rda object
   rda_obj <- if (inherits(pca_output, "rda")) pca_output else pca_output[[3]]
   evals <- eigenvals(rda_obj)
   e_B <- evals / sum(evals)
   n_pcs <- length(evals)
-  if (n_pcs == 0) return(ggplot() + theme_void() + labs(title = "No eigenvalues"))
+  if (n_pcs == 0) {
+    return(ggplot() +
+      theme_void() +
+      labs(title = "No eigenvalues"))
+  }
   scree <- evals |>
     as_tibble() |>
     rename(eigenvalue = x) |>
-    mutate(PC = paste0("PC", seq_len(n_pcs)),
-           PC = factor(PC, levels = paste0("PC", seq_len(n_pcs)))) |>
+    mutate(
+      PC = paste0("PC", seq_len(n_pcs)),
+      PC = factor(PC, levels = paste0("PC", seq_len(n_pcs)))
+    ) |>
     ggplot(aes(y = eigenvalue, x = PC)) +
     geom_col() +
     theme_bw()
   scree
 }
 
-plot_pca <- function(pca_output){
-
+plot_pca <- function(pca_output) {
   e_B <- eigenvals(pca_output[[3]]) / sum(eigenvals(pca_output[[3]]))
   sites <- pca_output[[1]]
   traits <- pca_output[[2]]
@@ -152,8 +156,10 @@ plot_pca <- function(pca_output){
     coord_equal() +
     scale_colour_viridis_c(end = 0.8, option = "inferno", name = "Summer temperature") +
     scale_shape_manual(values = c(15, 16, 17, 1), name = "Precipitation in mm") +
-    labs(x = glue("PCA1 ({round(e_B[1] * 100, 1)}%)"),
-         y = glue("PCA2 ({round(e_B[2] * 100, 1)}%)")) +
+    labs(
+      x = glue("PCA1 ({round(e_B[1] * 100, 1)}%)"),
+      y = glue("PCA2 ({round(e_B[2] * 100, 1)}%)")
+    ) +
     theme_bw() +
     theme(aspect.ratio = 1)
 
@@ -165,7 +171,6 @@ plot_pca <- function(pca_output){
 #' @param point_size_var Optional string: column name in `sites` used for point size (e.g. "total_biomass"). Default NULL (fixed point size).
 #' @param point_alpha Numeric transparency for points in [0, 1]. Default 1 (opaque).
 plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), facet_var = NULL, point_size_var = NULL, point_alpha = 1) {
-
   display <- match.arg(display)
   e_B <- eigenvals(pca_output[[3]]) / sum(eigenvals(pca_output[[3]]))
   sites <- pca_output[[1]]

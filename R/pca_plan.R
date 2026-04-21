@@ -33,15 +33,17 @@ pca_plan <- list(
                 point_size_var = "total_biomass",
                 point_alpha = 0.6
             ) + ggtitle("Site effect partitioned out")
-            p_all | p_no_site + 
+            p_all | p_no_site +
                 patchwork::plot_layout(guides = "collect") +
                 patchwork::plot_annotation(tag_levels = "a")
         }
     ),
     tar_target(
         name = pca_scree_plot,
-        command = (make_scree_plot(pca_all) + ggtitle("Scree: all data")) | 
-                  (make_scree_plot(pca_no_site) + ggtitle("Scree: site effect partitioned out")) +
-                  patchwork::plot_annotation(tag_levels = "a")
+        command = (make_scree_plot(pca_all) + ggtitle("Scree: all data")) |
+            (make_scree_plot(pca_no_site) + ggtitle("Scree: site effect partitioned out")) +
+                patchwork::plot_layout(guides = "collect") +
+                patchwork::plot_annotation(tag_levels = "a") &
+                theme(legend.position = "top")
     )
 )
