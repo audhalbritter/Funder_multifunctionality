@@ -44,47 +44,40 @@ rename_response_pretty <- function(dat, response_col = response) {
     mutate("{response_col}" := pretty_response_label(.data[[response_col]]))
 }
 
+# --- Model Comparison Diagnostic Helpers ---
 
-
-
-
-# Compare fixed-effect estimates across single-function model variants.
-# Plots climate-model estimates on x against estimates from biomass/FG-biomass models on y.
-# colour_by can be "group" (response group) or "term" (model term).
-plot_single_function_estimate_comparison <- function(model_single_function_tbl, response_group_lookup = NULL, colour_by = c("group", "term")) {
-  colour_by <- match.arg(colour_by)
-
-  extract_fixed <- function(tbl, model_col, label) {
-    tbl |>
-      select(response, all_of(model_col)) |>
-      unnest(cols = all_of(model_col)) |>
-      filter(effect == "fixed") |>
-      select(response, term, estimate) |>
-      mutate(model = label)
+#' Internal helper to extract scalar R2 values safely
+r2_safe_get <- function(tbl, col) {
+  if (is.null(tbl) || !col %in% names(tbl)) {
+    return(NA_real_)
   }
+  as.numeric(tbl[[col]][1])
+}
 
-  climate_term_short <- function(term) {
-    case_when(
-      term == "(Intercept)" ~ "Intercept",
-      term == ".functional_groupF" ~ "F",
-      term == ".functional_groupG" ~ "G",
-      term == ".functional_groupB" ~ "B",
-      term == "temperature_scaled" ~ "T",
-      term == "precipitation_scaled" ~ "P",
-      term == "temperature_scaled:precipitation_scaled" ~ "T:P",
-      term == ".functional_groupF:temperature_scaled" ~ "F:T",
-      term == ".functional_groupG:temperature_scaled" ~ "G:T",
-      term == ".functional_groupB:temperature_scaled" ~ "B:T",
-      term == ".functional_groupF:precipitation_scaled" ~ "F:P",
-      term == ".functional_groupG:precipitation_scaled" ~ "G:P",
-      term == ".functional_groupB:precipitation_scaled" ~ "B:P",
-      TRUE ~ term
-    )
-  }
+#' Internal helper for estimate mapping labels
+climate_term_short <- function(term) {
+  case_when(
+    term == "(Intercept)" ~ "Intercept",
+    term == ".functional_groupF" ~ "F",
+    term == ".functional_groupG" ~ "G",
+    term == ".functional_groupB" ~ "B",
+    term == "temperature_scaled" ~ "T",
+    term == "precipitation_scaled" ~ "P",
+    term == "temperature_scaled:precipitation_scaled" ~ "T:P",
+    term == ".functional_groupF:temperature_scaled" ~ "F:T",
+    term == ".functional_groupG:temperature_scaled" ~ "G:T",
+    term == ".functional_groupB:temperature_scaled" ~ "B:T",
+    term == ".functional_groupF:precipitation_scaled" ~ "F:P",
+    term == ".functional_groupG:precipitation_scaled" ~ "G:P",
+    term == ".functional_groupB:precipitation_scaled" ~ "B:P",
+    TRUE ~ term
+  )
+}
 
-  # Map climate-model FG terms to biomassFG-model terms so they are comparable.
-  # Example: .functional_groupF <-> biomass_scaled_F and corresponding climate interactions.
-  map_climate_to_fg_key <- function(term) {
+#' Map terms between climate/biomass models and composition models
+map_term_to_comparison_key <- function(term, model_type = c("standard", "composition")) {
+  model_type <- match.arg(model_type)
+  if (model_type == "standard") {
     case_when(
       term == ".functional_groupF" ~ "F",
       term == ".functional_groupG" ~ "G",
@@ -97,9 +90,7 @@ plot_single_function_estimate_comparison <- function(model_single_function_tbl, 
       term == ".functional_groupB:precipitation_scaled" ~ "B:precipitation_scaled",
       TRUE ~ NA_character_
     )
-  }
-
-  map_biofg_to_fg_key <- function(term) {
+  } else {
     case_when(
       term == "biomass_scaled_F" ~ "F",
       term == "biomass_scaled_G" ~ "G",
@@ -113,83 +104,103 @@ plot_single_function_estimate_comparison <- function(model_single_function_tbl, 
       TRUE ~ NA_character_
     )
   }
+}
 
-  est_climate <- extract_fixed(model_single_function_tbl, "result", "climate")
-  est_biomass <- extract_fixed(model_single_function_tbl, "result_biomass", "biomass")
-  est_fg_biomass <- extract_fixed(model_single_function_tbl, "result_FG_biomass", "biomassFG")
-
-  comp_biomass <- est_climate |>
-    mutate(term = climate_term_short(term)) |>
-    rename(estimate_climate = estimate) |>
-    inner_join(
-      est_biomass |>
-        mutate(term = climate_term_short(term)) |>
-        rename(estimate_other = estimate),
-      by = c("response", "term")
-    ) |>
-    mutate(comparison = "Climate vs biomass")
-
-  comp_fg <- est_climate |>
-    mutate(term_key = map_climate_to_fg_key(term)) |>
-    filter(!is.na(term_key)) |>
-    rename(estimate_climate = estimate) |>
-    inner_join(
-      est_fg_biomass |>
-        mutate(term_key = map_biofg_to_fg_key(term)) |>
-        filter(!is.na(term_key)) |>
-        rename(estimate_other = estimate),
-      by = c("response", "term_key")
-    ) |>
-    transmute(
-      response,
-      term = case_when(
-        term_key == "F" ~ "F",
-        term_key == "G" ~ "G",
-        term_key == "B" ~ "B",
-        term_key == "F:temperature_scaled" ~ "F:T",
-        term_key == "G:temperature_scaled" ~ "G:T",
-        term_key == "B:temperature_scaled" ~ "B:T",
-        term_key == "F:precipitation_scaled" ~ "F:P",
-        term_key == "G:precipitation_scaled" ~ "G:P",
-        term_key == "B:precipitation_scaled" ~ "B:P",
-        TRUE ~ term_key
-      ),
-      estimate_climate,
-      estimate_other,
-      comparison = "Climate vs biomassFG"
+#' Plot R2 comparisons across three models
+plot_single_function_r2_comparison <- function(model_tbl) {
+  r2_dat <- model_tbl |>
+    mutate(
+      mod1_m = purrr::map_dbl(r2, ~ r2_safe_get(.x, "R2_marginal")),
+      mod1_c = purrr::map_dbl(r2, ~ r2_safe_get(.x, "R2_conditional")),
+      mod2_m = purrr::map_dbl(r2_biomass, ~ r2_safe_get(.x, "R2_marginal")),
+      mod2_c = purrr::map_dbl(r2_biomass, ~ r2_safe_get(.x, "R2_conditional")),
+      mod3_m = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_marginal")),
+      mod3_c = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_conditional"))
     )
 
-  plot_dat <- bind_rows(comp_biomass, comp_fg) |>
-    select(response, term, comparison, estimate_climate, estimate_other) |>
-    filter(!is.na(estimate_climate), !is.na(estimate_other))
-
-  if (colour_by == "group") {
-    if (is.null(response_group_lookup)) {
-      stop("response_group_lookup is required when colour_by = 'group'")
-    }
-    plot_dat <- plot_dat |>
-      left_join(
-        response_group_lookup |>
-          select(response, group) |>
-          distinct(),
-        by = "response"
-      )
+  prep_comp <- function(df, col_x_suffix, col_y_suffix, label) {
+    bind_rows(
+      df |> transmute(response, comparison = label, type = "marginal", x = .data[[paste0(col_x_suffix, "_m")]], y = .data[[paste0(col_y_suffix, "_m")]]),
+      df |> transmute(response, comparison = label, type = "conditional", x = .data[[paste0(col_x_suffix, "_c")]], y = .data[[paste0(col_y_suffix, "_c")]])
+    )
   }
 
-  colour_name <- if (colour_by == "group") "Function group" else "Model term"
+  plot_dat <- bind_rows(
+    prep_comp(r2_dat, "mod1", "mod2", "Mod 1 vs 2\n(No vs Total Bio)"),
+    prep_comp(r2_dat, "mod1", "mod3", "Mod 1 vs 3\n(No vs FG Bio)"),
+    prep_comp(r2_dat, "mod2", "mod3", "Mod 2 vs 3\n(Total vs FG Bio)")
+  ) |> filter(!is.na(x), !is.na(y))
 
-  ggplot(plot_dat, aes(x = estimate_climate, y = estimate_other, colour = .data[[colour_by]])) +
+  ggplot(plot_dat, aes(x = x, y = y, colour = type)) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
+    geom_point(alpha = 0.7) +
+    coord_equal() +
+    facet_wrap(~comparison) +
+    scale_colour_manual(values = c(marginal = "#1b9e77", conditional = "#d95f02"), name = "R² type") +
+    labs(x = "R² (lower index model)", y = "R² (higher index model)", title = "R² Comparison") +
+    theme_bw() + theme(legend.position = "right")
+}
+
+
+#' Plot Estimate comparisons across three models
+plot_single_function_estimate_comparison <- function(model_tbl, response_group_lookup) {
+  
+  extract_fixed <- function(tbl, col) {
+    tbl |> select(response, all_of(col)) |> unnest(cols = all_of(col)) |>
+      filter(effect == "fixed") |> select(response, term, estimate)
+  }
+
+  est1 <- extract_fixed(model_tbl, "result")
+  est2 <- extract_fixed(model_tbl, "result_biomass")
+  est3 <- extract_fixed(model_tbl, "result_FG_biomass")
+
+  # 1 vs 2 (Standard vs Standard)
+  comp12 <- inner_join(
+    est1 |> mutate(term = climate_term_short(term)) |> rename(x = estimate),
+    est2 |> mutate(term = climate_term_short(term)) |> rename(y = estimate),
+    by = c("response", "term")
+  ) |> mutate(comparison = "Mod 1 vs 2\n(No vs Total Bio)")
+
+  # 1 vs 3 (Standard vs Composition)
+  comp13 <- inner_join(
+    est1 |> mutate(key = map_term_to_comparison_key(term, "standard")) |> filter(!is.na(key)) |> rename(x = estimate),
+    est3 |> mutate(key = map_term_to_comparison_key(term, "composition")) |> filter(!is.na(key)) |> rename(y = estimate),
+    by = c("response", "key")
+  ) |> mutate(comparison = "Mod 1 vs 3\n(No vs FG Bio)", term = key)
+
+  # 2 vs 3 (Standard vs Composition)
+  comp23 <- inner_join(
+    est2 |> mutate(key = map_term_to_comparison_key(term, "standard")) |> filter(!is.na(key)) |> rename(x = estimate),
+    est3 |> mutate(key = map_term_to_comparison_key(term, "composition")) |> filter(!is.na(key)) |> rename(y = estimate),
+    by = c("response", "key")
+  ) |> mutate(comparison = "Mod 2 vs 3\n(Total vs FG Bio)", term = key)
+
+  plot_dat <- bind_rows(comp12, comp13, comp23) |>
+    left_join(response_group_lookup |> distinct(response, group), by = "response") |>
+    filter(!is.na(x), !is.na(y))
+
+  ggplot(plot_dat, aes(x = x, y = y, colour = group)) +
     geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
     geom_point(alpha = 0.6) +
     facet_wrap(~ comparison) +
-    scale_colour_discrete(name = colour_name, na.translate = FALSE) +
-    labs(
-      x = "Estimate (climate model)",
-      y = "Estimate (comparison model)",
-      title = "Fixed-effect estimate comparison for single-function models"
-    ) +
-    theme_bw()
+    scale_colour_brewer(palette = "Set1", name = "Function group") +
+    labs(x = "Estimate (lower index model)", y = "Estimate (higher index model)", title = "Fixed-Effect Estimates Comparison") +
+    theme_bw() + theme(legend.position = "right")
 }
+
+#' Consolidated multi-panel diagnostic plot
+plot_model_comparison_diagnostic <- function(model_tbl, response_group_lookup) {
+  p_r2 <- plot_single_function_r2_comparison(model_tbl)
+  p_est <- plot_single_function_estimate_comparison(model_tbl, response_group_lookup)
+
+  # Stack them
+  p_r2 / p_est + patchwork::plot_annotation(
+    title = "Single-Function Model Diagnostic Comparisons",
+    subtitle = "Comparing No Biomass (Mod 1), +Total Biomass (Mod 2), and FG Biomass (Mod 3) variants",
+    tag_levels = "A"
+  )
+}
+
 
 
 # make_group_figure: one plot per group (4 total), raw multifunctionality + prediction lines,

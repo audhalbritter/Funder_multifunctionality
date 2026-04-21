@@ -110,7 +110,11 @@ make_model <- function(dat, response_var, fg_var, group) {
           }
           as_tibble(r2_res$result)
         }
-      )
+      ),
+      # AIC for model comparison
+      aic = map_dbl(model, ~ if (is.null(.x)) NA_real_ else AIC(.x)),
+      aic_biomass = map_dbl(model_biomass, ~ if (is.null(.x)) NA_real_ else AIC(.x)),
+      aic_FG_biomass = map_dbl(model_FG_biomass, ~ if (is.null(.x)) NA_real_ else AIC(.x))
     )
 }
 
@@ -227,7 +231,11 @@ make_main_effects_model <- function(dat, response_var, fg_var, group) {
           }
           as_tibble(r2_res$result)
         }
-      )
+      ),
+      # AIC for main effects model comparison
+      aic_main = map_dbl(model_main, ~ if (is.null(.x)) NA_real_ else AIC(.x)),
+      aic_main_biomass = map_dbl(model_main_biomass, ~ if (is.null(.x)) NA_real_ else AIC(.x)),
+      aic_main_FG_biomass = map_dbl(model_main_FG_biomass, ~ if (is.null(.x)) NA_real_ else AIC(.x))
     )
 }
 

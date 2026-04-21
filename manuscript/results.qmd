@@ -35,7 +35,6 @@ PCA of all plots: full ordination (left) and partial ordination with site effect
 #| fig-width: 12
 #| fig-height: 12
 #| fig-cap: "PCA ordination of ecosystem functions. a) full ordination and b) site effect partitioned out (within-site variation only). Sites are coloured by summer temperature (left) and treatment (right) and the shape indicates the precipitation level."
-
 tar_read(pca_all_vs_no_site_plot)
 ```
 
@@ -43,7 +42,110 @@ Variance partitioning ordination!!!
 
 
 
+
+### Single function models
+
+Run 3 models for each function (with interactions and main effects only):
+
+1. Functional groups remaining × climate only
+
+2. Functional groups remaining × climate + total biomass
+
+3. Biomass G/F/B × climate only
+
+
+```{r}
+#| label: fig-model-single-function-comparisons
+#| echo: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 9
+#| fig-cap: "Diagnostic comparisons across single-function model variants: (A) R² comparison (marginal vs conditional) and (B) fixed-effect estimate comparison. Each column represents a pair-wise comparison between Model 1 (No biomass), Model 2 (+ Total biomass), and Model 3 (FG biomass). The dashed line is the 1:1 reference."
+tar_read(model_single_function_comparison_plot)
+```
+
+
+### Model selection by AIC
+```{r}
+#| label: tbl-aic-comparison
+#| echo: false
+#| warning: false
+#| fig-cap: "Model selection of single function models with and without interactions for only climate, with biomass and with functional group biomass. The best models with ΔAIC ≤ 2 are shown."
+tar_read(model_aic_comparison_out)
+```
+
+
 ### Heatmaps
+
+Heatmap of model estimates: blue = negative, red = positive. Text style encodes p-values as follows: **bold** for p ≤ 0.001, **_bold italic_** for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1.
+
+Model 1 (functional groups remaining × climate only):
+
+```{r}
+#| label: fig-model-single-function-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 1 estimates (functional groups remaining × climate). Baseline = no FGs remaining (bare ground). Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
+tar_read(model_single_function_heatmap)
+```
+
+Model 2 (functional groups remaining × climate + total biomass):
+
+```{r}
+#| label: fig-model-single-function-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 2 estimates (functional groups remaining × climate + total biomass)."
+tar_read(model_single_function_biomass_heatmap)
+```
+
+Model 3 (biomass G/F/B × climate only):
+
+```{r}
+#| label: fig-model-single-function-fg-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 3 estimates (biomass composition × climate)."
+tar_read(model_single_function_FG_biomass_heatmap)
+```
+
+Main-effects versions of the same three models (FG/biomass mains + climate mains + T × P only):
+
+```{r}
+#| label: fig-model-single-function-main-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 1 estimates (functional groups remaining + climate mains + T × P). Baseline = no FGs remaining (bare ground)."
+tar_read(model_single_function_main_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 2 estimates (functional groups remaining + climate mains + T × P + total biomass)."
+tar_read(model_single_function_main_biomass_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-fg-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 3 estimates (biomass composition + climate mains + T × P)."
+tar_read(model_single_function_main_FG_biomass_heatmap)
+```
 
 
 

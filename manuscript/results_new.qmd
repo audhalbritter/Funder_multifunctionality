@@ -199,40 +199,6 @@ tar_read(model_multifunctionality_FG_biomass_out)
 ```
 
 
-### Single function models
-
-```{r}
-#| label: fig-model-single-function-r2
-#| echo: false
-#| warning: false
-#| fig-width: 8
-#| fig-height: 6
-#| fig-cap: "Comparison of marginal and conditional R² for single-function models. Each point is a response; panels compare models without biomass to models with total biomass (left) or FG biomass (right). The dashed line is the 1:1 reference."
-
-tar_read(model_single_function_r2_plot)
-```
-
-```{r}
-#| label: fig-model-single-function-estimate
-#| echo: false
-#| warning: false
-#| fig-width: 8
-#| fig-height: 4
-#| fig-cap: "Comparison of fixed-effect estimates between the climate model and the two biomass model variants for single-function models, coloured by function group. Each point is one response-term coefficient shared by both compared models. The dashed line is the 1:1 reference."
-
-tar_read(model_single_function_estimate_plot)
-```
-
-```{r}
-#| label: fig-model-single-function-estimate-term
-#| echo: false
-#| warning: false
-#| fig-width: 8
-#| fig-height: 4
-#| fig-cap: "Same estimate comparison, but coloured by model term (F, G, B, T, P and interactions) to highlight which terms change most between model variants."
-
-tar_read(model_single_function_estimate_term_plot)
-```
 
 
 Heatmap of model estimates: blue = negative, red = positive. Text style encodes p-values as follows: **bold** for p ≤ 0.001, **_bold italic_** for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1.

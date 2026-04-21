@@ -110,6 +110,15 @@ figure_plan <- list(
       theme(legend.position = "none")
   ),
 
+  ### Model comparisons
+  tar_target(
+    name = model_single_function_comparison_plot,
+    command = plot_model_comparison_diagnostic(
+      model_tbl = model_single_function,
+      response_group_lookup = big_data |> distinct(response, group)
+    )
+  ),
+
   # Heatmaps: one per model (same group_lookup; unnest different result_*)
   tar_target(
     name = model_single_function_heatmap,

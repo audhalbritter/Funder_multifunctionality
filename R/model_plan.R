@@ -99,93 +99,49 @@ model_plan <- list(
       group = "response"
     )
   ),
+
+  # AIC Comparison Table for all single-function models
   tar_target(
-    name = model_single_function_r2_plot,
+    name = model_aic_comparison,
     command = {
-      # Extract scalar marginal / conditional R2 for each response and model variant
-      r2_safe_get <- function(tbl, col) {
-        if (is.null(tbl) || !col %in% names(tbl)) {
-          return(NA_real_)
-        }
-        as.numeric(tbl[[col]][1])
-      }
+      group_lookup <- big_data |> distinct(response, group)
 
-      r2_dat <- model_single_function |>
-        mutate(
-          R2m_no   = purrr::map_dbl(r2, ~ r2_safe_get(.x, "R2_marginal")),
-          R2c_no   = purrr::map_dbl(r2, ~ r2_safe_get(.x, "R2_conditional")),
-          R2m_bio  = purrr::map_dbl(r2_biomass, ~ r2_safe_get(.x, "R2_marginal")),
-          R2c_bio  = purrr::map_dbl(r2_biomass, ~ r2_safe_get(.x, "R2_conditional")),
-          R2m_fg   = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_marginal")),
-          R2c_fg   = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_conditional"))
-        )
+      # AIC from interaction models
+      aic_int <- model_single_function |>
+        select(response, aic, aic_biomass, aic_FG_biomass) |>
+        rename(`int climate` = aic, `int bio` = aic_biomass, `int FG bio` = aic_FG_biomass)
 
-      comp_bio <- r2_dat |>
-        transmute(
-          response,
-          type = "marginal",
-          comparison = "No biomass vs + total biomass",
-          R2_no = R2m_no,
-          R2_other = R2m_bio
-        ) |>
-        bind_rows(
-          r2_dat |>
-            transmute(
-              response,
-              type = "conditional",
-              comparison = "No biomass vs + total biomass",
-              R2_no = R2c_no,
-              R2_other = R2c_bio
-            )
-        )
+      # AIC from main-effects models
+      aic_main <- model_single_function_main |>
+        select(response, aic_main, aic_main_biomass, aic_main_FG_biomass) |>
+        rename(`main climate` = aic_main, `main bio` = aic_main_biomass, `main FG bio` = aic_main_FG_biomass)
 
-      comp_fg <- r2_dat |>
-        transmute(
-          response,
-          type = "marginal",
-          comparison = "No biomass vs FG biomass",
-          R2_no = R2m_no,
-          R2_other = R2m_fg
-        ) |>
-        bind_rows(
-          r2_dat |>
-            transmute(
-              response,
-              type = "conditional",
-              comparison = "No biomass vs FG biomass",
-              R2_no = R2c_no,
-              R2_other = R2c_fg
-            )
-        )
+      group_order <- c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes")
 
-      plot_dat <- bind_rows(comp_bio, comp_fg) |>
-        filter(!is.na(R2_no), !is.na(R2_other))
-
-      ggplot(plot_dat, aes(x = R2_no, y = R2_other, colour = type)) +
-        geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
-        geom_point(alpha = 0.7) +
-        coord_equal() +
-        facet_wrap(~comparison) +
-        scale_colour_manual(
-          values = c(marginal = "#1b9e77", conditional = "#d95f02"),
-          name = "R² type",
-          labels = c("Marginal", "Conditional")
-        ) +
-        labs(
-          x = "R² (no biomass model)",
-          y = "R² (biomass model)",
-          title = "R² comparison for single-function models"
-        ) +
-        theme_bw()
+      full_join(aic_int, aic_main, by = "response") |>
+        left_join(group_lookup, by = "response") |>
+        # Explicit group order matching heatmap
+        mutate(group = factor(group, levels = group_order)) |>
+        tidyr::pivot_longer(c(-response, -group), names_to = "model", values_to = "aic") |>
+        group_by(response) |>
+        mutate(ΔAIC = aic - min(aic, na.rm = TRUE)) |>
+        arrange(group, response, ΔAIC) |>
+        rename_response_pretty() |>
+        mutate(group = stringr::str_to_sentence(as.character(group)))
     }
   ),
   tar_target(
-    name = model_single_function_estimate_plot,
-    command = plot_single_function_estimate_comparison(
-      model_single_function_tbl = model_single_function,
-      response_group_lookup = big_data |> distinct(response, group),
-      colour_by = "group"
-    )
+    name = model_aic_comparison_out,
+    command = model_aic_comparison |>
+      filter(ΔAIC <= 2) |>
+      gt(groupname_col = "group") |> # Group by the category (Nematodes, C cycling, etc.)
+      fmt_number(columns = c(aic, ΔAIC), decimals = 2) |>
+      tab_header(title = "Model Comparison by AIC (ΔAIC ≤ 2)") |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_body(rows = ΔAIC == 0)
+      ) |>
+      cols_label(response = "Variable", model = "Model", aic = "AIC")
   ),
 
 

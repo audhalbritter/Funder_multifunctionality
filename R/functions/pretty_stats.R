@@ -196,6 +196,8 @@ model_output_gt <- function(
     "anova", "anova_tidy", "result", "result_biomass", "anova_biomass", "anova_tidy_biomass",
     "result_FG_biomass", "anova_FG_biomass", "anova_tidy_FG_biomass",
     "r2", "r2_biomass", "r2_FG_biomass",
+    "aic", "aic_biomass", "aic_FG_biomass",
+    "aic_main", "aic_main_biomass", "aic_main_FG_biomass",
     "model_fg_bio", "anova_fg_bio", "anova_tidy_fg_bio", "result_fg_bio",
     extra_drop
   )
