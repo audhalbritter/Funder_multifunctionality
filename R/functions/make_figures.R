@@ -138,16 +138,19 @@ plot_single_function_r2_comparison <- function(model_tbl) {
     facet_wrap(~comparison) +
     scale_colour_manual(values = c(marginal = "#1b9e77", conditional = "#d95f02"), name = "R² type") +
     labs(x = "R² (lower index model)", y = "R² (higher index model)", title = "R² Comparison") +
-    theme_bw() + theme(legend.position = "right")
+    theme_bw() +
+    theme(legend.position = "right")
 }
 
 
 #' Plot Estimate comparisons across three models
 plot_single_function_estimate_comparison <- function(model_tbl, response_group_lookup) {
-  
   extract_fixed <- function(tbl, col) {
-    tbl |> select(response, all_of(col)) |> unnest(cols = all_of(col)) |>
-      filter(effect == "fixed") |> select(response, term, estimate)
+    tbl |>
+      select(response, all_of(col)) |>
+      unnest(cols = all_of(col)) |>
+      filter(effect == "fixed") |>
+      select(response, term, estimate)
   }
 
   est1 <- extract_fixed(model_tbl, "result")
@@ -175,17 +178,59 @@ plot_single_function_estimate_comparison <- function(model_tbl, response_group_l
     by = c("response", "key")
   ) |> mutate(comparison = "Mod 2 vs 3\n(Total vs FG Bio)", term = key)
 
+  group_order <- c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes")
+
   plot_dat <- bind_rows(comp12, comp13, comp23) |>
     left_join(response_group_lookup |> distinct(response, group), by = "response") |>
-    filter(!is.na(x), !is.na(y))
+    filter(!is.na(x), !is.na(y)) |>
+    # Group terms for coloring and shapes
+    mutate(
+      # Color category: Identity of the functional group or Bare
+      color_cat = case_when(
+        stringr::str_detect(term, "F") ~ "F",
+        stringr::str_detect(term, "G") ~ "G",
+        stringr::str_detect(term, "B") ~ "B",
+        stringr::str_detect(term, "All") ~ "All",
+        term %in% c("Intercept", "Bare") ~ "Bare",
+        TRUE ~ "Climate"
+      ),
+      # Shape category: Main effect vs T or P driver
+      shape_cat = case_when(
+        stringr::str_detect(term, "T") & stringr::str_detect(term, "P") ~ "T:P",
+        stringr::str_detect(term, "T") ~ "T",
+        stringr::str_detect(term, "P") ~ "P",
+        TRUE ~ "Main"
+      )
+    ) |>
+    mutate(
+      color_cat = factor(color_cat, levels = c("Bare", "F", "G", "B", "All", "Climate")),
+      shape_cat = factor(shape_cat, levels = c("Main", "T", "P", "T:P")),
+      group = factor(stringr::str_to_sentence(group), levels = stringr::str_to_sentence(group_order))
+    )
 
-  ggplot(plot_dat, aes(x = x, y = y, colour = group)) +
+  ggplot(plot_dat, aes(x = x, y = y, colour = color_cat, shape = shape_cat)) +
     geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
-    geom_point(alpha = 0.6) +
-    facet_wrap(~ comparison) +
-    scale_colour_brewer(palette = "Set1", name = "Function group") +
-    labs(x = "Estimate (lower index model)", y = "Estimate (higher index model)", title = "Fixed-Effect Estimates Comparison") +
-    theme_bw() + theme(legend.position = "right")
+    geom_point(alpha = 0.7, size = 2) +
+    # 5 rows for groups, 3 columns for comparisons
+    facet_grid(group ~ comparison) +
+    scale_colour_manual(
+      values = c(
+        "Bare" = "#7f7f7f", "F" = "#e41a1c", "G" = "#377eb8",
+        "B" = "#4daf4a", "All" = "#984ea3", "Climate" = "#ff7f00"
+      ),
+      name = "Identity"
+    ) +
+    scale_shape_manual(
+      values = c("Main" = 16, "T" = 17, "P" = 15, "T:P" = 8),
+      name = "Interaction"
+    ) +
+    labs(
+      x = "Estimate (lower index model)",
+      y = "Estimate (higher index model)",
+      title = "Fixed-Effect Estimates Comparison"
+    ) +
+    theme_bw() +
+    theme(legend.position = "right")
 }
 
 #' Consolidated multi-panel diagnostic plot
@@ -193,14 +238,15 @@ plot_model_comparison_diagnostic <- function(model_tbl, response_group_lookup) {
   p_r2 <- plot_single_function_r2_comparison(model_tbl)
   p_est <- plot_single_function_estimate_comparison(model_tbl, response_group_lookup)
 
-  # Stack them
-  p_r2 / p_est + patchwork::plot_annotation(
-    title = "Single-Function Model Diagnostic Comparisons",
-    subtitle = "Comparing No Biomass (Mod 1), +Total Biomass (Mod 2), and FG Biomass (Mod 3) variants",
-    tag_levels = "A"
-  )
+  # Stack them: Give the R2 plot (A) less height than the large estimate grid (B)
+  p_r2 / p_est +
+    patchwork::plot_layout(heights = c(1, 3.5)) +
+    patchwork::plot_annotation(
+      title = "Single-Function Model Diagnostic Comparisons",
+      subtitle = "Comparing No Biomass (Mod 1), +Total Biomass (Mod 2), and FG Biomass (Mod 3) variants",
+      tag_levels = "A"
+    )
 }
-
 
 
 # make_group_figure: one plot per group (4 total), raw multifunctionality + prediction lines,
@@ -209,10 +255,10 @@ make_group_figure <- function(multifunctionality_group, group, model_group, temp
   model_data <- model_group |>
     unnest(result) |>
     filter(effect == "fixed") |>
-    filter(level == {{group}}) |>
+    filter(level == {{ group }}) |>
     select(-data, -model, -model_factorial, -model_treatment, -result_factorial, -result_treatment, -group, -effect, -anova, -anova_tidy)
 
-  plot_data <- multifunctionality_group |> filter(group == {{group}})
+  plot_data <- multifunctionality_group |> filter(group == {{ group }})
 
   sig <- get_significant_terms_group(model_data)
 
@@ -238,7 +284,8 @@ make_group_figure <- function(multifunctionality_group, group, model_group, temp
     p <- p +
       geom_point(aes(colour = habitat, shape = precipitation_name), alpha = 0.5) +
       geom_smooth(aes(colour = habitat, linetype = precipitation_name),
-                  method = "lm", se = FALSE, linewidth = 0.8) +
+        method = "lm", se = FALSE, linewidth = 0.8
+      ) +
       scale_colour_manual(values = temp_col, name = "Habitat") +
       scale_linetype_manual(values = prec_lt, name = "Precipitation") +
       scale_shape_manual(values = prec_sh, name = "Precipitation")
@@ -248,7 +295,9 @@ make_group_figure <- function(multifunctionality_group, group, model_group, temp
       geom_smooth(method = "lm", se = TRUE, linewidth = 0.8, colour = "black")
   }
 
-  sig_terms_this <- model_data |> filter(p.value < 0.05) |> pull(term)
+  sig_terms_this <- model_data |>
+    filter(p.value < 0.05) |>
+    pull(term)
   sig_labels <- c()
   if (sig$fg) sig_labels <- c(sig_labels, "FG")
   if (sig$fg_temp_interaction) {
@@ -265,18 +314,24 @@ make_group_figure <- function(multifunctionality_group, group, model_group, temp
 
   p +
     scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-    labs(x = "Number of functional groups present",
-         y = "Average multifunctionality",
-         title = {{group}}) +
-    annotate("text", x = Inf, y = Inf, label = sig_text,
-             hjust = 1.1, vjust = 1.1, size = 3.5, fontface = "bold") +
+    labs(
+      x = "Number of functional groups present",
+      y = "Average multifunctionality",
+      title = {{ group }}
+    ) +
+    annotate("text",
+      x = Inf, y = Inf, label = sig_text,
+      hjust = 1.1, vjust = 1.1, size = 3.5, fontface = "bold"
+    ) +
     theme_bw() +
     theme(legend.position = "bottom")
 }
 
 # get_significant_terms for group-level model (no response column)
 get_significant_terms_group <- function(model_data, alpha = 0.05) {
-  sig_terms <- model_data |> filter(p.value < alpha) |> pull(term)
+  sig_terms <- model_data |>
+    filter(p.value < alpha) |>
+    pull(term)
   list(
     fg = ".functional_group" %in% sig_terms,
     temp = any(c("temperature_scaled", ".functional_group:temperature_scaled") %in% sig_terms),
@@ -291,11 +346,15 @@ get_significant_terms_group <- function(model_data, alpha = 0.05) {
 # model_data may have "response" (from model_response) or no response col (from model_group)
 get_significant_terms <- function(response_name, model_data, alpha = 0.05) {
   if ("response" %in% names(model_data)) {
-    sig_terms <- model_data |> filter(response == response_name, p.value < alpha) |> pull(term)
+    sig_terms <- model_data |>
+      filter(response == response_name, p.value < alpha) |>
+      pull(term)
   } else {
-    sig_terms <- model_data |> filter(p.value < alpha) |> pull(term)
+    sig_terms <- model_data |>
+      filter(p.value < alpha) |>
+      pull(term)
   }
-  
+
   list(
     fg = ".functional_group" %in% sig_terms,
     temp = any(c("temperature_scaled", ".functional_group:temperature_scaled") %in% sig_terms),
@@ -307,60 +366,61 @@ get_significant_terms <- function(response_name, model_data, alpha = 0.05) {
 
 # Function to create plot based on significant terms
 make_response_plot <- function(response_name, data, model_data, temp_col, prec_lt, prec_sh) {
-  
   sig <- get_significant_terms(response_name, model_data)
-  
+
   # If nothing significant, return NULL
   if (!sig$fg && !sig$temp && !sig$precip) {
     return(NULL)
   }
-  
+
   # Filter data for this response
   plot_data <- data |> filter(response == response_name)
-  
+
   # Base plot
   p <- ggplot(plot_data, aes(x = fg_richness, y = value_std))
-  
+
   # Determine aesthetics based on significance - prioritize interactions
   if (sig$fg_temp_interaction || (sig$temp && !sig$precip)) {
     # FG:T interaction OR T only: use habitat (categorical temperature) for lines
-    p <- p + 
+    p <- p +
       geom_point(aes(colour = habitat), alpha = 0.5) +
       geom_smooth(aes(colour = habitat), method = "lm", se = TRUE, linewidth = 0.8) +
       scale_colour_manual(values = temp_col, name = "Habitat")
-    
   } else if (sig$fg_precip_interaction || (sig$precip && !sig$temp)) {
     # FG:P interaction OR P only: linetype and shape for P
-    p <- p + 
+    p <- p +
       geom_point(aes(shape = precipitation_name), alpha = 0.5) +
       geom_smooth(aes(linetype = precipitation_name), method = "lm", se = TRUE, linewidth = 0.8) +
       scale_linetype_manual(values = prec_lt, name = "Precipitation") +
       scale_shape_manual(values = prec_sh, name = "Precipitation")
-    
   } else if (sig$temp && sig$precip) {
     # Both T and P (no interactions): use habitat for color, linetype for P
-    p <- p + 
+    p <- p +
       geom_point(aes(colour = habitat, shape = precipitation_name), alpha = 0.5) +
-      geom_smooth(aes(colour = habitat, linetype = precipitation_name), 
-                  method = "lm", se = FALSE, linewidth = 0.8) +
+      geom_smooth(aes(colour = habitat, linetype = precipitation_name),
+        method = "lm", se = FALSE, linewidth = 0.8
+      ) +
       scale_colour_manual(values = temp_col, name = "Habitat") +
       scale_linetype_manual(values = prec_lt, name = "Precipitation") +
       scale_shape_manual(values = prec_sh, name = "Precipitation")
-    
   } else {
     # Only FG: simple plot
-    p <- p + 
+    p <- p +
       geom_point(alpha = 0.5) +
       geom_smooth(method = "lm", se = TRUE, linewidth = 0.8, colour = "black")
   }
-  
+
   # Build significance labels
   if ("response" %in% names(model_data)) {
-    sig_terms_this_response <- model_data |> filter(response == response_name, p.value < 0.05) |> pull(term)
+    sig_terms_this_response <- model_data |>
+      filter(response == response_name, p.value < 0.05) |>
+      pull(term)
   } else {
-    sig_terms_this_response <- model_data |> filter(p.value < 0.05) |> pull(term)
+    sig_terms_this_response <- model_data |>
+      filter(p.value < 0.05) |>
+      pull(term)
   }
-  
+
   sig_labels <- c()
   if (sig$fg) sig_labels <- c(sig_labels, "FG")
   if (sig$fg_temp_interaction) {
@@ -373,20 +433,24 @@ make_response_plot <- function(response_name, data, model_data, temp_col, prec_l
   } else if ("precipitation_scaled" %in% sig_terms_this_response) {
     sig_labels <- c(sig_labels, "P")
   }
-  
+
   sig_text <- paste(sig_labels, collapse = "\n")
-  
+
   # Add common elements
   p <- p +
     scale_x_continuous(breaks = c(0, 1, 2, 3)) +
-    labs(x = "Number of functional groups present",
-         y = "Standardized function value",
-         title = pretty_response_label(response_name)) +
-    annotate("text", x = Inf, y = Inf, label = sig_text, 
-             hjust = 1.1, vjust = 1.1, size = 3.5, fontface = "bold") +
+    labs(
+      x = "Number of functional groups present",
+      y = "Standardized function value",
+      title = pretty_response_label(response_name)
+    ) +
+    annotate("text",
+      x = Inf, y = Inf, label = sig_text,
+      hjust = 1.1, vjust = 1.1, size = 3.5, fontface = "bold"
+    ) +
     theme_bw() +
     theme(legend.position = "bottom")
-  
+
   return(p)
 }
 
@@ -429,7 +493,7 @@ make_factorial_multifun_plot <- function(model_multifun, temp_colour, prec_colou
         alpha = 0.6
       ) +
       scale_colour_manual(values = temp_colour, name = "Habitat") +
-      facet_wrap(~ fg) +
+      facet_wrap(~fg) +
       labs(
         x = "Presence (0 = absent, 1 = present)",
         y = "Average multifunctionality",
@@ -453,7 +517,7 @@ make_factorial_multifun_plot <- function(model_multifun, temp_colour, prec_colou
         alpha = 0.6
       ) +
       scale_colour_manual(values = prec_colour, name = "Precipitation") +
-      facet_wrap(~ fg) +
+      facet_wrap(~fg) +
       labs(
         x = "Presence (0 = absent, 1 = present)",
         y = "Average multifunctionality",
