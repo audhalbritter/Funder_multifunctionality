@@ -143,46 +143,12 @@ plot_single_function_r2_comparison <- function(model_tbl) {
 }
 
 
-#' Plot Estimate comparisons across three models
-plot_single_function_estimate_comparison <- function(model_tbl, response_group_lookup) {
-  extract_fixed <- function(tbl, col) {
-    tbl |>
-      select(response, all_of(col)) |>
-      unnest(cols = all_of(col)) |>
-      filter(effect == "fixed") |>
-      select(response, term, estimate)
-  }
-
-  est1 <- extract_fixed(model_tbl, "result")
-  est2 <- extract_fixed(model_tbl, "result_biomass")
-  est3 <- extract_fixed(model_tbl, "result_FG_biomass")
-
-  # 1 vs 2 (Standard vs Standard)
-  comp12 <- inner_join(
-    est1 |> mutate(term = climate_term_short(term)) |> rename(x = estimate),
-    est2 |> mutate(term = climate_term_short(term)) |> rename(y = estimate),
-    by = c("response", "term")
-  ) |> mutate(comparison = "Mod 1 vs 2\n(No vs Total Bio)")
-
-  # 1 vs 3 (Standard vs Composition)
-  comp13 <- inner_join(
-    est1 |> mutate(key = map_term_to_comparison_key(term, "standard")) |> filter(!is.na(key)) |> rename(x = estimate),
-    est3 |> mutate(key = map_term_to_comparison_key(term, "composition")) |> filter(!is.na(key)) |> rename(y = estimate),
-    by = c("response", "key")
-  ) |> mutate(comparison = "Mod 1 vs 3\n(No vs FG Bio)", term = key)
-
-  # 2 vs 3 (Standard vs Composition)
-  comp23 <- inner_join(
-    est2 |> mutate(key = map_term_to_comparison_key(term, "standard")) |> filter(!is.na(key)) |> rename(x = estimate),
-    est3 |> mutate(key = map_term_to_comparison_key(term, "composition")) |> filter(!is.na(key)) |> rename(y = estimate),
-    by = c("response", "key")
-  ) |> mutate(comparison = "Mod 2 vs 3\n(Total vs FG Bio)", term = key)
-
+#' Shared helper to group terms for estimate comparison plots
+group_terms_for_plot <- function(df, response_group_lookup) {
   group_order <- c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes")
 
-  plot_dat <- bind_rows(comp12, comp13, comp23) |>
+  df |>
     left_join(response_group_lookup |> distinct(response, group), by = "response") |>
-    filter(!is.na(x), !is.na(y)) |>
     # Group terms for coloring and shapes
     mutate(
       # Color category: Identity of the functional group or Bare
@@ -206,31 +172,164 @@ plot_single_function_estimate_comparison <- function(model_tbl, response_group_l
       color_cat = factor(color_cat, levels = c("Bare", "F", "G", "B", "All", "Climate")),
       shape_cat = factor(shape_cat, levels = c("Main", "T", "P", "T:P")),
       group = factor(stringr::str_to_sentence(group), levels = stringr::str_to_sentence(group_order))
-    )
+    ) |>
+    filter(!is.na(x), !is.na(y))
+}
+
+#' Plot Estimate comparisons across three models
+plot_single_function_estimate_comparison <- function(model_tbl, response_group_lookup) {
+  extract_fixed <- function(tbl, col) {
+    tbl |>
+      select(response, all_of(col)) |>
+      unnest(cols = all_of(col)) |>
+      filter(effect == "fixed") |>
+      select(response, term, estimate)
+  }
+
+  est1 <- extract_fixed(model_tbl, "result")
+  est2 <- extract_fixed(model_tbl, "result_biomass")
+  est3 <- extract_fixed(model_tbl, "result_FG_biomass")
+
+  comp12 <- inner_join(
+    est1 |> mutate(term = climate_term_short(term)) |> rename(x = estimate),
+    est2 |> mutate(term = climate_term_short(term)) |> rename(y = estimate),
+    by = c("response", "term")
+  ) |> mutate(comparison = "Mod 1 vs 2\n(No vs Total Bio)")
+
+  comp13 <- inner_join(
+    est1 |> mutate(key = map_term_to_comparison_key(term, "standard")) |> filter(!is.na(key)) |> rename(x = estimate),
+    est3 |> mutate(key = map_term_to_comparison_key(term, "composition")) |> filter(!is.na(key)) |> rename(y = estimate),
+    by = c("response", "key")
+  ) |> mutate(comparison = "Mod 1 vs 3\n(No vs FG Bio)", term = key)
+
+  comp23 <- inner_join(
+    est2 |> mutate(key = map_term_to_comparison_key(term, "standard")) |> filter(!is.na(key)) |> rename(x = estimate),
+    est3 |> mutate(key = map_term_to_comparison_key(term, "composition")) |> filter(!is.na(key)) |> rename(y = estimate),
+    by = c("response", "key")
+  ) |> mutate(comparison = "Mod 2 vs 3\n(Total vs FG Bio)", term = key)
+
+  plot_dat <- bind_rows(comp12, comp13, comp23) |>
+    group_terms_for_plot(response_group_lookup)
 
   ggplot(plot_dat, aes(x = x, y = y, colour = color_cat, shape = shape_cat)) +
     geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
     geom_point(alpha = 0.7, size = 2) +
-    # 5 rows for groups, 3 columns for comparisons
     facet_grid(group ~ comparison) +
     scale_colour_manual(
-      values = c(
-        "Bare" = "#7f7f7f", "F" = "#e41a1c", "G" = "#377eb8",
-        "B" = "#4daf4a", "All" = "#984ea3", "Climate" = "#ff7f00"
-      ),
+      values = c("Bare" = "#7f7f7f", "F" = "#e41a1c", "G" = "#377eb8",
+                 "B" = "#4daf4a", "All" = "#984ea3", "Climate" = "#ff7f00"),
       name = "Identity"
     ) +
     scale_shape_manual(
       values = c("Main" = 16, "T" = 17, "P" = 15, "T:P" = 8),
       name = "Interaction"
     ) +
-    labs(
-      x = "Estimate (lower index model)",
-      y = "Estimate (higher index model)",
-      title = "Fixed-Effect Estimates Comparison"
+    labs(x = "Estimate (lower index model)", y = "Estimate (higher index model)", title = "Fixed-Effect Estimates Comparison") +
+    theme_bw() + theme(legend.position = "right")
+}
+
+#' --- Interaction vs Main Effects Comparison ---
+
+#' Plot R2: Interaction vs Main Effects
+plot_r2_interaction_vs_main <- function(model_int, model_main) {
+  r2_int <- model_int |>
+    mutate(
+      int1_m = purrr::map_dbl(r2, ~ r2_safe_get(.x, "R2_marginal")),
+      int1_c = purrr::map_dbl(r2, ~ r2_safe_get(.x, "R2_conditional")),
+      int2_m = purrr::map_dbl(r2_biomass, ~ r2_safe_get(.x, "R2_marginal")),
+      int2_c = purrr::map_dbl(r2_biomass, ~ r2_safe_get(.x, "R2_conditional")),
+      int3_m = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_marginal")),
+      int3_c = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_conditional"))
+    )
+
+  r2_main <- model_main |>
+    mutate(
+      main1_m = purrr::map_dbl(r2_main, ~ r2_safe_get(.x, "R2_marginal")),
+      main1_c = purrr::map_dbl(r2_main, ~ r2_safe_get(.x, "R2_conditional")),
+      main2_m = purrr::map_dbl(r2_main_biomass, ~ r2_safe_get(.x, "R2_marginal")),
+      main2_c = purrr::map_dbl(r2_main_biomass, ~ r2_safe_get(.x, "R2_conditional")),
+      main3_m = purrr::map_dbl(r2_main_FG_biomass, ~ r2_safe_get(.x, "R2_marginal")),
+      main3_c = purrr::map_dbl(r2_main_FG_biomass, ~ r2_safe_get(.x, "R2_conditional"))
+    )
+
+  prep_comp <- function(mi, mm, mod_idx, label) {
+    df <- inner_join(
+      mi |> select(response, int_m = paste0("int", mod_idx, "_m"), int_c = paste0("int", mod_idx, "_c")),
+      mm |> select(response, main_m = paste0("main", mod_idx, "_m"), main_c = paste0("main", mod_idx, "_c")),
+      by = "response"
+    )
+    bind_rows(
+      df |> transmute(response, comparison = label, type = "marginal", x = main_m, y = int_m),
+      df |> transmute(response, comparison = label, type = "conditional", x = main_c, y = int_c)
+    )
+  }
+
+  plot_dat <- bind_rows(
+    prep_comp(r2_int, r2_main, 1, "Model 1\n(Climate only)"),
+    prep_comp(r2_int, r2_main, 2, "Model 2\n(+Total Bio)"),
+    prep_comp(r2_int, r2_main, 3, "Model 3\n(FG Bio)")
+  ) |> filter(!is.na(x), !is.na(y))
+
+  ggplot(plot_dat, aes(x = x, y = y, colour = type)) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
+    geom_point(alpha = 0.7) +
+    coord_equal() +
+    facet_wrap(~comparison) +
+    scale_colour_manual(values = c(marginal = "#1b9e77", conditional = "#d95f02"), name = "R² type") +
+    labs(x = "R² (Main effects)", y = "R² (Interactions)", title = "R² Comparison: Main vs Interactions") +
+    theme_bw() + theme(legend.position = "right")
+}
+
+#' Plot Estimates: Interaction vs Main Effects
+plot_estimate_interaction_vs_main <- function(model_int, model_main, response_group_lookup) {
+  extract_fixed <- function(tbl, col) {
+    tbl |> select(response, all_of(col)) |> unnest(cols = all_of(col)) |> filter(effect == "fixed") |> select(response, term, estimate)
+  }
+
+  int1 <- extract_fixed(model_int, "result"); int2 <- extract_fixed(model_int, "result_biomass"); int3 <- extract_fixed(model_int, "result_FG_biomass")
+  main1 <- extract_fixed(model_main, "result_main"); main2 <- extract_fixed(model_main, "result_main_biomass"); main3 <- extract_fixed(model_main, "result_main_FG_biomass")
+
+  comp1 <- inner_join(main1 |> mutate(term = climate_term_short(term)) |> rename(x = estimate),
+                      int1 |> mutate(term = climate_term_short(term)) |> rename(y = estimate), by = c("response", "term")) |> mutate(comparison = "Model 1\n(Climate only)")
+  
+  comp2 <- inner_join(main2 |> mutate(term = climate_term_short(term)) |> rename(x = estimate),
+                      int2 |> mutate(term = climate_term_short(term)) |> rename(y = estimate), by = c("response", "term")) |> mutate(comparison = "Model 2\n(+Total Bio)")
+  
+  comp3 <- inner_join(main3 |> mutate(term = climate_term_short(term)) |> rename(x = estimate),
+                      int3 |> mutate(term = climate_term_short(term)) |> rename(y = estimate), by = c("response", "term")) |> mutate(comparison = "Model 3\n(FG Bio)")
+
+  plot_dat <- bind_rows(comp1, comp2, comp3) |>
+    group_terms_for_plot(response_group_lookup)
+
+  ggplot(plot_dat, aes(x = x, y = y, colour = color_cat, shape = shape_cat)) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
+    geom_point(alpha = 0.7, size = 2) +
+    facet_grid(group ~ comparison) +
+    scale_colour_manual(
+      values = c("Bare" = "#7f7f7f", "F" = "#e41a1c", "G" = "#377eb8",
+                 "B" = "#4daf4a", "All" = "#984ea3", "Climate" = "#ff7f00"),
+      name = "Identity"
     ) +
-    theme_bw() +
-    theme(legend.position = "right")
+    scale_shape_manual(
+      values = c("Main" = 16, "T" = 17, "P" = 15, "T:P" = 8),
+      name = "Interaction"
+    ) +
+    labs(x = "Estimate (Main effects)", y = "Estimate (Interactions)", title = "Estimates Comparison: Main vs Interactions") +
+    theme_bw() + theme(legend.position = "right")
+}
+
+#' Consolidated Interaction vs Main diagnostic plot
+plot_interaction_vs_main_diagnostic <- function(model_int, model_main, response_group_lookup) {
+  p_r2 <- plot_r2_interaction_vs_main(model_int, model_main)
+  p_est <- plot_estimate_interaction_vs_main(model_int, model_main, response_group_lookup)
+
+  p_r2 / p_est +
+    patchwork::plot_layout(heights = c(1, 4)) +
+    patchwork::plot_annotation(
+      title = "Model Diagnostic Comparison: Main Effects vs Interactions",
+      subtitle = "Comparing Main effects only (X-axis) vs Full interactions (Y-axis) for each model variant",
+      tag_levels = "A"
+    )
 }
 
 #' Consolidated multi-panel diagnostic plot

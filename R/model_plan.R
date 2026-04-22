@@ -124,8 +124,8 @@ model_plan <- list(
         mutate(group = factor(group, levels = group_order)) |>
         tidyr::pivot_longer(c(-response, -group), names_to = "model", values_to = "aic") |>
         group_by(response) |>
-        mutate(ΔAIC = aic - min(aic, na.rm = TRUE)) |>
-        arrange(group, response, ΔAIC) |>
+        mutate(delta_AIC = aic - min(aic, na.rm = TRUE)) |>
+        arrange(group, response, delta_AIC) |>
         rename_response_pretty() |>
         mutate(group = stringr::str_to_sentence(as.character(group)))
     }
@@ -133,17 +133,70 @@ model_plan <- list(
   tar_target(
     name = model_aic_comparison_out,
     command = model_aic_comparison |>
-      filter(ΔAIC <= 2) |>
+      filter(delta_AIC <= 2) |>
       gt(groupname_col = "group") |> # Group by the category (Nematodes, C cycling, etc.)
-      fmt_number(columns = c(aic, ΔAIC), decimals = 2) |>
-      tab_header(title = "Model Comparison by AIC (ΔAIC ≤ 2)") |>
+      fmt_number(columns = c(aic, delta_AIC), decimals = 2) |>
+      tab_header(title = "Model Comparison by AIC (delta AIC <= 2)") |>
       tab_style(
         style = cell_text(weight = "bold"),
-        locations = cells_body(rows = ΔAIC == 0)
+        locations = cells_body(rows = delta_AIC == 0)
       ) |>
-      cols_label(response = "Variable", model = "Model", aic = "AIC")
+      cols_label(response = "Variable", model = "Model", aic = "AIC", delta_AIC = "ΔAIC")
   ),
 
+  ### Model comparison statistics (1:1 line tests)
+  tar_target(
+    name = model_single_function_comparison_stats,
+    command = calculate_model_comparison_stats(
+      model_tbl = model_single_function,
+      response_group_lookup = big_data |> distinct(response, group)
+    )
+  ),
+  tar_target(
+    name = model_single_function_comparison_stats_out,
+    command = {
+      # Return a combined gt table for the manuscript
+      # For estimates
+      est_tbl <- model_single_function_comparison_stats$estimates |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "Fixed-effect Estimates: Deviation from 1:1 line")
+
+      # For R2
+      r2_tbl <- model_single_function_comparison_stats$r2 |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "R²: Deviation from 1:1 line")
+
+      list(estimates = est_tbl, r2 = r2_tbl)
+    }
+  ),
+  tar_target(
+    name = model_interaction_vs_main_comparison_stats,
+    command = calculate_interaction_vs_main_stats(
+      model_int = model_single_function,
+      model_main = model_single_function_main,
+      response_group_lookup = big_data |> distinct(response, group)
+    )
+  ),
+  tar_target(
+    name = model_interaction_vs_main_comparison_stats_out,
+    command = {
+      # For estimates
+      est_tbl <- model_interaction_vs_main_comparison_stats$estimates |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "Fixed-effect Estimates (Main vs Int): Deviation from 1:1 line")
+
+      # For R2
+      r2_tbl <- model_interaction_vs_main_comparison_stats$r2 |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "R² (Main vs Int): Deviation from 1:1 line")
+
+      list(estimates = est_tbl, r2 = r2_tbl)
+    }
+  ),
 
   ### Global multifunctionality models
   tar_target(
@@ -178,5 +231,106 @@ model_plan <- list(
       unnest_col = "result_FG_biomass",
       extra_drop = "level_name"
     )
+  ),
+
+  ### Global multifunctionality main effects models
+  tar_target(
+    name = model_multifunctionality_main,
+    command = make_main_effects_model(
+      dat = multifunctionality,
+      response_var = multifuntionality,
+      fg_var = fg_remaining,
+      group = "level"
+    )
+  ),
+  tar_target(
+    name = model_multifunctionality_main_out,
+    command = model_output_gt(
+      model_multifunctionality_main |> rename(level_name = level),
+      unnest_col = "result_main",
+      extra_drop = "level_name"
+    )
+  ),
+  tar_target(
+    name = model_multifunctionality_main_biomass_out,
+    command = model_output_gt(
+      model_multifunctionality_main |> rename(level_name = level),
+      unnest_col = "result_main_biomass",
+      extra_drop = "level_name"
+    )
+  ),
+  tar_target(
+    name = model_multifunctionality_main_FG_biomass_out,
+    command = model_output_gt(
+      model_multifunctionality_main |> rename(level_name = level),
+      unnest_col = "result_main_FG_biomass",
+      extra_drop = "level_name"
+    )
+  ),
+
+  # AIC Comparison Table for multifunctionality models
+  tar_target(
+    name = model_multifunctionality_aic_comparison,
+    command = {
+      # Helper to extract aic and r2
+      extract_stats <- function(dat, suffix = "") {
+        # Define the exact columns we expect to have r2 lists
+        r2_list_cols <- intersect(names(dat), c("r2", "r2_biomass", "r2_FG_biomass", "r2_main", "r2_main_biomass", "r2_main_FG_biomass"))
+
+        dat |>
+          # Pre-extract R2 values to double to avoid list-double conflicts in pivot_longer
+          mutate(
+            across(all_of(r2_list_cols), ~ map_dbl(.x, ~ if (is.null(.x)) NA_real_ else .x$R2_marginal), .names = "{.col}_marginal"),
+            across(all_of(r2_list_cols), ~ map_dbl(.x, ~ if (is.null(.x)) NA_real_ else .x$R2_conditional), .names = "{.col}_conditional")
+          ) |>
+          # Clean up names to make them consistent (r2 vs r2_main)
+          rename_with(~ gsub("r2_main", "r2", .x), contains("r2_main")) |>
+          rename_with(~ gsub("aic_main", "aic", .x), contains("aic_main")) |>
+          select(level, starts_with("aic"), contains("marginal"), contains("conditional")) |>
+          pivot_longer(c(-level), names_to = "name", values_to = "val") |>
+          mutate(
+            model_type = case_when(
+              grepl("FG_biomass", name) ~ "FG bio",
+              grepl("biomass", name) ~ "bio",
+              TRUE ~ "climate"
+            ),
+            metric = case_when(
+              grepl("aic", name) ~ "aic",
+              grepl("marginal", name) ~ "R2_marginal",
+              grepl("conditional", name) ~ "R2_conditional"
+            ),
+            model = paste(suffix, model_type)
+          ) |>
+          select(level, model, metric, val) |>
+          pivot_wider(names_from = metric, values_from = val)
+      }
+
+      dat_int <- extract_stats(model_multifunctionality, "int")
+      dat_main <- extract_stats(model_multifunctionality_main, "main")
+
+      bind_rows(dat_int, dat_main) |>
+        group_by(level) |>
+        mutate(delta_AIC = aic - min(aic, na.rm = TRUE)) |>
+        arrange(delta_AIC) |>
+        ungroup()
+    }
+  ),
+  tar_target(
+    name = model_multifunctionality_aic_comparison_out,
+    command = model_multifunctionality_aic_comparison |>
+      gt() |>
+      fmt_number(columns = c(aic, delta_AIC, R2_marginal, R2_conditional), decimals = 2) |>
+      tab_header(title = "Multifunctionality Model Comparison: AIC and R2") |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_body(rows = delta_AIC == 0)
+      ) |>
+      cols_label(
+        model = "Model",
+        aic = "AIC",
+        delta_AIC = "ΔAIC",
+        R2_marginal = "R² marginal",
+        R2_conditional = "R² conditional"
+      )
   )
 )

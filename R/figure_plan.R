@@ -110,11 +110,19 @@ figure_plan <- list(
       theme(legend.position = "none")
   ),
 
-  ### Model comparisons
+  ### Model comparisons (R2 and estimates)
   tar_target(
     name = model_single_function_comparison_plot,
     command = plot_model_comparison_diagnostic(
       model_tbl = model_single_function,
+      response_group_lookup = big_data |> distinct(response, group)
+    )
+  ),
+  tar_target(
+    name = model_interaction_vs_main_comparison_plot,
+    command = plot_interaction_vs_main_diagnostic(
+      model_int = model_single_function,
+      model_main = model_single_function_main,
       response_group_lookup = big_data |> distinct(response, group)
     )
   ),
