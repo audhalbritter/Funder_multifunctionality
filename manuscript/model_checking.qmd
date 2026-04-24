@@ -22,82 +22,91 @@ library(DHARMa)
 # Set targets store path
 tar_config_set(store = "../_targets")
 
+tar_load(big_data)
+# Function to get pretty labels for responses
+pretty_labels <- big_data |> 
+  distinct(response) |> 
+  mutate(label = as.character(response)) # Simplified label for now
 ```
 
 ## Multifunctionality
 
-### Number of functional groups present
-
 ```{r}
-#| label: multifun-nr-check
+#| label: multifunctionality-check
 #| echo: false
 #| results: asis
 #| message: false
+#| fig-height: 12
+#| fig-width: 12
 
-tar_load(model_multifun)
+tar_load(model_multifunctionality, store = "../_targets")
+tar_load(model_multifunctionality_main, store = "../_targets")
 
-model_multifun |> 
-  #mutate(check = map(model, check_model)) |> 
-mutate(check = map(model, ~ plot(simulateResiduals(.)))) |> 
-  select(check) |> 
-  pwalk(.f = function(check, ...){
-  #cat(paste("##", "multifun nr fg"))
-  print(check)
-  cat("\n")
-})
-  
+# Define model sets defensively
+models_to_check <- list()
+if (exists("model_multifunctionality") && !is.null(model_multifunctionality)) {
+  models_to_check[["Interaction: Model 1 (Climate)"]] <- list(df = model_multifunctionality, col = "model")
+  models_to_check[["Interaction: Model 2 (Total Biomass)"]] <- list(df = model_multifunctionality, col = "model_biomass")
+  models_to_check[["Interaction: Model 3 (FG Biomass)"]] <- list(df = model_multifunctionality, col = "model_FG_biomass")
+}
+if (exists("model_multifunctionality_main") && !is.null(model_multifunctionality_main)) {
+  models_to_check[["Main Effects: Model 1 (Climate)"]] <- list(df = model_multifunctionality_main, col = "model_main")
+  models_to_check[["Main Effects: Model 2 (Total Biomass)"]] <- list(df = model_multifunctionality_main, col = "model_main_biomass")
+  models_to_check[["Main Effects: Model 3 (FG Biomass)"]] <- list(df = model_multifunctionality_main, col = "model_main_FG_biomass")
+}
+
+for (label in names(models_to_check)) {
+  cat("\n###", label, "\n")
+  models_to_check[[label]]$df |>
+    pwalk(function(...) {
+      x <- list(...)
+      mod <- x[[models_to_check[[label]]$col]]
+      if (!is.null(mod)) {
+        cat("\n#### Level:", x$level, "\n")
+        print(check_model(mod))
+        cat("\n")
+      }
+    })
+}
 ```
 
-### Treatment effect
+## Single function analyses
 
 ```{r}
-#| label: multifun-trt-check
+#| label: single-function-check
 #| echo: false
 #| results: asis
 #| message: false
+#| fig-height: 12
+#| fig-width: 12
 
-model_multifun |> 
-  #mutate(check = map(model_treatment, check_model)) |> 
-  mutate(check = map(model_treatment, ~ plot(simulateResiduals(.)))) |> 
-  select(check) |> 
-  pwalk(.f = function(check, ...){
-  #cat(paste("##", "multifun treatment"))
-  print(check)
-  cat("\n")
-})
-  
-```
+tar_load(model_single_function, store = "../_targets")
+tar_load(model_single_function_main, store = "../_targets")
 
-### Factorial approach
+# Define model sets defensively
+single_models_to_check <- list()
+if (exists("model_single_function") && !is.null(model_single_function)) {
+  single_models_to_check[["Interaction: Model 1 (Climate)"]] <- list(df = model_single_function, col = "model")
+  single_models_to_check[["Interaction: Model 2 (Total Biomass)"]] <- list(df = model_single_function, col = "model_biomass")
+  single_models_to_check[["Interaction: Model 3 (FG Biomass)"]] <- list(df = model_single_function, col = "model_FG_biomass")
+}
+if (exists("model_single_function_main") && !is.null(model_single_function_main)) {
+  single_models_to_check[["Main Effects: Model 1 (Climate)"]] <- list(df = model_single_function_main, col = "model_main")
+  single_models_to_check[["Main Effects: Model 2 (Total Biomass)"]] <- list(df = model_single_function_main, col = "model_main_biomass")
+  single_models_to_check[["Main Effects: Model 3 (FG Biomass)"]] <- list(df = model_single_function_main, col = "model_main_FG_biomass")
+}
 
-```{r}
-#| label: multifun-factorial-check
-#| echo: false
-#| results: asis
-#| message: false
-
-model_multifun |> 
-  #mutate(check = map(model_treatment, check_model)) |> 
-  mutate(check = map(model_factorial, ~ plot(simulateResiduals(.)))) |> 
-  select(check) |> 
-  pwalk(.f = function(check, ...){
-  print(check)
-  cat("\n")
-})
-  
-```
-
-## Singe function analyses
-
-```{r}
-#| label: response-check
-#| echo: false
-#| message: false
-
-tar_load(model_response)
-
-model_response |> 
-  pwalk(function(response, model, ...) {
-    plot(simulateResiduals(model), title = response)
-  })
+for (label in names(single_models_to_check)) {
+  cat("\n###", label, "\n")
+  single_models_to_check[[label]]$df |>
+    pwalk(function(...) {
+      x <- list(...)
+      mod <- x[[single_models_to_check[[label]]$col]]
+      if (!is.null(mod)) {
+        cat("\n#### Response:", x$response, "\n")
+        print(check_model(mod))
+        cat("\n")
+      }
+    })
+}
 ```
