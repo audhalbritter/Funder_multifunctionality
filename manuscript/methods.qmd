@@ -10,10 +10,12 @@ bibliography: ../bibliography.bib
 library(targets)
 library(tarchetypes)
 library(tidyverse)
+library(gt)
+library(vegan)
 
 # Set targets store path
 tar_config_set(store = "../_targets")
-library(gt)
+source("R/functions/make_figures.R")
 
 tar_load(big_data)
 ```
@@ -22,119 +24,123 @@ tar_load(big_data)
 
 ### Site description and experimental design
 
-In 2015, a functional group removal experiment was established at twelve semi-natural grassland sites in Western Norway (Figure 1). The sites were arranged in a climate grid spanning three temperature levels (6.5, 8.5, and 10.5 °C summer temperature) and four precipitation levels (700, 1500, 2100 and 2800 mm annual precipitation; based on gridded climate data by met.no) [@vandvik2022role]. All other factors, such as bedrock, slope, aspect, vegetation type, grazing regime and history were kept as similar as possible.
+In 2015, a functional group removal experiment was established at twelve semi-natural grassland sites in Vestland county, Western Norway @fig-design. The sites were arranged in a climate grid spanning three temperature levels (6.5, 8.5, and 10.5 °C summer temperature) and four precipitation levels [700, 1500, 2100 and 2800 mm annual precipitation; based on gridded climate data by met.no; @vandvik2022role]. The target vegetation were south-facing, forb-rich semi-natural grasslands, where bedrock, slope, aspect, vegetation type, grazing regime and history were kept as similar as possible. [*add something on NiN types*]. All sites were moderately grazed before the experiment was established. To prevent grazing the experimental sites were fenced, and aboveground biomass was harvest inside the fence at the end of each growing season to prevent biomass accummulation inside the experimental site.
 
-At each site, four experimental blocks with eight 25 x 25 cm plots were established. In a fully factorial removal experiment, the aboveground biomass of forbs (including herbaceous forbs, pteridophytes, dwarf-shrubs, and small individuals of trees and shrubs), graminoids (grasses, sedges, and rushes) and bryophytes (mosses, liverworts, and hornworts) was removed using scissors. The removals experiment was maintained for seven years, where biomass was removed annually at peak growing season. In the first three years, except 2015 due to late snowmelt, the biomass was removed twice (early and peak season) to prevent regrowth. For more details see [@vandvik2022role].
+At each site, four experimental blocks with eight 25 x 25 cm plots were established (total n = 384 plots). The plots were permanantly marked with aluminium tubes in each corner for repeated observations and measurments. In a fully factorial removal experiment, the aboveground biomass of the three dominant plant functional groups was removed; forbs (including herbaceous forbs, pteridophytes, dwarf-shrubs, and small individuals of trees and shrubs), graminoids (grasses, sedges, and rushes) and bryophytes (mosses, liverworts, and hornworts). For eight years, the aboveground biomass was removed anually using sissors and tweezers removing the plants at ground level. In 2015 the biomass was removed once at peak growing season due to late snowmelt, while in 2016 and 2017 the biomass was removed twice (early and peak season) to prevent regrowth. For the remainder of the experiment, the biomass was only removed once at peak growing season. For more details see [@vandvik2022role].
 
-![Study area, site selection, experimental design, and field sampling overview for the FunCaB plant functional group experiment. (a) Location of the study area and the 12 study sites in Vestland county, Western Norway. (b) The Vestland Climate Grid is established across independent broad-scale biogeographic gradients in summer temperature (mean of four warmest months, °C), and annual precipitation (mean annual precipitation, mm). Temperature levels are given as boreal, sub-alpine, and alpine; precipitation levels range from 1 (dry) to 4 (wet). (c) Experimental design, with the timeline (species composition recordings \[dataset v\], seedling recruitment monitoring \[vi\], ecosystem carbon flux monitoring \[vii\], and functional group removals \[i\] indicated, see legend for dataset symbols, for other datasets see text), an overview of the eight factorial removal treatments, and plot layout with subplots used for the community and seedling recording. The removal treatments are described by the functional groups removed from the respective plots, note that in the figure the 'Intact' plot refers to the no removal controls whereas the 'Gap' are plots with all functional groups removed. Ffor detailed description of treatments and their abbreviations as used in the datasets, see text.](../figures/funcab.png)
+![Study area, site selection, experimental design, and field sampling overview for the FunCaB plant functional group experiment. (a) Location of the study area and the twelve study sites in Vestland county, Western Norway. (b) The Vestland Climate Grid is established across independent broad-scale biogeographic gradients in summer temperature (mean of four warmest months, °C), and annual precipitation (mean annual precipitation, mm). Temperature levels are given as boreal, sub-alpine, and alpine; precipitation levels range from 1 (dry) to 4 (wet). (c) Experimental design, with the timeline, an overview of the eight factorial removal treatments, and plot layout with subplots. The removal treatments are described by the functional groups removed from the respective plots, note that in the figure the 'Intact' plot refers to the no removal controls whereas the 'Gap' are plots with all functional groups removed. For detailed description of treatments and their abbreviations as used in the datasets, see text.](figures/funcab.png){#fig-design}
 
-<!-- The experimental treatments are coded by functional group removed so that FGB = bare-ground gaps with all plants removed, FB = only graminoids remaining, GB = only forbs remaining, GF = only bryophytes remaining, B = graminoids and forbs remaining, F = bryophytes and graminoids remaining, G = bryophytes and forbs remaining, and C = intact vegetation controls with no vegetation removed. -->
+The experimental treatments were named by the functional group remaining, where *None* is gaps with all plants removed, *F* is only forbs, *G* only graminoids, *B* only bryophytes, *FG*, *FB*, and *GB* are the combinations of functional groups (forbs and graminoids, forbs and bryophytes, graminoids and bryophytes, and *All* are the control plots, with all functional groups present.
 
 ### Data collection
 
-In 2022, the removal experiment was terminated and data on the vegetation, soil food-web and ecosystem functioning was collected. The majority of datasets were collected at all 12 sites and eight treatments, except for the ecosystem carbon flux measurements that were collected at fewer sites and mesofauna, available nutrients, and XXX within fewer treatments (for details see below). Since the plots are relatively small (25 x 25 cm), the sampling of the various data followed a strict protocol to avoid edge effects.
+After eight years of functional group removal, data on microclimate, nutrient and carbon cycling, and the soil-food web including nematodes and microbes was collected. Most of the datasets were collected from all eight treatments, from three blocks at all twelve sites in 2022. Ecosystem carbon flux measurements were collected in 2017 and 2022 at nine sites (see below). Nematodes and available nutrients were only collected in five treatments (None, F, G, B, All), and available nutrients were collected in 2021.
 
-Aboveground biomass was harvested in all plots in 2022, sorted by functional group (forbs, graminoids and bryophytes) and litter (i.e. dead non attached plant material), dried at 60°C for 48 h and weighed. Annual root biomass in all plots was estimated from soil cores with 3 cm diameter that were extracted, washed, dried at 60°C for 48 h and weighed. Root productivity was estimated in all plots using root ingrowth cores installed for one year in the place where the root biomass was collected. The processing of the roots was the same as for root biomass. The vascular plant community composition was surveyed between 2015 and 2018, where fertility (production of buds, flower or seeds) of forbs and graminoids was recorded in each plot and in 2018 and 2019, seedling recruitment was recorded in each plot. We calculated the average proportion of fertility across all year as a measure for reproduction and the maximum seedling recruitment as a measure for resistance to invasion. In 2017, ecosystem CO2 fluxes (Net Ecosystem Exchange \[NEE\] and Ecosystem Respiration \[Reco\]) were measured in each plot at nine of the sites, excluding the three sites at the second wettest precipitation level (2100 mm annual precipitation; see Figure 1). NEE and Reco were measured using a closed loop chamber attached to an infrared gas analyzer (Li-840; Manufacturer reports accuracy within 1.5% of the reading value; LI-COR Biosciences, Lincoln, NE, USA). NEE was measured using the clear chamber, while for Reco fluxes were measured under dark conditions by covering the chamber with a dark tarp to block the sunlight. Decomposition was measured by calculating the weight loss of site specific forb and graminoid litter or necromass between autumn 2021 and 2022. Several soil samples were taken in each plot at the end of the growing season in 2022 to measure nematode and microarthropod density, microbes, total soil carbon, nitrogen and phosphorus, soil organic and inorganic carbon. PRS probes were installed for 6 weeks in 2021 to measure available nutrients. Divided nutrients into nitrogen, phosphate and PCA with others, used first and second axis. For more details on these measurements see Vandvik et al. [(2022)](https://paperpile.com/c/l4FVcN/5MlZ/?noauthor=1) and Funder data paper. 
+*Aboveground biomass* was harvested in all plots in 2022, sorted by functional group (forbs, graminoids and bryophytes) and litter (i.e. dead non attached plant material), dried at 60°C for 48 h and weighed.
 
-### Ecosystem functions
+*Microclimate* We used Tomst loggers to continously measure ground temperatre and soil moisture between June and August 2022. 
 
-We use 16 ecosystem functions and properties as proxies for functions, providing fundamental supporting, provisioning, and regulating ecosystem services (REFs). Individual functions together make ecosystem functioning. There are 4 functions each related to primary producers, higher trophic level soil organisms, carbon and nutrient cycling. The specific functions are (i) aboveground biomass, (ii) belowground biomass, (iii) reproduction (proportion fertility), (iv) resistance to invasion (recruitment), (v) nematode density, (vi) microarthropod density, (vii) fungi density, (viii) bacteria density), (ix) GPP, (x) NEE, (xi) total carbon stocks, (xii) soil organic matter, (xiii) total nitrogen stocks, (xiv) phosphorus, (xv) available nitrogen, (xvi) available micronutrients.
+*Nutrient cycling* Soil samples for C and N stocks...
+Available nutrients were measured using Plant Root Simulator (PRSTM; Western Ag Innovations, Inc., Saskatoon, Canada). The probes were installed for 35 - 36 days between August and September 2021.
 
-Overview of ecosystem functions measured across sites and treatments, grouped by functional category.
+*Carbon cycling* In 2017 and 2022, ecosystem CO~2~ fluxes including Net Ecosystem Exchange (NEE) and Ecosystem Respiration (Reco) were measured in each plot at nine of the sites, excluding the three sites at the second wettest precipitation level (2100 mm annual precipitation; see @fig-design). NEE and Reco were measured using a closed loop chamber attached to an infrared gas analyzer (Li-840; LI-COR Biosciences, Lincoln, NE, USA). NEE was measured using the clear chamber, while for Reco fluxes were measured under dark conditions by covering the chamber with a dark tarp to block the sunlight.
+Plant decomposition was measured by burrying site specific forb and graminoid litter between autumn 2021 and 2022. Two bags of 0.5-1g plant litter in nylon mesh bags were burried per plot and retreived after one year. The litter bags were dried at X°C, weighed and the mass loss caluclated. Fungal necromass decomposition was measured by growing mycelium of two ectomycorrhizal species, *Cenococcum geophilum* and *Suillus variegatus* (both native to the sites in our experiment), in the lab. The mycelium was homogenized and then processed in the same way as the plant litter.
 
-| Grouping | Ecosystem function | Site | Treatment | Positive values =\> higher |
-|---------------|---------------|---------------|---------------|---------------|
-| Primary producers | Aboveground biomass | All | All | productivity |
-|  | Belowground biomass | All | All | productivity / nutrient uptake |
-|  | Plant richness (vascular & non-vascular) | All | All | biodiversity |
-|  | Specific root length | All | All | high vs. low root turnover |
-| Higher trophic level | Nematode density | All | only single treatment | productivity? |
-|  | Mites/collembola density | All | only single treatment | productivity? |
-|  | Ecosystem condition index (nematode) | All | All | scale from 1 -5 (‘colonizer‘ = resource availability - ‘persister’ = stability) |
-|  | Fungal - bacteria ratio | All | All | carbon storage (low vs high f/g ratio) |
-| Carbon cycling | Decomposition of graminoid litter | All | All | decomposition |
-|  | Decomposition of forb litter | not included |  | decomposition |
-|  | Carbon stock | All | All | carbon storage |
-|  | NPP | 9 | All | productivity |
-|  | GPP | 9 | All | productivity |
-|  | Reco | not included |  |  |
-| Nutrient cycling | Nitrogen stock | All | All | nutrient stocks |
-|  | Phosphorus stock | All | All | nutrient stocks |
-|  | Available macro nutrients (N, P, K, Ca, Mg, S) | not included |  | nutrient cycling |
-|  | Available micro nutrients (Fe, Mn, Zn, B, Cu, Al, Pb) | All | only single treatment | nutrient cycling |
+*Nematode* Nematodes were extracted from 20 soil cores (1.7 cm diameter and up to 10 cm deep) per plot. The nematodes were extracted using a modified sugar flotation method based on Jenkins (1964). We counted all the fixed nematodes in every sample and identified 150 randomly chosen individuals to family level using an inverted microscope, and assigned putative feeding types according to Yeates 1993.
 
-### Multifunctionality approach
+*Microbes* Peter!
 
-Calculations are based on Fanin et al. 2018.
 
--   **Data transformation**
+For more details on the measurements and data cleaning see @vandvik2022role and Funder data paper. 
 
-    -   For all functions, more positive values should be higher functioning. E.g. higher GPP =\> more productive plants; Higher decomposition of litter =\> higher decomposition rate
+### Calculation of cosystem functions
 
-    -   All functions should have positive values. Used transformation (shift by minimum + constant) for those datasets that have negative values (micro-nutrients).
+We use `{r} n_distinct(big_data$response)` functions and properties as proxies for ecosystem functions @tbl-responses. The functions are grouped into five groups including microclimate, nutrient cycling, carbon cycling, nematodes, and microbes.
 
-    -   Log transform some of the variables to make them more normally distributed (see appendix).
+```{r}
+#| label: tbl-responses
+#| echo: false
+#| warning: false
+#| fig-cap: Groupd of functions.
+#| fig-width: 8
+#| fig-height: 8
+tar_load(big_data)
 
--   Do functions need to be **weighed**? No weighing needed, because no function is more desired or has higher value.
+big_data |>
+    mutate(
+        group = factor(group, levels = c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes")),
+        response = pretty_response_label(response)
+    ) |>
+    group_by(group) |>
+    summarise(response = paste(sort(unique(response)), collapse = ", "), .groups = "drop") |>
+    arrange(group) |>
+    gt() |>
+    tab_header(title = "Ecosystem functions by group") |>
+    cols_label(group = "Group", response = "Ecosystem functions / responses")
+```
 
--   **Standardized all functions** between 0 and 1 to remove differences in measurement scale between the variables. Standardize each of the functions to a common scale by dividing by the maximum observed level of functioning.
+For functions related to microclimate we calculated two variables related to temperature and drought. Daily temperature amplitude was calculated as the mean top 25% of the difference between maximum and minimum daily ground temperature. The drought index was calculated as the mean bottom 25% of the daily minimum soil moisture (driest days).
 
-    $f(x) = \frac{x_i}{max(x)}$
+```{r}
+#| label: eigenvalue
+#| echo: false
+tar_load(micronutrients_pca)
 
--   Outlier labeling method? (We tackled the outlier issue by removing extreme values following the outlier labelling rule with a tuning parameter^[64](https://www.nature.com/articles/s41559-017-0415-0#ref-CR63 "Maestre, F. T., Castillo‐Monroy, A. P., Bowker, M. A. & Ochoa‐Hueso, R. Species richness effects on ecosystem multifunctionality depend on evenness, composition and spatial pattern. J. Ecol. 100, 317–330 (2012).")^ of *g* = 2.)
+ev <- eigenvals(micronutrients_pca[[3]]) / sum(eigenvals(micronutrients_pca[[3]]))
+```
 
--   **Average multifunctionality** was then calculated as the mean of standardized values across all individual functions $MF_a = \frac{1}{F} \sum_{i=1}^{F} g(r_i(f_i))$
+We used five variable related to nutrient cycling: nitrogen and phosphorous stocks, available nitrogen (average of N0~3-~ and NH^4+^) and available phosphorous, and available micro nutrient. For the available micronutrients, we ran a principle component analysis (PCA) using the rda function in the vegan package (REF vegan, Oksanen) based on scaled and centered data. The first PC axis explained `{r} round(ev[1] * 100, 1)` % of the variation, and we used the first PC axis as a proxy for available micro nutrient.
 
--   Threshold-based approaches is appropriate as long as each cluster is weighted equally in the EF-multifunctionality measure, irrespective of the number of functions within each cluster. Prevent the overrepresentation of many similar functions
+Seven variables represented carbon cycling: decomposition of forb litter, and graminoid litter, ecosystem respiration gross primary productivity, melanised and non-melaniced fungal necromass decomposition. Decomposition was calculated as the weight loss of litter of necromass over one year. GPP was calculated by subtracting Reco from NEE.
+
+We used seven variables on nematodes: the relative abundance of bacterivore, fungivore, plant, and predator feeder, bacteria:fungal feeder, maturity index, and plant parasite index. The nematode were classified into feeding groups based on (REF). In addition, we calculated the ratio of bacteria to fungi feeders. Finally, we calculated the maturity index and the plant parasite index [*add what they mean*].
+
+We also used eight variables on microbes: the relative abundance of total bacteria and total fungi, ectomycorrhizal, root associated, saprotroph, yeast, and diamorphic fungi, and the bacteria:fungi ratio.
+
+
+### Standardization and calculations
+
+Functions were if possible converted, so that higher values mean higher ecosystem functioning or variables go from slow to fast processes/strategies. The plant parasite index, and maturity index as well as GPP were inverted. The bacteria to fungi ratio, also indicates a slow to fast strategy. For functions that contain negative values (i.e. NEE, available nutrients), we added the absolute minimum value plus one. For functions with a strongly skewed distribution, we log transformed the data, except for ratios, where we used the logit transformation. We then standardized the values of each funciton to mean 0 and standard deviation 1, to remove differences in measurement scale between the variables.
+
+To calculate average multifunctionality, we used the absolute values of each function and then calculated the mean of absolute standardized values across all individual functions as $MF_a = \frac{1}{F} \sum_{i=1}^{F} abs(f_i)$, where $F$ is the number of functions and $f_i$ is a measure of function $i$.
+
 
 ### Data analysis
 
-To test if average multifuncitonality is affected by functional groups, summer temperature (scaled) and annual precipitation (scaled) as well as their interactions, we used a linear mixed-effects models with siteID as random effect.
 
-```{r}
-#| label: model-multifunctionality
-#| echo: true
-#| eval: false
-#| warning: false
+#### Principle component analysis
 
-lmer(average multifunctionality ~ functional group x temperature x precipitation + (1/siteID), data)
+- PCA for all data and one where site is partioned out
 
-```
 
-We ran three models using a different metrics for functional group:
+#### Testing the effect of functional group remaining, biomass and climate on ecosystem functions
 
-1)  Functional richness: number of functional groups present (0-3)
+The models were run for nine sites and five treatments.
 
-2)  Functional identity: F, G, B, FB, GF,... (model complex/costly, can only be as treatment model, excluding T and P)
+We ran three different linear mixed-effects models to test the effect of functional group remaining, climate and biomass on ecosystem functions. We excluded the interaction of temperature and precipitation to simplify the model.
 
-3)  Functional group presence (factorial analysis): (forbs x graminoids x bryophytes)
+Model 1: To test the effect of functional group removed and climate
+function ~ functional group remaining x (T + P) + (1/siteID)
 
-```{r}
-#| label: factorial-approach
-#| echo: false
-#| eval: true
+Model 2: to test if the biomass of the functional groups matters we add remaining bioamss to model 1
+function ~ functional group remaining + (T x P) + biomass + (1/siteID)
 
-big_data |> 
-distinct(treatment, fg_remaining, forb, gram, bryo) |>
-mutate(treatment = factor(treatment, levels = c("FGB", "GB", "FB", "GF", "B", "G", "F", "C"))) |>
-arrange(treatment) |>
-rename("FG removed" = treatment, "FG present" = fg_remaining) |>
-gt() |>
-tab_style(
-    style = list(
-      cell_text(weight = "bold")
-    ),
-    locations = cells_column_labels(everything())
-  )
+Model 3: to test if the amount of biomass from differet functional groups matter, we ran a model with functional group biomass and climate
+function ~ biomassF + biomassG + biomassB + (T x P) + (1/siteID)
 
-```
+We ran these full models and a main effects model only to see if the interactions were important. The main effects model included the interaction of temperature and precipitation.
 
-We ran these analysis separately at three different levels:
+To the best model for each function we did the following:
 
-1)  Each ecosystem function separately (biomass, nematode density,...)
+To find the best model for each function, we compared the AIC values of the six models. The most parsimonous model was the one with the lowest AIC value.
 
-2)  Each groups, including *primary producers*, *higher trophic levels*, *carbon cycling* and *nutrient cycling*
+We calculated the conditional and marginal R^2^ for each model. To test if the variance explained changes when adding biomass (model 1 vs. model 2) or functional group biomass (model 2 vs. model 3) to the model, we ran a paired Wilcoxon test between the conditional or marginal R^2^ from model 1 and 2 as well as model 2 and 3. We also ran a linear regression, testing if the relationship between the R^2^ of the two models differ from the 1:1 line.
 
-3)  Average multifunctionality
+To test if the estimates (slopes) of the different model term change when adding biomass (model 1 vs. model 2) or functional group biomass (model 2 vs. model 3) to the model, we ran a paired Wilcoxon test between the estimates from these models. We also ran a linear regression, testing if the relationship between the estimates of the two models differ from the 1:1 line.
 
-Because not all functions were measured in all treatments and sites, we also ran models with part of the data to test how this affects the results (e.g. only 9 sites, only 5 treatments).
+We ran the same tests comparing the R^2^ and estimates between the full and main effects models.
+
+
+#### Testing the effect of functional group remaining, biomass and climate on multifunctionality
+
+Using same approach for multifuncitonality.
