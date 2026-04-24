@@ -66,7 +66,7 @@ multifunctionality_plan <- list(
         # no transformation for others
         TRUE ~ value
       )) |>
-      # scale variables between 0 and 1
+      # scale variables to mean 0 and standard deviation 1
       group_by(data_type, group, response) |>
       mutate(value_std = scale(value_trans)[, 1]) |>
       # transform
@@ -103,7 +103,7 @@ multifunctionality_plan <- list(
         siteID, blockID, plotID, treatment, habitat,
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
-        fg_richness, fg_remaining, forb, gram, bryo, group, 
+        fg_richness, fg_remaining, forb, gram, bryo, group,
         total_biomass, total_biomass_scaled,
         biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
       ) |>
