@@ -36,7 +36,6 @@ tar_config_set(store = "../_targets")
 #| fig-width: 12
 #| fig-height: 7
 #| fig-cap: "Standing biomass by functional-group composition and habitat. The upper row shows the the remaining biomass at the final harvest and the lower row shows the biomass that was removed during the experimental treatment."
-
 tar_read(biomass_plot)
 ```
 
@@ -47,25 +46,11 @@ tar_read(biomass_plot)
 #| fig-width: 12
 #| fig-height: 7
 #| fig-cap: "Distribution of standing biomass (log scale) across functional groups and removal treatments. The upper row shows the the remaining biomass at the final harvest and the lower row shows the biomass that was removed during the experimental treatment."
-
 tar_read(biomass_variation_plot)
 ```
 
 
 ## PCA ordination (all data and site effect partitioned out)
-
-PCA of all plots: full ordination (left) and partial ordination with site effect removed (right).
-
-```{r}
-#| label: fig-pca-all-vs-no-site
-#| echo: false
-#| warning: false
-#| fig-width: 12
-#| fig-height: 12
-#| fig-cap: "PCA ordination of ecosystem functions for all plots. Left: full ordination. Right: site effect partitioned out (within-site variation only). Sites are coloured by summer temperature and shaped by precipitation."
-
-tar_read(pca_all_vs_no_site_plot)
-```
 
 Variation in ecosystem function composition explained by PERMANOVA for all plots and site-partitioned PCA: (1) climate only, (2) FG × climate + biomass, (3) biomass G/F/B × climate.
 
@@ -74,7 +59,6 @@ Variation in ecosystem function composition explained by PERMANOVA for all plots
 #| echo: false
 #| eval: false
 #| tbl-cap: "Variance in ecosystem function composition explained by PERMANOVA (% R²). Values are grouped into Climate, FG, Biomass, and Residual for each model."
-
 pca_all <- tar_read(pca_all)
 pca_no_site <- tar_read(pca_no_site)
 
@@ -142,170 +126,5 @@ bind_rows(
     select(Dataset, Model, Climate, FG, Biomass, Residual) |>
     gt() |>
     fmt_number(columns = c(Climate, FG, Biomass, Residual), decimals = 1, pattern = "{x}%")
-```
-
-
-## Analyis for functions and multifunctionality
-
-Run 3 models for each function and multifunctionality:
-
-1. Functional groups remaining × climate only
-
-2. Functional groups remaining × climate + total biomass
-
-3. Biomass G/F/B × climate only
-
-For multifunctionality, I used absolute values and functional group richness as predictor to simplify the model.
-
-
-### Multifunctionality (FG richness as predictor)
-
-Same multifunctionality response and levels as above, but with **functional group richness** (`fg_richness`) in place of treatment in the model (richness × climate).
-
-```{r}
-#| label: tbl-model-multifunctionality-richness
-#| echo: false
-#| tbl-cap: "Multifunctionality: FG richness × climate (model 1)."
-
-tar_read(model_multifunctionality_richness_out)
-```
-
-```{r}
-#| label: tbl-model-multifunctionality-richness-biomass
-#| echo: false
-#| tbl-cap: "Multifunctionality (richness): FG richness × climate + total biomass."
-
-tar_read(model_multifunctionality_richness_biomass_out)
-```
-
-```{r}
-#| label: fig-model-multifunctionality-richness-data
-#| echo: false
-#| eval: false
-#| warning: false
-#| fig-width: 8
-#| fig-height: 6
-#| fig-cap: "Observed multifunctionality vs functional group richness. Point size indicates total biomass."
-
-tar_read(model_multifunctionality_richness_plot)
-```
-
-```{r}
-#| label: tbl-model-multifunctionality-fg-biomass
-#| echo: false
-#| tbl-cap: "Multifunctionality: biomass composition × climate only."
-
-tar_read(model_multifunctionality_FG_biomass_out)
-```
-
-
-
-
-Heatmap of model estimates: blue = negative, red = positive. Text style encodes p-values as follows: **bold** for p ≤ 0.001, **_bold italic_** for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1.
-
-Model 1 (functional groups remaining × climate only):
-
-```{r}
-#| label: fig-model-single-function-heatmap
-#| echo: false
-#| warning: false
-#| fig-width: 14
-#| fig-height: 12
-#| fig-cap: "Heatmap of model 1 estimates (functional groups remaining × climate). Baseline = no FGs remaining (bare ground). Fill colour indicates effect direction; bold numbers indicate p ≤ 0.01."
-
-tar_read(model_single_function_heatmap)
-```
-
-Model 2 (functional groups remaining × climate + total biomass):
-
-```{r}
-#| label: fig-model-single-function-biomass-heatmap
-#| echo: false
-#| warning: false
-#| fig-width: 14
-#| fig-height: 12
-#| fig-cap: "Heatmap of model 2 estimates (functional groups remaining × climate + total biomass)."
-
-tar_read(model_single_function_biomass_heatmap)
-```
-
-Model 3 (biomass G/F/B × climate only):
-
-```{r}
-#| label: fig-model-single-function-fg-biomass-heatmap
-#| echo: false
-#| warning: false
-#| fig-width: 14
-#| fig-height: 12
-#| fig-cap: "Heatmap of model 3 estimates (biomass composition × climate)."
-
-tar_read(model_single_function_FG_biomass_heatmap)
-```
-
-Main-effects versions of the same three models (FG/biomass mains + climate mains + T × P only):
-
-```{r}
-#| label: fig-model-single-function-main-heatmap
-#| echo: false
-#| warning: false
-#| fig-width: 14
-#| fig-height: 12
-#| fig-cap: "Heatmap of main-effects model 1 estimates (functional groups remaining + climate mains + T × P). Baseline = no FGs remaining (bare ground)."
-
-tar_read(model_single_function_main_heatmap)
-```
-
-```{r}
-#| label: fig-model-single-function-main-biomass-heatmap
-#| echo: false
-#| warning: false
-#| fig-width: 14
-#| fig-height: 12
-#| fig-cap: "Heatmap of main-effects model 2 estimates (functional groups remaining + climate mains + T × P + total biomass)."
-
-tar_read(model_single_function_main_biomass_heatmap)
-```
-
-```{r}
-#| label: fig-model-single-function-main-fg-biomass-heatmap
-#| echo: false
-#| warning: false
-#| fig-width: 14
-#| fig-height: 12
-#| fig-cap: "Heatmap of main-effects model 3 estimates (biomass composition + climate mains + T × P)."
-
-tar_read(model_single_function_main_FG_biomass_heatmap)
-```
-
-
-
-```{r}
-#| label: tbl-model-single-function-fg-biomass-slope-tests
-#| echo: false
-#| tbl-cap: "Pairwise post hoc tests of Model 3 biomass slopes (BioG, BioF, BioB). Contrasts are Wald tests of fixed-effect slope differences, evaluated at scaled temperature = 0 and scaled precipitation = 0; p-values are Holm-adjusted across the three contrasts per response."
-
-tar_read(model_single_function_FG_biomass_slope_tests_out)
-```
-
-
-
-### Multifunctionality
-
-Model output for global multifunctionality: functional groups remaining × temperature × precipitation (excluding two-group-remaining plots: GF, FB, GB).
-
-```{r}
-#| label: tbl-model-multifunctionality
-#| echo: false
-#| tbl-cap: "Model output from testing effect of functional groups remaining, summer temperature and annual precipitation on global multifunctionality."
-
-tar_read(model_multifunctionality_out)
-```
-
-```{r}
-#| label: tbl-model-multifunctionality-biomass
-#| echo: false
-#| tbl-cap: "Multifunctionality: functional groups remaining × climate + total biomass."
-
-tar_read(model_multifunctionality_biomass_out)
 ```
 
