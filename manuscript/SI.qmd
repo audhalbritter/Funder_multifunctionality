@@ -95,7 +95,8 @@ tar_read(pca_scree_plot)
 
 ## Single function analyses
 
-Model output for each ecosystem function: treatment × temperature × precipitation (excluding single removals F, G, B).
+Model output for each ecosystem function: 
+Model 1 (treatment × (temperature + precipitation):
 
 ```{r}
 #| label: tbl-model-single-function
@@ -115,7 +116,7 @@ Model 2 (treatment × climate + total biomass):
 tar_read(model_single_function_biomass_out)
 ```
 
-Model 3 (biomass composition G/F/B × climate only):
+Model 3 (FG biomass G/F/B × climate only):
 
 ```{r}
 #| label: tbl-model-single-function-fg-biomass
