@@ -21,7 +21,6 @@ multifunctionality_plan <- list(
       decomposition_gram,
       cn_stocks |> filter(response != "CN"), # includes nitrogen stocks
       gpp_flux,
-      # nee_flux,
       reco_flux,
 
       # nutrient cycle

@@ -54,9 +54,9 @@ tar_read(micronutrient_pca_plot)
 #| label: fig-transformation
 #| echo: false
 #| warning: false
-#| fig-width: 8.5
-#| fig-height: 11
-#| fig-cap: "Distributions of each function, stacked by group. Left: raw and transformed shapes on a relative scale, because the variables use different units. Where no transformation was applied, one grey curve is shown. Where a transformation was applied, the raw curve is grey and the transformed curve is coloured. Right: standardized values on a shared axis, in the same colour."
+#| fig-width: 9.5
+#| fig-height: 15
+#| fig-cap: "Distributions of each function in three columns: raw values, transformed values, and standardized values. Each raw and transformed panel has its own axis. Every standardized panel uses the same axis, with a line at zero. Colour marks the transformation. Where no transformation was applied, the transformed distribution is grey."
 tar_read(transformation_distributions_plot)
 ```
 

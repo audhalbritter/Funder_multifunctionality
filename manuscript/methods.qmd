@@ -107,11 +107,9 @@ Finally, we used seven functions on microbes: the relative abundance of total ba
 
 For the functions a higher value generally indicates higher ecosystem functioning. GPP was therefore inverted, so that positive values mean a higher CO~2~ uptake. The maturity index, the plant parasite index, and bacteria:fungi ratio are related to slow and fast life cycles in the soil biota. The maturity index and the plant parasite index were also inverted, so that low values indicate slow, persister communities and high values indicate fast, colonizer communities. The bacteria:fungi ratios for both microbes and nematode feeders already go from slower fungi-dominated (low values) to faster bacteria-dominated communities (high values). The PC axis 1 of the available micronutrients had negative values, we added the absolute minimum value plus one to make them positive.
 
-For functions with a strongly skewed distribution, we log transformed the data, except for ratios, where we used the logit transformation.
+For functions with a strongly skewed distribution, we log transformed the data, except for ratios, where we used the logit transformation (Fig. S2). We then standardized the values of each function to mean 0 and standard deviation 1, to remove differences in measurement scale between the variables.
 
-We then standardized the values of each function to mean 0 and standard deviation 1, to remove differences in measurement scale between the variables.
-
-To calculate average multifunctionality, we used the absolute values of each function and then calculated the mean of absolute standardized values across all individual functions as $MF_a = \frac{1}{F} \sum_{i=1}^{F} abs(f_i)$, where $F$ is the number of functions and $f_i$ is a measure of function $i$.
+To calculate average multifunctionality, we used the absolute values \[NEED TO EXPLAIN WHY!! If a treatment increases some functions and decreases others, it does not cancel each other out, larger departure from average plot\] of each function and then calculated the mean of absolute standardized values across all individual functions as $MF_a = \frac{1}{F} \sum_{i=1}^{F} abs(f_i)$, where $F$ is the number of functions and $f_i$ is a measure of function $i$.
 
 ### Data analysis
 

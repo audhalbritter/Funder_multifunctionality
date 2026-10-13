@@ -48,7 +48,7 @@ response_transformation <- function(response) {
       "available_nitrogen", "available_phosphorus", "bacteria density",
       "bacterivore feeder density", "bacterivore density", "carbon stock",
       "fungi density", "fungivore feeder density",
-      "nitrogen stock", "phosphorus stock", "plant_feeder feeder density",
+      "nitrogen stock", "plant_feeder feeder density",
       "predator feeder density"
     ) ~ "log",
     TRUE ~ "none"

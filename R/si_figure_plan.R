@@ -33,7 +33,8 @@ si_figure_plan <- list(
     command = plot_nutrient_pca(micronutrients_pca)
   ),
 
-  # Raw/transformed shapes beside standardized values, groups stacked
+  # Three columns: raw, transformed, and standardized, each with its own axis.
+  # Standardized panels share one ruler so a tick means the same thing on every row.
   tar_target(
     name = transformation_distributions_plot,
     command = {
@@ -49,26 +50,10 @@ si_figure_plan <- list(
         microbes = "Microbes"
       )
       fill_colours <- c(none = "grey65", shift = "#C47B2B", log = "#2C7FB8", logit = "#7A0177")
-
-      # scale_x = TRUE puts every curve on 0–1 so raw and transformed shapes can share a row.
-      density_curve <- function(x, scale_x) {
-        x <- x[is.finite(x)]
-        if (length(unique(x)) < 2L) {
-          return(tibble(x = c(0, 1), dens = c(0, 0)))
-        }
-        d <- stats::density(x, n = 256)
-        span <- diff(range(d$x))
-        tibble(
-          x = if (!scale_x) {
-            d$x
-          } else if (span == 0) {
-            rep(0.5, length(d$x))
-          } else {
-            (d$x - min(d$x)) / span
-          },
-          dens = d$y / max(d$y)
-        )
-      }
+      # One ruler for every standardized panel. Limits cover the data; ticks are identical.
+      std_limits <- c(-8, 7)
+      std_breaks <- c(-6, 0, 6)
+      col_widths <- c(1.55, 1, 1, 1)
 
       base <- big_data_full |>
         select(
@@ -87,132 +72,113 @@ si_figure_plan <- list(
           group = factor(group, levels = group_order, labels = group_label)
         )
 
-      # Unique y positions so each group facet keeps only its own labels.
-      # A gap stops a neighbouring group's label from falling inside the expanded scale.
-      response_pos <- base |>
-        distinct(group, response_label) |>
-        arrange(group, response_label) |>
-        mutate(y_local = n() - row_number() + 1L, n_group = n(), .by = group)
-      group_offset <- response_pos |>
-        distinct(group, n_group) |>
-        arrange(group) |>
-        mutate(offset = cumsum(n_group + 2L) - n_group - 2L)
-      response_pos <- response_pos |>
-        left_join(group_offset, by = c("group", "n_group")) |>
-        transmute(group, response_label, y0 = y_local + offset, label_y = y0 + 0.28)
+      nested <- base |>
+        summarise(
+          raw = list(raw[is.finite(raw)]),
+          transformed = list(transformed[is.finite(transformed)]),
+          standardized = list(standardized[is.finite(standardized)]),
+          .by = c(group, response, response_label, transformation)
+        ) |>
+        arrange(group, response_label)
 
-      curve_layer <- function(dat, value_col, scale_x) {
-        dat[[".value"]] <- dat[[value_col]]
-        scale_x_flag <- scale_x
-        dat |>
-          summarise(
-            curve = list(density_curve(.value, scale_x = scale_x_flag)),
-            .by = c(group, response_label, transformation)
-          ) |>
-          tidyr::unnest(curve) |>
-          left_join(response_pos, by = c("group", "response_label"))
-      }
-
-      # One curve when nothing was transformed. Otherwise grey raw under the coloured curve.
-      raw_main <- base |>
-        filter(transformation == "none") |>
-        curve_layer("raw", scale_x = TRUE) |>
-        mutate(layer = "main")
-      raw_under <- base |>
-        filter(transformation != "none") |>
-        curve_layer("raw", scale_x = TRUE) |>
-        mutate(layer = "raw")
-      transformed_main <- base |>
-        filter(transformation != "none") |>
-        curve_layer("transformed", scale_x = TRUE) |>
-        mutate(layer = "main")
-      shape_dat <- bind_rows(raw_main, raw_under, transformed_main) |>
-        mutate(transformation = factor(transformation, levels = c("log", "logit", "shift", "none")))
-
-      std_dat <- base |>
-        curve_layer("standardized", scale_x = FALSE) |>
-        mutate(
-          layer = "main",
-          transformation = factor(transformation, levels = c("log", "logit", "shift", "none"))
-        )
-
-      y_breaks <- response_pos$label_y
-      y_labels <- response_pos$response_label
-
-      distribution_plot <- function(dat, title, x_label, show_labels, main_alpha) {
-        dat |>
-          ggplot(aes(x = x)) +
-          geom_ribbon(
-            data = function(d) dplyr::filter(d, layer == "raw"),
-            aes(ymin = y0, ymax = y0 + 0.8 * dens, group = response_label),
-            fill = "grey75",
-            alpha = 0.4,
-            colour = NA
-          ) +
-          geom_ribbon(
-            data = function(d) dplyr::filter(d, layer == "main"),
-            aes(ymin = y0, ymax = y0 + 0.8 * dens, group = response_label, fill = transformation),
-            alpha = main_alpha,
-            colour = NA
-          ) +
-          facet_grid(group ~ ., scales = "free_y", space = "free_y", switch = "y") +
-          scale_fill_manual(
-            values = fill_colours,
-            breaks = c("log", "logit", "shift", "none"),
-            labels = c("Log", "Logit", "Shift", "None"),
-            name = "Transformation",
-            drop = FALSE
-          ) +
-          scale_y_continuous(
-            breaks = y_breaks,
-            labels = if (show_labels) y_labels else rep("", length(y_labels)),
-            expand = expansion(add = 0.2)
-          ) +
-          labs(title = title, x = x_label, y = NULL) +
+      density_panel <- function(x, fill, limits = NULL, breaks = NULL, zero_line = FALSE) {
+        p <- ggplot(tibble(value = x), aes(value)) +
+          geom_density(fill = fill, colour = NA) +
+          scale_y_continuous(expand = expansion(mult = c(0, 0.08))) +
           theme_bw(base_size = 8) +
           theme(
-            axis.text.y = element_text(size = 7, hjust = 1),
+            axis.title = element_blank(),
+            axis.text.y = element_blank(),
             axis.ticks.y = element_blank(),
-            axis.text.x = element_text(size = 7),
-            panel.grid.major.y = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.spacing.y = unit(0.35, "lines"),
-            strip.placement = "outside",
-            panel.spacing = unit(0.12, "lines"),
-            plot.title = element_text(face = "bold", size = 10, hjust = 0),
-            legend.position = "none"
+            axis.text.x = element_text(size = 6.5, colour = "grey20"),
+            axis.ticks.x = element_line(colour = "grey20"),
+            axis.ticks.length.x = unit(2, "pt"),
+            panel.grid = element_blank(),
+            plot.margin = margin(1, 4, 0, 2)
           )
+        if (zero_line) {
+          p <- p + geom_vline(xintercept = 0, colour = "grey45", linewidth = 0.25)
+        }
+        if (is.null(limits)) {
+          p + scale_x_continuous(
+            breaks = scales::breaks_pretty(n = 3),
+            labels = scales::label_number(scale_cut = scales::cut_short_scale()),
+            expand = expansion(mult = 0.06)
+          )
+        } else {
+          p +
+            scale_x_continuous(breaks = breaks, expand = expansion(mult = 0.02)) +
+            coord_cartesian(xlim = limits)
+        }
       }
 
-      p_shape <- distribution_plot(
-        shape_dat,
-        title = "Raw and transformed",
-        x_label = NULL,
-        show_labels = TRUE,
-        main_alpha = 0.55
-      ) +
-        scale_x_continuous(breaks = NULL, expand = expansion(mult = 0.02)) +
-        theme(
-          axis.ticks.x = element_blank(),
-          axis.text.x = element_text(colour = NA, size = 7),
-          axis.title.x = element_text(colour = NA, size = 8)
-        )
+      name_cell <- function(label) {
+        wrap_elements(grid::textGrob(
+          label,
+          x = unit(1, "npc") - unit(3, "pt"),
+          hjust = 1,
+          gp = grid::gpar(fontsize = 8, col = "grey15")
+        ))
+      }
 
-      p_std <- distribution_plot(
-        std_dat,
-        title = "Standardized",
-        x_label = "Standardized value",
-        show_labels = FALSE,
-        main_alpha = 0.9
-      ) +
-        theme(
-          strip.text.y.left = element_blank(),
-          strip.background.y = element_blank(),
-          axis.text.y = element_blank()
-        )
+      column_header <- function(label) {
+        wrap_elements(grid::textGrob(
+          label,
+          gp = grid::gpar(fontsize = 12, fontface = "bold", col = "grey10")
+        ))
+      }
+
+      group_banner <- function(label) {
+        wrap_elements(full = grid::textGrob(
+          label,
+          x = unit(4, "pt"),
+          y = unit(0.5, "npc"),
+          hjust = 0,
+          vjust = 0.5,
+          gp = grid::gpar(fontsize = 12, fontface = "bold", col = "grey10")
+        ))
+      }
+
+      make_row <- function(response_label, transformation, raw, transformed, standardized) {
+        fill <- unname(fill_colours[[transformation]])
+        name_cell(response_label) +
+          density_panel(raw, "grey70") +
+          density_panel(transformed, fill) +
+          density_panel(
+            standardized,
+            fill,
+            limits = std_limits,
+            breaks = std_breaks,
+            zero_line = TRUE
+          ) +
+          plot_layout(widths = col_widths)
+      }
+
+      header <- plot_spacer() +
+        column_header("Raw") +
+        column_header("Transformed") +
+        column_header("Standardized") +
+        plot_layout(widths = col_widths)
+
+      pieces <- list(header)
+      heights <- 1
+      for (group_name in levels(nested$group)) {
+        dat_g <- nested |>
+          filter(group == group_name)
+        pieces <- c(pieces, list(group_banner(group_name)))
+        heights <- c(heights, 0.85)
+        rows <- dat_g |>
+          select(response_label, transformation, raw, transformed, standardized) |>
+          purrr::pmap(make_row)
+        pieces <- c(pieces, rows)
+        heights <- c(heights, rep(1, length(rows)))
+      }
 
       legend_plot <- ggplot(
-        tibble(transformation = factor(c("log", "logit", "shift", "none"), levels = c("log", "logit", "shift", "none"))),
+        tibble(transformation = factor(
+          c("log", "logit", "shift", "none"),
+          levels = c("log", "logit", "shift", "none")
+        )),
         aes(x = 1, y = 1, fill = transformation)
       ) +
         geom_col() +
@@ -224,11 +190,17 @@ si_figure_plan <- list(
         theme_void() +
         theme(legend.position = "bottom")
       legend_grob <- ggplotGrob(legend_plot)
-      legend_only <- legend_grob$grobs[[which(vapply(legend_grob$grobs, function(x) x$name, character(1)) == "guide-box")]]
+      legend_only <- legend_grob$grobs[[which(vapply(
+        legend_grob$grobs,
+        function(x) x$name,
+        character(1)
+      ) == "guide-box")]]
 
-      (p_shape + p_std + plot_layout(widths = c(1.25, 1))) /
-        wrap_elements(full = legend_only) +
-        plot_layout(heights = c(1, 0.045))
+      pieces <- c(pieces, list(wrap_elements(full = legend_only)))
+      heights <- c(heights, 1.15)
+
+      reduce(pieces, function(a, b) a / b) +
+        plot_layout(heights = heights)
     }
   ),
 
