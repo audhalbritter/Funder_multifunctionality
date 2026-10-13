@@ -37,6 +37,24 @@ pretty_response_label <- function(x) {
   dplyr::recode(as.character(x), !!!pretty_response_lookup, .default = as.character(x))
 }
 
+# Transformation applied before standardization. "shift" is the micronutrient
+# PC1 location shift; that value is then copied through unchanged.
+response_transformation <- function(response) {
+  dplyr::case_when(
+    response == "avialable_micronutrients" ~ "shift",
+    stringr::str_detect(response, "ratio") & !stringr::str_detect(response, "respiration") ~ "logit",
+    response %in% c("root_associated_fungi", "saprotroph", "yeast_dimorphic", "ectomycorrhizal") ~ "logit",
+    response %in% c(
+      "available_nitrogen", "available_phosphorus", "bacteria density",
+      "bacterivore feeder density", "bacterivore density", "carbon stock",
+      "fungi density", "fungivore feeder density", "nematode density",
+      "nitrogen stock", "phosphorus stock", "plant_feeder feeder density",
+      "predator feeder density"
+    ) ~ "log",
+    TRUE ~ "none"
+  )
+}
+
 # Rename a response column to pretty labels in-place.
 rename_response_pretty <- function(dat, response_col = response) {
   response_col <- rlang::as_string(rlang::ensym(response_col))

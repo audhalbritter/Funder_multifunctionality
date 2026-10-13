@@ -15,16 +15,39 @@ library(vegan)
 
 # Set targets store path
 tar_config_set(store = "../_targets")
-source("R/functions/make_figures.R")
 
 tar_load(big_data)
+
+# Plot counts for data collection. big_data is the later analysis subset
+# (nine sites and five treatments), so these use the datasets before that filter.
+tar_load(c(
+  "standing_biomass_sum",
+  "microclimate",
+  "cn_stocks",
+  "available_nutrients",
+  "cflux",
+  "decomposition",
+  "fungal_necromass",
+  "nematode_density",
+  "microbial_density"
+))
+
+n_plots <- function(dat, litter = NULL) {
+  if (!is.null(litter)) {
+    dat <- dat |>
+      filter(litter_type == litter)
+  }
+  dat |>
+    distinct(siteID, blockID, plotID, treatment) |>
+    nrow()
+}
 ```
 
 # Methods
 
 ### Site description and experimental design
 
-In 2015, a functional group removal experiment was established at twelve semi-natural grassland sites in Vestland county, Western Norway @fig-design. The sites were arranged in a climate grid spanning three temperature levels (6.5, 8.5, and 10.5 °C summer temperature) and four precipitation levels [700, 1500, 2100 and 2800 mm annual precipitation; based on gridded climate data by met.no; @vandvik2022role]. The target vegetation were south-facing, forb-rich semi-natural grasslands, where bedrock, slope, aspect, vegetation type, grazing regime and history were kept as similar as possible. [*add something on NiN types*]. All sites were moderately grazed before the experiment was established. To prevent grazing the experimental sites were fenced, and aboveground biomass was harvest inside the fence at the end of each growing season to prevent biomass accummulation inside the experimental site.
+In 2015, a functional group removal experiment was established at twelve semi-natural grassland sites in Vestland county, Western Norway @fig-design. The sites were arranged in a climate grid spanning three temperature levels (6.5, 8.5, and 10.5 °C summer temperature) and four precipitation levels [700, 1500, 2100 and 2800 mm annual precipitation; based on gridded climate data by met.no; @vandvik2022role]. The target vegetation were south-facing, forb-rich semi-natural grasslands, where bedrock, slope, aspect, vegetation type, grazing regime and history were kept as similar as possible. \[*add something on NiN types*\]. All sites were moderately grazed before the experiment was established. To prevent grazing the experimental sites were fenced, and aboveground biomass was harvest inside the fence at the end of each growing season to prevent biomass accummulation inside the experimental site.
 
 At each site, four experimental blocks with eight 25 x 25 cm plots were established (total n = 384 plots). The plots were permanantly marked with aluminium tubes in each corner for repeated observations and measurments. In a fully factorial removal experiment, the aboveground biomass of the three dominant plant functional groups was removed; forbs (including herbaceous forbs, pteridophytes, dwarf-shrubs, and small individuals of trees and shrubs), graminoids (grasses, sedges, and rushes) and bryophytes (mosses, liverworts, and hornworts). For eight years, the aboveground biomass was removed anually using sissors and tweezers removing the plants at ground level. In 2015 the biomass was removed once at peak growing season due to late snowmelt, while in 2016 and 2017 the biomass was removed twice (early and peak season) to prevent regrowth. For the remainder of the experiment, the biomass was only removed once at peak growing season. For more details see [@vandvik2022role].
 
@@ -34,28 +57,23 @@ The experimental treatments were named by the functional group remaining, where 
 
 ### Data collection
 
-After eight years of functional group removal, data on microclimate, nutrient and carbon cycling, and the soil-food web including nematodes and microbes was collected. Most of the datasets were collected from all eight treatments, from three blocks at all twelve sites in 2022. Ecosystem carbon flux measurements were collected in 2017 and 2022 at nine sites (see below). Nematodes and available nutrients were only collected in five treatments (None, F, G, B, All), and available nutrients were collected in 2021.
+After eight years of functional group removal, data on microclimate, nutrient and carbon cycling, and the soil-food web including nematodes and microbes were collected. Most of the datasets were collected from all eight removal treatments, from three blocks at all twelve sites in 2022. Ecosystem carbon flux measurements were collected in 2017 and 2022 at nine sites (see below). Microclimate, nematodes and available nutrients were only collected from five treatments including only the single functional group presence (None, F, G, B, All). Available nutrients were collected in 2021.
 
-*Aboveground biomass* was harvested in all plots in 2022, sorted by functional group (forbs, graminoids and bryophytes) and litter (i.e. dead non attached plant material), dried at 60°C for 48 h and weighed.
+*Aboveground biomass* was harvested in all plots in 2022 (n = `{r} n_plots(standing_biomass_sum)`, with three missing plots), sorted by functional group (forbs, graminoids and bryophytes) and litter (i.e. dead non attached plant material), dried at 60°C for 48 h and weighed.
 
-*Microclimate* We used Tomst loggers to continously measure ground temperatre and soil moisture between June and August 2022. 
+*Microclimate* was continuously measured using Tomst TM4 loggers [@wild2019climate] between June and August 2022. We used ground temperature (0cm) and soil moisture (-8cm) from five treatments (None, F, G, B, All) in block four at all sites (n = `{r} n_plots(microclimate)` loggers).
 
-*Nutrient cycling* Soil samples for C and N stocks...
-Available nutrients were measured using Plant Root Simulator (PRSTM; Western Ag Innovations, Inc., Saskatoon, Canada). The probes were installed for 35 - 36 days between August and September 2021.
+*Soil macro and micro nutrients.* Soil carbon, nitrogen and phosphorus stocks, and available nitrogen (N0~3-~, NH^4+^), phosphorus, and micronutrients (Al, B, Ca, Cu, Fe, K, Mg, Mn, Pb, S, and Zn) were measured. In 2022, soil samples were taken from all eight treatments in three blocks at all sites (n = `{r} n_plots(cn_stocks)`, missing two plots). Soil carbon and nitrogen were measured on an Isotope Ratio Mass Spectrometer (EA-IRMS) elemental analyser (Flash EA 2000, Thermo Fisher Scientific, Bremen, Germany). Phosphorus was measured by inductively coupled plasma mass spectrometry on an Agilent ICP-MS 7580. Available nutrients were measured using Plant Root Simulator (PRSTM; Western Ag Innovations, Inc., Saskatoon, Canada). The probes were installed in three blocks and five treatments (None, F, G, B, All) at all sites (n = `{r} n_plots(available_nutrients)`, missing two plots), for 35 - 36 days between August and September 2021. 
 
-*Carbon cycling* In 2017 and 2022, ecosystem CO~2~ fluxes including Net Ecosystem Exchange (NEE) and Ecosystem Respiration (Reco) were measured in each plot at nine of the sites, excluding the three sites at the second wettest precipitation level (2100 mm annual precipitation; see @fig-design). NEE and Reco were measured using a closed loop chamber attached to an infrared gas analyzer (Li-840; LI-COR Biosciences, Lincoln, NE, USA). NEE was measured using the clear chamber, while for Reco fluxes were measured under dark conditions by covering the chamber with a dark tarp to block the sunlight.
-Plant decomposition was measured by burrying site specific forb and graminoid litter between autumn 2021 and 2022. Two bags of 0.5-1g plant litter in nylon mesh bags were burried per plot and retreived after one year. The litter bags were dried at X°C, weighed and the mass loss caluclated. Fungal necromass decomposition was measured by growing mycelium of two ectomycorrhizal species, *Cenococcum geophilum* and *Suillus variegatus* (both native to the sites in our experiment), in the lab. The mycelium was homogenized and then processed in the same way as the plant litter.
+*Carbon dynamics.* In 2017 and 2022, ecosystem CO~2~ fluxes including Net ecosystem exchange (NEE) and Ecosystem respiration (Reco) were measured in each plot at nine of the sites, excluding the three sites at the second wettest precipitation level (2100 mm annual precipitation; n = `{r} n_plots(cflux)`, with three missing plots; see @fig-design). NEE and Reco were measured using a closed loop chamber attached to an infrared gas analyzer (Li-840; LI-COR Biosciences, Lincoln, NE, USA). NEE was measured using the clear chamber, while for Reco fluxes were measured under dark conditions by covering the chamber with a dark tarp to block the sunlight. Gross primary productivity (GPP) was calculated from NEE - Reco. We define NEE such that negative values reflect CO~2~ uptake in the ecosystem, and positive values reflect CO~2~ release from the ecosystem to the atmosphere. Plant and fungal necromass decomposition were measured by burying site specific forb and graminoid litter and mycelium in all plot at all sites (forbs n = `{r} n_plots(decomposition, "forb")`, missing eight plots; graminoids n = `{r} n_plots(decomposition, "graminoid")`, missing 12 plots; fungal necromass n = `{r} n_plots(fungal_necromass)`, missing two plots) between autumn 2021 and 2022. Fungal necromass decomposition was measured by growing mycelium of two ectomycorrhizal species, *Cenococcum geophilum* and *Suillus variegatus* (both native to the sites in our experiment), in the lab. Two bags of 0.5-1g plant litter or one bag of 1.3-1.45 g homogenized mycelium were put in nylon mesh bags, buried, and retrieved after one year. The bags were freeze dried for 48h and weighed. Finally, the litter and necromass loss was calculated as a measure of decomposition.
 
-*Nematode* Nematodes were extracted from 20 soil cores (1.7 cm diameter and up to 10 cm deep) per plot. The nematodes were extracted using a modified sugar flotation method based on Jenkins (1964). We counted all the fixed nematodes in every sample and identified 150 randomly chosen individuals to family level using an inverted microscope, and assigned putative feeding types according to Yeates 1993.
+*Soil food-web.* Nematodes were extracted from 20 soil cores per plot, from five treatments (None, F, G, B, All) in three blocks at all sites (n = `{r} n_plots(nematode_density)`, missing one plot). The nematodes were extracted using a modified sugar flotation method based on [@jenkins1964rapid]. We counted all the fixed nematodes in every sample and identified 150 randomly chosen individuals to family level using an inverted microscope. The total abundance per gram dry soil was calculated and the abundance of each family was estimated by applying its proportion among the 150 identified individuals to that total. Families were then assigned to bacterivore, fungivore, plant-feeder, and predator feeding groups following @yeates1993feeding\]. Soil microbes including fungi and bacteria, were extracted from all plots at all 12 sites (n = `{r} n_plots(microbial_density)`, missing two plots). Soil from five soil cores per plot was homogenized, and used for DNA extraction and PCR... Peter can you fill in minimal description here.
 
-*Microbes* Peter!
+For more details on the measurements and datasets see @vandvik2022role and Funder data paper. 
 
+### Calculation of ecosystem functions
 
-For more details on the measurements and data cleaning see @vandvik2022role and Funder data paper. 
-
-### Calculation of cosystem functions
-
-We use `{r} n_distinct(big_data$response)` functions and properties as proxies for ecosystem functions @tbl-responses. The functions are grouped into five groups including microclimate, nutrient cycling, carbon cycling, nematodes, and microbes.
+For each plot, we calculated `{r} n_distinct(big_data$response)` abiotic and biotic variables as proxies for ecosystem functions @tbl-responses, related microclimate, nutrient cycling, carbon cycling, nematodes, and microbes.
 
 ```{r}
 #| label: tbl-responses
@@ -64,22 +82,10 @@ We use `{r} n_distinct(big_data$response)` functions and properties as proxies f
 #| fig-cap: Groupd of functions.
 #| fig-width: 8
 #| fig-height: 8
-tar_load(big_data)
-
-big_data |>
-    mutate(
-        group = factor(group, levels = c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes")),
-        response = pretty_response_label(response)
-    ) |>
-    group_by(group) |>
-    summarise(response = paste(sort(unique(response)), collapse = ", "), .groups = "drop") |>
-    arrange(group) |>
-    gt() |>
-    tab_header(title = "Ecosystem functions by group") |>
-    cols_label(group = "Group", response = "Ecosystem functions / responses")
+tar_read(response_group_table)
 ```
 
-For functions related to microclimate we calculated two variables related to temperature and drought. Daily temperature amplitude was calculated as the mean top 25% of the difference between maximum and minimum daily ground temperature. The drought index was calculated as the mean bottom 25% of the daily minimum soil moisture (driest days).
+We calculated two functions related to microenvironment. Daily temperature amplitude was calculated as the mean top 25% of the difference between maximum and minimum daily ground temperature, and expected to be higher for less vegetated plots. The drought index was calculated as the mean bottom 25% of the daily minimum soil moisture (driest days).
 
 ```{r}
 #| label: eigenvalue
@@ -89,29 +95,29 @@ tar_load(micronutrients_pca)
 ev <- eigenvals(micronutrients_pca[[3]]) / sum(eigenvals(micronutrients_pca[[3]]))
 ```
 
-We used five variable related to nutrient cycling: nitrogen and phosphorous stocks, available nitrogen (average of N0~3-~ and NH^4+^) and available phosphorous, and available micro nutrient. For the available micronutrients, we ran a principle component analysis (PCA) using the rda function in the vegan package (REF vegan, Oksanen) based on scaled and centered data. The first PC axis explained `{r} round(ev[1] * 100, 1)` % of the variation, and we used the first PC axis as a proxy for available micro nutrient.
+Five functions were related to nutrient cycling: nitrogen and phosphorous stocks, available nitrogen (average of N0~3-~ and NH^4+^) and available phosphorous, and available micro nutrient. We ran a principle component analysis (PCA) with all 11 available micronutrients (see above) using the rda function in the vegan package [@oksanen2026vegan] by scaling and centering the data. The first PC axis explained `{r} round(ev[1] * 100, 1)` % of the variation, is related to an increase in Fe, Al, B, K, Zn, and Cu, and we used this axis as a proxy for available micronutrient (Fig. S1).
 
-Seven variables represented carbon cycling: decomposition of forb litter, and graminoid litter, ecosystem respiration gross primary productivity, melanised and non-melaniced fungal necromass decomposition. Decomposition was calculated as the weight loss of litter of necromass over one year. GPP was calculated by subtracting Reco from NEE.
+Seven functions represented carbon cycling: decomposition of forb litter, graminoid litter, Reco, GPP, melanised, and non-melaniced fungal necromass decomposition.
 
-We used seven variables on nematodes: the relative abundance of bacterivore, fungivore, plant, and predator feeder, bacteria:fungal feeder, maturity index, and plant parasite index. The nematode were classified into feeding groups based on (REF). In addition, we calculated the ratio of bacteria to fungi feeders. Finally, we calculated the maturity index and the plant parasite index [*add what they mean*].
+We extracted seven functions related to nematodes: the relative abundance of bacterivore, fungivore, plant, and predator feeder, the bacteria:fungal feeder ratio, maturity index, and plant parasite index. The maturity index is the abundance-weighted mean of colonizer-persister (c-p) score for free-living nematoes, scaled from 1 (colonizers with a short and fast life cycle, often bacterial feeders) to 5 (persisters with long and slow life cycle) [@bongers1990maturity]. A low value indicates disturbance. The plant parasite index is the same weighted mean calculated only for plant-parasitic nematodes, which are excluded from the maturity index. Under nutrient enrichment the two indices tend to move in opposite directions [@bongers1997inverse].
 
-We also used eight variables on microbes: the relative abundance of total bacteria and total fungi, ectomycorrhizal, root associated, saprotroph, yeast, and diamorphic fungi, and the bacteria:fungi ratio.
+Finally, we used seven functions on microbes: the relative abundance of total bacteria and total fungi, ectomycorrhizal, root associated, saprotroph, yeast diamorphic fungi, and the bacteria:fungi ratio.
 
+### Convertion, standardization, and calculation of multifunctionality
 
-### Standardization and calculations
+For the functions a higher value generally indicates higher ecosystem functioning. GPP was therefore inverted, so that positive values mean a higher CO~2~ uptake. The maturity index, the plant parasite index, and bacteria:fungi ratio are related to slow and fast life cycles in the soil biota. The maturity index and the plant parasite index were also inverted, so that low values indicate slow, persister communities and high values indicate fast, colonizer communities. The bacteria:fungi ratios for both microbes and nematode feeders already go from slower fungi-dominated (low values) to faster bacteria-dominated communities (high values). The PC axis 1 of the available micronutrients had negative values, we added the absolute minimum value plus one to make them positive.
 
-Functions were if possible converted, so that higher values mean higher ecosystem functioning or variables go from slow to fast processes/strategies. The plant parasite index, and maturity index as well as GPP were inverted. The bacteria to fungi ratio, also indicates a slow to fast strategy. For functions that contain negative values (i.e. NEE, available nutrients), we added the absolute minimum value plus one. For functions with a strongly skewed distribution, we log transformed the data, except for ratios, where we used the logit transformation. We then standardized the values of each funciton to mean 0 and standard deviation 1, to remove differences in measurement scale between the variables.
+For functions with a strongly skewed distribution, we log transformed the data, except for ratios, where we used the logit transformation.
+
+We then standardized the values of each function to mean 0 and standard deviation 1, to remove differences in measurement scale between the variables.
 
 To calculate average multifunctionality, we used the absolute values of each function and then calculated the mean of absolute standardized values across all individual functions as $MF_a = \frac{1}{F} \sum_{i=1}^{F} abs(f_i)$, where $F$ is the number of functions and $f_i$ is a measure of function $i$.
 
-
 ### Data analysis
-
 
 #### Principle component analysis
 
-- PCA for all data and one where site is partioned out
-
+-   PCA for all data and one where site is partioned out
 
 #### Testing the effect of functional group remaining, biomass and climate on ecosystem functions
 
@@ -119,14 +125,11 @@ The models were run for nine sites and five treatments.
 
 We ran three different linear mixed-effects models to test the effect of functional group remaining, climate and biomass on ecosystem functions. We excluded the interaction of temperature and precipitation to simplify the model.
 
-Model 1: To test the effect of functional group removed and climate
-function ~ functional group remaining x (T + P) + (1/siteID)
+Model 1: To test the effect of functional group removed and climate function \~ functional group remaining x (T + P) + (1/siteID)
 
-Model 2: to test if the biomass of the functional groups matters we add remaining bioamss to model 1
-function ~ functional group remaining + (T x P) + biomass + (1/siteID)
+Model 2: to test if the biomass of the functional groups matters we add remaining bioamss to model 1 function \~ functional group remaining + (T x P) + biomass + (1/siteID)
 
-Model 3: to test if the amount of biomass from differet functional groups matter, we ran a model with functional group biomass and climate
-function ~ biomassF + biomassG + biomassB + (T x P) + (1/siteID)
+Model 3: to test if the amount of biomass from differet functional groups matter, we ran a model with functional group biomass and climate function \~ biomassF + biomassG + biomassB + (T x P) + (1/siteID)
 
 We ran these full models and a main effects model only to see if the interactions were important. The main effects model included the interaction of temperature and precipitation.
 
@@ -139,7 +142,6 @@ We calculated the conditional and marginal R^2^ for each model. To test if the v
 To test if the estimates (slopes) of the different model term change when adding biomass (model 1 vs. model 2) or functional group biomass (model 2 vs. model 3) to the model, we ran a paired Wilcoxon test between the estimates from these models. We also ran a linear regression, testing if the relationship between the estimates of the two models differ from the 1:1 line.
 
 We ran the same tests comparing the R^2^ and estimates between the full and main effects models.
-
 
 #### Testing the effect of functional group remaining, biomass and climate on multifunctionality
 

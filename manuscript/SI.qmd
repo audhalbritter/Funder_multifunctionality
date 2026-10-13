@@ -50,39 +50,14 @@ tar_read(micronutrient_pca_plot)
 
 ###  Data transformation
 
-#### Raw data
 ```{r}
-#| label: fig-raw-plot
+#| label: fig-transformation
 #| echo: false
 #| warning: false
-#| fig-width: 10
-#| fig-height: 8
-#| fig-cap: Histograms for all functions before any transformation.
-tar_read(raw_functions_plot)
-```
-
-
-#### Normalize data
-
-```{r}
-#| label: fig-normalized-plot
-#| echo: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 8
-#| fig-cap: Histograms for all functions after log tranformation.
-tar_read(normalize_functions_plot)
-```
-
-#### Standardize data
-```{r}
-#| label: fig-std-plot
-#| echo: false
-#| warning: false
-#| fig-width: 10
-#| fig-height: 8
-#| fig-cap: Histograms for all functions after standardization to mean 0 and sd.
-tar_read(standardize_functions_plot)
+#| fig-width: 8.5
+#| fig-height: 11
+#| fig-cap: "Distributions of each function, stacked by group. Left: raw and transformed shapes on a relative scale, because the variables use different units. Where no transformation was applied, one grey curve is shown. Where a transformation was applied, the raw curve is grey and the transformed curve is coloured. Right: standardized values on a shared axis, in the same colour."
+tar_read(transformation_distributions_plot)
 ```
 
 #### Correlation between functions

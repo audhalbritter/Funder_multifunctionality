@@ -468,7 +468,7 @@ transformation_plan <- list(
   tar_target(
     name = phosphorus_stock,
     command = macronutrients_raw |>
-      filter(name == "phosphorous") |>
+      filter(name == "P") |>
       # convert from mg per 100g dry soil to g per g dry soil
       mutate(value = value / 100) |>
       select(year, siteID, blockID, plotID, treatment, value) |>
