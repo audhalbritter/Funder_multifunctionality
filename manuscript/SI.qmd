@@ -10,6 +10,11 @@ csl: ../journal-of-ecology.csl
 editor: 
   markdown: 
     wrap: sentence
+crossref:
+  fig-title: "Figure S"
+  fig-prefix: "Fig. S"
+  tbl-title: "Table S"
+  tbl-prefix: "Table S"
 ---
 
 ```{r}
@@ -29,6 +34,18 @@ library(broom.mixed)
 
 # Set targets store path
 tar_config_set(store = "../_targets")
+```
+
+### Available micronutrients
+
+```{r}
+#| label: fig-micronutrient-pca
+#| echo: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 5.5
+#| fig-cap: "Scree plot of the variance explained by each principal component of the 11 available micronutrients (a), and biplot of PC1 against PC2 (b). Arrows are the micronutrient loadings. Points are plots, coloured by summer temperature and shaped by annual precipitation. PC1 is the axis used as the available-micronutrient function."
+tar_read(micronutrient_pca_plot)
 ```
 
 ###  Data transformation

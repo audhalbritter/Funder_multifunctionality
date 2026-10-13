@@ -27,6 +27,12 @@ si_figure_plan <- list(
     command = c("solid", "dashed", "dotted", "dotdash")
   ),
 
+  # Available micronutrients: scree plot and PC1–PC2 biplot
+  tar_target(
+    name = micronutrient_pca_plot,
+    command = plot_nutrient_pca(micronutrients_pca)
+  ),
+
   # Raw data
   tar_target(
     name = raw_functions_plot,

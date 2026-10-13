@@ -38,54 +38,56 @@ make_nutrient_pca <- function(available_nutrients_raw, meta) {
 
 
 plot_nutrient_pca <- function(other_available_nutrients) {
-  e_B <- eigenvals(other_available_nutrients[[3]]) / sum(eigenvals(other_available_nutrients[[3]]))
+  pct <- eigenvals(other_available_nutrients[[3]]) / sum(eigenvals(other_available_nutrients[[3]])) * 100
+  n_pcs <- length(pct)
 
-  evals <- eigenvals(other_available_nutrients[[3]])
-  n_pcs <- length(evals)
-  scree <- evals |>
-    as_tibble() |>
-    rename(eigenvalue = x) |>
-    mutate(
-      PC = paste0("PC", seq_len(n_pcs)),
-      PC = factor(PC, levels = paste0("PC", seq_len(n_pcs)))
-    ) |>
-    ggplot(aes(y = eigenvalue, x = PC)) +
+  scree <- tibble(
+    PC = factor(paste0("PC", seq_len(n_pcs)), levels = paste0("PC", seq_len(n_pcs))),
+    variance = as.numeric(pct)
+  ) |>
+    ggplot(aes(x = PC, y = variance)) +
     geom_col() +
-    labs(tag = "a)") +
+    geom_text(aes(label = round(variance, 1)), vjust = -0.4, size = 2.6) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+    labs(x = NULL, y = "Variance explained (%)") +
     theme_bw()
 
+  loadings <- other_available_nutrients[[2]] |>
+    mutate(
+      label_x = PC1 * 1.12,
+      label_y = PC2 * 1.12
+    )
 
   pca <- other_available_nutrients[[1]] |>
     ggplot(aes(x = PC1, y = PC2, colour = temperature_degree, shape = precipitation_name)) +
+    geom_hline(yintercept = 0, linewidth = 0.2, colour = "grey80") +
+    geom_vline(xintercept = 0, linewidth = 0.2, colour = "grey80") +
     geom_segment(
-      data = other_available_nutrients[[2]],
+      data = loadings,
       aes(x = 0, y = 0, xend = PC1, yend = PC2),
-      colour = "grey70",
-      arrow = arrow(length = unit(0.2, "cm")),
+      colour = "grey40",
+      arrow = arrow(length = unit(0.18, "cm")),
       inherit.aes = FALSE
     ) +
     geom_text(
-      data = other_available_nutrients[[2]],
-      aes(x = PC1 + 0.1, y = PC2, label = elements),
-      size = 2.5,
+      data = loadings,
+      aes(x = label_x, y = label_y, label = elements),
+      size = 3,
       inherit.aes = FALSE,
-      show.legend = FALSE, parse = TRUE
+      show.legend = FALSE
     ) +
-    geom_point() +
+    geom_point(size = 2) +
     coord_equal() +
-    scale_colour_viridis_c(end = 0.8, option = "inferno", name = "Summer temperature") +
-    scale_shape_manual(values = c(15, 16, 17, 1), name = "Precipitation in mm") +
+    scale_colour_viridis_c(end = 0.8, option = "inferno", name = "Summer temperature (°C)") +
+    scale_shape_manual(values = c(15, 16, 17, 1), name = "Precipitation") +
     labs(
-      x = glue("PCA1 ({round(e_B[1] * 100, 1)}%)"),
-      y = glue("PCA2 ({round(e_B[2] * 100, 1)}%)"),
-      tag = "b)"
+      x = glue("PC1 ({round(pct[1], 1)}%)"),
+      y = glue("PC2 ({round(pct[2], 1)}%)")
     ) +
     theme_bw() +
-    theme(
-      aspect.ratio = 1,
-      plot.tag.position = c(0, 0.9),
-      plot.tag = element_text(vjust = -1.5, hjust = -0.5, size = 10)
-    )
+    theme(aspect.ratio = 1)
 
-  scree + pca
+  scree + pca +
+    plot_layout(widths = c(1.05, 1)) +
+    plot_annotation(tag_levels = "a")
 }
