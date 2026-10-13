@@ -116,46 +116,23 @@ transformation_plan <- list(
       )
   ),
 
-  # root productivity and traits
-  # Ram2 GB is missing (5GB)
-  tar_target(
-    name = root_biomass,
-    command = root_biomass_raw |>
-      mutate(year = 2021) |>
-      select(year, siteID, blockID, plotID, treatment, value = root_biomass) |>
-      tidylog::filter(!is.na(value)) |>
-      # convert to g per 625 cm2
-      mutate(
-        ric_radius = 3 / 2, # ric is 3 cm in diameter
-        ric_area = pi * ric_radius^2,
-        value = value * 10000 / ric_area
-      ) |>
-      mutate(
-        data_type = "stock",
-        group = "primary producers",
-        response = "root biomass",
-        unit = "g m\u207B\u00B2"
-      ) |>
-      select(-ric_radius, -ric_area)
-  ),
-
   # prep nematodes
   tar_target(
     name = nematode,
     command = nematode_raw |>
       tidylog::filter(family != "unknown") |>
-      tidylog::mutate(functional_group = if_else(functional_group == "omnivore", "predator", functional_group)) |>
+      tidylog::mutate(feeding_group = if_else(feeding_group == "omnivore", "predator", feeding_group)) |>
       summarise(
-        value = sum(per_family_abundance_per_g_dry_soil),
-        .by = c(year, siteID, blockID, plotID, treatment, family, functional_group)
+        value = sum(family_abundance_per_g, na.rm = TRUE),
+        .by = c(year, siteID, blockID, plotID, treatment, family, feeding_group)
       )
   ),
 
   tar_target(
     name = nematode_density,
     command = nematode_raw |>
-      distinct(year, siteID, blockID, plotID, treatment, total_nematode_abundance_per_g_dry_soil) |>
-      rename(value = total_nematode_abundance_per_g_dry_soil) |>
+      distinct(year, siteID, blockID, plotID, treatment, total_nematode_abundance_per_g) |>
+      rename(value = total_nematode_abundance_per_g) |>
       mutate(
         data_type = "stock",
         group = "nematodes",
@@ -167,7 +144,7 @@ transformation_plan <- list(
   tar_target(
     name = nematode_feeding_group_density,
     command = nematode |>
-      group_by(year, siteID, blockID, plotID, treatment, response = functional_group) |>
+      group_by(year, siteID, blockID, plotID, treatment, response = feeding_group) |>
       summarise(value = sum(value)) |>
       mutate(
         data_type = "stock",
@@ -180,8 +157,8 @@ transformation_plan <- list(
     tar_target(
     name = nematode_fungal_bacterial_feeder_ratio,
     command = nematode |> 
-      filter(functional_group %in% c("fungivore", "bacterivore")) |>
-      group_by(year, siteID, blockID, plotID, treatment, response = functional_group) |>
+      filter(feeding_group %in% c("fungivore", "bacterivore")) |>
+      group_by(year, siteID, blockID, plotID, treatment, response = feeding_group) |>
       summarise(value = sum(value)) |>
       pivot_wider(id_cols = c(year, siteID, blockID, plotID, treatment), names_from = response, values_from = value) |>
       # bacteria to fungi ratio to make it slow to fast
@@ -259,9 +236,14 @@ transformation_plan <- list(
   # fungal and bacterial density
   tar_target(
     name = microbes,
-    command = microbial_raw |> 
-      tidylog::mutate(abundance_per_g = if_else(is.na(abundance_per_g), 0, abundance_per_g)) |>
-      select(year, siteID, blockID, plotID, treatment, group, value = abundance_per_g)
+    command = microbial_raw |>
+      # qPCR file: blank controls, and three wells per plot (six when a plot was run twice)
+      filter(sub == "sample") |>
+      summarise(
+        value = mean(corrected_abundance_per_g, na.rm = TRUE),
+        .by = c(year, siteID, blockID, plotID, treatment, group)
+      ) |>
+      mutate(value = if_else(is.na(value), 0, value))
   ),
 
     # fungal and bacterial density
@@ -370,13 +352,13 @@ transformation_plan <- list(
   tar_target(
     name = cn_stocks,
     command = cn_raw |>
-      select(year:plotID, response = variable, value) |>
+      select(year, siteID, blockID, plotID, treatment, response = name, value) |>
       mutate(
         data_type = "stock",
         response = case_when(
           response == "C" ~ "carbon stock",
           response == "N" ~ "nitrogen stock",
-          response == "CN" ~ "CN",
+          response == "CN_ratio" ~ "CN",
           TRUE ~ response
         ),
         group = case_when(
@@ -385,21 +367,6 @@ transformation_plan <- list(
           TRUE ~ NA_character_
         ),
         unit = "g g\u207B\u00B9"
-      )
-  ),
-
-  # soil organic matter
-  tar_target(
-    name = som,
-    command = som_raw |>
-      mutate(year = 2022) |>
-      filter(variable == "organic_matter") |>
-      select(year, siteID, blockID, plotID, treatment, value) |> 
-      mutate(
-        data_type = "stock",
-        response = "soil organic matter",
-        group = "carbon cycling",
-        unit = "%"
       )
   ),
 

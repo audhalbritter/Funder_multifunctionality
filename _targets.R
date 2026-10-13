@@ -18,7 +18,7 @@ tar_source(files = "R")
 
 # Replace the target list below with your own:
 list(
-  download_plan,
+  import_plan,
   transformation_plan,
   multifunctionality_plan,
   pca_plan,

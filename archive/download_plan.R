@@ -1,3 +1,8 @@
+# Inactive. Clean files are no longer on OSF and will be deposited on Zenodo.
+# This file lives outside R/ so tar_source() does not load it.
+# Move it back to R/ and switch _targets.R from import_plan to download_plan
+# once the Zenodo paths are known.
+
 # download_data
 download_plan <- list(
   # plant data
@@ -22,26 +27,6 @@ download_plan <- list(
       path = here::here("data"),
       remote_path = "1_Vegetation/Clean_data"
     ),
-    format = "file"
-  ),
-
-  # root biomass (need to change to new root biomass 2021)
-  # tar_target(
-  #   name = root_biomass_download,
-  #   command =  get_file(node = "tx9r2",
-  #                       file = "FUNDER_initial_roots_clean_data_2024.csv",
-  #                       path = here::here("data"),
-  #                       remote_path = "1_Vegetation/Clean_data"),
-  #   format = "file"
-  # ),
-
-  # root traits
-  tar_target(
-    name = root_traits_download,
-    command =  get_file(node = "tx9r2",
-                        file = "FUNDER_clean_root_traits_corrected_2022.csv",
-                        path = here::here("data"),
-                        remote_path = "1_Vegetation/Clean_data"),
     format = "file"
   ),
 
@@ -112,7 +97,7 @@ download_plan <- list(
       node = "tx9r2",
       file = "FUNDER_functional_fungi_2022.csv",
       path = here::here("data"),
-      remote_path = "3_Fungi_microbes/Clean_data"
+      remote_path = "z_misc"
     ),
     format = "file"
   ),
@@ -148,18 +133,6 @@ download_plan <- list(
     command = get_file(
       node = "tx9r2",
       file = "FUNDER_clean_soil_CN_2022.csv",
-      path = here::here("data"),
-      remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"
-    ),
-    format = "file"
-  ),
-
-  # soil organic matter
-  tar_target(
-    name = som_download,
-    command = get_file(
-      node = "tx9r2",
-      file = "FUNDER_clean_LOI_2022.csv",
       path = here::here("data"),
       remote_path = "5_Carbon_and_nutrient_cycle/Clean_data"
     ),
@@ -236,18 +209,6 @@ download_plan <- list(
     command = read_csv(standing_biomass_download)
   ),
 
-  # root biomass 21
-  tar_target(
-    name = root_biomass_raw,
-    command = read_csv(here::here("data", "FUNDER_clean_root_biomass_2021.csv"))
-  ),
-
-  # root productivity and traits
-  tar_target(
-    name = root_traits_raw,
-    command = read_csv(root_traits_download)
-  ),
-
   # community composition
   tar_target(
     name = community_raw,
@@ -299,10 +260,6 @@ download_plan <- list(
   tar_target(
     name = cn_raw,
     command = read_csv(cn_download)
-  ),
-  tar_target(
-    name = som_raw,
-    command = read_csv(som_download)
   ),
 
   # macronutrients and ph
