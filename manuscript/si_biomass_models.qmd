@@ -28,12 +28,11 @@ tar_config_set(store = "../_targets")
 
 # Function vs functional group biomass for each temperature and preciptiation level
 
-Here we run models for each function with biomass of each functional group and temperature and precipitation are the predictors. The following three models were run to test if biomass is a linear or non-linear: biomass is i) untransformed, ii) log transformed and iii)as a polynomial term in the model. The models were then compared using AIC values and the model with the lowest AIC value was selected and plotted with prediction lines for different temperature and precipitation levels if they were signifciant.
+Here we run models for each function with biomass of each functional group and temperature and precipitation are the predictors. The following three models were run to test if biomass is a linear or non-linear: biomass is i) untransformed, ii) log transformed and iii) as a polynomial term in the model. The models were then compared using AIC values and the model with the lowest AIC value was selected and plotted with prediction lines for different temperature and precipitation levels if they were signifciant.
 
 ```{r}
 #| label: tbl-model-selection
 #| tbl-cap: "Summary of selected model types across all responses."
-
 tar_load(si_fg_biomass_model_selection)
 
 si_fg_biomass_model_selection$selected_models |>
@@ -47,7 +46,6 @@ si_fg_biomass_model_selection$selected_models |>
 #| results: asis
 #| fig-width: 10
 #| fig-height: 4
-
 source("../R/functions/make_figures.R")
 tar_load(si_model_plots)
 
