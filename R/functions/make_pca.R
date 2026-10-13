@@ -48,16 +48,22 @@ make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova
     pca_output <- rda(form, data = metadata, scale = TRUE)
   }
 
+  # vegan 2.7 scores(tidy = TRUE) replaces fortify(); tidy always returns every score type
+  pca_scores <- scores(pca_output, choices = 1:6, tidy = TRUE)
+
   pca_sites <- bind_cols(
     metadata,
-    fortify(pca_output, display = "sites")
+    pca_scores |>
+      filter(score == "sites") |>
+      select(starts_with("PC"))
   )
 
   # Map response to group for colouring loadings
   response_to_group <- big_data |>
     distinct(response, group)
 
-  pca_traits <- fortify(pca_output, display = "species") |>
+  pca_traits <- pca_scores |>
+    filter(score == "species") |>
     rename(response = label) |>
     left_join(response_to_group, by = "response") |>
     mutate(response = pretty_response_label(response))

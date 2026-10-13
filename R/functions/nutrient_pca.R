@@ -18,13 +18,19 @@ make_nutrient_pca <- function(available_nutrients_raw, meta) {
     select(-(siteID:precipitation_scaled)) |>
     rda(scale = TRUE, center = TRUE)
 
+  # vegan 2.7 scores(tidy = TRUE) replaces fortify(); tidy always returns every score type
+  pca_scores <- scores(pca_output, choices = 1:6, tidy = TRUE)
+
   pca_sites <- bind_cols(
     nutri_wide |>
       select(siteID:precipitation_scaled),
-    fortify(pca_output, display = "sites")
+    pca_scores |>
+      filter(score == "sites") |>
+      select(starts_with("PC"))
   )
 
-  pca_traits <- fortify(pca_output, display = "species") |>
+  pca_traits <- pca_scores |>
+    filter(score == "species") |>
     rename(elements = label)
 
   outputList <- list(pca_sites, pca_traits, pca_output)
