@@ -29,7 +29,9 @@ manuscript_plan <- list(
     # manuscript
     tar_quarto(
         name = manuscript,
-        path = "manuscript/manuscript.qmd"
+        path = "manuscript/manuscript.qmd",
+        # Render from manuscript/ so store = "../_targets" is this project's store.
+        working_directory = "manuscript"
     )
 
     # SI
