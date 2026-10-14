@@ -1,13 +1,13 @@
 # pca plan
 
 pca_plan <- list(
-    # PERMANOVA models: (1) climate only, (2) FG × climate + biomass, (3) biomass G/F/B × climate
+    # PERMANOVA models: (1) climate only, (2) treatment + climate + biomass, (3) FG biomass + climate
     tar_target(
         name = pca_permanova_models,
         command = list(
             climate = "temperature_scaled * precipitation_scaled",
-            fg_climate_biomass = "treatment * (temperature_scaled * precipitation_scaled) + total_biomass_scaled",
-            biomass_fg_climate = "(biomass_scaled_G + biomass_scaled_F + biomass_scaled_B) * (temperature_scaled * precipitation_scaled)"
+            fg_climate_biomass = "treatment + temperature_scaled * precipitation_scaled + total_biomass_scaled",
+            biomass_fg_climate = "biomass_scaled_G + biomass_scaled_F + biomass_scaled_B + temperature_scaled * precipitation_scaled"
         )
     ),
 
@@ -37,6 +37,10 @@ pca_plan <- list(
                 patchwork::plot_layout(guides = "collect") +
                 patchwork::plot_annotation(tag_levels = "a")
         }
+    ),
+    tar_target(
+        name = pca_permanova_table,
+        command = make_permanova_comparison_table(pca_all, pca_no_site)
     ),
     tar_target(
         name = pca_scree_plot,

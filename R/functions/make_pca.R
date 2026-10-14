@@ -274,3 +274,98 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
   # Stack plots vertically: points on top, arrows below
   p_sites / p_loadings
 }
+
+permanova_term_label <- function(x) {
+  x |>
+    str_replace_all("biomass_scaled_G", "Graminoid biomass") |>
+    str_replace_all("biomass_scaled_F", "Forb biomass") |>
+    str_replace_all("biomass_scaled_B", "Bryophyte biomass") |>
+    str_replace_all("total_biomass_scaled", "Total biomass") |>
+    str_replace_all("temperature_scaled", "Temperature") |>
+    str_replace_all("precipitation_scaled", "Precipitation") |>
+    str_replace_all("treatment", "Treatment") |>
+    str_replace_all(":", " × ")
+}
+
+permanova_terms <- function(ad, model_name) {
+  ad |>
+    as.data.frame() |>
+    tibble::rownames_to_column("term") |>
+    filter(term != "Total") |>
+    transmute(
+      model = model_name,
+      term = permanova_term_label(term),
+      r2 = .data[["R2"]] * 100,
+      p = .data[["Pr(>F)"]]
+    )
+}
+
+#' Compare sequential R² from the full and site-partitioned PERMANOVA models
+#'
+#' @param pca_full Output of make_pca() without partitioning
+#' @param pca_partitioned Output of make_pca() with site partitioned out
+#' @return A gt table. Significant R² values (p ≤ 0.05) are bold. Residual rows are included.
+make_permanova_comparison_table <- function(pca_full, pca_partitioned) {
+  model_labels <- c(
+    climate = "Climate only",
+    fg_climate_biomass = "Treatment + climate + total biomass",
+    biomass_fg_climate = "Functional group biomass + climate"
+  )
+
+  extract <- function(pca) {
+    permanova <- pca[[4]]
+    missing <- setdiff(names(model_labels), names(permanova))
+    if (length(missing) > 0) {
+      stop("PERMANOVA models missing: ", paste(missing, collapse = ", "))
+    }
+    purrr::map(names(model_labels), function(nm) {
+      permanova_terms(permanova[[nm]], unname(model_labels[[nm]]))
+    }) |>
+      list_rbind()
+  }
+
+  extract(pca_full) |>
+    inner_join(
+      extract(pca_partitioned),
+      by = c("model", "term"),
+      suffix = c("_full", "_partitioned")
+    ) |>
+    mutate(
+      model = factor(model, levels = unname(model_labels)),
+      # Climate is removed with the site mean, so climate terms are not tested.
+      # The climate-only model then has nothing left to test, including its residual.
+      untested_partitioned = term %in% c(
+        "Temperature", "Precipitation", "Temperature × Precipitation"
+      ) | model == "Climate only",
+      r2_partitioned = if_else(untested_partitioned, NA_real_, r2_partitioned),
+      p_partitioned = if_else(untested_partitioned, NA_real_, p_partitioned),
+      across(c(r2_full, r2_partitioned), ~ round(.x, 1))
+    ) |>
+    select(-untested_partitioned) |>
+    gt(groupname_col = "model") |>
+    cols_hide(columns = c(p_full, p_partitioned)) |>
+    fmt_number(
+      columns = c(r2_full, r2_partitioned),
+      decimals = 1,
+      pattern = "{x}%"
+    ) |>
+    cols_label(
+      term = "Term",
+      r2_full = "Full PCA",
+      r2_partitioned = "Site partitioned"
+    ) |>
+    tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_body(
+        columns = r2_full,
+        rows = !is.na(p_full) & p_full <= 0.05
+      )
+    ) |>
+    tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_body(
+        columns = r2_partitioned,
+        rows = !is.na(p_partitioned) & p_partitioned <= 0.05
+      )
+    )
+}

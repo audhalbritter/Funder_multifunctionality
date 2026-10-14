@@ -36,7 +36,13 @@ tar_config_set(store = "../_targets")
 tar_read(pca_all_vs_no_site_plot)
 ```
 
-Show the variance partitioning from both ordinations!!!
+```{r}
+#| label: tbl-permanova
+#| echo: false
+#| warning: false
+#| tbl-cap: "Percentage of variation in ecosystem function composition explained by each term (sequential R²). Bold values are significant (p ≤ 0.05, 999 permutations). The site-partitioned column is the same model after the site mean was removed. The climate-only model, and the climate terms in the other models, are NA there because climate was removed with the site and was not tested."
+tar_read(pca_permanova_table)
+```
 
 
 ### Single function models
