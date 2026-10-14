@@ -113,9 +113,13 @@ To calculate average multifunctionality, we used the absolute values \[NEED TO E
 
 ### Data analysis
 
+All analysis were done using the data from nine sites (excluding the three sites at the second wettest precipitation level with 2100 mm annual precipitation) and five removal treatments (None, F, G, B, All), because this resulted in a complete dataset. We repeated all analysis with the available data from all 12 sites and eight removal treatments to see how consistent the results were (see Appendix XXX).
+
+We tested the effect of the plant functional groups (remaining vegetation per plot) in three different ways. To understand if the identity of the functional group matters, we used functional group remaining as a categorical variable with five levels (all, F, G, B, none). To understand if in addition to the identity, the amount of biomass matters, we used functional group remaining plus biomass. And finally, to understand if the quanitity of each functional group matters we used the functional group biomass as quantitative variables (biomass~F~ + biomass~G~ + biomass~B~).
+
 #### Principle component analysis
 
--   PCA for all data and one where site is partioned out
+We ran a principle component analysis (PCA) with all `{r} n_distinct(big_data$response)` functions using the rda function in the vegan package [@oksanen2026vegan] with scaled and centered data. The PCA was repeated with site partitioned out to test how much variation can be explained after removing the temperature and precipitation gradients. We ran three PERMANOVA's separately for each PCA using the adonis2 function, to test for the effect of climate (temperature x precipitation), functional group remaining plus biomass and climate, as well as the functional group biomass of forbs, graminoids and bryphytes and climate.
 
 #### Testing the effect of functional group remaining, biomass and climate on ecosystem functions
 
@@ -125,9 +129,9 @@ We ran three different linear mixed-effects models to test the effect of functio
 
 Model 1: To test the effect of functional group removed and climate function \~ functional group remaining x (T + P) + (1/siteID)
 
-Model 2: to test if the biomass of the functional groups matters we add remaining bioamss to model 1 function \~ functional group remaining + (T x P) + biomass + (1/siteID)
+Model 2: to test if the biomass of the functional groups matters we add remaining biomass to model 1 function \~ functional group remaining + (T x P) + biomass + (1/siteID)
 
-Model 3: to test if the amount of biomass from differet functional groups matter, we ran a model with functional group biomass and climate function \~ biomassF + biomassG + biomassB + (T x P) + (1/siteID)
+Model 3: to test if the amount of biomass from different functional groups matter, we ran a model with functional group biomass and climate function \~ biomassF + biomassG + biomassB + (T x P) + (1/siteID)
 
 We ran these full models and a main effects model only to see if the interactions were important. The main effects model included the interaction of temperature and precipitation.
 

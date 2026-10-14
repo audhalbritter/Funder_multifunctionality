@@ -65,7 +65,7 @@ tar_read(transformation_distributions_plot)
 #| label: fig-correlation-plot
 #| echo: false
 #| warning: false
-#| fig-cap: Correlation between all functions (untransformed data).
+#| fig-cap: Correlation between all functions on untransformed data.
 #| fig-width: 12
 #| fig-height: 12
 tar_read(correlation_plot)
