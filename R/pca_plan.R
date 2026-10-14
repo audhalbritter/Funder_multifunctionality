@@ -25,17 +25,48 @@ pca_plan <- list(
     tar_target(
         name = pca_all_vs_no_site_plot,
         command = {
-            p_all <- plot_pca_separate(pca_all, facet_var = "habitat") + ggtitle("All data")
-            p_no_site <- plot_pca_separate(
+            full <- plot_pca_separate(
+                pca_all,
+                facet_var = "habitat",
+                facet_ncol = 1,
+                show_loadings_legend = FALSE,
+                components = TRUE
+            )
+            site <- plot_pca_separate(
                 pca_no_site,
                 display = "treatment",
                 facet_var = "fg_remaining",
+                facet_ncol = 2,
+                facet_nrow = 3,
                 point_size_var = "total_biomass",
-                point_alpha = 0.6
-            ) + ggtitle("Site effect partitioned out")
-            p_all | p_no_site +
-                patchwork::plot_layout(guides = "collect") +
-                patchwork::plot_annotation(tag_levels = "a")
+                point_alpha = 0.6,
+                components = TRUE
+            )
+            panel_title <- function(label) {
+                list(
+                    ggtitle(label),
+                    theme(
+                        plot.title = element_text(
+                            size = 18,
+                            face = "bold",
+                            hjust = 0,
+                            margin = margin(t = 0, r = 0, b = 4, l = 0)
+                        ),
+                        plot.title.position = "panel",
+                        plot.margin = margin(t = 6, r = 4, b = 2, l = 4)
+                    )
+                )
+            }
+            full$sites <- full$sites + panel_title("a) All data")
+            site$sites <- site$sites + panel_title("b) Site effect partitioned out")
+            # Points keep the 1:2 column split. Loadings are joined on their own
+            # row so the two biplots are the same size.
+            points <- full$sites + site$sites +
+                patchwork::plot_layout(widths = c(1, 2))
+            loadings <- full$loadings + site$loadings +
+                patchwork::plot_layout(widths = c(1, 1), guides = "collect")
+            points / loadings +
+                patchwork::plot_layout(heights = c(3, 1.5))
         }
     ),
     tar_target(

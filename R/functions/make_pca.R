@@ -174,9 +174,13 @@ plot_pca <- function(pca_output) {
 
 #' @param display "climate" (colour by temperature, shape by precipitation) or "treatment" (colour by treatment)
 #' @param facet_var Optional string: column name in `sites` data used for `facet_wrap(~ facet_var)`. Default NULL (no faceting).
+#' @param facet_ncol Optional number of facet columns.
+#' @param facet_nrow Optional number of facet rows.
 #' @param point_size_var Optional string: column name in `sites` used for point size (e.g. "total_biomass"). Default NULL (fixed point size).
 #' @param point_alpha Numeric transparency for points in [0, 1]. Default 1 (opaque).
-plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), facet_var = NULL, point_size_var = NULL, point_alpha = 1) {
+#' @param show_loadings_legend Logical. Keep the group legend on the loadings panel.
+#' @param components Logical. If TRUE, return a list with `sites` and `loadings` instead of a stacked patchwork.
+plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), facet_var = NULL, facet_ncol = NULL, facet_nrow = NULL, point_size_var = NULL, point_alpha = 1, show_loadings_legend = TRUE, components = FALSE) {
   display <- match.arg(display)
   e_B <- eigenvals(pca_output[[3]]) / sum(eigenvals(pca_output[[3]]))
   sites <- pca_output[[1]]
@@ -187,6 +191,12 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
     glue("PCA2 ({round(e_B[2] * 100, 1)}%)")
   )
 
+  if (!is.null(facet_var)) {
+    if (!facet_var %in% names(sites)) {
+      stop("facet_var '", facet_var, "' not found in PCA site metadata")
+    }
+    sites[[facet_var]] <- droplevels(as.factor(sites[[facet_var]]))
+  }
   if (!is.null(point_size_var) && !point_size_var %in% names(sites)) {
     stop("point_size_var '", point_size_var, "' not found in PCA site metadata")
   }
@@ -210,7 +220,10 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
     coord_equal() +
     labs(x = axis_labs[1], y = axis_labs[2]) +
     theme_bw() +
-    theme(aspect.ratio = 1)
+    theme(
+      aspect.ratio = 1,
+      legend.position = if (show_loadings_legend) "right" else "none"
+    )
 
   # Plot 2: points (sites) only
   if (display == "climate") {
@@ -263,12 +276,21 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
   }
 
   if (!is.null(point_size_var)) {
-    p_sites <- p_sites + scale_size_continuous(name = point_size_var)
+    size_name <- if (point_size_var == "total_biomass") "Total biomass" else point_size_var
+    p_sites <- p_sites + scale_size_continuous(name = size_name)
   }
 
   # Optional faceting by a column in `sites`
   if (!is.null(facet_var)) {
-    p_sites <- p_sites + facet_wrap(as.formula(paste("~", facet_var)))
+    p_sites <- p_sites + facet_wrap(
+      as.formula(paste("~", facet_var)),
+      ncol = facet_ncol,
+      nrow = facet_nrow
+    )
+  }
+
+  if (components) {
+    return(list(sites = p_sites, loadings = p_loadings))
   }
 
   # Stack plots vertically: points on top, arrows below
