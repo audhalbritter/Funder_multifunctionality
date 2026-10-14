@@ -17,15 +17,24 @@ A.H. Halbritter^1,2^, I.H.J. Althuizen^2,3^, M. Demeaux^1,2^, P.G. Farsund^1,2^,
 
 **Affiliations**
 
-^1^ Department of Biological Sciences, University of Bergen, Bergen, Norway  
-^2^ Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway  
-^3^ NORCE, Norwegian Research Centre AS, Bjerknes Centre for Climate Research, Bergen, Norway  
+^1^ Department of Biological Sciences, University of Bergen, Bergen, Norway
+
+^2^ Bjerknes Centre for Climate Research, University of Bergen, Bergen, Norway
+
+^3^ NORCE, Norwegian Research Centre AS, Bjerknes Centre for Climate Research, Bergen, Norway
+
 ^4^ Department of Ecology and Evolutionary Biology, University of Michigan, Ann Arbor, MI, USA
-^4^ University of Aix-Marseille, Marseille, France  
-^5^ Department of Soil and Environment, Swedish University of Agricultural Sciences, Uppsala, Sweden  
-^6^ Department of Forest Mycology and Plant Pathology, Swedish University of Agricultural Science, Uppsala, Sweden  
-^7^ Section for Genetics and Evolutionary Biology, Department of Biosciences, University of Oslo, Norway  
+
+^5^ University of Aix-Marseille, Marseille, France
+
+^6^ Department of Soil and Environment, Swedish University of Agricultural Sciences, Uppsala, Sweden
+
+^7^ Department of Forest Mycology and Plant Pathology, Swedish University of Agricultural Science, Uppsala, Sweden
+
+^8^ Section for Genetics and Evolutionary Biology, Department of Biosciences, University of Oslo, Norway
+
 ^9^ Faculty of Environmental Sciences and Natural Resource Management, Norwegian University of Life Sciences, Ås, Norway
+
 ^10^ Department of Ecology and Environmental Science, Umeå University, Umeå, Sweden
 
 **Corresponding authors:** aud.halbritter@uib.no, vigdis.vandvik@uib.no
