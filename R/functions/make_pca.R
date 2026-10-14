@@ -109,28 +109,27 @@ make_pca <- function(big_data, partition = NULL, formula_terms = NULL, permanova
   list(pca_sites, pca_traits, pca_output, permanova)
 }
 
-make_scree_plot <- function(pca_output) {
+make_scree_plot <- function(pca_output, n_axes = 10) {
   # pca_output is list(sites, traits, rda) from make_pca; extract rda object
   rda_obj <- if (inherits(pca_output, "rda")) pca_output else pca_output[[3]]
   evals <- eigenvals(rda_obj)
-  e_B <- evals / sum(evals)
-  n_pcs <- length(evals)
-  if (n_pcs == 0) {
+  if (length(evals) == 0) {
     return(ggplot() +
       theme_void() +
       labs(title = "No eigenvalues"))
   }
-  scree <- evals |>
-    as_tibble() |>
-    rename(eigenvalue = x) |>
-    mutate(
-      PC = paste0("PC", seq_len(n_pcs)),
-      PC = factor(PC, levels = paste0("PC", seq_len(n_pcs)))
-    ) |>
-    ggplot(aes(y = eigenvalue, x = PC)) +
+  pct <- evals / sum(evals) * 100
+  n_show <- min(n_axes, length(pct))
+  tibble(
+    PC = factor(paste0("PC", seq_len(n_show)), levels = paste0("PC", seq_len(n_show))),
+    variance = as.numeric(pct[seq_len(n_show)])
+  ) |>
+    ggplot(aes(x = PC, y = variance)) +
     geom_col() +
+    geom_text(aes(label = round(variance, 1)), vjust = -0.4, size = 2.6) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+    labs(x = NULL, y = "Variance explained (%)") +
     theme_bw()
-  scree
 }
 
 plot_pca <- function(pca_output) {

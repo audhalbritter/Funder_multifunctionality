@@ -77,9 +77,9 @@ tar_read(correlation_plot)
 #| label: fig-scree-plot
 #| echo: false
 #| warning: false
-#| fig-cap: Scree plot of PCA for a) full ordination and b) site effect partitioned out.
+#| fig-cap: "Scree plot of the first 10 principal components for a) the full ordination and b) the ordination with the site effect partitioned out. Numbers above the bars are the percentage of variance explained."
 #| fig-width: 8
-#| fig-height: 8
+#| fig-height: 4.5
 tar_read(pca_scree_plot)
 ```
 
