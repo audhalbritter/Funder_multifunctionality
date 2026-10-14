@@ -60,5 +60,8 @@ output/
 # OS
 .DS_Store
 
+# Editor
+.vscode/
+
 /.quarto/
 **/*.quarto_ipynb

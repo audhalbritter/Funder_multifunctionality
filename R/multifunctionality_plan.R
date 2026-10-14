@@ -20,9 +20,7 @@ multifunctionality_plan <- list(
       decomposition_forbs,
       decomposition_gram,
       cn_stocks |> filter(response != "CN"), # includes nitrogen stocks
-      # som,
       gpp_flux,
-      # nee_flux,
       reco_flux,
 
       # nutrient cycle
@@ -44,9 +42,9 @@ multifunctionality_plan <- list(
       left_join(meta, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
-  # transformation: normaliue (log) and standardize between 0 and 1
+  # transformation: normalize (log) and standardize between 0 and 1 (full dataset)
   tar_target(
-    name = big_data,
+    name = big_data_full,
     command = big_data_raw |>
       # shift values to make all positive (for responses with negative values)
       group_by(response) |>
@@ -56,17 +54,15 @@ multifunctionality_plan <- list(
       )) |>
       ungroup() |>
       # normalize data
-      # if zeros in data (nematodes and microarthropods), then there will be NAs here
+      # if zeros in the nematode data, then there will be NAs here
+      mutate(.transformation = response_transformation(response)) |>
       tidylog::mutate(value_trans = case_when(
-        # logit for ratio variables (proportions in 0-1) and fungal guilds; exclude "respiration" (contains "ratio")
-        str_detect(response, "ratio") & !str_detect(response, "respiration") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
-        response %in% c("root_associated_fungi", "saprotroph", "yeast_dimorphic", "ectomycorrhizal") ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
-        # log for responses with only positive values (avoid log(non-positive) = NaN)
-        response %in% c("available_nitrogen", "available_phosphorus", "bacteria density", "bacterivore feeder density", "bacterivore density", "carbon stock", "fungi density", "fungivore feeder density", "nematode density", "nitrogen stock", "phosphorus stock", "plant_feeder feeder density", "predator feeder density", "soil organic matter") ~ log(pmax(value + 1, .Machine$double.eps)),
-        # no transformation for others
+        .transformation == "logit" ~ qlogis(pmin(pmax(value, 0.001), 0.999)),
+        .transformation == "log" ~ log(pmax(value + 1, .Machine$double.eps)),
         TRUE ~ value
       )) |>
-      # scale variables between 0 and 1
+      select(-.transformation) |>
+      # scale variables to mean 0 and standard deviation 1
       group_by(data_type, group, response) |>
       mutate(value_std = scale(value_trans)[, 1]) |>
       # transform
@@ -84,18 +80,26 @@ multifunctionality_plan <- list(
       tidylog::left_join(standing_biomass_wide, by = c("siteID", "blockID", "plotID", "treatment"))
   ),
 
+  # analysis subset: keep 5 treatments (None/F/G/B/All) and 9 sites
+  tar_target(
+    name = big_data,
+    command = big_data_full |>
+      filter(!fg_remaining %in% c("GF", "FB", "GB")) |>
+      filter(!siteID %in% c("Gudmedalen", "Rambera", "Arhelleren"))
+  ),
+
   # big data for multifunctionality analysis
   tar_target(
     name = absolute_group_data,
     command = big_data |>
-      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients", "root_tissue_density_g_per_m3", "root_dry_matter_content")) |>
+      filter(!response %in% c("decomposition forbs", "ecosystem respiration", "macronutrients")) |>
       # make absolute values for multifunctionality calculation
       mutate(value_abs = abs(value_std)) |>
       group_by(
         siteID, blockID, plotID, treatment, habitat,
         temperature_degree, precipitation_mm, precipitation_name,
         temperature_scaled, precipitation_scaled,
-        fg_richness, fg_remaining, forb, gram, bryo, group, 
+        fg_richness, fg_remaining, forb, gram, bryo, group,
         total_biomass, total_biomass_scaled,
         biomass_scaled_B, biomass_scaled_F, biomass_scaled_G
       ) |>

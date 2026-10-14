@@ -1,0 +1,112 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+## Checking model assumptions
+
+```{r}
+#| label: set-up
+#| echo: false
+#| warning: false
+#| message: false
+
+library(targets)
+library(tarchetypes)
+library(tidyverse)
+library(performance)
+library(see)
+library(DHARMa)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
+
+tar_load(big_data)
+# Function to get pretty labels for responses
+pretty_labels <- big_data |> 
+  distinct(response) |> 
+  mutate(label = as.character(response)) # Simplified label for now
+```
+
+## Multifunctionality
+
+```{r}
+#| label: multifunctionality-check
+#| echo: false
+#| results: asis
+#| message: false
+#| fig-height: 12
+#| fig-width: 12
+
+tar_load(model_multifunctionality, store = "../_targets")
+tar_load(model_multifunctionality_main, store = "../_targets")
+
+# Define model sets defensively
+models_to_check <- list()
+if (exists("model_multifunctionality") && !is.null(model_multifunctionality)) {
+  models_to_check[["Interaction: Model 1 (Climate)"]] <- list(df = model_multifunctionality, col = "model")
+  models_to_check[["Interaction: Model 2 (Total Biomass)"]] <- list(df = model_multifunctionality, col = "model_biomass")
+  models_to_check[["Interaction: Model 3 (FG Biomass)"]] <- list(df = model_multifunctionality, col = "model_FG_biomass")
+}
+if (exists("model_multifunctionality_main") && !is.null(model_multifunctionality_main)) {
+  models_to_check[["Main Effects: Model 1 (Climate)"]] <- list(df = model_multifunctionality_main, col = "model_main")
+  models_to_check[["Main Effects: Model 2 (Total Biomass)"]] <- list(df = model_multifunctionality_main, col = "model_main_biomass")
+  models_to_check[["Main Effects: Model 3 (FG Biomass)"]] <- list(df = model_multifunctionality_main, col = "model_main_FG_biomass")
+}
+
+for (label in names(models_to_check)) {
+  cat("\n###", label, "\n")
+  models_to_check[[label]]$df |>
+    pwalk(function(...) {
+      x <- list(...)
+      mod <- x[[models_to_check[[label]]$col]]
+      if (!is.null(mod)) {
+        cat("\n#### Level:", x$level, "\n")
+        print(check_model(mod))
+        cat("\n")
+      }
+    })
+}
+```
+
+## Single function analyses
+
+```{r}
+#| label: single-function-check
+#| echo: false
+#| results: asis
+#| message: false
+#| fig-height: 12
+#| fig-width: 12
+
+tar_load(model_single_function, store = "../_targets")
+tar_load(model_single_function_main, store = "../_targets")
+
+# Define model sets defensively
+single_models_to_check <- list()
+if (exists("model_single_function") && !is.null(model_single_function)) {
+  single_models_to_check[["Interaction: Model 1 (Climate)"]] <- list(df = model_single_function, col = "model")
+  single_models_to_check[["Interaction: Model 2 (Total Biomass)"]] <- list(df = model_single_function, col = "model_biomass")
+  single_models_to_check[["Interaction: Model 3 (FG Biomass)"]] <- list(df = model_single_function, col = "model_FG_biomass")
+}
+if (exists("model_single_function_main") && !is.null(model_single_function_main)) {
+  single_models_to_check[["Main Effects: Model 1 (Climate)"]] <- list(df = model_single_function_main, col = "model_main")
+  single_models_to_check[["Main Effects: Model 2 (Total Biomass)"]] <- list(df = model_single_function_main, col = "model_main_biomass")
+  single_models_to_check[["Main Effects: Model 3 (FG Biomass)"]] <- list(df = model_single_function_main, col = "model_main_FG_biomass")
+}
+
+for (label in names(single_models_to_check)) {
+  cat("\n###", label, "\n")
+  single_models_to_check[[label]]$df |>
+    pwalk(function(...) {
+      x <- list(...)
+      mod <- x[[single_models_to_check[[label]]$col]]
+      if (!is.null(mod)) {
+        cat("\n#### Response:", x$response, "\n")
+        print(check_model(mod))
+        cat("\n")
+      }
+    })
+}
+```

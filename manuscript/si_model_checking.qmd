@@ -1,0 +1,36 @@
+---
+title: "SI Model Checking"
+format: html
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(targets)
+library(performance)
+library(see)
+library(tidyverse)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
+```
+
+## SI Biomass Models
+
+```{r}
+#| label: model-check-si
+#| echo: false
+#| results: asis
+#| fig-width: 12
+#| fig-height: 12
+
+tar_load(si_model_check)
+
+si_model_check |>
+    pwalk(function(response, predictor, check_plot, ...) {
+        cat(paste("###", response, "-", predictor, "\n\n"))
+        # performance::check_model objects can be plotted direktly
+        print(plot(check_plot))
+        cat("\n\n")
+    })
+```

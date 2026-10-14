@@ -5,14 +5,13 @@ model_plan <- list(
   tar_target(
     name = model_single_function,
     command = make_model(
-      dat = big_data |>
-        tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = big_data,
       response_var = value_std,
       fg_var = fg_remaining,
       group = "response"
     )
   ),
-  # Model 1: no biomass (treatment × climate only)
+  # Model 1: factorial model without biomass (treatment × climate only)
   tar_target(
     name = model_single_function_out,
     command = model_output_gt(model_single_function, unnest_col = "result")
@@ -27,55 +26,66 @@ model_plan <- list(
     name = model_single_function_FG_biomass_out,
     command = model_output_gt(model_single_function, unnest_col = "result_FG_biomass")
   ),
-  # Heatmaps: one per model (same group_lookup; unnest different result_*)
+
+  # post hoc test for model 3
+  # tests if slopes of FG are different
+  # comparison at average climate (0 scaled T and P)
+  # multiple testing correction (Holm)
   tar_target(
-    name = model_single_function_heatmap,
+    name = model_single_function_FG_biomass_slope_tests_out,
     command = {
-      group_lookup <- big_data |> distinct(response, group)
-      heatmap_data <- model_single_function |>
-        unnest(result) |>
-        filter(effect == "fixed") |>
-        select(response, term, estimate, p.value)
-      r2_tbl <- model_single_function |>
+      model_single_function |>
+        select(response, model_FG_biomass) |>
         mutate(
-          R2_marginal = purrr::map_dbl(
-            r2,
-            ~ {
-              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
-                NA_real_
-              } else {
-                as.numeric(.x$R2_marginal[1])
-              }
-            }
+          slope_tests = purrr::map(
+            model_FG_biomass,
+            ~ compare_fg_biomass_slopes(
+              fit = .x,
+              temp_value = 0,
+              precip_value = 0,
+              adjust_method = "holm"
+            )
           )
         ) |>
-        select(response, R2_marginal)
-      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
-    }
-  ),
-  tar_target(
-    name = model_single_function_biomass_heatmap,
-    command = {
-      group_lookup <- big_data |> distinct(response, group)
-      heatmap_data <- model_single_function |>
-        unnest(result_biomass) |>
-        filter(effect == "fixed") |>
-        select(response, term, estimate, p.value)
-      r2_tbl <- model_single_function |>
+        select(response, slope_tests) |>
+        unnest(slope_tests) |>
+        select(response, contrast, estimate_diff, std_error, z_value, p_value, p_value_adjusted) |>
+        arrange(response, contrast) |>
         mutate(
-          R2_marginal = purrr::map_dbl(
-            r2_biomass,
-            ~ {
-              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
-                NA_real_
-              } else {
-                as.numeric(.x$R2_marginal[1])
-              }
-            }
+          response = as.character(response),
+          contrast = as.character(contrast)
+        ) |>
+        gt(groupname_col = "response") |>
+        cols_label(
+          contrast = "Slope contrast",
+          estimate_diff = "Difference",
+          std_error = "SE",
+          z_value = "z",
+          p_value = "p",
+          p_value_adjusted = "Holm p"
+        ) |>
+        fmt_number(
+          columns = c(estimate_diff, std_error, z_value, p_value, p_value_adjusted),
+          decimals = 3
+        ) |>
+        tab_style(
+          style = gt::cell_text(weight = "bold"),
+          locations = gt::cells_body(
+            columns = p_value,
+            rows = !is.na(p_value) & p_value <= 0.05
           )
         ) |>
-        select(response, R2_marginal)
-      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+        tab_style(
+          style = gt::cell_text(weight = "bold"),
+          locations = gt::cells_body(
+            columns = p_value_adjusted,
+            rows = !is.na(p_value_adjusted) & p_value_adjusted <= 0.05
+          )
+        ) |>
+        tab_header(
+          title = "Pairwise post hoc slope tests for FG biomass (Model 3)",
+          subtitle = "Contrasts tested at scaled temperature = 0 and scaled precipitation = 0"
+        )
     }
   ),
 
@@ -83,237 +93,116 @@ model_plan <- list(
   tar_target(
     name = model_single_function_main,
     command = make_main_effects_model(
-      dat = big_data |>
-        tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = big_data,
       response_var = value_std,
       fg_var = fg_remaining,
       group = "response"
     )
   ),
+
+  # AIC Comparison Table for all single-function models
   tar_target(
-    name = model_single_function_main_heatmap,
+    name = model_aic_comparison,
     command = {
       group_lookup <- big_data |> distinct(response, group)
-      heatmap_data <- model_single_function_main |>
-        unnest(result_main) |>
-        filter(effect == "fixed") |>
-        select(response, term, estimate, p.value)
-      r2_tbl <- model_single_function_main |>
-        mutate(
-          R2_marginal = purrr::map_dbl(
-            r2_main,
-            ~ {
-              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
-                NA_real_
-              } else {
-                as.numeric(.x$R2_marginal[1])
-              }
-            }
-          )
-        ) |>
-        select(response, R2_marginal)
-      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+
+      # AIC from interaction models
+      aic_int <- model_single_function |>
+        select(response, aic, aic_biomass, aic_FG_biomass) |>
+        rename(`int climate` = aic, `int bio` = aic_biomass, `int FG bio` = aic_FG_biomass)
+
+      # AIC from main-effects models
+      aic_main <- model_single_function_main |>
+        select(response, aic_main, aic_main_biomass, aic_main_FG_biomass) |>
+        rename(`main climate` = aic_main, `main bio` = aic_main_biomass, `main FG bio` = aic_main_FG_biomass)
+
+      group_order <- c("microenvironment", "nutrient cycling", "carbon cycling", "nematodes", "microbes")
+
+      full_join(aic_int, aic_main, by = "response") |>
+        left_join(group_lookup, by = "response") |>
+        # Explicit group order matching heatmap
+        mutate(group = factor(group, levels = group_order)) |>
+        tidyr::pivot_longer(c(-response, -group), names_to = "model", values_to = "aic") |>
+        group_by(response) |>
+        mutate(delta_AIC = aic - min(aic, na.rm = TRUE)) |>
+        arrange(group, response, delta_AIC) |>
+        rename_response_pretty() |>
+        mutate(group = stringr::str_to_sentence(as.character(group)))
     }
   ),
   tar_target(
-    name = model_single_function_main_biomass_heatmap,
+    name = model_aic_comparison_out,
+    command = model_aic_comparison |>
+      filter(delta_AIC <= 2) |>
+      gt(groupname_col = "group") |> # Group by the category (Nematodes, C cycling, etc.)
+      fmt_number(columns = c(aic, delta_AIC), decimals = 2) |>
+      tab_header(title = "Model Comparison by AIC (delta AIC <= 2)") |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_body(rows = delta_AIC == 0)
+      ) |>
+      cols_label(response = "Variable", model = "Model", aic = "AIC", delta_AIC = "ΔAIC")
+  ),
+
+  ### Model comparison statistics (1:1 line tests)
+  tar_target(
+    name = model_single_function_comparison_stats,
+    command = calculate_model_comparison_stats(
+      model_tbl = model_single_function,
+      response_group_lookup = big_data |> distinct(response, group)
+    )
+  ),
+  tar_target(
+    name = model_single_function_comparison_stats_out,
     command = {
-      group_lookup <- big_data |> distinct(response, group)
-      heatmap_data <- model_single_function_main |>
-        unnest(result_main_biomass) |>
-        filter(effect == "fixed") |>
-        select(response, term, estimate, p.value)
-      r2_tbl <- model_single_function_main |>
-        mutate(
-          R2_marginal = purrr::map_dbl(
-            r2_main_biomass,
-            ~ {
-              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
-                NA_real_
-              } else {
-                as.numeric(.x$R2_marginal[1])
-              }
-            }
-          )
-        ) |>
-        select(response, R2_marginal)
-      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+      # Return a combined gt table for the manuscript
+      # For estimates
+      est_tbl <- model_single_function_comparison_stats$estimates |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "Fixed-effect Estimates: Deviation from 1:1 line")
+
+      # For R2
+      r2_tbl <- model_single_function_comparison_stats$r2 |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "R²: Deviation from 1:1 line")
+
+      list(estimates = est_tbl, r2 = r2_tbl)
     }
   ),
   tar_target(
-    name = model_single_function_main_FG_biomass_heatmap,
+    name = model_interaction_vs_main_comparison_stats,
+    command = calculate_interaction_vs_main_stats(
+      model_int = model_single_function,
+      model_main = model_single_function_main,
+      response_group_lookup = big_data |> distinct(response, group)
+    )
+  ),
+  tar_target(
+    name = model_interaction_vs_main_comparison_stats_out,
     command = {
-      group_lookup <- big_data |> distinct(response, group)
-      heatmap_data <- model_single_function_main |>
-        unnest(result_main_FG_biomass) |>
-        filter(effect == "fixed") |>
-        select(response, term, estimate, p.value)
-      r2_tbl <- model_single_function_main |>
-        mutate(
-          R2_marginal = purrr::map_dbl(
-            r2_main_FG_biomass,
-            ~ {
-              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
-                NA_real_
-              } else {
-                as.numeric(.x$R2_marginal[1])
-              }
-            }
-          )
-        ) |>
-        select(response, R2_marginal)
-      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
+      # For estimates
+      est_tbl <- model_interaction_vs_main_comparison_stats$estimates |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "Fixed-effect Estimates (Main vs Int): Deviation from 1:1 line")
+
+      # For R2
+      r2_tbl <- model_interaction_vs_main_comparison_stats$r2 |>
+        gt() |>
+        fmt_number(columns = c(mean_diff, wilcox_p, slope, p_slope_1), decimals = 3) |>
+        tab_header(title = "R² (Main vs Int): Deviation from 1:1 line")
+
+      list(estimates = est_tbl, r2 = r2_tbl)
     }
-  ),
-  tar_target(
-    name = model_single_function_FG_biomass_heatmap,
-    command = {
-      group_lookup <- big_data |> distinct(response, group)
-      heatmap_data <- model_single_function |>
-        unnest(result_FG_biomass) |>
-        filter(effect == "fixed") |>
-        select(response, term, estimate, p.value)
-      r2_tbl <- model_single_function |>
-        mutate(
-          R2_marginal = purrr::map_dbl(
-            r2_FG_biomass,
-            ~ {
-              if (is.null(.x) || !"R2_marginal" %in% names(.x)) {
-                NA_real_
-              } else {
-                as.numeric(.x$R2_marginal[1])
-              }
-            }
-          )
-        ) |>
-        select(response, R2_marginal)
-      plot_model_heatmap(heatmap_data, group_lookup, r2_tibble = r2_tbl)
-    }
-  ),
-
-  tar_target(
-    name = model_single_function_r2_plot,
-    command = {
-      # Extract scalar marginal / conditional R2 for each response and model variant
-      r2_safe_get <- function(tbl, col) {
-        if (is.null(tbl) || !col %in% names(tbl)) {
-          return(NA_real_)
-        }
-        as.numeric(tbl[[col]][1])
-      }
-
-      r2_dat <- model_single_function |>
-        mutate(
-          R2m_no   = purrr::map_dbl(r2,          ~ r2_safe_get(.x, "R2_marginal")),
-          R2c_no   = purrr::map_dbl(r2,          ~ r2_safe_get(.x, "R2_conditional")),
-          R2m_bio  = purrr::map_dbl(r2_biomass,  ~ r2_safe_get(.x, "R2_marginal")),
-          R2c_bio  = purrr::map_dbl(r2_biomass,  ~ r2_safe_get(.x, "R2_conditional")),
-          R2m_fg   = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_marginal")),
-          R2c_fg   = purrr::map_dbl(r2_FG_biomass, ~ r2_safe_get(.x, "R2_conditional"))
-        )
-
-      comp_bio <- r2_dat |>
-        transmute(
-          response,
-          type = "marginal",
-          comparison = "No biomass vs + total biomass",
-          R2_no = R2m_no,
-          R2_other = R2m_bio
-        ) |>
-        bind_rows(
-          r2_dat |>
-            transmute(
-              response,
-              type = "conditional",
-              comparison = "No biomass vs + total biomass",
-              R2_no = R2c_no,
-              R2_other = R2c_bio
-            )
-        )
-
-      comp_fg <- r2_dat |>
-        transmute(
-          response,
-          type = "marginal",
-          comparison = "No biomass vs FG biomass",
-          R2_no = R2m_no,
-          R2_other = R2m_fg
-        ) |>
-        bind_rows(
-          r2_dat |>
-            transmute(
-              response,
-              type = "conditional",
-              comparison = "No biomass vs FG biomass",
-              R2_no = R2c_no,
-              R2_other = R2c_fg
-            )
-        )
-
-      plot_dat <- bind_rows(comp_bio, comp_fg) |>
-        filter(!is.na(R2_no), !is.na(R2_other))
-
-      ggplot(plot_dat, aes(x = R2_no, y = R2_other, colour = type)) +
-        geom_abline(slope = 1, intercept = 0, linetype = "dashed", colour = "grey60") +
-        geom_point(alpha = 0.7) +
-        coord_equal() +
-        facet_wrap(~ comparison) +
-        scale_colour_manual(values = c(marginal = "#1b9e77", conditional = "#d95f02"),
-                            name = "R² type",
-                            labels = c("Marginal", "Conditional")) +
-        labs(
-          x = "R² (no biomass model)",
-          y = "R² (biomass model)",
-          title = "R² comparison for single-function models"
-        ) +
-        theme_bw()
-    }
-  ),
-  tar_target(
-    name = single_function_fg_biomass_panel_plot,
-    command = plot_response_vs_fg_biomass(
-      data = big_data |> tidylog::filter(!fg_remaining %in% c("GF", "FB", "GB")),
-      response_name = "min_soil_moisture"
-    )
-  ),
-
-  ### Group-level models (same structure as single response)
-  tar_target(
-    name = model_group,
-    command = make_model(
-      dat = absolute_group_data |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
-      response_var = value,
-      fg_var = fg_remaining,
-      group = "group"
-    )
-  ),
-  tar_target(
-    name = model_group_out,
-    command = model_output_gt(
-      model_group |> rename(group_name = group),
-      unnest_col = "result"
-    )
-  ),
-  tar_target(
-    name = model_group_biomass_out,
-    command = model_output_gt(
-      model_group |> rename(group_name = group),
-      unnest_col = "result_biomass"
-    )
-  ),
-  tar_target(
-    name = model_group_FG_biomass_out,
-    command = model_output_gt(
-      model_group |> rename(group_name = group),
-      unnest_col = "result_FG_biomass"
-    )
   ),
 
   ### Global multifunctionality models
   tar_target(
     name = model_multifunctionality,
     command = make_model(
-      dat = multifunctionality |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
+      dat = multifunctionality,
       response_var = multifuntionality,
       fg_var = fg_remaining,
       group = "level"
@@ -344,47 +233,104 @@ model_plan <- list(
     )
   ),
 
-  # model for functional group richness
+  ### Global multifunctionality main effects models
   tar_target(
-    name = model_multifunctionality_richness,
-    command = make_model(
-      dat = multifunctionality |> filter(!fg_remaining %in% c("GF", "FB", "GB")),
+    name = model_multifunctionality_main,
+    command = make_main_effects_model(
+      dat = multifunctionality,
       response_var = multifuntionality,
-      fg_var = fg_richness,
+      fg_var = fg_remaining,
       group = "level"
     )
   ),
   tar_target(
-    name = model_multifunctionality_richness_out,
+    name = model_multifunctionality_main_out,
     command = model_output_gt(
-      model_multifunctionality_richness |> rename(level_name = level),
-      unnest_col = "result",
-      extra_drop = "level_name",
-      functional_group_as = "richness"
+      model_multifunctionality_main |> rename(level_name = level),
+      unnest_col = "result_main",
+      extra_drop = "level_name"
     )
   ),
   tar_target(
-    name = model_multifunctionality_richness_biomass_out,
+    name = model_multifunctionality_main_biomass_out,
     command = model_output_gt(
-      model_multifunctionality_richness |> rename(level_name = level),
-      unnest_col = "result_biomass",
-      extra_drop = "level_name",
-      functional_group_as = "richness"
+      model_multifunctionality_main |> rename(level_name = level),
+      unnest_col = "result_main_biomass",
+      extra_drop = "level_name"
     )
   ),
   tar_target(
-    name = model_multifunctionality_richness_plot,
-    command = model_multifunctionality_richness |>
-      unnest(data) |>
-      ggplot(aes(x = total_biomass, y = .response, size = total_biomass, shape = as.factor(.functional_group))) +
-      geom_point(alpha = 0.6) +
-      scale_x_continuous(
-        name = "Total biomass",
-        expand = expansion(mult = c(0.05, 0.05))
-      ) +
-      scale_y_continuous(name = "Multifunctionality") +
-      scale_size_continuous(name = "Total biomass") +
-      scale_shape_discrete(name = "Functional group") +
-      theme_bw()
+    name = model_multifunctionality_main_FG_biomass_out,
+    command = model_output_gt(
+      model_multifunctionality_main |> rename(level_name = level),
+      unnest_col = "result_main_FG_biomass",
+      extra_drop = "level_name"
+    )
+  ),
+
+  # AIC Comparison Table for multifunctionality models
+  tar_target(
+    name = model_multifunctionality_aic_comparison,
+    command = {
+      # Helper to extract aic and r2
+      extract_stats <- function(dat, suffix = "") {
+        # Define the exact columns we expect to have r2 lists
+        r2_list_cols <- intersect(names(dat), c("r2", "r2_biomass", "r2_FG_biomass", "r2_main", "r2_main_biomass", "r2_main_FG_biomass"))
+
+        dat |>
+          # Pre-extract R2 values to double to avoid list-double conflicts in pivot_longer
+          mutate(
+            across(all_of(r2_list_cols), ~ map_dbl(.x, ~ if (is.null(.x)) NA_real_ else .x$R2_marginal), .names = "{.col}_marginal"),
+            across(all_of(r2_list_cols), ~ map_dbl(.x, ~ if (is.null(.x)) NA_real_ else .x$R2_conditional), .names = "{.col}_conditional")
+          ) |>
+          # Clean up names to make them consistent (r2 vs r2_main)
+          rename_with(~ gsub("r2_main", "r2", .x), contains("r2_main")) |>
+          rename_with(~ gsub("aic_main", "aic", .x), contains("aic_main")) |>
+          select(level, starts_with("aic"), contains("marginal"), contains("conditional")) |>
+          pivot_longer(c(-level), names_to = "name", values_to = "val") |>
+          mutate(
+            model_type = case_when(
+              grepl("FG_biomass", name) ~ "FG bio",
+              grepl("biomass", name) ~ "bio",
+              TRUE ~ "climate"
+            ),
+            metric = case_when(
+              grepl("aic", name) ~ "aic",
+              grepl("marginal", name) ~ "R2_marginal",
+              grepl("conditional", name) ~ "R2_conditional"
+            ),
+            model = paste(suffix, model_type)
+          ) |>
+          select(level, model, metric, val) |>
+          pivot_wider(names_from = metric, values_from = val)
+      }
+
+      dat_int <- extract_stats(model_multifunctionality, "int")
+      dat_main <- extract_stats(model_multifunctionality_main, "main")
+
+      bind_rows(dat_int, dat_main) |>
+        group_by(level) |>
+        mutate(delta_AIC = aic - min(aic, na.rm = TRUE)) |>
+        arrange(delta_AIC) |>
+        ungroup()
+    }
+  ),
+  tar_target(
+    name = model_multifunctionality_aic_comparison_out,
+    command = model_multifunctionality_aic_comparison |>
+      gt() |>
+      fmt_number(columns = c(aic, delta_AIC, R2_marginal, R2_conditional), decimals = 2) |>
+      tab_header(title = "Multifunctionality Model Comparison: AIC and R2") |>
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_body(rows = delta_AIC == 0)
+      ) |>
+      cols_label(
+        model = "Model",
+        aic = "AIC",
+        delta_AIC = "ΔAIC",
+        R2_marginal = "R² marginal",
+        R2_conditional = "R² conditional"
+      )
   )
 )

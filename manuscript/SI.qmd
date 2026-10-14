@@ -1,0 +1,120 @@
+---
+format: 
+  html:
+    self-contained: true
+title: SI Plant functional group affect on multifunctionality
+execute:
+  echo: false
+bibliography: ../bibliography.bib
+csl: ../journal-of-ecology.csl
+editor: 
+  markdown: 
+    wrap: sentence
+crossref:
+  fig-title: "Figure S"
+  fig-prefix: "Fig. S"
+  tbl-title: "Table S"
+  tbl-prefix: "Table S"
+---
+
+```{r}
+#| label: set-up
+#| echo: false
+#| message: false
+library(targets)
+library(tarchetypes)
+library(tidyverse)
+library(patchwork)
+library(lubridate)
+library(broom)
+library(gt)
+library(lme4)
+library(lmerTest)
+library(broom.mixed)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
+```
+
+### Available micronutrients
+
+```{r}
+#| label: fig-micronutrient-pca
+#| echo: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 5.5
+#| fig-cap: "Scree plot of the variance explained by each principal component of the 11 available micronutrients (a), and biplot of PC1 against PC2 (b). Arrows are the micronutrient loadings. Points are plots, coloured by summer temperature and shaped by annual precipitation. PC1 is the axis used as the available-micronutrient function."
+tar_read(micronutrient_pca_plot)
+```
+
+###  Data transformation
+
+```{r}
+#| label: fig-transformation
+#| echo: false
+#| warning: false
+#| fig-width: 9.5
+#| fig-height: 15
+#| fig-cap: "Distributions of each function in three columns: raw values, transformed values, and standardized values. Each raw and transformed panel has its own axis. Every standardized panel uses the same axis, with a line at zero. Colour marks the transformation. Where no transformation was applied, the transformed distribution is grey."
+tar_read(transformation_distributions_plot)
+```
+
+#### Correlation between functions
+```{r}
+#| label: fig-correlation-plot
+#| echo: false
+#| warning: false
+#| fig-cap: Correlation between all functions on untransformed data.
+#| fig-width: 12
+#| fig-height: 12
+tar_read(correlation_plot)
+```
+
+
+### PCA ordination - scree plots
+```{r}
+#| label: fig-scree-plot
+#| echo: false
+#| warning: false
+#| fig-cap: "Scree plot of the first 10 principal components for a) the full ordination and b) the ordination with the site effect partitioned out. Numbers above the bars are the percentage of variance explained."
+#| fig-width: 8
+#| fig-height: 4.5
+tar_read(pca_scree_plot)
+```
+
+
+
+## Single function analyses
+
+Model output for each ecosystem function: 
+Model 1 (treatment × (temperature + precipitation):
+
+```{r}
+#| label: tbl-model-single-function
+#| echo: false
+#| warning: false
+#| tbl-cap: "Model output from testing effect of treatment, summer temperature and annual precipitation on each ecosystem function."
+tar_read(model_single_function_out)
+```
+
+Model 2 (treatment × climate + total biomass):
+
+```{r}
+#| label: tbl-model-single-function-biomass
+#| echo: false
+#| warning: false
+#| tbl-cap: "Model output: treatment × climate + total biomass (Bio) on each ecosystem function."
+tar_read(model_single_function_biomass_out)
+```
+
+Model 3 (FG biomass G/F/B × climate only):
+
+```{r}
+#| label: tbl-model-single-function-fg-biomass
+#| echo: false
+#| warning: false
+#| tbl-cap: "Model output: biomass_G, biomass_F, biomass_B × climate on each ecosystem function."
+tar_read(model_single_function_FG_biomass_out)
+```
+

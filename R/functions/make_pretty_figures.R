@@ -18,6 +18,16 @@ plot_model_heatmap <- function(model_data,
                                functional_group_as = "fg_remaining",
                                r2_tibble = NULL) {
 
+  # Harmonize response labels to pretty names for display and joins.
+  model_data <- model_data |>
+    mutate(response = pretty_response_label(response))
+  group_lookup <- group_lookup |>
+    mutate(response = pretty_response_label(response))
+  if (!is.null(r2_tibble) && "response" %in% names(r2_tibble)) {
+    r2_tibble <- r2_tibble |>
+      mutate(response = pretty_response_label(response))
+  }
+
   # Join group and define explicit response order
   group_lookup_distinct <- group_lookup |> distinct(response, group)
   dat <- model_data |>

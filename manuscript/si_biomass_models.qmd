@@ -1,0 +1,63 @@
+---
+format: 
+  html:
+    self-contained: true
+    toc: true
+  docx: default
+title: "SI - Functional Group Biomass Prediction Models"
+execute:
+  echo: false
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r}
+#| label: set-up
+#| include: false
+library(targets)
+library(tidyverse)
+library(patchwork)
+library(gt)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
+```
+
+# Function vs functional group biomass for each temperature and preciptiation level
+
+Here we run models for each function with biomass of each functional group and temperature and precipitation are the predictors. The following three models were run to test if biomass is a linear or non-linear: biomass is i) untransformed, ii) log transformed and iii) as a polynomial term in the model. The models were then compared using AIC values and the model with the lowest AIC value was selected and plotted with prediction lines for different temperature and precipitation levels if they were signifciant.
+
+```{r}
+#| label: tbl-model-selection
+#| tbl-cap: "Summary of selected model types across all responses."
+tar_load(si_fg_biomass_model_selection)
+
+si_fg_biomass_model_selection$selected_models |>
+    count(selected_model) |>
+    rename("Selected model" = selected_model, "N" = n) |>
+    gt()
+```
+
+```{r}
+#| label: plot-all-models
+#| results: asis
+#| fig-width: 10
+#| fig-height: 4
+source("../R/functions/make_figures.R")
+tar_load(si_model_plots)
+
+for (response_name in names(si_model_plots)) {
+    cat(paste0("## ", pretty_response_label(response_name), "\n\n"))
+
+    plot_list <- si_model_plots[[response_name]]
+
+    for (plot_type in names(plot_list)) {
+        # Print ggplot object explicitly so it renders within loop
+        print(plot_list[[plot_type]])
+        cat("\n\n")
+    }
+}
+```

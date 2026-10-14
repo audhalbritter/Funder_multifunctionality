@@ -193,9 +193,16 @@ model_output_gt <- function(
 ) {
   drops <- c(
     "data", "model", "model_biomass", "model_FG_biomass", "effect", "group",
+    "model_main", "model_main_biomass", "model_main_FG_biomass",
     "anova", "anova_tidy", "result", "result_biomass", "anova_biomass", "anova_tidy_biomass",
+    "result_main", "result_main_biomass", "result_main_FG_biomass",
+    "anova_main", "anova_main_biomass", "anova_main_FG_biomass",
+    "anova_tidy_main", "anova_tidy_main_biomass", "anova_tidy_main_FG_biomass",
     "result_FG_biomass", "anova_FG_biomass", "anova_tidy_FG_biomass",
     "r2", "r2_biomass", "r2_FG_biomass",
+    "r2_main", "r2_main_biomass", "r2_main_FG_biomass",
+    "aic", "aic_biomass", "aic_FG_biomass",
+    "aic_main", "aic_main_biomass", "aic_main_FG_biomass",
     "model_fg_bio", "anova_fg_bio", "anova_tidy_fg_bio", "result_fg_bio",
     extra_drop
   )

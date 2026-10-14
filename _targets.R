@@ -18,14 +18,13 @@ tar_source(files = "R")
 
 # Replace the target list below with your own:
 list(
-  download_plan,
+  import_plan,
   transformation_plan,
   multifunctionality_plan,
-  new_analysis_plan,
+  pca_plan,
   model_plan,
-  # analysis_plan,
-  # figure_plan,
-  # si_analysis_plan,
-  # manuscript_plan,
+  figure_plan,
+  si_analysis_plan,
+  manuscript_plan,
   si_figure_plan
 )

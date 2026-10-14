@@ -50,11 +50,17 @@ make_sp_pca <- function(cover){
   # make pca
   res <- rda(comm_sp)
 
-  out <- bind_cols(comm_info, fortify(res) |>
-                     filter(Score == "sites"))
+  pca_scores <- scores(res, choices = 1:6, tidy = TRUE)
 
-  sp <- fortify(res) |>
-    filter(Score == "species")
+  out <- bind_cols(
+    comm_info,
+    pca_scores |>
+      filter(score == "sites") |>
+      select(starts_with("PC"))
+  )
+
+  sp <- pca_scores |>
+    filter(score == "species")
 
   return(list(out, sp, res))
 

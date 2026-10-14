@@ -1,0 +1,258 @@
+```{r}
+#| label: set-up-results
+#| echo: false
+#| message: false
+library(targets)
+library(tarchetypes)
+library(ggplot2)
+library(gt)
+
+# Set targets store path
+tar_config_set(store = "../_targets")
+```
+
+# Results
+
+## Ordination expalains little variation
+
+- PC1 axis explains 14.6% of the variation and correlates with annual precipitation (wet to dry), while PC2 axis explains 9% of the variation and correlated weakly with increasingsummer temperature (@fig-pca-all-vs-no-site).
+
+- Functions related to the carbon cycle (graminoid decomposition and C stocks), N stocks, and bacterivore and predator nematode feeder increase towards drier sites, while the maturity index increases towards wetter sites. 
+
+- Functions related to nematodse, microbes and available nutrients are related to PC2 axis. Bacterial:fungal feeders, total fungi, total bacteria, yeast diamorphic and saprotrophic fungi, and P stocks increase towards warmer sites. 
+Bacteria: fungal ratio, fungivore and bacteriovore feeder, as well as the plant parasite index, incrase towards colder sites.
+
+- By partitioning out the site, not much more of the variation is explained (PC1 = 13.5%, PC2 = 9%) and the loadings do not change either. 
+
+- climate, functional group remaining, biomass, and functional group biomass explain only very small amounts of variation (0.9 - 2.6%; @tbl-permanova). Also, when partitioning out site, functional group remaining, biomass or functional group biomass do not explain more of the variation.
+
+
+```{r}
+#| label: fig-pca-all-vs-no-site
+#| echo: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 14
+#| fig-cap: "Principle component analysis for all ecosystem functions using a) all data or b) partition the site effect out (within-site variation only). The top panels show the biplots, and the lower panels the loadings. Sites are coloured by summer temperature (left) and treatment (right) and the shape indicates the precipitation level. The arrows are coloured by the ecosystem function group. The site-partitioned axes are reflected so the loadings point in the same direction as in the full ordination."
+tar_read(pca_all_vs_no_site_plot)
+```
+
+```{r}
+#| label: tbl-permanova
+#| echo: false
+#| warning: false
+#| tbl-cap: "Percentage of variation in ecosystem function composition explained by each term (sequential R²). Bold values are significant (p ≤ 0.05, 999 permutations). The site-partitioned column is the same model after the site mean was removed. The climate-only model, and the climate terms in the other models, are NA there because climate was removed with the site and was not tested."
+tar_read(pca_permanova_table)
+```
+
+
+### Single function models
+
+For each function, we ran three models; functional groups and climate (model 1: climate only), model 1 plus total biomass (model 2: biomass), and functional group biomass plus climate (model 3: FG biomass). The models were ran with and without interactions between functional groups, biomass, and climate.
+
+The explanatory power of the three models (climate only, biomass, FG biomass) is very similar (points close to 1:1 line, @fig-model-single-function-comparisons a).
+
+The estimates of the climate only model compared to the biomass model are very similar, suggesting that adding total biomass to the model does not change the estimates of the functional groups, climate variables and their interactions (points close to 1:1 line, @fig-model-single-function-comparisons b). Total biomass might explain an independent part of the data.
+
+The FG biomass model flattens the point cloud, with more positive or negative estimates in the climate only or biomass model being less positive or negative in the FG biomass model (@fig-model-single-function-comparisons b). This is mostly true for model terms related to the functional groups, and not climate and interaction terms. Note that the terms related to functional group and functional group biomass have been matched (e.g. G is compared to biomassG).
+
+```{r}
+#| label: fig-model-single-function-comparisons
+#| echo: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 12
+#| fig-cap: "Diagnostic comparisons across single-function model variants: (A) R² comparison (marginal vs conditional) and (B) fixed-effect estimate comparison. Each column represents a pair-wise comparison between Model 1 (No biomass), Model 2 (+ Total biomass), and Model 3 (FG biomass). The dashed line is the 1:1 reference."
+tar_read(model_single_function_comparison_plot)
+```
+
+```{r}
+#| label: tbl-model-comparison-stats
+#| echo: false
+#| tbl-cap: "Statistical tests for deviations from the 1:1 line in model comparisons (No biomass, Total biomass, FG biomass). wilcox_p tests for a systematic shift, and p_slope_1 tests if the slope deviates from 1."
+stats <- tar_read(model_single_function_comparison_stats_out)
+stats$r2
+stats$estimates
+```
+
+The comparison of the main effects with the interaction model for all three models, show a close alingment to the 1:1 line. This suggests that adding the interactions does not expalain more variation in the model or changes the estimates.
+
+```{r}
+#| label: fig-model-interaction-vs-main
+#| echo: false
+#| warning: false
+#| fig-width: 10
+#| fig-height: 12
+#| fig-cap: "Diagnostic comparisons between main-effects only models and full interaction models: (A) R² comparison (marginal vs conditional) and (B) fixed-effect estimate comparison. Each column represents the comparison for Model 1 (Climate only), Model 2 (+ Total biomass), and Model 3 (FG biomass). The dashed line is the 1:1 reference."
+tar_read(model_interaction_vs_main_comparison_plot)
+```
+
+```{r}
+#| label: tbl-interaction-vs-main-stats
+#| echo: false
+#| tbl-cap: "Statistical tests for deviations from the 1:1 line between main effects and interaction models. wilcox_p tests for a systematic shift, and p_slope_1 tests if the slope deviates from 1."
+stats_mvsi <- tar_read(model_interaction_vs_main_comparison_stats_out)
+stats_mvsi$r2
+stats_mvsi$estimates
+```
+
+
+### Model selection by AIC
+
+Comparing all six models (main effects, interactions) shows that for 22 out of 28 functions, the main effects climate only model is the best model. For GPP and saprophyt fungi the biomass model is the best model, while for N stocks, C stocks, plant parasite index, and ectomycorrhizal fungi the main FG biomass model is the best model. For all of these models, the main effects climate only model is the second best, within 5 AIC units, except for GPP (delta AIC = 13).
+
+```{r}
+#| label: tbl-aic-comparison
+#| echo: false
+#| warning: false
+#| fig-cap: "Model selection of single function models with and without interactions for only climate, with biomass and with functional group biomass. The best models with ΔAIC ≤ 2 are shown."
+tar_read(model_aic_comparison_out)
+```
+
+
+### Heatmaps
+
+The followin plots show heatmaps of model estimates for all six models (interaction, main effects model 1-3). Blue = negative, red = positive. Text style encodes p-values as follows: **bold** for p ≤ 0.001, **_bold italic_** for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1.
+
+Overall, the heatmaps show similar patterns. The functions that show the strongest effects are related to carbon cycling, nematodes, and microclimate. Mostly, the main effects are important, while there are few interactions that have a strong effect. The functions related to microclimate and carbon explain most of the variation (highest R2).
+
+#### Main effects models
+
+Here I describe the effects for the functions for the main effects climate only model, since this seems to be the best one overal.
+
+- Daily temperature amplitude decreases with forbs and intact vegetation
+
+- Available phosphorus increases with intact vegetation
+
+- The functions related to carbon cycling show the strongest effects. ER, GPP, and forb and graminoid decomposition increase with forb, graminoid presence and intact vegetation, while they decrease on bare ground. Graminoid decomposition decreases with increasing precipitation.
+
+- Bacterial fungal nematode feeder decrease in the presence of graminoids, while fungivore nematode feeder increase in the presence of graminoids. Plant feeder and bacteriovore nematode feeder increase in intact vegetation. Predator nematode feeder decrease with precipitation. The maturity index increases with precipitation (higher maturity index suggest faster strategy).
+
+- None of the functions related to microbes had any significant effects.
+
+
+```{r}
+#| label: fig-model-single-function-main-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 1 estimates (functional groups remaining + climate mains + T × P). Baseline = no FGs remaining (bare ground). Fill colour indicates effect direction (positive = red, negative = blue); text style encodes p-values as follows: bold for p ≤ 0.001, bold italic for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1. On the right side are the marginal R² values, where the colour indicates the proportion of variance explained."
+tar_read(model_single_function_main_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 2 estimates (functional groups remaining + climate mains + T × P + total biomass). Fill colour indicates effect direction (positive = red, negative = blue); text style encodes p-values as follows: bold for p ≤ 0.001, bold italic for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1. On the right side are the marginal R² values, where the colour indicates the proportion of variance explained."
+tar_read(model_single_function_main_biomass_heatmap)
+```
+
+```{r}
+#| label: fig-model-single-function-main-fg-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of main-effects model 3 estimates (functional group biomass + climate mains + T × P). Fill colour indicates effect direction (positive = red, negative = blue); text style encodes p-values as follows: bold for p ≤ 0.001, bold italic for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1. On the right side are the marginal R² values, where the colour indicates the proportion of variance explained."
+tar_read(model_single_function_main_FG_biomass_heatmap)
+```
+
+#### Interaction models
+
+Model 1 (functional groups remaining × climate only):
+
+```{r}
+#| label: fig-model-single-function-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 1 estimates (functional groups remaining × climate). Baseline = no FGs remaining (bare ground). Fill colour indicates effect direction (positive = red, negative = blue); text style encodes p-values as follows: bold for p ≤ 0.001, bold italic for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1. On the right side are the marginal R² values, where the colour indicates the proportion of variance explained."
+tar_read(model_single_function_heatmap)
+```
+
+Model 2 (functional groups remaining × climate + total biomass):
+
+```{r}
+#| label: fig-model-single-function-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 2 estimates (functional groups remaining × climate + total biomass). Fill colour indicates effect direction (positive = red, negative = blue); text style encodes p-values as follows: bold for p ≤ 0.001, bold italic for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1. On the right side are the marginal R² values, where the colour indicates the proportion of variance explained."
+tar_read(model_single_function_biomass_heatmap)
+```
+
+Model 3 (biomass G/F/B × climate only):
+
+```{r}
+#| label: fig-model-single-function-fg-biomass-heatmap
+#| echo: false
+#| warning: false
+#| fig-width: 14
+#| fig-height: 12
+#| fig-cap: "Heatmap of model 3 estimates (functional group biomass × climate). Fill colour indicates effect direction (positive = red, negative = blue); text style encodes p-values as follows: bold for p ≤ 0.001, bold italic for 0.001 < p ≤ 0.01, plain black for 0.01 < p ≤ 0.1, and plain grey for p ≥ 0.1. On the right side are the marginal R² values, where the colour indicates the proportion of variance explained."
+tar_read(model_single_function_FG_biomass_heatmap)
+```
+
+
+### Average multifunctionality
+
+Comparison of global interaction and main effects models. The best model is the main climate only model. To calculate multifunctionality, the absolute value of each function was used and then the average of all function was calculated.
+
+```{r}
+#| label: tbl-model-multifunctionality-aic
+#| echo: false
+#| tbl-cap: "AIC comparison for multifunctionality models (interactions vs main effects)."
+tar_read(model_multifunctionality_aic_comparison_out)
+```
+
+#### Global main effects models
+
+```{r}
+#| label: tbl-model-multifunctionality-main
+#| echo: false
+#| tbl-cap: "Model output from testing the main effects of functional groups remaining, summer temperature and annual precipitation on global multifunctionality."
+tar_read(model_multifunctionality_main_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-main-biomass
+#| echo: false
+#| tbl-cap: "Main-effects multifunctionality: functional groups remaining + climate + total biomass."
+tar_read(model_multifunctionality_main_biomass_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-main-fg-biomass
+#| echo: false
+#| tbl-cap: "Main-effects multifunctionality: functional groups remaining + climate + functional group biomass."
+tar_read(model_multifunctionality_main_FG_biomass_out)
+```
+
+#### Global interaction models
+
+```{r}
+#| label: tbl-model-multifunctionality
+#| echo: false
+#| tbl-cap: "Model output from testing effect of functional groups remaining, summer temperature and annual precipitation on global multifunctionality."
+tar_read(model_multifunctionality_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality: functional groups remaining × climate + total biomass."
+tar_read(model_multifunctionality_biomass_out)
+```
+
+```{r}
+#| label: tbl-model-multifunctionality-fg-biomass
+#| echo: false
+#| tbl-cap: "Multifunctionality: functional groups remaining × climate + functional group biomass."
+tar_read(model_multifunctionality_FG_biomass_out)
+```
