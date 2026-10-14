@@ -178,8 +178,9 @@ plot_pca <- function(pca_output) {
 #' @param point_size_var Optional string: column name in `sites` used for point size (e.g. "total_biomass"). Default NULL (fixed point size).
 #' @param point_alpha Numeric transparency for points in [0, 1]. Default 1 (opaque).
 #' @param show_loadings_legend Logical. Keep the group legend on the loadings panel.
+#' @param flip_axes Logical. Multiply PC1 and PC2 by -1 so the ordination can be matched to another plot. The sign of a PCA axis is arbitrary.
 #' @param components Logical. If TRUE, return a list with `sites` and `loadings` instead of a stacked patchwork.
-plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), facet_var = NULL, facet_ncol = NULL, facet_nrow = NULL, point_size_var = NULL, point_alpha = 1, show_loadings_legend = TRUE, components = FALSE) {
+plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), facet_var = NULL, facet_ncol = NULL, facet_nrow = NULL, point_size_var = NULL, point_alpha = 1, show_loadings_legend = TRUE, flip_axes = FALSE, components = FALSE) {
   display <- match.arg(display)
   e_B <- eigenvals(pca_output[[3]]) / sum(eigenvals(pca_output[[3]]))
   sites <- pca_output[[1]]
@@ -189,6 +190,11 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
     glue("PCA1 ({round(e_B[1] * 100, 1)}%)"),
     glue("PCA2 ({round(e_B[2] * 100, 1)}%)")
   )
+
+  if (flip_axes) {
+    sites <- sites |> mutate(PC1 = -PC1, PC2 = -PC2)
+    traits <- traits |> mutate(PC1 = -PC1, PC2 = -PC2)
+  }
 
   if (!is.null(facet_var)) {
     if (!facet_var %in% names(sites)) {
@@ -203,6 +209,54 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
     stop("point_alpha must be a single numeric value between 0 and 1")
   }
 
+  # Label arrows longer than this loading radius. Shorter arrows stay
+  # on the plot, but their names are omitted so the long arrows can fill
+  # the panel. Names are nudged off the tip; a line is drawn only when
+  # the name cannot sit next to its arrow.
+  loading_min_radius <- 0.6
+  loading_label <- c(
+    "Bacteria:fungal feeder" = "B:F feeder",
+    "Bacterivore feeder" = "Bacterivore",
+    "Fungivore feeder" = "Fungivore",
+    "Predator feeder" = "Predator",
+    "Plant feeder" = "Pl. feeder",
+    "Plant parasite index" = "Pl. parasite",
+    "Graminoid decomp." = "Gram. decomp.",
+    "Root associated" = "Root assoc.",
+    "Maturity index" = "Maturity",
+    "Non-melanised" = "Non-melan.",
+    "Bacteria:Fungi" = "Bact.:Fungi",
+    "Saprotroph" = "Sapro."
+  )
+  label_xlim <- c(min(traits$PC1) - 0.22, max(traits$PC1) + 0.22)
+  label_ylim <- c(min(traits$PC2) - 0.28, max(traits$PC2) + 0.24)
+  traits_lab <- traits |>
+    mutate(
+      loading_radius = sqrt(PC1^2 + PC2^2),
+      angle = atan2(PC2, PC1),
+      response = recode(response, !!!loading_label)
+    ) |>
+    filter(loading_radius >= loading_min_radius) |>
+    arrange(angle) |>
+    mutate(
+      side = if_else(row_number() %% 2L == 1L, 1, -1),
+      right_bundle = PC1 > 1.15 & abs(PC2) < 0.45,
+      nudge_x = cos(angle) * 0.05 + (-sin(angle)) * side * 0.14,
+      nudge_y = sin(angle) * 0.05 + cos(angle) * side * 0.14
+    )
+  # The right-hand arrows share one direction, so their names are stacked
+  # beside the tips and grow back into the panel. Every other name is
+  # placed by repel, which draws a line only if it has to move the text.
+  traits_right <- traits_lab |>
+    filter(right_bundle) |>
+    arrange(desc(PC2)) |>
+    mutate(
+      label_x = max(PC1) + 0.04,
+      label_y = ((n() + 1) / 2 - row_number()) * 0.34
+    )
+  traits_repel <- traits_lab |>
+    filter(!right_bundle)
+
   # Plot 1: arrows (loadings) only
   p_loadings <- ggplot() +
     geom_segment(
@@ -210,18 +264,51 @@ plot_pca_separate <- function(pca_output, display = c("climate", "treatment"), f
       aes(x = 0, y = 0, xend = PC1, yend = PC2, colour = group),
       arrow = arrow(length = unit(0.2, "cm"))
     ) +
+    geom_segment(
+      data = traits_right,
+      aes(x = PC1, y = PC2, xend = label_x, yend = label_y),
+      colour = "grey70",
+      linewidth = 0.25
+    ) +
     geom_text(
-      data = traits,
-      aes(x = PC1 + 0.05, y = PC2, label = response, colour = group),
-      size = 3.5, hjust = 0, show.legend = FALSE
+      data = traits_right,
+      aes(x = label_x, y = label_y, label = response, colour = group),
+      size = 2.8,
+      hjust = 1,
+      vjust = 0.5,
+      show.legend = FALSE
+    ) +
+    ggrepel::geom_text_repel(
+      data = traits_repel,
+      aes(x = PC1, y = PC2, label = response, colour = group),
+      size = 2.8,
+      show.legend = FALSE,
+      min.segment.length = 0.3,
+      segment.colour = "grey60",
+      segment.size = 0.25,
+      box.padding = 0.25,
+      point.padding = 0.08,
+      force = 1.6,
+      force_pull = 0.7,
+      max.overlaps = Inf,
+      nudge_x = traits_repel$nudge_x,
+      nudge_y = traits_repel$nudge_y,
+      xlim = label_xlim,
+      ylim = label_ylim,
+      seed = 1
     ) +
     scale_colour_brewer(palette = "Dark2", name = "Group (loadings)") +
-    coord_equal() +
+    coord_equal(
+      xlim = label_xlim,
+      ylim = label_ylim,
+      expand = FALSE
+    ) +
     labs(x = axis_labs[1], y = axis_labs[2]) +
     theme_bw() +
     theme(
       aspect.ratio = 1,
-      legend.position = if (show_loadings_legend) "right" else "none"
+      legend.position = if (show_loadings_legend) "right" else "none",
+      plot.margin = margin(6, 8, 4, 6)
     )
 
   # Plot 2: points (sites) only

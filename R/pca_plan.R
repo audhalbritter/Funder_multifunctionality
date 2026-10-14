@@ -40,6 +40,7 @@ pca_plan <- list(
                 facet_nrow = 3,
                 point_size_var = "total_biomass",
                 point_alpha = 0.6,
+                flip_axes = TRUE,
                 components = TRUE
             )
             panel_title <- function(label) {
