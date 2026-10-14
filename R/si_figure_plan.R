@@ -208,23 +208,41 @@ si_figure_plan <- list(
   tar_target(
     name = correlation_plot,
     command = {
+      group_order <- c(
+        "microenvironment", "nutrient cycling", "carbon cycling",
+        "nematodes", "microbes"
+      )
+
+      # Same order as the other figures: group, then name within group.
+      response_order <- big_data |>
+        distinct(group, response) |>
+        mutate(
+          group = factor(group, levels = group_order),
+          response_label = pretty_response_label(response)
+        ) |>
+        arrange(group, response_label)
 
       function_table <- big_data |>
         select(-year,-value_trans, -value_std, -unit, -temperature_degree, -habitat,
                -temperature_scaled, -precipitation_mm, -precipitation_name,
                -precipitation_scaled, -fg_richness, -fg_remaining, -forb, -gram, -bryo, -total_biomass_scaled, -biomass_scaled_B, -biomass_scaled_F, -biomass_scaled_G) |>
         pivot_wider(names_from = response, values_from = value, values_fill = 0) |>
-        select(-c(siteID:group))
+        select(-c(siteID:group)) |>
+        select(all_of(response_order$response))
+
+      names(function_table) <- response_order$response_label
 
       corr <- round(cor(function_table, use = "pairwise.complete.obs"), 1)
       p.mat <- ggcorrplot::cor_pmat(function_table)
 
-      ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
+      ggcorrplot::ggcorrplot(corr, hc.order = FALSE, type = "lower",
                  colors = c("#6D9EC1", "white", "#E46726"),
                  lab = TRUE,
                  lab_size = 4,
                  tl.cex = 14,
                  tl.srt = 45) +
+        # First group at the top. ggplot otherwise puts the first level at the bottom.
+        scale_y_discrete(limits = rev) +
         theme(axis.text = element_text(size = 8))
 
     }
